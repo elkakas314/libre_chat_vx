@@ -9,7 +9,7 @@ export function ModuleIndexView({ modules }: { modules: ModuleVisualCard[] }) {
         {modules.map((module) => (
           <li key={module.moduleRef}>
             <strong>{module.displayName}</strong>
-            <span> {module.systemTarget}</span>
+            <span> scope:{module.systemScope}</span>
             <span> source:{module.sourceLevel}</span>
             <span> live:{module.liveState}</span>
             <span> material:{module.materialState}</span>

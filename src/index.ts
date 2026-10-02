@@ -7,6 +7,8 @@ export type {
 
 export type {
   TargetId,
+  AdvisoryProviderId,
+  EndpointId,
   AdapterIdentity,
   ReadRequest,
   ReadResult,
@@ -19,18 +21,25 @@ export { ReadOnlyTargetAdapter } from './adapters/targetAdapter';
 
 export {
   COMMON_TARGET_GUARANTEES,
+  MANOJOS3_PARITY_DESCRIPTOR,
+  VX13_PARITY_DESCRIPTOR,
+  MANOJOS3_LIBRECHAT_INTEGRATION,
+  VX13_LIBRECHAT_INTEGRATION,
   MANOJOS3_PARITY_SOURCE,
   VX13_PARITY_SOURCE,
   reconcileTargetParity,
   parityGuaranteesAligned,
+  sourceAlignment,
 } from './adapters/targetParity';
 export type {
   TargetParityId,
   SourceMaturity,
+  AdapterImplementationState,
   BindingState,
-  RuntimeState,
-  AuthorityOwner,
-  TargetParityContract,
+  SourceAlignment,
+  TargetAuthorityModel,
+  TargetParityDescriptor,
+  TargetIntegrationState,
   TargetRuntimeObservation,
   TargetParityTruth,
 } from './adapters/targetParity';
@@ -52,16 +61,33 @@ export * from './cockpit/shortMemory';
 export * from './artifacts/interactiveArtifact';
 
 export { resolveFocus, participantsForFocus } from './cockpit/currentFocus';
-export type { CurrentFocus as CockpitCurrentFocus, FocusResolution } from './cockpit/currentFocus';
-export { effectiveReadTarget, clearOneTurnOverride } from './cockpit/systemTarget';
-export type { SystemTarget, TargetSelection } from './cockpit/systemTarget';
+export type {
+  CurrentFocus as CockpitCurrentFocus,
+  FocusResolution,
+  FocusSystemId,
+} from './cockpit/currentFocus';
+
+export {
+  effectiveReadTarget,
+  effectiveReadScope,
+  resolvedMutationTarget,
+  isConcreteTarget,
+  clearOneTurnOverride,
+} from './cockpit/systemTarget';
+export type {
+  ConcreteTargetId,
+  TargetScope,
+  SystemTarget,
+  TargetSelection,
+} from './cockpit/systemTarget';
+
 export { resolveUiDegradation } from './cockpit/uiDegradation';
 export type { UiDegradationState, UiSignals } from './cockpit/uiDegradation';
 export { canCoalesceAttention } from './cockpit/attention';
 export { mayReplayInBackground, timeoutAfterPossibleEffect } from './recovery/backgroundMutationFence';
 export { postTimeoutOutcome } from './browser/browserView';
 export { exposeTool, deferBulkSchemas } from './cockpit/targetToolGate';
-export { materiallyReady } from './contracts/readinessTruth';
+export { providerBindingReady, materiallyReady } from './contracts/readinessTruth';
 export { combineTargetReads } from './discovery/crossTargetRead';
 export { EventDeduper, requiresResync } from './recovery/snapshotResync';
 export { rendererMode } from './cockpit/rendererFailureIsolation';

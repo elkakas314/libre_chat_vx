@@ -2,17 +2,37 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "ui-action.schema.json",
   "type": "object",
-  "required": ["action_id", "target_id", "intent", "risk", "requested_at"],
+  "required": ["action_id", "target_scope", "intent", "control_class", "requested_at"],
   "properties": {
     "action_id": {"type": "string", "minLength": 1},
-    "target_id": {"type": "string", "minLength": 1},
+    "target_scope": {"enum": ["AUTO", "BOTH", "VX13", "MANOJOS3"]},
+    "resolved_target_id": {
+      "anyOf": [
+        {"enum": ["VX13", "MANOJOS3"]},
+        {"type": "null"}
+      ]
+    },
     "intent": {"type": "string", "minLength": 1},
-    "risk": {"enum": ["GREEN", "YELLOW", "RED"]},
+    "control_class": {"enum": ["GREEN", "YELLOW", "RED"]},
     "capability_ref": {"type": ["string", "null"]},
     "expected_state": {"type": ["object", "null"]},
     "requested_at": {"type": "string"},
     "idempotency_key": {"type": ["string", "null"]},
-    "authority_ref": {"type": ["string", "null"]}
+    "authorization_ref": {"type": ["string", "null"]}
   },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"control_class": {"const": "RED"}},
+        "required": ["control_class"]
+      },
+      "then": {
+        "required": ["resolved_target_id", "capability_ref"],
+        "properties": {
+          "resolved_target_id": {"enum": ["VX13", "MANOJOS3"]}
+        }
+      }
+    }
+  ],
   "additionalProperties": false
 }

@@ -1,9 +1,9 @@
-import type { SystemTarget } from '../cockpit/systemTarget';
+import type { TargetScope } from '../cockpit/systemTarget';
 
 export interface ConversationEnvelope {
   conversationId: string;
   messageId: string;
-  systemTarget: SystemTarget;
+  targetScope: TargetScope;
   contextRefs: string[];
   principalRef: string;
   authority: false;

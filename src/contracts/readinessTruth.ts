@@ -8,6 +8,13 @@ export interface LibreChatReadinessTruth {
   error?: string;
 }
 
-export function materiallyReady(r: LibreChatReadinessTruth): boolean {
-  return r.configured && r.channelEnabled && r.bindingReady && r.callableProbePassed && r.providerAvailable;
+export function providerBindingReady(r: LibreChatReadinessTruth): boolean {
+  return r.configured &&
+    r.channelEnabled &&
+    r.bindingReady &&
+    r.callableProbePassed &&
+    r.providerAvailable;
 }
+
+/** @deprecated This checks provider/binding readiness, not material completion. */
+export const materiallyReady = providerBindingReady;

@@ -1,3 +1,6 @@
+import type { ConcreteTargetId } from '../cockpit/systemTarget';
+import type { FocusSystemId } from '../cockpit/currentFocus';
+
 export type Risk = 'R0' | 'R1' | 'R2' | 'R3';
 export type TruthStatus =
   | 'VERIFIED'
@@ -7,7 +10,7 @@ export type TruthStatus =
   | 'RESYNC_REQUIRED';
 
 export interface CurrentFocus {
-  systemId: string;
+  systemId: FocusSystemId;
   moduleRef?: string;
   capabilityRef?: string;
   runRef?: string;
@@ -18,12 +21,14 @@ export interface CurrentFocus {
 }
 
 export interface TargetCapabilityProjection {
-  targetId: string;
+  targetId: ConcreteTargetId;
   capabilityId: string;
   risk: Risk;
   effectClass: 'READ_ONLY' | 'EPHEMERAL' | 'MATERIAL' | 'DESTRUCTIVE';
   availability: string;
-  authorityOwner: string;
+  policyAuthorityRef: string;
+  executionAuthorityRef?: string;
+  verificationAuthorityRef?: string;
   sourceRevision: string;
   observedAt: string;
   requiredScopes: string[];
@@ -31,7 +36,7 @@ export interface TargetCapabilityProjection {
 }
 
 export interface CrossTargetTruthEnvelope {
-  targetId: string;
+  targetId: ConcreteTargetId;
   truthClass: 'SOURCE' | 'LIVE' | 'VERIFIED' | 'EXTERNAL';
   status: TruthStatus;
   observedAt: string;

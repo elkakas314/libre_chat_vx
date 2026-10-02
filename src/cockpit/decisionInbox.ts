@@ -1,12 +1,15 @@
+import type { ConcreteTargetId } from './systemTarget';
+
 export type DecisionState = 'PENDING' | 'EXPIRED' | 'REVOKED' | 'RESOLVED';
 
 export interface DecisionCard {
   decisionRef: string;
-  ownerRef: string;
-  targetRef: string;
+  authorizationAuthorityRef: string;
+  targetId: ConcreteTargetId;
+  capabilityRef?: string;
   expiresAtMs: number;
   state: DecisionState;
-  authorityRef?: string;
+  authorizationRef?: string;
 }
 
 export function refreshExpiry(card: DecisionCard, nowMs: number): DecisionCard {
@@ -16,4 +19,5 @@ export function refreshExpiry(card: DecisionCard, nowMs: number): DecisionCard {
   return card;
 }
 
-// The inbox presents owner-issued decisions; it does not manufacture authorization.
+// DecisionInbox presents target-owner decisions.
+// A rendered card is not authorization; authorizationRef only points to owner-issued state.

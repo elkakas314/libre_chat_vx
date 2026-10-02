@@ -1,34 +1,42 @@
 # HANDOFF CURRENT
 
 ## Estado
-`SEMANTIC_MODEL_RECONCILED_SOURCE_ONLY`
+`SEMANTIC_MODEL_RECONCILED_V2_SOURCE_ONLY`
 
-## Correcciones semánticas obligatorias
+## Semántica canónica
 
-- Tentáculo HUD != Tentáculo Link.
-- Nostromo = cabina/shell de LibreChat, no target ni servicio.
-- AUTO/BOTH = scope de vista/lectura; nunca target material.
-- VX13/MANOJOS3 = únicos targets materiales del selector actual.
-- ORÁCULO = advisory provider, no peer target.
-- Source descriptor, LibreChat integration state y live observation son capas distintas.
-- `materialReady` deja de usarse como estado de target.
-- governedReadPathReady / governedMutationPathReady describen caminos, no resultados.
-- MATERIAL_VERIFIED exige readback + verification + receipt de una ejecución concreta.
-- ToolApproval UI != autorización Madre/Policy.
-- Artifact != TrustedSurfaceHost.
-- LibreChat subagent != VX13 hija != target worker.
-- background tool call != target run.
-- GREEN/YELLOW/RED clasifican intención UI y no conceden autoridad.
+- LibreChat = plataforma Conversation/UI externa.
+- Nostromo = cabina/shell dentro de LibreChat.
+- Tentáculo HUD = mascota/proxy visual sin autoridad.
+- Tentáculo Link = ingress/frontdoor VX13; no es el HUD.
+- AUTO/BOTH = TargetScope de lectura/vista; nunca ConcreteTargetId.
+- VX13/MANOJOS3 = targets materiales.
+- ORÁCULO = advisory provider.
+- GREEN/YELLOW/RED = control_class; R0/R1/R2/R3 = risk.
+- ToolApproval UI != target authorization.
+- authorizationRef = referencia a decisión/grant/challenge emitido por la autoridad del target.
+- UiAction/Artifact interaction != efecto material.
+- path readiness != ejecución != MATERIAL_VERIFIED.
+- MATERIAL_VERIFIED = readback + verification + receipt.
+- policy authority != executor != verifier.
+- LibreChat subagent != VX13 hija != target run.
 
-## Fix estructural
+## Fixes estructurales
 
-`CockpitWindow` ahora declara `EVIDENCE`; antes el router devolvía una ventana que el tipo no contenía.
+- CockpitWindow incluye EVIDENCE.
+- target/source/integration/live separados.
+- actionLifecycle deja de insinuar efectos materiales por click.
+- DecisionInbox/MutationFence usan authorizationRef.
+- ModuleVisualCard separa policy/executor/verifier.
+- UiAction schema separa control_class de risk.
+- ConversationEnvelope usa targetScope.
+- ReadOnlyTargetAdapter devuelve verification UNAVAILABLE, no FAILED.
 
 ## Materialidad
 
-Último commit probado materialmente en Lenovo: `94c632762f7afee7d9fa9d0f0c23c80d7494d2d2` con 26 tests PASS.
+Último commit ejecutado en Lenovo: `94c632762f7afee7d9fa9d0f0c23c80d7494d2d2` con 26 tests PASS.
 
-Este HEAD es GitHub-only por la restricción actual de no tocar local:
+Este HEAD sigue GitHub-only:
 - source tests = NOT_RUN;
 - LibreChat runtime = NO_VERIFICADO;
 - VX13 runtime = DESIGN_CONSOLIDATION;

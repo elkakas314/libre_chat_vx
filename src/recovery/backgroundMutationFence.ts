@@ -1,12 +1,20 @@
+import type { ConcreteTargetId } from '../cockpit/systemTarget';
+
 export type MutationFenceStatus =
-  | 'PREPARED' | 'SUBMITTED' | 'UNKNOWN_OUTCOME'
-  | 'RECONCILING' | 'VERIFIED' | 'FAILED' | 'CANCELLED';
+  | 'PREPARED'
+  | 'SUBMITTED'
+  | 'UNKNOWN_OUTCOME'
+  | 'RECONCILING'
+  | 'VERIFIED'
+  | 'FAILED'
+  | 'CANCELLED';
 
 export interface BackgroundMutationFence {
   operationId: string;
-  targetId: string;
+  targetId: ConcreteTargetId;
+  capabilityRef: string;
   effectScope: string;
-  authorityRef?: string;
+  authorizationRef?: string;
   idempotencyKey?: string;
   expectedState?: unknown;
   status: MutationFenceStatus;
