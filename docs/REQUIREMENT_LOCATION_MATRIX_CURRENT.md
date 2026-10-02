@@ -86,3 +86,44 @@ Regla: una fila `SCAFFOLDED` significa que existe una ubicación y contrato base
 | LC-R078 | VX13 A-26 | Cache/SW/IndexedDB son data surfaces auditables; purge en logout/tenant/ACL/revoke | `src/security/clientCachePolicy.ts` | LC-R078 | SCAFFOLDED |
 | LC-R079 | VX13 A-26 | Cross-tenant refs/cursors/errors no revelan existencia | `src/security/clientCachePolicy.ts` | LC-R079 | SCAFFOLDED |
 | LC-R080 | VX13 A-26 | Prioridad UI: chat/DecisionInbox/connection > evidence > timeline > media > animation | `src/resources/uiResourceBudget.ts` | LC-R080 | SCAFFOLDED |
+
+| LC-R081 | IDEA-LC-004 / AP-011 | Shell/HUD reversible; feature flag OFF devuelve chat normal | `src/cockpit/shellFeatureFlags.ts` | LC-R081 | SCAFFOLDED |
+| LC-R082 | IDEA-LC-005 / AP-011 | StatusRail muestra conexión/frescura/perfil observado sin inferir ejecución | `src/cockpit/statusRail.ts` | LC-R082 | SCAFFOLDED |
+| LC-R083 | IDEA-LC-007/008 / AP-012 | Tentáculo IDLE/OBSERVING/WORKING/ATTENTION/BLOCKED/DONE/UNKNOWN es sólo presentación | `src/cockpit/tentaclePresentation.ts` | LC-R083 | SCAFFOLDED |
+| LC-R084 | IDEA-LC-009 | Prioridad de foco: user pin > alerta crítica no invasiva > autorización > tarea > contexto > overview | `src/cockpit/focusPriority.ts` | LC-R084 | SCAFFOLDED |
+| LC-R085 | IDEA-LC-011 | “Explicar” vuelve al chat con entity/evidence refs; mascota no tiene voz autónoma | `src/cockpit/readOnlyActions.ts` | LC-R085 | SCAFFOLDED |
+| LC-R086 | IDEA-LC-012 | DecisionInbox accesible aunque HUD/mascota esté oculta | `src/cockpit/statusRail.ts` | LC-R086 | SCAFFOLDED |
+| LC-R087 | IDEA-LC-014 | ArtifactDock: abrir/fijar/comparar/timeline/export bajo ACL | `src/cockpit/artifactDock.ts` | LC-R087 | SCAFFOLDED |
+| LC-R088 | IDEA-LC-015 | UI manifest-driven con view_kinds y renderers allowlisted; no JS arbitrario de módulo | `src/cockpit/rendererManifest.ts` | LC-R088 | SCAFFOLDED |
+| LC-R089 | IDEA-LC-021 | UiAction es intención; actor/scopes/risk/verification vienen del backend/owner | `src/cockpit/actionLifecycle.ts` | LC-R089 | SCAFFOLDED |
+| LC-R090 | IDEA-LC-024 | Ciclo visual decisión→queue→run→receipt→verify; click nunca equivale a DONE | `src/cockpit/actionLifecycle.ts` | LC-R090 | SCAFFOLDED |
+| LC-R091 | IDEA-LC-025 | Slider/knob PREVIEW local; “Aplicar” crea request gobernada | `src/cockpit/actionLifecycle.ts` | LC-R091 | SCAFFOLDED |
+| LC-R092 | IDEA-LC-026 | Microautorización continua rango/rate/TTL/revocación queda DIFERIDA | `src/audio/audioPanel.ts` | LC-R092 | DEFERRED |
+| LC-R093 | IDEA-LC-027 | SHUB AudioPanel proyecta proyecto/pista/plugin/parámetro/version/unidad/readback/A-B | `src/audio/audioPanel.ts` | LC-R093 | SCAFFOLDED |
+| LC-R094 | IDEA-LC-031 | BuildPanel distingue plan/package externo/artifact/tests declarados vs reproducidos/integración material | `src/build/buildPanel.ts` | LC-R094 | SCAFFOLDED |
+| LC-R095 | IDEA-LC-032 | MANOJOS3 externo nunca aparece como hija ni run interno VX13 | `src/build/buildPanel.ts` | LC-R095 | SCAFFOLDED |
+| LC-R096 | IDEA-LC-067 | Dismiss local no resuelve incidente, cancela run ni rechaza autorización | `src/cockpit/readOnlyActions.ts` | LC-R096 | SCAFFOLDED |
+| LC-R097 | IDEA-LC-068 | Foco/visualización no envía conversación/Artifacts a modelos/proveedores por sí sola | `src/security/egressPolicy.ts` | LC-R097 | SCAFFOLDED |
+| LC-R098 | IDEA-LC-080 / AP-026 | Continuidad referencial “eso” = última entidad/ref enfocada con TTL/ACL/provenance y desambiguación | `src/cockpit/referentialContinuity.ts` | LC-R098 | SCAFFOLDED |
+| LC-R099 | IDEA-LC-081 / AP-026 | Readonly actions: Explicar/Abrir evidencia/Leer último gap/Copiar contexto/Preparar auditoría | `src/cockpit/readOnlyActions.ts` | LC-R099 | SCAFFOLDED |
+| LC-R100 | IDEA-LC-089 / AP-030 | Privacy redacted debe evitar fetch/prefetch cuando sea posible, no sólo ocultar CSS | `src/security/egressPolicy.ts` | LC-R100 | SCAFFOLDED |
+| LC-R101 | unified-004 | SkillMirrorManifest: repo/ref/hash/mode/provenance/last-known-good; skill no concede authority | `src/contracts/skillMirror.ts` | LC-R101 | SCAFFOLDED |
+| LC-R102 | unified-009 | LibreChatReadinessTruth separa configured/channel_enabled, binding_ready/callable+probe y provider_available | `src/contracts/readinessTruth.ts` | LC-R102 | SCAFFOLDED |
+| LC-R103 | unified-010 | ReverseLibreChatAdapter queda DIFERIDA hasta AUDIT_LOCAL_CLIENT/API real | `src/adapters/README.md`, `docs/BUILD_ORDER_CURRENT.md` | LC-R103 | DEFERRED |
+| LC-R104 | unified-012 | Browser STT/TTS primero si soporte/privacidad verificados; voice auth separada | `src/notifications/pushVoice.ts` | LC-R104 | SCAFFOLDED/DEFERRED |
+| LC-R105 | ModuleVisualCard candidate | Card proyecta owner/state/code/installed/live/material/freshness/evidence/actions; nombres UI no son wire congelado | `src/cockpit/moduleVisualCard.ts` | LC-R105 | SCAFFOLDED |
+| LC-R106 | §22.15 READ DISCOVERY | handshake+auth→health/readiness→catalogue filtered→compatibility→source-vs-live→UiProjection→Session/ContextRef | `src/discovery/readDiscovery.ts` | LC-R106 | SCAFFOLDED |
+| LC-R107 | §22.15 CROSS-TARGET | Fanout READ explícito con timeout individual, provenance separada y resultado parcial etiquetado | `src/discovery/crossTargetRead.ts` | LC-R107 | SCAFFOLDED |
+| LC-R108 | capability DISCOVERY | MANOJOS3 index/skills; VX13 futura manifest; ORÁCULO mediado; UI muestra source-vs-live | `src/discovery/readDiscovery.ts` | LC-R108 | SCAFFOLDED |
+| LC-R109 | capability CONTINUITY | conversation_id LibreChat ≠ target session/controller IDs | `src/cockpit/referentialContinuity.ts` | LC-R109 | SCAFFOLDED |
+| LC-R110 | capability PLAN | PlanGraph distingue PLAN_CREATED/EXECUTION_SCHEDULED/MATERIAL_VERIFIED | `src/cockpit/planGraph.ts` | LC-R110 | SCAFFOLDED |
+| LC-R111 | capability PROOF | UI distingue EvidenceRef vs Receipt vs input no verificado | `src/cockpit/artifactDock.ts` | LC-R111 | SCAFFOLDED |
+| LC-R112 | M3 parity | Construction/Browser/ToolBus/Repo/Host/Threads/Connectors/Model panels sólo con adapter/registry/ACL real | `src/cockpit/manojosPanels.ts` | LC-R112 | SCAFFOLDED |
+| LC-R113 | ÚNICA CABINA | ActiveFlow dibuja sólo edges realmente ejecutadas, nunca blueprint/plan | `src/cockpit/activeFlow.ts` | LC-R113 | SCAFFOLDED |
+| LC-R114 | Layout desktop | Chat + grafo/visor + split inspector | `src/cockpit/layoutContract.ts` | LC-R114 | SCAFFOLDED |
+| LC-R115 | Layout mobile | Chat-first + status/inbox + bottom sheet por dominio; historial único y viewport privado | `src/cockpit/layoutContract.ts` | LC-R115 | SCAFFOLDED |
+| LC-R116 | IDEA-LC-004 | HUD deshabilitado debe dejar conversación upstream funcional | `src/cockpit/shellFeatureFlags.ts` | LC-R116 | SCAFFOLDED |
+| LC-R117 | StatusRail current | Mostrar SourceOnly vs LIVE además de connection/readiness | `src/cockpit/statusRail.ts` | LC-R117 | SCAFFOLDED |
+| LC-R118 | CurrentFocus current | USER_PIN/USER_OPEN prevalecen sobre autofocus | `src/cockpit/focusPriority.ts` | LC-R118 | SCAFFOLDED |
+| LC-R119 | Tool budget | Discovery diferido/filtrado; no cargar cientos de schemas MCP en prompt | `src/discovery/readDiscovery.ts` | LC-R119 | SCAFFOLDED |
+| LC-R120 | A-26 security | Datos externos no confiables; Agent/Artifact/Skill/documento no emiten grants | `src/security/egressPolicy.ts`, `docs/SECURITY.md` | LC-R120 | SCAFFOLDED |

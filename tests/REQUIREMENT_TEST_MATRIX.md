@@ -61,3 +61,37 @@ Todos estos tests están `NOT_RUN` hasta ejecutarse en entorno real o runner con
 - cache purge en logout/tenant/ACL revoke;
 - cross-tenant non-enumerability;
 - UI priority budget respetado.
+
+## LC-R081–R120 Second-pass detail
+- shell OFF conserva chat upstream;
+- StatusRail no deriva run state de connection/freshness;
+- estados de Tentáculo son presentación;
+- prioridad de focus respeta USER_PIN;
+- Explain/dismiss son readonly;
+- DecisionInbox sigue disponible con HUD oculto;
+- ArtifactDock revalida ACL para compare/export;
+- renderer manifest rechaza JS remoto/no allowlisted;
+- UiAction no porta autoridad inventada;
+- click/preview no marcan DONE;
+- microauth continua permanece disabled/deferred;
+- AudioPanel muestra readback real;
+- BuildPanel distingue tests declarados/reproducidos;
+- MANOJOS3 externo no se proyecta como hija;
+- focus no provoca egress a modelos;
+- referential continuity expira/desambigua;
+- privacy redacted evita prefetch cuando sea posible;
+- SkillMirrorManifest valida hash/provenance/LKG;
+- ReadinessTruth mantiene configured/binding/provider por separado;
+- Reverse adapter no se activa antes de local audit;
+- Browser STT/TTS no habilita voice auth;
+- ModuleVisualCard no se usa como wire authority;
+- ReadDiscovery contrasta source vs live;
+- CrossTargetRead conserva partial/provenance;
+- target session IDs no alias conversation_id;
+- PlanGraph no colapsa plan/scheduled/material;
+- EvidenceRef/Receipt/unverified input se distinguen;
+- M3 panels sólo exponen actions respaldadas por registry/ACL/adapter;
+- ActiveFlow sólo edges ejecutadas;
+- desktop/mobile layout conserva chat/inbox/freshness;
+- no bulk MCP schemas in prompt;
+- untrusted external data never grants authority.
