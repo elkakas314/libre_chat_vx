@@ -1,29 +1,36 @@
 # HANDOFF CURRENT
 
 ## Estado
-`DOCUMENTAL_ID_COVERAGE_PASS`
+`NOSTROMO_SOURCE_IMPLEMENTED_TARGET_PARITY_ALIGNED`
 
-## Cobertura comprobada automáticamente
-- LC-R001…LC-R120: 120/120.
-- IDEA-LC: 112/112 únicas; 208 ocurrencias preservadas.
-- FUNCTION-LC: 25/25.
-- FLOW-LC: 19/19.
-- AUTO-LC: 16/16.
-- DATA-LC: 4/4.
-- UI-ALL gates: 11/11.
-- Missing identifiers: 0.
+## Implementado en source
 
-## Índices canónicos
-- `docs/REQUIREMENT_LOCATION_MATRIX_CURRENT.md`
-- `docs/SOURCE_PROVENANCE_INDEX_CURRENT.md`
-- `docs/AP_LOCATION_MAP_CURRENT.md`
-- `docs/SEMANTIC_ID_REGISTRY_CURRENT.md`
-- `docs/REPO_LOCATION_INDEX_CURRENT.md`
-- `docs/COVERAGE_VALIDATION_CURRENT.json`
-- `tests/UI_ALL_GATES_CURRENT.md`
+- 120 requisitos canónicos y cobertura semántica completa.
+- TargetParity VX13 ↔ MANOJOS3 con autoridad separada.
+- Tentáculo HUD portable entre VX13/MANOJOS3/BOTH/AUTO.
+- foco automático y ventanas vivas.
+- MinimalTruth + ContextInspector.
+- mandos GREEN/YELLOW/RED sin efecto directo.
+- Artifacts interactivos: buttons/sliders/knobs/decision/authorization → UiIntent gobernado.
+- capability lenses alineadas con las 134 capabilities observadas de MANOJOS3.
+- TargetRun común con cadenas internas distintas.
+- Files, SHUB Audio, Browser, Build y BackgroundTasks panels.
+- catálogo de reutilización nativa y repos oficiales LibreChat.
 
-## Estado material
-Todo lo anterior es verdad documental/source+Git readback. No se ha demostrado build, runtime LibreChat, binding MANOJOS3, inferencia ORÁCULO ni runtime VX13.
+## Materialidad
 
-## Reanudación exacta
-Host online → AUDIT_LOCAL_CLIENT → AdapterCompatibilityReport → overlay upstream mínimo → MANOJOS3 R0 → ORÁCULO R0 mediado → cockpit → mobile/recovery → primera mutación gobernada.
+Último commit probado materialmente en Lenovo: `94c632762f7afee7d9fa9d0f0c23c80d7494d2d2` con 26 tests PASS.
+
+Los cambios posteriores de este HEAD son GitHub-only por instrucción del usuario de no tocar local. Por tanto:
+- current source tests = NOT_RUN;
+- LibreChat runtime = NO_VERIFICADO;
+- VX13 runtime = DESIGN_CONSOLIDATION;
+- MANOJOS3 LibreChat binding = PREPARED_UNCONFIGURED.
+
+## Reutilizar antes de crear
+
+Agents, Artifacts, MCP/MCP UI, ToolApproval, Skills, Subagents, Background Tool Calls, Files/RAG, Speech, resumable streams, ACL and SidePanel are native LibreChat surfaces.
+
+## Próximo bloque
+
+Refinar el overlay para enchufar Nostromo a superficies nativas sin instalar nada local; después revisión/source tests cuando el usuario vuelva a permitir ejecución local.

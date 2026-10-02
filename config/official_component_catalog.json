@@ -1,0 +1,61 @@
+{
+  "schema": "libre-chat-vx.official-component-catalog.v1",
+  "observed_at": "2026-10-03",
+  "native": [
+    "agents",
+    "artifacts",
+    "mcp",
+    "mcp_ui_resources",
+    "tool_approval",
+    "skills",
+    "subagents",
+    "background_tool_calls",
+    "resumable_streams",
+    "files",
+    "file_context",
+    "file_search",
+    "speech",
+    "acl_permissions",
+    "web_search",
+    "ocr",
+    "memory",
+    "custom_endpoints"
+  ],
+  "official_repositories": [
+    {
+      "repo": "LibreChat-AI/LibreChat",
+      "role": "UPSTREAM_CORE",
+      "state": "PINNED"
+    },
+    {
+      "repo": "LibreChat-AI/rag-api",
+      "role": "OPTIONAL_RAG",
+      "state": "CANDIDATE"
+    },
+    {
+      "repo": "LibreChat-AI/code-interpreter",
+      "role": "OPTIONAL_SANDBOX",
+      "state": "CANDIDATE"
+    },
+    {
+      "repo": "LibreChat-AI/admin-panel",
+      "role": "OPTIONAL_ADMIN",
+      "state": "CANDIDATE"
+    },
+    {
+      "repo": "LibreChat-AI/librechat-config-yaml",
+      "role": "REFERENCE_CONFIG",
+      "state": "REFERENCE_ONLY"
+    }
+  ],
+  "extension_mechanisms": [
+    "AGENT_PLUGINS_EXPERIMENTAL",
+    "DEPLOYMENT_SKILLS",
+    "MCP",
+    "OPENAPI_ACTIONS",
+    "MODEL_SPECS",
+    "CUSTOM_ENDPOINTS"
+  ],
+  "admission_rule": "NATIVE_THEN_OFFICIAL_COMPANION_THEN_PLUGIN_SKILL_MCP_THEN_MINIMAL_OVERLAY",
+  "authority": false
+}

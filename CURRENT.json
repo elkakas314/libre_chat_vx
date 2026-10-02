@@ -1,6 +1,6 @@
 {
   "schema": "libre-chat-vx.current.v1",
-  "status": "DOCUMENTAL_ID_COVERAGE_PASS",
+  "status": "NOSTROMO_SOURCE_IMPLEMENTED_TARGET_PARITY_ALIGNED",
   "repository": "elkakas314/libre_chat_vx",
   "upstream_commit": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
   "requirements_mapped": 120,
@@ -13,13 +13,21 @@
   "ui_all_gates_mapped": 11,
   "u_family_mapped": "U0_U23",
   "missing_identifiers": 0,
+  "nostromo_ui_source": "IMPLEMENTED",
+  "interactive_artifacts_governed": "IMPLEMENTED_SOURCE",
+  "manojos3_alignment_source": "134_CAPABILITIES_TO_BOUNDED_LENSES",
+  "vx13_alignment_source": "TARGET_PARITY_DESIGN_ONLY",
+  "official_reuse_catalog": "CURRENT",
+  "last_material_tested_commit": "94c632762f7afee7d9fa9d0f0c23c80d7494d2d2",
+  "last_material_test_result": "26_PASS",
+  "current_commit_tests": "NOT_RUN_GITHUB_ONLY",
   "authority": false,
   "live": "NO_VERIFICADO",
   "material_verified": false,
   "targets": {
-    "vx13": "DESIGN_ONLY",
-    "manojos3": "BINDING_NOT_VERIFIED",
+    "vx13": "DESIGN_CONSOLIDATION_UNCONFIGURED",
+    "manojos3": "PREPARED_UNCONFIGURED",
     "oraculo": "ADVISORY_VIA_MANOJOS3_PREFERRED"
   },
-  "next_action": "HOST_ONLINE_AUDIT_LOCAL_CLIENT_THEN_OVERLAY_AND_R0"
+  "next_action": "REVIEW_SOURCE_THEN_BIND_NATIVE_LIBRECHAT_SURFACES_WITHOUT_LOCAL_MUTATION"
 }

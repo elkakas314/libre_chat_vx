@@ -43,6 +43,14 @@ export type { CockpitState, TargetRuntimeState } from './runtime/cockpitState';
 export { CockpitReducer } from './runtime/eventReducer';
 export type { CockpitEvent } from './runtime/eventReducer';
 
+export * from './cockpit/windowRouter';
+export * from './cockpit/tentacleHud';
+export * from './cockpit/controlDeck';
+export * from './cockpit/capabilityLens';
+export * from './cockpit/targetRun';
+export * from './cockpit/shortMemory';
+export * from './artifacts/interactiveArtifact';
+
 export { resolveFocus, participantsForFocus } from './cockpit/currentFocus';
 export type { CurrentFocus as CockpitCurrentFocus, FocusResolution } from './cockpit/currentFocus';
 export { effectiveReadTarget, clearOneTurnOverride } from './cockpit/systemTarget';
