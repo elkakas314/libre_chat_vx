@@ -1,0 +1,29 @@
+{
+  "schema": "libre-chat-vx.source-manifest.v1",
+  "sources": {
+    "librechat_upstream": {
+      "repository": "LibreChat-AI/LibreChat",
+      "commit": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b"
+    },
+    "librechat_drive_master": {
+      "document_id": "1OwadKf4vBKJyRx5Pe3QB2HgjqJlSe2xb52TT7nK3Scc"
+    },
+    "vx13_master": {
+      "document_id": "1vqdo1WnIOx1tAN543eYrIM0QYU77TeCQ1Q_dk5PDMLg",
+      "direct_write_status": "FAILED_PRECONDITION_CURRENT_SESSION"
+    },
+    "vx13_librechat_addendum": {
+      "document_id": "1i-Dyj_KePeAeQl4d90ZjVQVsmE8Ca-2bGKPHM9vNZO0"
+    }
+  },
+  "truth_priority": [
+    "READBACK_LIVE",
+    "SOURCE",
+    "CURRENT",
+    "HANDOFF",
+    "BLUEPRINT",
+    "DOCUMENTATION",
+    "MEMORY",
+    "INFERENCE"
+  ]
+}

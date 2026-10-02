@@ -1,0 +1,17 @@
+.env
+.env.*
+!.env.example
+node_modules/
+dist/
+coverage/
+.cache/
+tmp/
+var/
+*.log
+*.pem
+*.key
+*.p12
+*.pfx
+receipts/private/
+.DS_Store
+Thumbs.db

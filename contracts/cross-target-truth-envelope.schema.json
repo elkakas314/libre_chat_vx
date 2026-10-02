@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cross-target-truth-envelope.schema.json",
+  "type": "object",
+  "required": ["target_id", "truth_class", "status", "observed_at"],
+  "properties": {
+    "target_id": {"type": "string", "minLength": 1},
+    "truth_class": {"enum": ["SOURCE", "LIVE", "VERIFIED", "EXTERNAL"]},
+    "status": {"enum": ["VERIFIED", "STALE", "NO_VERIFICADO", "UNKNOWN_OUTCOME", "RESYNC_REQUIRED"]},
+    "source_ref": {"type": ["string", "null"]},
+    "observed_revision": {"type": ["string", "null"]},
+    "observed_at": {"type": "string"},
+    "fresh_until": {"type": ["string", "null"]},
+    "evidence_refs": {"type": "array", "items": {"type": "string"}},
+    "receipt_ref": {"type": ["string", "null"]},
+    "verification_ref": {"type": ["string", "null"]},
+    "uncertainty_reason": {"type": ["string", "null"]}
+  },
+  "additionalProperties": false
+}

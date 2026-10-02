@@ -1,0 +1,22 @@
+systems:
+  vx13:
+    enabled: false
+    mode: design_only
+    endpoint_ref: VX13_LINK_URL
+
+  manojos3:
+    enabled: false
+    transport: mcp
+    endpoint_ref: MANOJOS3_MCP_URL
+
+  oraculo:
+    enabled: false
+    route: via_manojos3
+    authority: false
+
+cockpit:
+  update_mode: event_driven
+  bounded_poll_fallback: true
+  offline_effect_replay: false
+  trusted_surface_host: false
+  privacy_presentation: normal

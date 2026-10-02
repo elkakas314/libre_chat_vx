@@ -1,0 +1,18 @@
+{
+  "schema": "libre-chat-vx.current.v1",
+  "status": "DOCUMENTED_SOURCE_BOOTSTRAP",
+  "repository": "elkakas314/libre_chat_vx",
+  "upstream_commit": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
+  "audit": "POST_VX13_RECONCILED",
+  "polling_baseline": "EVENT_DRIVEN_LAZY_BACKPRESSURE_SNAPSHOT_RESYNC",
+  "client_contract_family": "U0_U23_DOCUMENTED",
+  "authority": false,
+  "live": "NO_VERIFICADO",
+  "material_verified": false,
+  "targets": {
+    "vx13": "DESIGN_ONLY",
+    "manojos3": "BINDING_NOT_VERIFIED",
+    "oraculo": "ADVISORY_VIA_MANOJOS3_PREFERRED"
+  },
+  "next_action": "HOST_ONLINE_PREFLIGHT_THEN_UPSTREAM_OVERLAY_THEN_MANOJOS3_R0"
+}

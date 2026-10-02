@@ -1,0 +1,10 @@
+{
+  "schema": "libre-chat-vx.upstream.v1",
+  "repository": "LibreChat-AI/LibreChat",
+  "commit": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
+  "observed_package_version": "v0.8.8",
+  "observed_config_version": "1.3.17",
+  "mode": "PINNED_SOURCE_REFERENCE",
+  "vendored": false,
+  "runtime_verified": false
+}
