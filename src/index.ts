@@ -17,6 +17,27 @@ export type {
 } from './adapters/targetAdapter';
 export { ReadOnlyTargetAdapter } from './adapters/targetAdapter';
 
+export {
+  COMMON_TARGET_GUARANTEES,
+  MANOJOS3_PARITY_SOURCE,
+  VX13_PARITY_SOURCE,
+  reconcileTargetParity,
+  parityGuaranteesAligned,
+} from './adapters/targetParity';
+export type {
+  TargetParityId,
+  SourceMaturity,
+  BindingState,
+  RuntimeState,
+  AuthorityOwner,
+  TargetParityContract,
+  TargetRuntimeObservation,
+  TargetParityTruth,
+} from './adapters/targetParity';
+
+export { MANOJOS3_FLOW, manojos3Parity } from './adapters/manojos3Contract';
+export { VX13_ADAPTER_STATE, VX13_AUTHORITY_CHAIN, vx13Parity } from './adapters/vx13Contract';
+
 export { emptyCockpitState } from './runtime/cockpitState';
 export type { CockpitState, TargetRuntimeState } from './runtime/cockpitState';
 export { CockpitReducer } from './runtime/eventReducer';

@@ -5,5 +5,6 @@ export * from './ModuleIndexView';
 export * from './PlanGraphView';
 export * from './ActiveFlowView';
 export * from './DomainLensView';
+export * from './TargetParityView';
 export * from './CockpitShell';
 export * from './SourceOnlyCockpit';
