@@ -1,0 +1,27 @@
+{
+  "name": "@librechat/vx",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Governed LibreChat cockpit and target projection layer.",
+  "type": "commonjs",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "npm run clean && tsc -p tsconfig.json",
+    "test": "npm run build && node --test dist/tests/core.test.js",
+    "check": "npm run test"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.12.0",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "typescript": "^5.9.3"
+  }
+}
