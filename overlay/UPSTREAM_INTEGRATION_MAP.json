@@ -1,0 +1,58 @@
+{
+  "schema": "libre-chat-vx.upstream-integration-map.v1",
+  "upstream": {
+    "repository": "LibreChat-AI/LibreChat",
+    "commit": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b"
+  },
+  "native_reuse": [
+    {
+      "feature": "DecisionInbox",
+      "paths": [
+        "client/src/components/Chat/approval/Review.tsx",
+        "client/src/components/Chat/Messages/Content/ToolApproval.tsx"
+      ],
+      "rule": "Reuse native approval state and submission. The VX cockpit never mints authority."
+    },
+    {
+      "feature": "TrustedSurfaceHost base",
+      "paths": [
+        "client/src/components/MCPUIResource/Renderer.tsx",
+        "client/src/components/MCPUIResource/plugin.ts"
+      ],
+      "rule": "Build on the existing sandboxed HTML MCP UI renderer instead of introducing a parallel renderer."
+    },
+    {
+      "feature": "TargetToolGate",
+      "paths": ["client/src/components/Chat/Input/ToolsDropdown.tsx"],
+      "rule": "Reuse existing permission checks for MCP, skills, file search, web search, code and artifacts."
+    },
+    {
+      "feature": "FilesView",
+      "paths": ["client/src/components/SidePanel/Files/Panel.tsx"],
+      "rule": "Extend the native Files panel while keeping preview/download/edit permissions separate."
+    },
+    {
+      "feature": "Voice",
+      "paths": [
+        "api/server/routes/files/speech/stt.js",
+        "client/src/components/Nav/SettingsTabs/Speech"
+      ],
+      "rule": "Speech is input and presentation only. Voice authorization remains disabled."
+    }
+  ],
+  "minimal_overlay": [
+    {
+      "feature": "Cockpit side panel",
+      "path": "client/src/components/Chat/Presentation.tsx",
+      "observed_blob_sha": "46a176099fa1e6ae1afae709c559a42a19c719fa",
+      "mode": "FEATURE_FLAGGED_SHARED_PANEL"
+    }
+  ],
+  "conditional": [
+    {
+      "feature": "PWA BackgroundMutationFence",
+      "state": "NO_NATIVE_PWA_SURFACE_CONFIRMED",
+      "rule": "Do not add background mutation replay."
+    }
+  ]
+}
