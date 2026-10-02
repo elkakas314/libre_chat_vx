@@ -1,20 +1,16 @@
 {
   "schema": "libre-chat-vx.current.v1",
-  "status": "NOSTROMO_SOURCE_IMPLEMENTED_TARGET_PARITY_ALIGNED",
+  "status": "NOSTROMO_NATIVE_BINDING_SOURCE_COMPLETE",
   "repository": "elkakas314/libre_chat_vx",
   "upstream_commit": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
   "requirements_mapped": 120,
-  "source_idea_occurrences_indexed": 208,
   "source_unique_idea_ids": 112,
-  "function_ids_mapped": 25,
-  "flow_ids_mapped": 19,
-  "auto_ids_mapped": 16,
-  "data_ids_mapped": 4,
-  "ui_all_gates_mapped": 11,
-  "u_family_mapped": "U0_U23",
   "missing_identifiers": 0,
   "nostromo_ui_source": "IMPLEMENTED",
   "interactive_artifacts_governed": "IMPLEMENTED_SOURCE",
+  "native_surface_map": "IMPLEMENTED_SOURCE",
+  "deployment_skills": 3,
+  "agent_plugin_skeleton": "READ_ONLY",
   "manojos3_alignment_source": "134_CAPABILITIES_TO_BOUNDED_LENSES",
   "vx13_alignment_source": "TARGET_PARITY_DESIGN_ONLY",
   "official_reuse_catalog": "CURRENT",
@@ -28,6 +24,5 @@
     "vx13": "DESIGN_CONSOLIDATION_UNCONFIGURED",
     "manojos3": "PREPARED_UNCONFIGURED",
     "oraculo": "ADVISORY_VIA_MANOJOS3_PREFERRED"
-  },
-  "next_action": "REVIEW_SOURCE_THEN_BIND_NATIVE_LIBRECHAT_SURFACES_WITHOUT_LOCAL_MUTATION"
+  }
 }

@@ -1,0 +1,55 @@
+version: 1.3.17
+
+interface:
+  modelSelect: true
+  parameters: true
+  presets: true
+  agents: true
+  endpointsMenu: true
+
+endpoints:
+  agents:
+    capabilities:
+      - deferred_tools
+      - file_search
+      - web_search
+      - artifacts
+      - subagents
+      - actions
+      - context
+      - skills
+      - memory
+      - ask_user_question
+      - tools
+      - chain
+      - ocr
+      # execute_code / programmatic_tools intentionally omitted until
+      # Code Interpreter is separately admitted and governed.
+
+modelSpecs:
+  enforce: false
+  prioritize: true
+  list:
+    - name: vx13-nostromo
+      label: VX13 · Nostromo
+      artifacts: custom
+      preset:
+        endpoint: openAI
+        model: vx13-language
+        greeting: "Cabina VX13. Conversación primero; evidencia antes de afirmar."
+        promptPrefix: |
+          Eres la voz conversacional de VX13. La UI no concede autoridad.
+          Todo efecto material pertenece a Madre y su cadena gobernada.
+    - name: manojos3-nostromo
+      label: MANOJOS3 · Nostromo
+      artifacts: custom
+      preset:
+        endpoint: openAI
+        model: manojos3-language
+        greeting: "Cabina MANOJOS3. Runtime y evidencia separados de la interfaz."
+        promptPrefix: |
+          Eres la voz conversacional de MANOJOS3. La UI no concede autoridad.
+          Policy/Kernel/Adapter/Verifier/Receipt siguen siendo soberanos.
+
+# mcpServers are deployment-specific and intentionally omitted here.
+# Use MCP Settings or deployment config once a real governed binding exists.
