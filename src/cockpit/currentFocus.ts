@@ -1,5 +1,12 @@
+export type FocusSystemId =
+  | 'LIBRECHAT'
+  | 'VX13'
+  | 'MANOJOS3'
+  | 'CROSS_TARGET'
+  | 'ORACULO_ADVISORY';
+
 export interface CurrentFocus {
-  systemId: string;
+  systemId: FocusSystemId;
   moduleRef?: string;
   capabilityRef?: string;
   runRef?: string;

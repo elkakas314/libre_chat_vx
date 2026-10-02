@@ -1,14 +1,19 @@
 import React from 'react';
 import type { TargetParityTruth } from '../adapters/targetParity';
+import type { TargetScope } from '../cockpit/systemTarget';
 import { CONTROL_SPECS, controlIntent, type ControlIntent } from '../cockpit/controlDeck';
 
 export function ControlDeckView({
+  scope,
   target,
-  authorityRef,
+  authorizationRef,
+  capabilityRef,
   onIntent,
 }: {
-  target: TargetParityTruth;
-  authorityRef?: string;
+  scope: TargetScope;
+  target?: TargetParityTruth;
+  authorizationRef?: string;
+  capabilityRef?: string;
   onIntent?: (intent: ControlIntent) => void;
 }) {
   return (
@@ -18,12 +23,13 @@ export function ControlDeckView({
         <fieldset key={klass}>
           <legend>{klass}</legend>
           {CONTROL_SPECS.filter((spec) => spec.class === klass).map((spec) => {
-            const intent = controlIntent(spec, target, authorityRef);
+            const intent = controlIntent(spec, scope, target, authorizationRef, capabilityRef);
             return (
               <button
                 key={spec.id}
                 type="button"
                 disabled={!intent.canPrepare}
+                aria-description={intent.blockers.join(',')}
                 onClick={() => onIntent?.(intent)}
               >
                 {spec.id}

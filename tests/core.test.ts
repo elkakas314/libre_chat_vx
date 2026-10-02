@@ -2,7 +2,11 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import { resolveFocus } from '../src/cockpit/currentFocus';
-import { effectiveReadTarget, clearOneTurnOverride } from '../src/cockpit/systemTarget';
+import {
+  effectiveReadTarget,
+  clearOneTurnOverride,
+  resolvedMutationTarget,
+} from '../src/cockpit/systemTarget';
 import { resolveUiDegradation } from '../src/cockpit/uiDegradation';
 import { canCoalesceAttention } from '../src/cockpit/attention';
 import { mayReplayInBackground } from '../src/recovery/backgroundMutationFence';
@@ -28,10 +32,16 @@ test('ambiguous focus requires input', () => {
   assert.equal(result.status, 'NEEDS_INPUT');
 });
 
-test('one-turn target override does not mutate primary target', () => {
-  const selection = { primaryTarget: 'AUTO' as const, oneTurnReadOverride: 'MANOJOS3' as const };
+test('one-turn read override does not mutate primary scope', () => {
+  const selection = { primaryScope: 'AUTO' as const, oneTurnReadOverride: 'MANOJOS3' as const };
   assert.equal(effectiveReadTarget(selection), 'MANOJOS3');
-  assert.deepEqual(clearOneTurnOverride(selection), { primaryTarget: 'AUTO' });
+  assert.deepEqual(clearOneTurnOverride(selection), { primaryScope: 'AUTO' });
+});
+
+test('AUTO and BOTH are never mutation targets', () => {
+  assert.equal(resolvedMutationTarget('AUTO'), null);
+  assert.equal(resolvedMutationTarget('BOTH'), null);
+  assert.equal(resolvedMutationTarget('VX13'), 'VX13');
 });
 
 test('stale UI degrades to readonly', () => {

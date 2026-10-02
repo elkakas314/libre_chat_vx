@@ -6,8 +6,9 @@ export function TargetRunView({ run }: { run: TargetRunProjection }) {
   const executed = executedRunStages(run);
   return (
     <section aria-label="Target run" data-testid="vx-target-run">
-      <h2>{run.target.targetId} Run</h2>
+      <h2>{run.targetId} Run</h2>
       <p>run:{run.runRef ?? 'NO_RUN'}</p>
+      <p>workState:{run.state}</p>
       <p>materialVerified:{String(runClaimsMaterialCompletion(run))}</p>
       <ol>
         {executed.map((stage) => (

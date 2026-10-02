@@ -4,79 +4,106 @@ import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 
 import {
-  MANOJOS3_PARITY_SOURCE,
-  VX13_PARITY_SOURCE,
+  MANOJOS3_LIBRECHAT_INTEGRATION,
+  MANOJOS3_PARITY_DESCRIPTOR,
+  VX13_LIBRECHAT_INTEGRATION,
+  VX13_PARITY_DESCRIPTOR,
   parityGuaranteesAligned,
   reconcileTargetParity,
 } from '../src/adapters/targetParity';
 import { TargetParityView } from '../src/ui/TargetParityView';
 
-test('VX13 and MANOJOS3 share the same external safety guarantees', () => {
+test('VX13 and MANOJOS3 share external safety guarantees', () => {
   assert.equal(
-    parityGuaranteesAligned(MANOJOS3_PARITY_SOURCE, VX13_PARITY_SOURCE),
+    parityGuaranteesAligned(MANOJOS3_PARITY_DESCRIPTOR, VX13_PARITY_DESCRIPTOR),
     true,
   );
 });
 
-test('authority owners remain distinct', () => {
-  assert.equal(MANOJOS3_PARITY_SOURCE.authorityOwner, 'MANOJOS3_POLICY_KERNEL');
-  assert.equal(VX13_PARITY_SOURCE.authorityOwner, 'VX13_MADRE');
-});
-
-test('VX13 cannot become material-ready from design/source only', () => {
-  const truth = reconcileTargetParity(VX13_PARITY_SOURCE, {
-    targetId: 'VX13',
-    connected: true,
-    readiness: 'READY',
-    sourceRevision: 'same',
-    liveRevision: 'same',
-    capabilityCount: 10,
-    observedAt: '2026-10-02T00:00:00Z',
-    evidenceRefs: ['probe'],
+test('policy, execution and verification authorities remain distinct', () => {
+  assert.deepEqual(MANOJOS3_PARITY_DESCRIPTOR.authority, {
+    policyAuthority: 'MANOJOS3_POLICY',
+    executionAuthority: 'MANOJOS3_KERNEL',
+    verificationAuthority: 'MANOJOS3_VERIFIER',
   });
-  assert.equal(truth.materialReady, false);
-  assert.equal(truth.source.bindingState, 'UNCONFIGURED');
-});
-
-test('MANOJOS3 LibreChat binding remains fail-closed while prepared-unconfigured', () => {
-  const truth = reconcileTargetParity(MANOJOS3_PARITY_SOURCE, {
-    targetId: 'MANOJOS3',
-    connected: true,
-    readiness: 'READY',
-    sourceRevision: 'same',
-    liveRevision: 'same',
-    capabilityCount: 133,
-    observedAt: '2026-10-02T00:00:00Z',
-    evidenceRefs: ['live-self'],
+  assert.deepEqual(VX13_PARITY_DESCRIPTOR.authority, {
+    policyAuthority: 'VX13_MADRE',
+    executionAuthority: 'VX13_SPAWNER_HIJA',
+    verificationAuthority: 'VX13_MADRE',
   });
-  assert.equal(truth.materialReady, false);
-  assert.equal(truth.source.bindingState, 'PREPARED_UNCONFIGURED');
 });
 
-test('source/live revision drift prevents material readiness', () => {
-  const source = { ...MANOJOS3_PARITY_SOURCE, bindingState: 'BOUND_GOVERNED' as const };
-  const truth = reconcileTargetParity(source, {
-    targetId: 'MANOJOS3',
-    connected: true,
-    readiness: 'READY',
-    sourceRevision: 'a',
-    liveRevision: 'b',
-    observedAt: '2026-10-02T00:00:00Z',
-    evidenceRefs: ['readback'],
-  });
-  assert.equal(truth.sourceMatchesLive, false);
-  assert.equal(truth.materialReady, false);
+test('VX13 source design cannot imply live path readiness', () => {
+  const truth = reconcileTargetParity(
+    VX13_PARITY_DESCRIPTOR,
+    VX13_LIBRECHAT_INTEGRATION,
+    {
+      targetId: 'VX13',
+      connection: 'CONNECTED',
+      readiness: 'READY',
+      sourceRevision: 'same',
+      liveRevision: 'same',
+      capabilityCount: 10,
+      observedAt: '2026-10-03T00:00:00Z',
+      evidenceRefs: ['probe'],
+    },
+  );
+  assert.equal(truth.governedReadPathReady, false);
+  assert.equal(truth.governedMutationPathReady, false);
+  assert.equal(truth.integration.bindingState, 'UNCONFIGURED');
 });
 
-test('parity view displays source/binding/runtime separately', () => {
+test('MANOJOS3 prepared-unconfigured binding remains fail-closed', () => {
+  const truth = reconcileTargetParity(
+    MANOJOS3_PARITY_DESCRIPTOR,
+    MANOJOS3_LIBRECHAT_INTEGRATION,
+    {
+      targetId: 'MANOJOS3',
+      connection: 'CONNECTED',
+      readiness: 'READY',
+      sourceRevision: 'same',
+      liveRevision: 'same',
+      capabilityCount: 134,
+      observedAt: '2026-10-03T00:00:00Z',
+      evidenceRefs: ['live-self'],
+    },
+  );
+  assert.equal(truth.governedReadPathReady, false);
+  assert.equal(truth.governedMutationPathReady, false);
+  assert.equal(truth.integration.bindingState, 'PREPARED_UNCONFIGURED');
+});
+
+test('source/live revision drift blocks both governed paths', () => {
+  const integration = {
+    adapterImplementation: 'INSTALLED' as const,
+    bindingState: 'BOUND_GOVERNED' as const,
+  };
+  const truth = reconcileTargetParity(
+    MANOJOS3_PARITY_DESCRIPTOR,
+    integration,
+    {
+      targetId: 'MANOJOS3',
+      connection: 'CONNECTED',
+      readiness: 'READY',
+      sourceRevision: 'a',
+      liveRevision: 'b',
+      observedAt: '2026-10-03T00:00:00Z',
+      evidenceRefs: ['readback'],
+    },
+  );
+  assert.equal(truth.sourceAlignment, 'DRIFT');
+  assert.equal(truth.governedReadPathReady, false);
+  assert.equal(truth.governedMutationPathReady, false);
+});
+
+test('parity view keeps source, integration and observation separate', () => {
   const html = renderToStaticMarkup(React.createElement(TargetParityView, {
     targets: [
-      reconcileTargetParity(VX13_PARITY_SOURCE),
-      reconcileTargetParity(MANOJOS3_PARITY_SOURCE),
+      reconcileTargetParity(VX13_PARITY_DESCRIPTOR, VX13_LIBRECHAT_INTEGRATION),
+      reconcileTargetParity(MANOJOS3_PARITY_DESCRIPTOR, MANOJOS3_LIBRECHAT_INTEGRATION),
     ],
   }));
-  assert.match(html, /VX13/);
-  assert.match(html, /MANOJOS3/);
   assert.match(html, /DESIGN_CONSOLIDATION/);
   assert.match(html, /PREPARED_UNCONFIGURED/);
+  assert.match(html, /connection:UNKNOWN/);
 });

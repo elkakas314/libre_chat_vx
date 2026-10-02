@@ -7,13 +7,14 @@ export function MinimalTruthView({ targets }: { targets: TargetParityTruth[] }) 
       <h2>Verdad mínima</h2>
       <ul>
         {targets.map((target) => (
-          <li key={target.source.targetId}>
-            <strong>{target.source.targetId}</strong>
-            <span> binding:{target.source.bindingState}</span>
-            <span> runtime:{target.observation?.connected ? 'CONNECTED' : target.source.runtimeState}</span>
+          <li key={target.descriptor.targetId}>
+            <strong>{target.descriptor.targetId}</strong>
+            <span> binding:{target.integration.bindingState}</span>
+            <span> connection:{target.observation?.connection ?? 'UNKNOWN'}</span>
             <span> readiness:{target.observation?.readiness ?? 'UNKNOWN'}</span>
-            <span> source/live:{String(target.sourceMatchesLive)}</span>
-            <span> material:{String(target.materialReady)}</span>
+            <span> source/live:{target.sourceAlignment}</span>
+            <span> readPath:{String(target.governedReadPathReady)}</span>
+            <span> mutationPath:{String(target.governedMutationPathReady)}</span>
           </li>
         ))}
       </ul>

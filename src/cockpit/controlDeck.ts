@@ -1,4 +1,6 @@
 import type { TargetParityTruth } from '../adapters/targetParity';
+import type { ConcreteTargetId, TargetScope } from './systemTarget';
+import { resolvedMutationTarget } from './systemTarget';
 
 export type ControlClass = 'GREEN' | 'YELLOW' | 'RED';
 
@@ -41,28 +43,45 @@ export const CONTROL_SPECS: readonly ControlSpec[] = [
   { id: 'RESTART_MODULE', class: 'RED', directEffect: false },
 ];
 
+export type ControlBlocker =
+  | 'CONCRETE_TARGET_REQUIRED'
+  | 'GOVERNED_MUTATION_PATH_NOT_READY'
+  | 'CAPABILITY_REQUIRED'
+  | 'TARGET_AUTHORIZATION_REQUIRED';
+
 export interface ControlIntent {
   controlId: ControlId;
-  targetId: string;
+  scope: TargetScope;
+  resolvedTargetId?: ConcreteTargetId;
   class: ControlClass;
   uiEffect: 'READ_ONLY' | 'PREPARE' | 'PREPARE_MATERIAL_REQUEST';
   canPrepare: boolean;
+  canSubmit: boolean;
+  blockers: ControlBlocker[];
   directEffect: false;
-  authorityRef?: string;
+  capabilityRef?: string;
+  authorizationRef?: string;
 }
 
 export function controlIntent(
   spec: ControlSpec,
-  target: TargetParityTruth,
-  authorityRef?: string,
+  scope: TargetScope,
+  target?: TargetParityTruth,
+  authorizationRef?: string,
+  capabilityRef?: string,
 ): ControlIntent {
+  const resolvedTargetId = resolvedMutationTarget(scope) ?? undefined;
+
   if (spec.class === 'GREEN') {
     return {
       controlId: spec.id,
-      targetId: target.source.targetId,
+      scope,
+      resolvedTargetId,
       class: spec.class,
       uiEffect: 'READ_ONLY',
       canPrepare: true,
+      canSubmit: false,
+      blockers: [],
       directEffect: false,
     };
   }
@@ -70,21 +89,34 @@ export function controlIntent(
   if (spec.class === 'YELLOW') {
     return {
       controlId: spec.id,
-      targetId: target.source.targetId,
+      scope,
+      resolvedTargetId,
       class: spec.class,
       uiEffect: 'PREPARE',
       canPrepare: true,
+      canSubmit: false,
+      blockers: [],
       directEffect: false,
     };
   }
 
+  const blockers: ControlBlocker[] = [];
+  if (!resolvedTargetId) blockers.push('CONCRETE_TARGET_REQUIRED');
+  if (!target?.governedMutationPathReady) blockers.push('GOVERNED_MUTATION_PATH_NOT_READY');
+  if (!capabilityRef) blockers.push('CAPABILITY_REQUIRED');
+  if (!authorizationRef) blockers.push('TARGET_AUTHORIZATION_REQUIRED');
+
   return {
     controlId: spec.id,
-    targetId: target.source.targetId,
+    scope,
+    resolvedTargetId,
     class: spec.class,
     uiEffect: 'PREPARE_MATERIAL_REQUEST',
-    canPrepare: target.materialReady && Boolean(authorityRef),
+    canPrepare: Boolean(resolvedTargetId),
+    canSubmit: blockers.length === 0,
+    blockers,
     directEffect: false,
-    authorityRef,
+    capabilityRef,
+    authorizationRef,
   };
 }

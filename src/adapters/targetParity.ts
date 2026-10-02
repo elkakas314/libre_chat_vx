@@ -1,9 +1,18 @@
-export type TargetParityId = 'VX13' | 'MANOJOS3';
+import type { ConcreteTargetId } from '../cockpit/systemTarget';
+import type { ConnectionState, ReadinessState } from '../cockpit/truthLanes';
+
+export type TargetParityId = ConcreteTargetId;
 
 export type SourceMaturity =
   | 'DESIGN_CONSOLIDATION'
   | 'IMPLEMENTED_SOURCE'
   | 'FROZEN_SOURCE';
+
+export type AdapterImplementationState =
+  | 'CONTRACT_ONLY'
+  | 'SOURCE_IMPLEMENTED'
+  | 'SOURCE_TESTED'
+  | 'INSTALLED';
 
 export type BindingState =
   | 'UNCONFIGURED'
@@ -11,22 +20,18 @@ export type BindingState =
   | 'BOUND_READONLY'
   | 'BOUND_GOVERNED';
 
-export type RuntimeState =
-  | 'NO_VERIFICADO'
-  | 'OFFLINE'
-  | 'DEGRADED'
-  | 'LIVE';
+export type SourceAlignment = 'MATCH' | 'DRIFT' | 'UNKNOWN';
 
-export type AuthorityOwner =
-  | 'VX13_MADRE'
-  | 'MANOJOS3_POLICY_KERNEL';
+export interface TargetAuthorityModel {
+  policyAuthority: 'VX13_MADRE' | 'MANOJOS3_POLICY';
+  executionAuthority: 'VX13_SPAWNER_HIJA' | 'MANOJOS3_KERNEL';
+  verificationAuthority: 'VX13_MADRE' | 'MANOJOS3_VERIFIER';
+}
 
-export interface TargetParityContract {
+export interface TargetParityDescriptor {
   targetId: TargetParityId;
   sourceMaturity: SourceMaturity;
-  bindingState: BindingState;
-  runtimeState: RuntimeState;
-  authorityOwner: AuthorityOwner;
+  authority: TargetAuthorityModel;
   ingress: readonly string[];
   executionChain: readonly string[];
   requiredReadSurfaces: readonly string[];
@@ -39,6 +44,31 @@ export interface TargetParityContract {
   uiAuthority: false;
 }
 
+export interface TargetIntegrationState {
+  adapterImplementation: AdapterImplementationState;
+  bindingState: BindingState;
+}
+
+export interface TargetRuntimeObservation {
+  targetId: TargetParityId;
+  connection: ConnectionState;
+  readiness: ReadinessState;
+  sourceRevision?: string;
+  liveRevision?: string;
+  capabilityCount?: number;
+  observedAt: string;
+  evidenceRefs: string[];
+}
+
+export interface TargetParityTruth {
+  descriptor: TargetParityDescriptor;
+  integration: TargetIntegrationState;
+  observation?: TargetRuntimeObservation;
+  sourceAlignment: SourceAlignment;
+  governedReadPathReady: boolean;
+  governedMutationPathReady: boolean;
+}
+
 export const COMMON_TARGET_GUARANTEES = {
   capabilityDiscovery: true,
   sourceVsLiveSeparated: true,
@@ -49,12 +79,14 @@ export const COMMON_TARGET_GUARANTEES = {
   uiAuthority: false,
 } as const;
 
-export const MANOJOS3_PARITY_SOURCE: TargetParityContract = {
+export const MANOJOS3_PARITY_DESCRIPTOR: TargetParityDescriptor = {
   targetId: 'MANOJOS3',
   sourceMaturity: 'IMPLEMENTED_SOURCE',
-  bindingState: 'PREPARED_UNCONFIGURED',
-  runtimeState: 'NO_VERIFICADO',
-  authorityOwner: 'MANOJOS3_POLICY_KERNEL',
+  authority: {
+    policyAuthority: 'MANOJOS3_POLICY',
+    executionAuthority: 'MANOJOS3_KERNEL',
+    verificationAuthority: 'MANOJOS3_VERIFIER',
+  },
   ingress: ['MCP_OR_CONTROL_PLANE'],
   executionChain: [
     'GOVERNOR',
@@ -65,22 +97,18 @@ export const MANOJOS3_PARITY_SOURCE: TargetParityContract = {
     'VERIFIER',
     'RECEIPT',
   ],
-  requiredReadSurfaces: [
-    'health',
-    'readiness',
-    'self',
-    'capabilities',
-    'skills',
-  ],
+  requiredReadSurfaces: ['health', 'readiness', 'self', 'capabilities', 'skills'],
   ...COMMON_TARGET_GUARANTEES,
 };
 
-export const VX13_PARITY_SOURCE: TargetParityContract = {
+export const VX13_PARITY_DESCRIPTOR: TargetParityDescriptor = {
   targetId: 'VX13',
   sourceMaturity: 'DESIGN_CONSOLIDATION',
-  bindingState: 'UNCONFIGURED',
-  runtimeState: 'NO_VERIFICADO',
-  authorityOwner: 'VX13_MADRE',
+  authority: {
+    policyAuthority: 'VX13_MADRE',
+    executionAuthority: 'VX13_SPAWNER_HIJA',
+    verificationAuthority: 'VX13_MADRE',
+  },
   ingress: ['TENTACULO_LINK'],
   executionChain: [
     'SWITCH',
@@ -91,65 +119,70 @@ export const VX13_PARITY_SOURCE: TargetParityContract = {
     'MADRE_VERIFICATION',
     'RECEIPT_PROJECTION',
   ],
-  requiredReadSurfaces: [
-    'health',
-    'readiness',
-    'self',
-    'capabilities',
-  ],
+  requiredReadSurfaces: ['health', 'readiness', 'self', 'capabilities'],
   ...COMMON_TARGET_GUARANTEES,
 };
 
-export interface TargetRuntimeObservation {
-  targetId: TargetParityId;
-  connected: boolean;
-  readiness: 'READY' | 'NOT_READY' | 'UNCONFIGURED' | 'UNKNOWN';
-  sourceRevision?: string;
-  liveRevision?: string;
-  capabilityCount?: number;
-  observedAt: string;
-  evidenceRefs: string[];
-}
+export const MANOJOS3_LIBRECHAT_INTEGRATION: TargetIntegrationState = {
+  adapterImplementation: 'CONTRACT_ONLY',
+  bindingState: 'PREPARED_UNCONFIGURED',
+};
 
-export interface TargetParityTruth {
-  source: TargetParityContract;
-  observation?: TargetRuntimeObservation;
-  sourceMatchesLive: boolean | null;
-  materialReady: boolean;
+export const VX13_LIBRECHAT_INTEGRATION: TargetIntegrationState = {
+  adapterImplementation: 'CONTRACT_ONLY',
+  bindingState: 'UNCONFIGURED',
+};
+
+/** @deprecated Static descriptor only; it is not live state. */
+export const MANOJOS3_PARITY_SOURCE = MANOJOS3_PARITY_DESCRIPTOR;
+/** @deprecated Static descriptor only; it is not live state. */
+export const VX13_PARITY_SOURCE = VX13_PARITY_DESCRIPTOR;
+
+export function sourceAlignment(observation?: TargetRuntimeObservation): SourceAlignment {
+  if (!observation?.sourceRevision || !observation.liveRevision) return 'UNKNOWN';
+  return observation.sourceRevision === observation.liveRevision ? 'MATCH' : 'DRIFT';
 }
 
 export function reconcileTargetParity(
-  source: TargetParityContract,
+  descriptor: TargetParityDescriptor,
+  integration: TargetIntegrationState,
   observation?: TargetRuntimeObservation,
 ): TargetParityTruth {
-  if (!observation) {
-    return {
-      source,
-      sourceMatchesLive: null,
-      materialReady: false,
-    };
-  }
+  const alignment = sourceAlignment(observation);
+  const readBinding =
+    integration.bindingState === 'BOUND_READONLY' ||
+    integration.bindingState === 'BOUND_GOVERNED';
 
-  const sourceMatchesLive =
-    Boolean(observation.sourceRevision) &&
-    Boolean(observation.liveRevision) &&
-    observation.sourceRevision === observation.liveRevision;
+  const governedReadPathReady = Boolean(
+    observation &&
+    readBinding &&
+    observation.connection !== 'OFFLINE' &&
+    observation.connection !== 'UNKNOWN' &&
+    observation.readiness === 'READY' &&
+    alignment === 'MATCH',
+  );
+
+  const governedMutationPathReady = Boolean(
+    observation &&
+    integration.bindingState === 'BOUND_GOVERNED' &&
+    observation.connection === 'CONNECTED' &&
+    observation.readiness === 'READY' &&
+    alignment === 'MATCH',
+  );
 
   return {
-    source,
+    descriptor,
+    integration,
     observation,
-    sourceMatchesLive,
-    materialReady:
-      observation.connected &&
-      observation.readiness === 'READY' &&
-      source.bindingState === 'BOUND_GOVERNED' &&
-      sourceMatchesLive,
+    sourceAlignment: alignment,
+    governedReadPathReady,
+    governedMutationPathReady,
   };
 }
 
 export function parityGuaranteesAligned(
-  left: TargetParityContract,
-  right: TargetParityContract,
+  left: TargetParityDescriptor,
+  right: TargetParityDescriptor,
 ): boolean {
   return (
     left.capabilityDiscovery === right.capabilityDiscovery &&

@@ -1,5 +1,5 @@
 import React from 'react';
-import type { SystemTarget } from '../cockpit/systemTarget';
+import type { TargetScope } from '../cockpit/systemTarget';
 import type { CurrentFocus } from '../cockpit/currentFocus';
 import type { TentacleHudModel } from '../cockpit/tentacleHud';
 import type { TargetParityTruth } from '../adapters/targetParity';
@@ -14,7 +14,7 @@ import type { BrowserView } from '../browser/browserView';
 import type { BuildPanelItem } from '../build/buildPanel';
 import type { CockpitWindow } from '../cockpit/windowRouter';
 import type { BackgroundTaskProjection } from './BackgroundTasksView';
-import { TargetNavigator } from './TargetNavigator';
+import { TargetScopeNavigator } from './TargetNavigator';
 import { TentacleHud } from './TentacleHud';
 import { MinimalTruthView } from './MinimalTruthView';
 import { ContextInspectorView } from './ContextInspectorView';
@@ -31,11 +31,11 @@ import { BackgroundTasksView } from './BackgroundTasksView';
 import { ControlDeckView } from './ControlDeckView';
 
 export interface NostromoCockpitProps {
-  target: SystemTarget;
+  scope: TargetScope;
   hud: TentacleHudModel;
   focus?: CurrentFocus;
   targetTruth: TargetParityTruth[];
-  activeTruth: TargetParityTruth;
+  activeTruth?: TargetParityTruth;
   windows: CockpitWindow[];
   decisions?: DecisionCard[];
   artifacts?: DockItem[];
@@ -47,15 +47,16 @@ export interface NostromoCockpitProps {
   browser?: BrowserView;
   builds?: BuildPanelItem[];
   backgroundTasks?: BackgroundTaskProjection[];
-  authorityRef?: string;
-  onTargetChange?: (target: SystemTarget) => void;
+  authorizationRef?: string;
+  capabilityRef?: string;
+  onScopeChange?: (scope: TargetScope) => void;
 }
 
 export function NostromoCockpit(props: NostromoCockpitProps) {
   const has = (window: CockpitWindow) => props.windows.includes(window);
   return (
     <div aria-label="Nostromo cockpit" data-testid="vx-nostromo-cockpit">
-      <TargetNavigator target={props.target} onChange={props.onTargetChange} />
+      <TargetScopeNavigator scope={props.scope} onChange={props.onScopeChange} />
       <TentacleHud model={props.hud} />
       {has('MINIMAL_TRUTH') ? <MinimalTruthView targets={props.targetTruth} /> : null}
       {has('CONTEXT_INSPECTOR') ? <ContextInspectorView focus={props.focus} /> : null}
@@ -69,7 +70,12 @@ export function NostromoCockpit(props: NostromoCockpitProps) {
       {has('BROWSER') ? <BrowserPanelView view={props.browser} /> : null}
       {has('BUILD') ? <BuildPanelView items={props.builds ?? []} /> : null}
       {has('BACKGROUND_TASKS') ? <BackgroundTasksView tasks={props.backgroundTasks ?? []} /> : null}
-      <ControlDeckView target={props.activeTruth} authorityRef={props.authorityRef} />
+      <ControlDeckView
+        scope={props.scope}
+        target={props.activeTruth}
+        authorizationRef={props.authorizationRef}
+        capabilityRef={props.capabilityRef}
+      />
     </div>
   );
 }

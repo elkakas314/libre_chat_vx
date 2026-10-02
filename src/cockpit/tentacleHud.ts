@@ -1,10 +1,11 @@
-import type { SystemTarget } from './systemTarget';
+import type { ConcreteTargetId, TargetScope } from './systemTarget';
 import type { TruthLanes } from './truthLanes';
 import type { TentaclePresentationState } from './tentaclePresentation';
 import type { CockpitWindow } from './windowRouter';
 
 export interface TentacleHudModel {
-  target: SystemTarget;
+  scope: TargetScope;
+  focusedTarget?: ConcreteTargetId;
   presentation: TentaclePresentationState;
   focusLabel: string;
   windows: CockpitWindow[];
@@ -13,18 +14,29 @@ export interface TentacleHudModel {
 }
 
 export function deriveTentaclePresentation(lanes?: TruthLanes): TentaclePresentationState {
-  if (!lanes) return 'UNKNOWN';
+  if (!lanes || lanes.connection === 'UNKNOWN') return 'UNKNOWN';
   if (lanes.connection === 'OFFLINE' || lanes.evidence === 'CONFLICT') return 'BLOCKED';
   if (lanes.work === 'FAILED' || lanes.work === 'UNKNOWN_OUTCOME') return 'ATTENTION';
   if (lanes.work === 'RUNNING' || lanes.work === 'QUEUED' || lanes.work === 'WAITING') return 'WORKING';
   if (lanes.work === 'SUCCEEDED' && lanes.evidence === 'FRESH') return 'DONE';
-  if (lanes.evidence === 'STALE' || lanes.evidence === 'MISSING') return 'OBSERVING';
+  if (
+    lanes.work === 'SUCCEEDED' ||
+    lanes.evidence === 'STALE' ||
+    lanes.evidence === 'MISSING'
+  ) return 'OBSERVING';
   return 'IDLE';
 }
 
-export function moveTentacleHud(
+export function moveTentacleHudScope(
   current: TentacleHudModel,
-  target: SystemTarget,
+  scope: TargetScope,
 ): TentacleHudModel {
-  return { ...current, target };
+  return {
+    ...current,
+    scope,
+    focusedTarget: scope === 'VX13' || scope === 'MANOJOS3' ? scope : undefined,
+  };
 }
+
+/** Compatibility alias: this changes visual/read scope, not target authority. */
+export const moveTentacleHud = moveTentacleHudScope;

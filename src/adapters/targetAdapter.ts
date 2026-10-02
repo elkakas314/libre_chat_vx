@@ -1,9 +1,13 @@
 import type { CrossTargetTruthEnvelope, TargetCapabilityProjection } from '../core/types';
+import type { ConcreteTargetId } from '../cockpit/systemTarget';
 
-export type TargetId = 'VX13' | 'MANOJOS3' | 'ORACULO';
+export type TargetId = ConcreteTargetId;
+export type AdvisoryProviderId = 'ORACULO';
+export type EndpointId = TargetId | AdvisoryProviderId;
 
 export interface AdapterIdentity {
-  targetId: TargetId;
+  endpointId: EndpointId;
+  endpointKind: 'TARGET' | 'ADVISORY';
   adapterId: string;
   authority: false;
   sourceRevision?: string;
@@ -16,7 +20,7 @@ export interface ReadRequest {
 }
 
 export interface ReadResult<T = unknown> {
-  targetId: TargetId;
+  endpointId: EndpointId;
   status: 'OK' | 'STALE' | 'OFFLINE' | 'UNAVAILABLE' | 'ERROR';
   value?: T;
   truth: CrossTargetTruthEnvelope;
@@ -24,23 +28,27 @@ export interface ReadResult<T = unknown> {
 
 export interface MutationIntent {
   operationId: string;
+  targetId: TargetId;
+  capabilityRef: string;
   operation: string;
   args?: Record<string, unknown>;
   expectedState?: Record<string, unknown>;
-  authorityRef?: string;
+  authorizationRef?: string;
   idempotencyKey?: string;
 }
 
 export interface MutationSubmission {
   operationId: string;
   status: 'SUBMITTED' | 'AUTH_REQUIRED' | 'REJECTED' | 'UNAVAILABLE';
-  receiptRef?: string;
+  submissionRef?: string;
 }
 
 export interface VerificationResult {
   operationId: string;
-  status: 'VERIFIED' | 'FAILED' | 'UNKNOWN_OUTCOME';
+  status: 'VERIFIED' | 'FAILED' | 'UNKNOWN_OUTCOME' | 'NOT_RUN' | 'UNAVAILABLE';
+  readbackRefs: string[];
   evidenceRefs: string[];
+  receiptRef?: string;
 }
 
 export interface TargetAdapter {
@@ -74,6 +82,11 @@ export abstract class ReadOnlyTargetAdapter implements TargetAdapter {
   }
 
   async verifyMutation(operationId: string): Promise<VerificationResult> {
-    return { operationId, status: 'FAILED', evidenceRefs: [] };
+    return {
+      operationId,
+      status: 'UNAVAILABLE',
+      readbackRefs: [],
+      evidenceRefs: [],
+    };
   }
 }

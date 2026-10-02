@@ -1,5 +1,6 @@
 import {
-  MANOJOS3_PARITY_SOURCE,
+  MANOJOS3_LIBRECHAT_INTEGRATION,
+  MANOJOS3_PARITY_DESCRIPTOR,
   type TargetRuntimeObservation,
   reconcileTargetParity,
 } from './targetParity';
@@ -24,12 +25,14 @@ export interface Manojos3BindingTruth {
   liveRevision?: string;
 }
 
-export function manojos3Parity(
-  observation?: TargetRuntimeObservation,
-) {
-  return reconcileTargetParity(MANOJOS3_PARITY_SOURCE, observation);
+export function manojos3Parity(observation?: TargetRuntimeObservation) {
+  return reconcileTargetParity(
+    MANOJOS3_PARITY_DESCRIPTOR,
+    MANOJOS3_LIBRECHAT_INTEGRATION,
+    observation,
+  );
 }
 
-// AUTH_REQUIRED is target-owned and cannot be satisfied by transport/UI alone.
-// Source evidence: MANOJOS3 exposes LibreChat thread.read R0 / message.send R2
-// only when a real binding exists; the adapter is fail-closed while unconfigured.
+// Governor is admission/orchestration, Policy owns authorization,
+// Kernel owns execution, and Verifier owns material verification.
+// LibreChat owns none of those authorities.

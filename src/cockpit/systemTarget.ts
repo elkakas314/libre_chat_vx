@@ -1,16 +1,32 @@
-export type SystemTarget = 'VX13' | 'MANOJOS3' | 'BOTH' | 'AUTO';
+export type ConcreteTargetId = 'VX13' | 'MANOJOS3';
+export type TargetScope = ConcreteTargetId | 'BOTH' | 'AUTO';
+
+/** @deprecated Use TargetScope. */
+export type SystemTarget = TargetScope;
 
 export interface TargetSelection {
-  primaryTarget: SystemTarget;
-  oneTurnReadOverride?: Exclude<SystemTarget, 'BOTH' | 'AUTO'>;
+  primaryScope: TargetScope;
+  oneTurnReadOverride?: ConcreteTargetId;
 }
 
-export function effectiveReadTarget(selection: TargetSelection) {
-  return selection.oneTurnReadOverride ?? selection.primaryTarget;
+export function isConcreteTarget(scope: TargetScope): scope is ConcreteTargetId {
+  return scope === 'VX13' || scope === 'MANOJOS3';
+}
+
+export function effectiveReadScope(selection: TargetSelection): TargetScope {
+  return selection.oneTurnReadOverride ?? selection.primaryScope;
+}
+
+/** Compatibility name: returns a read scope, not necessarily a concrete target. */
+export const effectiveReadTarget = effectiveReadScope;
+
+export function resolvedMutationTarget(scope: TargetScope): ConcreteTargetId | null {
+  return isConcreteTarget(scope) ? scope : null;
 }
 
 export function clearOneTurnOverride(selection: TargetSelection): TargetSelection {
-  return { primaryTarget: selection.primaryTarget };
+  return { primaryScope: selection.primaryScope };
 }
 
-// A one-turn READ override never mutates primaryTarget or grants authority.
+// BOTH/AUTO are view/read scopes. They are never material mutation targets.
+// A one-turn read override never mutates primaryScope and never grants authority.

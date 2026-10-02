@@ -1,4 +1,4 @@
-import type { TargetParityContract } from '../adapters/targetParity';
+import type { ConcreteTargetId } from './systemTarget';
 
 export interface TargetRunStageObservation {
   stage: string;
@@ -6,10 +6,19 @@ export interface TargetRunStageObservation {
   evidenceRef?: string;
 }
 
+export interface MaterialCompletionProof {
+  readbackRef: string;
+  verificationRef: string;
+  receiptRef: string;
+}
+
 export interface TargetRunProjection {
   runRef?: string;
-  target: TargetParityContract;
+  targetId: ConcreteTargetId;
+  executionChain: readonly string[];
+  state: 'NOT_STARTED' | 'QUEUED' | 'RUNNING' | 'WAITING' | 'SUCCEEDED' | 'FAILED' | 'UNKNOWN_OUTCOME';
   stages: TargetRunStageObservation[];
+  proof?: Partial<MaterialCompletionProof>;
 }
 
 export function executedRunStages(run: TargetRunProjection): TargetRunStageObservation[] {
@@ -17,12 +26,10 @@ export function executedRunStages(run: TargetRunProjection): TargetRunStageObser
 }
 
 export function runClaimsMaterialCompletion(run: TargetRunProjection): boolean {
-  const final = run.stages[run.stages.length - 1];
   return Boolean(
-    final &&
-    final.state === 'SUCCEEDED' &&
-    final.evidenceRef &&
-    run.target.receiptRequiredForEffects &&
-    run.target.verificationRequiredForEffects,
+    run.state === 'SUCCEEDED' &&
+    run.proof?.readbackRef &&
+    run.proof.verificationRef &&
+    run.proof.receiptRef,
   );
 }

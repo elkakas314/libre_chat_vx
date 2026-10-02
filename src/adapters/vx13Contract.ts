@@ -1,5 +1,6 @@
 import {
-  VX13_PARITY_SOURCE,
+  VX13_LIBRECHAT_INTEGRATION,
+  VX13_PARITY_DESCRIPTOR,
   type TargetRuntimeObservation,
   reconcileTargetParity,
 } from './targetParity';
@@ -17,12 +18,15 @@ export const VX13_AUTHORITY_CHAIN = [
   'RECEIPT_PROJECTION',
 ] as const;
 
-export function vx13Parity(
-  observation?: TargetRuntimeObservation,
-) {
-  return reconcileTargetParity(VX13_PARITY_SOURCE, observation);
+export function vx13Parity(observation?: TargetRuntimeObservation) {
+  return reconcileTargetParity(
+    VX13_PARITY_DESCRIPTOR,
+    VX13_LIBRECHAT_INTEGRATION,
+    observation,
+  );
 }
 
-// VX13 is source/design-only in the current remote repository.
-// No live capabilities, mutation lane or material readiness may be inferred
-// until a real Tentaculo Link / Madre runtime contract is observed.
+// Tentáculo HUD != Tentáculo Link.
+// Madre owns policy/authorization and verification.
+// Spawner/hija owns execution.
+// No live state is inferred from source design.

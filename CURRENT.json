@@ -1,19 +1,23 @@
 {
   "schema": "libre-chat-vx.current.v1",
-  "status": "NOSTROMO_NATIVE_BINDING_SOURCE_COMPLETE",
+  "status": "SEMANTIC_MODEL_RECONCILED_SOURCE_ONLY",
   "repository": "elkakas314/libre_chat_vx",
   "upstream_commit": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
   "requirements_mapped": 120,
   "source_unique_idea_ids": 112,
   "missing_identifiers": 0,
-  "nostromo_ui_source": "IMPLEMENTED",
+  "semantic_model": "RECONCILED_V2",
+  "target_scope_model": "AUTO_BOTH_ARE_READ_VIEW_ONLY",
+  "target_ids": ["VX13", "MANOJOS3"],
+  "oraculo_semantics": "ADVISORY_PROVIDER_NOT_PEER_TARGET",
+  "nostromo_semantics": "LIBRECHAT_COCKPIT_SHELL",
+  "tentaculo_hud_semantics": "VISIBLE_PROXY_NO_AUTHORITY",
+  "tentaculo_link_semantics": "VX13_INGRESS",
+  "material_ready_term": "DEPRECATED_FOR_TARGET_STATE",
   "interactive_artifacts_governed": "IMPLEMENTED_SOURCE",
   "native_surface_map": "IMPLEMENTED_SOURCE",
   "deployment_skills": 3,
   "agent_plugin_skeleton": "READ_ONLY",
-  "manojos3_alignment_source": "134_CAPABILITIES_TO_BOUNDED_LENSES",
-  "vx13_alignment_source": "TARGET_PARITY_DESIGN_ONLY",
-  "official_reuse_catalog": "CURRENT",
   "last_material_tested_commit": "94c632762f7afee7d9fa9d0f0c23c80d7494d2d2",
   "last_material_test_result": "26_PASS",
   "current_commit_tests": "NOT_RUN_GITHUB_ONLY",
@@ -22,7 +26,6 @@
   "material_verified": false,
   "targets": {
     "vx13": "DESIGN_CONSOLIDATION_UNCONFIGURED",
-    "manojos3": "PREPARED_UNCONFIGURED",
-    "oraculo": "ADVISORY_VIA_MANOJOS3_PREFERRED"
+    "manojos3": "PREPARED_UNCONFIGURED"
   }
 }

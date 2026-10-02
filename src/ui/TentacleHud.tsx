@@ -5,7 +5,8 @@ export function TentacleHud({ model }: { model: TentacleHudModel }) {
   return (
     <section aria-label="Tentáculo HUD" data-testid="vx-tentacle-hud">
       <h2>Tentáculo</h2>
-      <p>target:{model.target}</p>
+      <p>scope:{model.scope}</p>
+      <p>focusedTarget:{model.focusedTarget ?? 'NONE'}</p>
       <p>state:{model.presentation}</p>
       <p>focus:{model.focusLabel}</p>
       <p>evidenceFresh:{String(model.evidenceFresh)}</p>

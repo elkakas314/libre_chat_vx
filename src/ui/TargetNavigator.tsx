@@ -1,21 +1,21 @@
 import React from 'react';
-import type { SystemTarget } from '../cockpit/systemTarget';
+import type { TargetScope } from '../cockpit/systemTarget';
 
-export function TargetNavigator({
-  target,
+export function TargetScopeNavigator({
+  scope,
   onChange,
 }: {
-  target: SystemTarget;
-  onChange?: (target: SystemTarget) => void;
+  scope: TargetScope;
+  onChange?: (scope: TargetScope) => void;
 }) {
-  const targets: SystemTarget[] = ['AUTO', 'MANOJOS3', 'VX13', 'BOTH'];
+  const scopes: TargetScope[] = ['AUTO', 'MANOJOS3', 'VX13', 'BOTH'];
   return (
-    <nav aria-label="System target" data-testid="vx-target-navigator">
-      {targets.map((candidate) => (
+    <nav aria-label="Target view scope" data-testid="vx-target-navigator">
+      {scopes.map((candidate) => (
         <button
           key={candidate}
           type="button"
-          aria-pressed={target === candidate}
+          aria-pressed={scope === candidate}
           onClick={() => onChange?.(candidate)}
         >
           {candidate}
@@ -24,3 +24,6 @@ export function TargetNavigator({
     </nav>
   );
 }
+
+/** Compatibility export. Semantically this selects view/read scope, not authority. */
+export const TargetNavigator = TargetScopeNavigator;

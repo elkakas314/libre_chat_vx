@@ -1,12 +1,14 @@
 import type { ControlClass } from '../cockpit/controlDeck';
 import type { TargetParityTruth } from '../adapters/targetParity';
+import type { ConcreteTargetId, TargetScope } from '../cockpit/systemTarget';
+import { resolvedMutationTarget } from '../cockpit/systemTarget';
 
 export type InteractiveControlKind =
   | 'BUTTON'
   | 'SLIDER'
   | 'KNOB'
-  | 'DECISION'
-  | 'AUTHORIZATION';
+  | 'DECISION_RESPONSE'
+  | 'AUTHORIZATION_RESPONSE';
 
 export interface InteractiveArtifactControl {
   id: string;
@@ -21,61 +23,69 @@ export interface InteractiveArtifactControl {
 
 export interface ArtifactUiIntent {
   controlId: string;
-  targetId: string;
+  scope: TargetScope;
+  resolvedTargetId?: ConcreteTargetId;
   previewValue?: number;
   uiEffect: 'READ_ONLY' | 'PREVIEW' | 'PREPARE' | 'PREPARE_MATERIAL_REQUEST';
   directEffect: false;
   canPrepare: boolean;
-  authorityRef?: string;
+  canSubmit: boolean;
+  authorizationRef?: string;
+  capabilityRef?: string;
 }
 
 export function artifactPreviewIntent(
   control: InteractiveArtifactControl,
-  target: TargetParityTruth,
+  scope: TargetScope,
   previewValue?: number,
 ): ArtifactUiIntent {
-  if (control.class === 'GREEN') {
-    return {
-      controlId: control.id,
-      targetId: target.source.targetId,
-      previewValue,
-      uiEffect: 'READ_ONLY',
-      directEffect: false,
-      canPrepare: true,
-    };
-  }
-
   return {
     controlId: control.id,
-    targetId: target.source.targetId,
+    scope,
+    resolvedTargetId: resolvedMutationTarget(scope) ?? undefined,
     previewValue,
-    uiEffect: 'PREVIEW',
+    uiEffect: control.class === 'GREEN' ? 'READ_ONLY' : 'PREVIEW',
     directEffect: false,
     canPrepare: true,
+    canSubmit: false,
   };
 }
 
 export function artifactCommitIntent(
   control: InteractiveArtifactControl,
-  target: TargetParityTruth,
-  authorityRef?: string,
+  scope: TargetScope,
+  target?: TargetParityTruth,
+  authorizationRef?: string,
+  capabilityRef?: string,
 ): ArtifactUiIntent {
+  const resolvedTargetId = resolvedMutationTarget(scope) ?? undefined;
+
   if (control.class !== 'RED') {
     return {
       controlId: control.id,
-      targetId: target.source.targetId,
+      scope,
+      resolvedTargetId,
       uiEffect: control.class === 'GREEN' ? 'READ_ONLY' : 'PREPARE',
       directEffect: false,
       canPrepare: true,
+      canSubmit: false,
     };
   }
 
   return {
     controlId: control.id,
-    targetId: target.source.targetId,
+    scope,
+    resolvedTargetId,
     uiEffect: 'PREPARE_MATERIAL_REQUEST',
     directEffect: false,
-    canPrepare: target.materialReady && Boolean(authorityRef),
-    authorityRef,
+    canPrepare: Boolean(resolvedTargetId),
+    canSubmit: Boolean(
+      resolvedTargetId &&
+      target?.governedMutationPathReady &&
+      authorizationRef &&
+      capabilityRef
+    ),
+    authorizationRef,
+    capabilityRef,
   };
 }
