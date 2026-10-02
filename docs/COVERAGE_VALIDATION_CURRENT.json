@@ -1,0 +1,59 @@
+{
+  "schema": "libre-chat-vx.coverage-validation.v1",
+  "source": {
+    "document_id": "10gIRe5KVBE3QLcIJYpPEkvaJQOBUcz0iMCID8flOZ4M",
+    "revision_id": "ANLCKQktb56Sr5XUT1pMUC0gmd7E0KOZLwZLkOjGTZ9JSkPXvv7Pb9uo_rImF8sUveW0xdBwv_zI83hIrVmOl-Q0JlxDfZVSsn5gfiNkvIw"
+  },
+  "validated_base_commit": "562e7e62100d273117f5dd303eefcf116af9c57c",
+  "coverage": {
+    "idea": {
+      "source": 112,
+      "indexed": 112,
+      "missing": [],
+      "extra": []
+    },
+    "function": {
+      "source": 25,
+      "indexed": 25,
+      "missing": [],
+      "extra": []
+    },
+    "flow": {
+      "source": 19,
+      "indexed": 19,
+      "missing": [],
+      "extra": []
+    },
+    "auto": {
+      "source": 16,
+      "indexed": 16,
+      "missing": [],
+      "extra": []
+    },
+    "data": {
+      "source": 4,
+      "indexed": 4,
+      "missing": [],
+      "extra": []
+    },
+    "ui_all_gate": {
+      "source": 11,
+      "indexed": 11,
+      "missing": [],
+      "extra": []
+    },
+    "canonical_requirements": {
+      "expected": 120,
+      "indexed": 120,
+      "missing": [],
+      "extra": []
+    }
+  },
+  "source_occurrences": {
+    "idea_lc": 208
+  },
+  "ap_groups": 47,
+  "result": "DOCUMENTAL_ID_COVERAGE_PASS",
+  "runtime_verified": false,
+  "material_verified": false
+}
