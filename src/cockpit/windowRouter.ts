@@ -29,7 +29,7 @@ export type CockpitWindow =
   | 'INTERFLOW_MAP'
   | 'CAPABILITY_LENSES'
   | 'NATIVE_SURFACES'
-  | 'LLM_PLANE'
+  | 'CONVERSATION_CORE'
   | 'EVIDENCE'
   | 'FILES'
   | 'AUDIO'
@@ -50,7 +50,7 @@ const TOKENS: ReadonlyArray<[FocusDomain, readonly string[]]> = [
   ['HOST', ['host', 'remote desktop', 'desktop commander', 'cli', 'container']],
   ['TOOLBUS', ['toolbus', 'mcp', 'tool bus', 'transport']],
   ['RUNTIME', ['runtime', 'servicio', 'service', 'proceso', 'health', 'readiness', 'estado', 'fallo', 'error', 'stabilization']],
-  ['MODEL', ['modelo', 'model', 'llm', 'provider', 'router', 'litellm', 'ollama', 'openrouter', 'hermes']],
+  ['MODEL', ['modelo', 'model', 'llm', 'router', 'litellm', 'voz', 'voice', 'nostromo']],
   ['SECURITY', ['seguridad', 'security', 'permiso', 'acl', 'grant', 'autorización', 'authorization', 'token']],
   ['PLAN', ['plan', 'manifestator', 'dag', 'blueprint', 'evolución', 'evolution', 'composite']],
   ['LIBRECHAT', ['librechat', 'chat', 'artifact', 'skill', 'subagent', 'background task', 'tool approval', 'side panel']],
@@ -76,13 +76,13 @@ const BASE: CockpitWindow[] = [
 
 export function windowsForDomain(domain: FocusDomain): CockpitWindow[] {
   const extra: Record<FocusDomain, CockpitWindow[]> = {
-    OVERVIEW: ['MODULE_INDEX', 'INTERFLOW_MAP', 'LLM_PLANE', 'CAPABILITY_LENSES'],
+    OVERVIEW: ['MODULE_INDEX', 'CONVERSATION_CORE', 'INTERFLOW_MAP', 'CAPABILITY_LENSES'],
     FILES: ['FILES', 'EVIDENCE'],
     AUDIO: ['AUDIO', 'EVIDENCE'],
     BROWSER: ['BROWSER', 'INTERFLOW_MAP', 'ACTIVE_FLOW'],
     BUILD: ['BUILD', 'INTERFLOW_MAP', 'PLAN_GRAPH', 'ACTIVE_FLOW'],
-    RUNTIME: ['TARGET_RUN', 'INTERFLOW_MAP', 'LLM_PLANE', 'ACTIVE_FLOW', 'CAPABILITY_LENSES'],
-    MODEL: ['LLM_PLANE', 'INTERFLOW_MAP', 'CAPABILITY_LENSES', 'TARGET_RUN'],
+    RUNTIME: ['TARGET_RUN', 'INTERFLOW_MAP', 'CONVERSATION_CORE', 'ACTIVE_FLOW', 'CAPABILITY_LENSES'],
+    MODEL: ['CONVERSATION_CORE', 'INTERFLOW_MAP', 'CAPABILITY_LENSES', 'TARGET_RUN'],
     EVIDENCE: ['EVIDENCE', 'ARTIFACT_DOCK'],
     SECURITY: ['INTERFLOW_MAP', 'DECISION_INBOX', 'MINIMAL_TRUTH'],
     PLAN: ['INTERFLOW_MAP', 'PLAN_GRAPH', 'ACTIVE_FLOW'],
@@ -92,8 +92,7 @@ export function windowsForDomain(domain: FocusDomain): CockpitWindow[] {
     THREADS: ['INTERFLOW_MAP', 'CAPABILITY_LENSES', 'ACTIVE_FLOW'],
     HOST: ['INTERFLOW_MAP', 'CAPABILITY_LENSES', 'TARGET_RUN'],
     TOOLBUS: ['INTERFLOW_MAP', 'CAPABILITY_LENSES', 'ACTIVE_FLOW'],
-    LIBRECHAT: ['MODULE_INDEX', 'NATIVE_SURFACES', 'LLM_PLANE', 'ARTIFACT_DOCK', 'BACKGROUND_TASKS'],
+    LIBRECHAT: ['MODULE_INDEX', 'NATIVE_SURFACES', 'CONVERSATION_CORE', 'ARTIFACT_DOCK', 'BACKGROUND_TASKS'],
   };
-
   return [...new Set([...BASE, ...extra[domain]])];
 }

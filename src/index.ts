@@ -50,9 +50,11 @@ export { VX13_ADAPTER_STATE, VX13_AUTHORITY_CHAIN, vx13Parity } from './adapters
 export * from './manojos3/interflowProjection';
 export * from './manojos3/entrypoints';
 export * from './manojos3/submitProjection';
+export * from './manojos3/gptSemanticBridge';
+export * from './manojos3/hudBridge';
 
-export * from './llm/llmPlane';
-export * from './llm/fallbackPolicy';
+export * from './llm/nostromoHybrid';
+export * from './llm/responseContract';
 
 export * from './librechat/nativeSurfaces';
 export * from './librechat/nativeSurfaceBinding';

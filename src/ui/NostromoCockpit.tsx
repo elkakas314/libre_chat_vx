@@ -6,7 +6,7 @@ import type { TargetParityTruth } from '../adapters/targetParity';
 import type { CapabilityCatalogItem } from '../cockpit/capabilityLens';
 import type { Manojos3InterflowDomain } from '../manojos3/interflowProjection';
 import type { NativeSurfaceBindingDescriptor } from '../librechat/nativeSurfaceBinding';
-import type { LlmTopology } from '../llm/llmPlane';
+import type { HybridRuntimeMode, NostromoHybridArchitecture } from '../llm/nostromoHybrid';
 import type { TargetRunProjection } from '../cockpit/targetRun';
 import type { DockItem } from '../cockpit/artifactDock';
 import type { DecisionCard } from '../cockpit/decisionInbox';
@@ -27,7 +27,7 @@ import { ModuleIndexView } from './ModuleIndexView';
 import { InterflowLensView } from './InterflowLensView';
 import { CapabilityLensView } from './CapabilityLensView';
 import { NativeSurfaceStatusView } from './NativeSurfaceStatusView';
-import { LLMPlaneView } from './LLMPlaneView';
+import { NostromoHybridView } from './NostromoHybridView';
 import { TargetRunView } from './TargetRunView';
 import { FilesPanelView } from './FilesPanelView';
 import { AudioPanelView } from './AudioPanelView';
@@ -48,7 +48,8 @@ export interface NostromoCockpitProps {
   modules?: ModuleVisualCard[];
   interflowDomains?: readonly Manojos3InterflowDomain[];
   nativeSurfaceBindings?: readonly NativeSurfaceBindingDescriptor[];
-  llmTopologies?: readonly LlmTopology[];
+  hybridArchitecture?: NostromoHybridArchitecture;
+  hybridMode?: HybridRuntimeMode;
   capabilities?: CapabilityCatalogItem[];
   run?: TargetRunProjection;
   files?: ExternalResourceRef[];
@@ -73,7 +74,9 @@ export function NostromoCockpit(props: NostromoCockpitProps) {
       {has('ARTIFACT_DOCK') ? <ArtifactDockView items={props.artifacts ?? []} /> : null}
       {has('MODULE_INDEX') ? <ModuleIndexView modules={props.modules ?? []} /> : null}
       {has('INTERFLOW_MAP') ? <InterflowLensView domains={props.interflowDomains ?? []} /> : null}
-      {has('LLM_PLANE') ? <LLMPlaneView topologies={props.llmTopologies ?? []} /> : null}
+      {has('CONVERSATION_CORE') && props.hybridArchitecture && props.hybridMode
+        ? <NostromoHybridView architecture={props.hybridArchitecture} mode={props.hybridMode} />
+        : null}
       {has('CAPABILITY_LENSES') ? <CapabilityLensView capabilities={props.capabilities ?? []} /> : null}
       {has('NATIVE_SURFACES') ? <NativeSurfaceStatusView bindings={props.nativeSurfaceBindings ?? []} /> : null}
       {has('TARGET_RUN') && props.run ? <TargetRunView run={props.run} /> : null}

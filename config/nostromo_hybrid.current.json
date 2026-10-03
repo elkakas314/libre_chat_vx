@@ -1,0 +1,78 @@
+{
+  "schema": "libre-chat-vx.nostromo-hybrid.v1",
+  "architecture": "NOSTROMO_HYBRID",
+  "status": "SOURCE_IMPLEMENTED_RUNTIME_UNVERIFIED",
+  "one_active_architecture": true,
+  "local_voice": {
+    "alias": "nostromo-voice-local",
+    "model_selection": "DEPLOYMENT_BENCHMARK_REQUIRED",
+    "size_target": "1-2GB",
+    "language_priority": [
+      "es"
+    ],
+    "lifecycle": "LIBRECHAT_COUPLED_ON_DEMAND",
+    "unload_policy": "ALLOW_IDLE_UNLOAD",
+    "responsibilities": [
+      "personality",
+      "natural_language",
+      "short_continuity",
+      "light_classification",
+      "final_render"
+    ],
+    "authority": false
+  },
+  "free_reasoning": {
+    "owner": "MANOJOS3_LITELLM",
+    "base_url_env": "MANOJOS3_LLM_BASE_URL",
+    "aliases": [
+      "manojos-general-free",
+      "manojos-reasoning-free",
+      "manojos-coding-free",
+      "manojos-fast-free",
+      "manojos-long-context-free"
+    ],
+    "paid_fallback_allowed": false,
+    "source_status": "CONFLICT_REQUIRES_LIVE_READBACK",
+    "authority": false
+  },
+  "actions": {
+    "owner": "MANOJOS3_MCP",
+    "endpoint_env": "MANOJOS3_MCP_URL",
+    "bootstrap": [
+      "manojos_gpt_migration_profile",
+      "manojos_status",
+      "manojos_capabilities",
+      "manojos_skills"
+    ],
+    "submit": "manojos_submit",
+    "run": "manojos_run",
+    "receipt": "manojos_receipt",
+    "authority": false
+  },
+  "semantic_contract": {
+    "human_route": "natural objective -> semantic domain -> intent/interflow -> policy/kernel -> driver -> verifier/receipt",
+    "technical_slots_to_user": 0,
+    "submit_for_context_only": false,
+    "success_requires": [
+      "verified receipt",
+      "current evidence",
+      "readback"
+    ],
+    "ambiguous_effect": "READBACK_BEFORE_RETRY"
+  },
+  "tentacle_hud": {
+    "depends_on_local_voice": false,
+    "depends_on_free_reasoner": false,
+    "structured_sources": [
+      "manojos_status",
+      "manojos_capabilities",
+      "manojos_skills",
+      "manojos_run",
+      "manojos_authorization_requirement",
+      "manojos_authorization",
+      "manojos_receipt",
+      "MANOJOS3_INTERFLOW_DOMAINS"
+    ]
+  },
+  "local_touched": false
+}

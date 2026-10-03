@@ -1,0 +1,42 @@
+# NOSTROMO_HYBRID overlay contract.
+# This is consumed by @librechat/vx integration code, not by upstream LibreChat natively.
+# No secret values belong in source.
+
+nostromoHybrid:
+  enabled: true
+  architecture: NOSTROMO_HYBRID
+
+  localVoice:
+    alias: nostromo-voice-local
+    baseURL: "${NOSTROMO_LOCAL_MODEL_BASE_URL}"
+    model: "${NOSTROMO_LOCAL_MODEL}"
+    lifecycle: librechat-coupled-on-demand
+    idleUnload: true
+
+  reasoning:
+    baseURL: "${MANOJOS3_LLM_BASE_URL}"
+    apiKey: "${MANOJOS3_LLM_API_KEY}"
+    paidFallbackAllowed: false
+    aliases:
+      general: manojos-general-free
+      reasoning: manojos-reasoning-free
+      coding: manojos-coding-free
+      fast: manojos-fast-free
+      longContext: manojos-long-context-free
+
+  actions:
+    mcpURL: "${MANOJOS3_MCP_URL}"
+    directControlPlaneCalls: false
+
+  semantics:
+    source: MANOJOS3_GPT_SEMANTIC_BRIDGE
+    submitForContextOnly: false
+    technicalSlotsAskedToUser: 0
+    successRequires:
+      - verified-receipt
+      - current-evidence
+      - readback
+
+  hud:
+    modelIndependent: true
+    sourceOfTruth: structured-target-readback

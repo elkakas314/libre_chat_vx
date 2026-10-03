@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "nostromo-hybrid.schema.json",
+  "type": "object",
+  "required": [
+    "architecture",
+    "local_voice",
+    "free_reasoning",
+    "actions",
+    "authority"
+  ],
+  "properties": {
+    "architecture": {
+      "const": "NOSTROMO_HYBRID"
+    },
+    "local_voice": {
+      "type": "object"
+    },
+    "free_reasoning": {
+      "type": "object"
+    },
+    "actions": {
+      "type": "object"
+    },
+    "authority": {
+      "const": false
+    }
+  },
+  "additionalProperties": true
+}
