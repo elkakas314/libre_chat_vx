@@ -1,10 +1,11 @@
 {
   "schema": "libre-chat-vx.current.v1",
-  "status": "SOURCE_ONLY_CLOSEOUT_COMPLETE_NOSTROMO_HYBRID_PENDING_LIVE_REVALIDATION",
+  "status": "SOURCE_ONLY_OPERATING_CANON_RECONCILER_PENDING_LIVE_REVALIDATION",
   "repository": "elkakas314/libre_chat_vx",
   "operating_canon": "LIBRECHAT_OPERATING_CANON_V1",
   "operating_mode": "SOURCE_ONLY",
-  "operating_snapshot": "source-2026-10-03-a54b1f66",
+  "operating_snapshot": "source-2026-10-03-2c29d4a1",
+  "source_evidence_cutoff_head": "2c29d4a109aab72ec04b9792a30409da933180bb",
   "active_llm_architecture": "NOSTROMO_HYBRID",
   "active_llm_architecture_count": 1,
   "local_voice": {
@@ -29,13 +30,21 @@
     "free_reasoner_required": false,
     "source_of_truth": "STRUCTURED_TARGET_READBACK"
   },
+  "operating_reconciler": {
+    "target_to_current_direction": "ONE_WAY",
+    "delta": "DERIVED",
+    "ownership": "DERIVED_FROM_LIVE_CLAIM_LEASE_RUN_SCOPE",
+    "proofs": "DERIVED_INDEX_WITH_DEPENDENCY_FINGERPRINT",
+    "living_plan": "DERIVED",
+    "closeout": "PURE_R0"
+  },
   "previous_llm_topology_matrix": "SUPERSEDED",
   "last_material_tested_commit": "94c632762f7afee7d9fa9d0f0c23c80d7494d2d2",
   "last_material_test_result": "26_PASS",
-  "current_commit_tests": "NOT_RUN_GITHUB_ONLY",
+  "current_commit_tests": "NOT_RUN_FEATURE_BRANCH",
   "live": "NO_VERIFICADO",
   "material_verified": false,
   "authority": false,
   "local_touched_by_current_work": false,
-  "next_action": "WAIT_FOR_LOCAL_REVALIDATION_PERMISSION_OR_LIVE_BINDING"
+  "next_action": "BIND_LIVE_AND_REVALIDATE"
 }
