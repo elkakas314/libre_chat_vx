@@ -3,7 +3,8 @@
   "sources": {
     "librechat_upstream": {
       "repository": "LibreChat-AI/LibreChat",
-      "commit": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b"
+      "commit": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
+      "tree": "badb948a90643dfb22332b17549b4c598090c9d7"
     },
     "librechat_drive_master": {
       "document_id": "1OwadKf4vBKJyRx5Pe3QB2HgjqJlSe2xb52TT7nK3Scc"
@@ -13,66 +14,30 @@
       "idea_occurrences_indexed": 208,
       "unique_idea_ids": 112
     },
-    "vx13_master": {
-      "document_id": "1vqdo1WnIOx1tAN543eYrIM0QYU77TeCQ1Q_dk5PDMLg",
-      "direct_write_status": "FAILED_PRECONDITION_PRIOR_SESSION"
-    },
-    "vx13_librechat_addendum": {
-      "document_id": "1i-Dyj_KePeAeQl4d90ZjVQVsmE8Ca-2bGKPHM9vNZO0"
-    },
-    "librechat_drive_matrix": {
-      "document_id": "1DpXg6QDn2ZWzQIJBYSjMptAViDZHxdqFZW7BK4vEaZQ"
-    },
-    "vx13_drive_matrix": {
-      "document_id": "1QBtIQibuLew82dxrZ0lPt0MjX3u6Enm1S7GoSEs-IOE"
-    },
-    "librechat_operating_canon_drive": {
-      "document_id": "18RUJkUGwF8FDD2Vi4Yq1oywh7OnF5y5GGXmUmRRKK8E",
-      "revision_id": "AHj4eMQ-cNMFJn_VNgPKgkvyDjh3_8TE62HfA8avHMcA5k0zhy_xL6nOT-yIoD_97UV8fvqYGmW4v1MV9nRVN_V_fAS8kC8q9TnHPeOudFg"
-    },
-    "librechat_operating_start_here_drive": {
-      "document_id": "1edwdFCitOoWPkVQV3aDWD0wdMnw8zfu8gmoIISeoP7w",
-      "revision_id": "AHj4eMTYmgX1-kgMqG9Mc5ZzNtyUdLhM1O1segAva_cyZv-tjNscPVWqAmT-D8X5SPQc6F31dg5tyhroU4Yq-_olZG606teArJNVu8K8RRQ"
-    },
-    "vx13_librechat_operating_alignment_drive": {
-      "document_id": "1jWGRnP4gQvgKJ7eDTQyZIDdO8yc-pGoU70BNnPxAwO0",
-      "revision_id": "ANLCKQlI_JzFGIsK0-q-P7S6LoNBApD2x5ci4cEbmGVvulLdOJmMfH5gtOmL8J8aXQ6p2AacGarENUtwk11ezaqpHx3ulhRuf2m5J-EnsWY"
-    },
     "manojos3_current_source": {
       "repository": "elkakas314/manojos3",
       "head": "cb772cca141f7ae5ae03af9655b3c5186f5826f6",
-      "semantic_matrix": {
-        "path": "docs/flows/SEMANTIC_MATRIX_CANONICAL_CURRENT.json",
-        "blob_sha": "30a63c9c359e46a2743f711c2d5e1a5bd031a45e",
-        "internal_source_head": "e910fce958d9b7660ce0618ae7578a647016ee75"
-      },
-      "operation_matrix": {
-        "path": "docs/capabilities/OPERATION_MATRIX_CURRENT.json",
-        "blob_sha": "3bbf760e4b00aadd7716b263ba5b2009dbfdaa8c"
-      },
-      "runtime_audit": {
-        "path": "docs/flows/INTENT_RUNTIME_AUDIT_CURRENT.json",
-        "blob_sha": "253ea095dd26a73c1c749eddc7a4deb4d2a350a8"
-      },
-      "capability_execution_matrix": {
-        "path": "docs/CAPABILITY_EXECUTION_MATRIX.json",
-        "blob_sha": "2637bdbdf746f3d96ee529dc146d5e052c28b930",
-        "rows": 252
-      }
+      "semantic_matrix_blob": "30a63c9c359e46a2743f711c2d5e1a5bd031a45e",
+      "operation_matrix_blob": "3bbf760e4b00aadd7716b263ba5b2009dbfdaa8c",
+      "runtime_audit_blob": "253ea095dd26a73c1c749eddc7a4deb4d2a350a8",
+      "capability_execution_matrix_blob": "2637bdbdf746f3d96ee529dc146d5e052c28b930"
     },
-    "librechat_manojos3_interflow_drive": {
-      "document_id": "1do7t2rY6Myiyce9Nrg6t_ReyQKrb1SjRCkZz9k7-Y6w",
-      "revision_id": "AHj4eMS8tWqAmtSJmGz-I0wbILp69DalGSV7uWzjAuefW-g5W7WwamkV7GMnA1W-R_3ePkRAb0KA6UxzZairle6c0Dw4B98Yw0clGsWef7Q"
+    "operating_canon_drive": {
+      "document_id": "18RUJkUGwF8FDD2Vi4Yq1oywh7OnF5y5GGXmUmRRKK8E"
     },
-    "vx13_interflow_parity_drive": {
-      "document_id": "1EARZfK7E7VJAyGk1L8sRsA_VeE_yDNXg51PO9HuwVFU",
-      "revision_id": "AHj4eMTJSwT69J6YVMi6mwAPa_XeBN1SxzdoQNR-wvzUclxg2RGf61yqGxf3l5DGBmeSpN0P116iZ9Vq_DH_56JkMsC4dF1WjpUwinClHM0"
+    "interflow_drive": {
+      "document_id": "1do7t2rY6Myiyce9Nrg6t_ReyQKrb1SjRCkZz9k7-Y6w"
+    },
+    "native_surface_binding_drive": {
+      "document_id": "1-of8wyyXRsnKxEckl0sPiFguZO5AyJiBlECyRq2VsEs"
+    },
+    "vx13_native_surface_boundaries_drive": {
+      "document_id": "1D8SKuoi25dKkDnBcqAI0mAw6OhlM-7DkKja_jjqDCpk"
     }
   },
   "operating_canon": {
     "name": "LIBRECHAT_OPERATING_CANON",
     "version": 1,
-    "source_commit": "fef7b5521792e50efd64dd3c4af1ed0dff62ef3c",
     "mode": "SOURCE_ONLY"
   },
   "truth_priority": [

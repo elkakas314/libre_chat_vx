@@ -1,11 +1,11 @@
 {
   "schema": "libre-chat-vx.current.v1",
-  "status": "M3_INTERFLOW_PROJECTION_SOURCE_DRIVE_SYNCED",
+  "status": "NATIVE_SURFACE_BINDING_SOURCE_DRIVE_SYNCED",
   "repository": "elkakas314/libre_chat_vx",
   "upstream_commit": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
   "operating_canon": "LIBRECHAT_OPERATING_CANON_V1",
   "operating_mode": "SOURCE_ONLY",
-  "operating_snapshot": "source-2026-10-03-7a9ebc7d",
+  "operating_snapshot": "source-2026-10-03-587090f7",
   "semantic_model": "RECONCILED_V2",
   "target_ids": [
     "VX13",
@@ -16,9 +16,9 @@
   "manojos3_semantic_domains": 31,
   "manojos3_operation_gateways": 6,
   "manojos3_capability_execution_rows": 252,
-  "manojos3_projection_rule": "DOMAIN_THEN_INTENT_FAMILY_THEN_OPERATION_THEN_INTERNAL_DRIVER",
-  "manojos3_interflow_drive": "1do7t2rY6Myiyce9Nrg6t_ReyQKrb1SjRCkZz9k7-Y6w",
-  "vx13_interflow_parity_drive": "1EARZfK7E7VJAyGk1L8sRsA_VeE_yDNXg51PO9HuwVFU",
+  "native_surface_bindings": 9,
+  "native_surface_binding_drive": "1-of8wyyXRsnKxEckl0sPiFguZO5AyJiBlECyRq2VsEs",
+  "vx13_native_surface_boundaries_drive": "1D8SKuoi25dKkDnBcqAI0mAw6OhlM-7DkKja_jjqDCpk",
   "last_material_tested_commit": "94c632762f7afee7d9fa9d0f0c23c80d7494d2d2",
   "last_material_test_result": "26_PASS",
   "current_commit_tests": "NOT_RUN_GITHUB_ONLY",
@@ -26,5 +26,5 @@
   "live": "NO_VERIFICADO",
   "material_verified": false,
   "local_touched_by_current_work": false,
-  "next_action": "LC-NATIVE-SURFACE-BINDING"
+  "next_action": "LC-MOBILE-RECOVERY"
 }

@@ -2,8 +2,8 @@
   "schema": "libre-chat-vx.operating-bootstrap.v1",
   "canon": "LIBRECHAT_OPERATING_CANON",
   "target_version": 1,
-  "snapshot_id": "source-2026-10-03-7a9ebc7d",
-  "evidence_cutoff_head": "7a9ebc7da0a172b5c6ff20999ab2b855a5999599",
+  "snapshot_id": "source-2026-10-03-587090f7",
+  "evidence_cutoff_head": "587090f7fea2d5fd6ef94fa470458009bfd136dc",
   "continuity_metadata_may_advance_remote_main": true,
   "mode": "SOURCE_ONLY",
   "runtime": {
@@ -12,21 +12,23 @@
     "vx13_binding": "UNCONFIGURED"
   },
   "git": {
-    "product_source_head_at_cutoff": "7a9ebc7da0a172b5c6ff20999ab2b855a5999599",
+    "product_source_head_at_cutoff": "587090f7fea2d5fd6ef94fa470458009bfd136dc",
     "workspace": "NOT_READ_BY_USER_CONSTRAINT"
   },
   "drive": {
     "operating_canon": "18RUJkUGwF8FDD2Vi4Yq1oywh7OnF5y5GGXmUmRRKK8E",
-    "start_here": "1edwdFCitOoWPkVQV3aDWD0wdMnw8zfu8gmoIISeoP7w",
-    "vx13_alignment": "1jWGRnP4gQvgKJ7eDTQyZIDdO8yc-pGoU70BNnPxAwO0",
+    "start_here_initial": "1edwdFCitOoWPkVQV3aDWD0wdMnw8zfu8gmoIISeoP7w",
     "manojos3_interflow_projection": "1do7t2rY6Myiyce9Nrg6t_ReyQKrb1SjRCkZz9k7-Y6w",
     "vx13_interflow_parity": "1EARZfK7E7VJAyGk1L8sRsA_VeE_yDNXg51PO9HuwVFU",
+    "native_surface_binding": "1-of8wyyXRsnKxEckl0sPiFguZO5AyJiBlECyRq2VsEs",
+    "vx13_native_surface_boundaries": "1D8SKuoi25dKkDnBcqAI0mAw6OhlM-7DkKja_jjqDCpk",
     "readback": "PASS"
   },
   "proofs": {
     "valid": [
       "operating-canon-source-drive",
       "m3-interflow-projection-source-drive",
+      "native-surface-binding-source-drive",
       "semantic-model-source",
       "upstream-pin"
     ],
@@ -42,7 +44,7 @@
     "do_not_assume_free": true
   },
   "eligible_source_only": [
-    "LC-NATIVE-SURFACE-BINDING"
+    "LC-MOBILE-RECOVERY"
   ],
   "blocked_live": [
     "LC-CURRENT-HEAD-TESTS",
@@ -62,5 +64,5 @@
     "automatic CURRENT to TARGET mutation"
   ],
   "closeout": "INCOMPLETE",
-  "next_action": "LC-NATIVE-SURFACE-BINDING"
+  "next_action": "LC-MOBILE-RECOVERY"
 }

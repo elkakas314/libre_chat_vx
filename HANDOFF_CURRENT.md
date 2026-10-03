@@ -1,35 +1,39 @@
-# HANDOFF CURRENT
+# LIBRECHAT HANDOFF CURRENT
 
-Canonical continuity lives under `operating/`.
+Mode: `SOURCE_ONLY`.
 
-Start with:
+## Closed source gaps
 
-1. `operating/START_HERE_GPT.md`
-2. `operating/BOOTSTRAP_CURRENT.json`
-3. `operating/HANDOFF_CURRENT.md`
+- `LC-OPERATING-CANON = PASS`
+- `LC-M3-INTERFLOW-PROJECTION = PASS`
+- `LC-NATIVE-SURFACE-BINDING = PASS`
 
-## Current mode
+Native binding evidence:
 
-`SOURCE_ONLY`
+- source commit `587090f7fea2d5fd6ef94fa470458009bfd136dc`
+- upstream pin `f10b1d91f1eee3a2c82d5247bf620351486b7c1b`
+- LibreChat Drive `1-of8wyyXRsnKxEckl0sPiFguZO5AyJiBlECyRq2VsEs`
+- VX13 Drive `1D8SKuoi25dKkDnBcqAI0mAw6OhlM-7DkKja_jjqDCpk`
 
-No local host was touched.
+## Native rules now fixed
 
-## Closed source gap
-
-`LC-M3-INTERFLOW-PROJECTION = PASS`
-
-Evidence:
-- LibreChat commit `7a9ebc7da0a172b5c6ff20999ab2b855a5999599`
-- MANOJOS3 source `cb772cca141f7ae5ae03af9655b3c5186f5826f6`
-- LibreChat Drive `1do7t2rY6Myiyce9Nrg6t_ReyQKrb1SjRCkZz9k7-Y6w`
-- VX13 Drive `1EARZfK7E7VJAyGk1L8sRsA_VeE_yDNXg51PO9HuwVFU`
+- one shared SidePanel; Artifact > Subagent > Nostromo;
+- ToolApproval is interaction/resume, not target authorization;
+- MCP UI is sandboxed visual base, not TrustedSurfaceHost authority;
+- native ACL AND target gate;
+- Files operations remain per-operation governed;
+- Subagent != hija != target worker;
+- BackgroundTask != TargetRun;
+- resumable UI stream != material-effect replay.
 
 ## Proof boundary
 
-Last executed proof remains `26 PASS @ 94c632762f7afee7d9fa9d0f0c23c80d7494d2d2`.
+Last executed host proof remains `26 PASS @ 94c632762f7afee7d9fa9d0f0c23c80d7494d2d2`.
 
-Current-head tests remain `NOT_RUN / STALE_PROOF`.
+Current-head tests are `NOT_RUN / STALE_PROOF`.
 
 ## Next eligible
 
-`LC-NATIVE-SURFACE-BINDING`
+`LC-MOBILE-RECOVERY`
+
+No local host was touched.

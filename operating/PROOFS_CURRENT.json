@@ -1,6 +1,6 @@
 {
   "schema": "libre-chat-vx.operating-proofs.v1",
-  "snapshot_id": "source-2026-10-03-7a9ebc7d",
+  "snapshot_id": "source-2026-10-03-587090f7",
   "proofs": [
     {
       "proof_id": "operating-canon-source-drive",
@@ -33,14 +33,34 @@
         "src/manojos3/interflowProjection.ts",
         "config/manojos3_interflow_projection.current.json",
         "src/ui/InterflowLensView.tsx",
-        "docs/MANOJOS3_INTERFLOW_PROJECTION_CURRENT.md",
-        "docs/MANOJOS3_ALIGNMENT_CURRENT.md"
+        "docs/MANOJOS3_INTERFLOW_PROJECTION_CURRENT.md"
       ],
       "evidence_refs": [
         "commit:7a9ebc7da0a172b5c6ff20999ab2b855a5999599",
         "manojos3:cb772cca141f7ae5ae03af9655b3c5186f5826f6",
-        "drive:1do7t2rY6Myiyce9Nrg6t_ReyQKrb1SjRCkZz9k7-Y6w",
-        "drive:1EARZfK7E7VJAyGk1L8sRsA_VeE_yDNXg51PO9HuwVFU"
+        "drive:1do7t2rY6Myiyce9Nrg6t_ReyQKrb1SjRCkZz9k7-Y6w"
+      ]
+    },
+    {
+      "proof_id": "native-surface-binding-source-drive",
+      "subject": "Native LibreChat surface binding contracts and exact upstream pins",
+      "proof_class": "DRIVE_READBACK",
+      "state": "VALID",
+      "verified_at_source_head": "587090f7fea2d5fd6ef94fa470458009bfd136dc",
+      "dependency_fingerprint": "lc:587090f7|upstream:f10b1d91|presentation:46a17609|approval:a75d05ec|mcpui:f5bc460d|tools:64fc779b|files:f3b2dbfd|subagents:250d914c|tasks:aa8527ed|resume:67dc162c",
+      "dependencies": [
+        "src/librechat/nativeSurfaceBinding.ts",
+        "src/librechat/panelArbiter.ts",
+        "src/librechat/approvalBridge.ts",
+        "src/librechat/resumableBoundary.ts",
+        "src/librechat/accessComposition.ts",
+        "overlay/UPSTREAM_INTEGRATION_MAP.json",
+        "docs/NATIVE_SURFACE_BINDING_CURRENT.md"
+      ],
+      "evidence_refs": [
+        "commit:587090f7fea2d5fd6ef94fa470458009bfd136dc",
+        "drive:1-of8wyyXRsnKxEckl0sPiFguZO5AyJiBlECyRq2VsEs",
+        "drive:1D8SKuoi25dKkDnBcqAI0mAw6OhlM-7DkKja_jjqDCpk"
       ]
     },
     {
@@ -69,7 +89,8 @@
         "src/ui/NostromoCockpit.tsx",
         "src/cockpit/windowRouter.ts",
         "tests/semantic-contract.test.ts",
-        "tests/manojos3-interflow.test.ts"
+        "tests/manojos3-interflow.test.ts",
+        "tests/native-surface-binding.test.ts"
       ],
       "evidence_refs": [
         "test:26_PASS@94c632762f7afee7d9fa9d0f0c23c80d7494d2d2"
@@ -80,8 +101,8 @@
       "subject": "LibreChat upstream source pin",
       "proof_class": "SOURCE_READBACK",
       "state": "VALID",
-      "verified_at_source_head": "fad1564a41d1f26296bec36cb6f48c0dfe00eec3",
-      "dependency_fingerprint": "upstream:f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
+      "verified_at_source_head": "587090f7fea2d5fd6ef94fa470458009bfd136dc",
+      "dependency_fingerprint": "upstream:f10b1d91f1eee3a2c82d5247bf620351486b7c1b|tree:badb948a90643dfb22332b17549b4c598090c9d7",
       "dependencies": [
         "UPSTREAM.json",
         "overlay/UPSTREAM_INTEGRATION_MAP.json"

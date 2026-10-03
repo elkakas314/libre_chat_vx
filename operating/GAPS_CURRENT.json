@@ -1,6 +1,6 @@
 {
   "schema": "libre-chat-vx.operating-gaps.v1",
-  "snapshot_id": "source-2026-10-03-7a9ebc7d",
+  "snapshot_id": "source-2026-10-03-587090f7",
   "gaps": [
     {
       "gap_id": "LC-OPERATING-CANON",
@@ -19,20 +19,21 @@
     },
     {
       "gap_id": "LC-CURRENT-HEAD-TESTS",
-      "summary": "Revalidate current source after semantic/operating/Interflow changes",
+      "summary": "Revalidate current source after semantic/operating/Interflow/native-surface changes",
       "state": "STALE_PROOF",
       "priority": 10,
       "scope": "source_tests",
       "requires_live": true,
       "dependencies": [
         "LC-OPERATING-CANON",
-        "LC-M3-INTERFLOW-PROJECTION"
+        "LC-M3-INTERFLOW-PROJECTION",
+        "LC-NATIVE-SURFACE-BINDING"
       ],
       "preferred_route": "host_test_when_local_allowed"
     },
     {
       "gap_id": "LC-M3-INTERFLOW-PROJECTION",
-      "summary": "Project MANOJOS3 Intent/Interflow semantics and operation matrix into bounded LibreChat lenses; capability count is not the functional ceiling",
+      "summary": "Project MANOJOS3 Intent/Interflow semantics and operation matrix into bounded LibreChat lenses",
       "state": "PASS",
       "priority": 20,
       "scope": "manojos3_projection",
@@ -63,7 +64,7 @@
     },
     {
       "gap_id": "LC-UPSTREAM-OVERLAY-REVALIDATE",
-      "summary": "Revalidate current Nostromo overlay against pinned LibreChat upstream after source changes",
+      "summary": "Revalidate Nostromo overlay against pinned LibreChat upstream after current source changes",
       "state": "NOT_TESTED",
       "priority": 40,
       "scope": "upstream_overlay",
@@ -75,15 +76,21 @@
     },
     {
       "gap_id": "LC-NATIVE-SURFACE-BINDING",
-      "summary": "Wire Nostromo source contracts to native Artifacts/MCP UI/ToolApproval/Files/Subagents/background calls without duplicating native surfaces",
-      "state": "OPEN",
+      "summary": "Bind Nostromo source contracts to native Artifacts/MCP UI/ToolApproval/Files/Subagents/background/resumable/SidePanel surfaces",
+      "state": "PASS",
       "priority": 50,
       "scope": "librechat_native",
       "requires_live": false,
       "dependencies": [
         "LC-M3-INTERFLOW-PROJECTION"
       ],
-      "preferred_route": "minimal_feature_flagged_overlay"
+      "preferred_route": "minimal_feature_flagged_overlay",
+      "evidence_refs": [
+        "commit:587090f7fea2d5fd6ef94fa470458009bfd136dc",
+        "upstream:f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
+        "drive:1-of8wyyXRsnKxEckl0sPiFguZO5AyJiBlECyRq2VsEs",
+        "drive:1D8SKuoi25dKkDnBcqAI0mAw6OhlM-7DkKja_jjqDCpk"
+      ]
     },
     {
       "gap_id": "LC-MOBILE-RECOVERY",

@@ -1,7 +1,7 @@
 {
   "schema": "libre-chat-vx.operating-drive-refs.v1",
   "librechat": {
-    "start_here": {
+    "start_here_initial": {
       "document_id": "1edwdFCitOoWPkVQV3aDWD0wdMnw8zfu8gmoIISeoP7w",
       "revision_id": "AHj4eMTYmgX1-kgMqG9Mc5ZzNtyUdLhM1O1segAva_cyZv-tjNscPVWqAmT-D8X5SPQc6F31dg5tyhroU4Yq-_olZG606teArJNVu8K8RRQ"
     },
@@ -12,6 +12,10 @@
     "manojos3_interflow_projection": {
       "document_id": "1do7t2rY6Myiyce9Nrg6t_ReyQKrb1SjRCkZz9k7-Y6w",
       "revision_id": "AHj4eMS8tWqAmtSJmGz-I0wbILp69DalGSV7uWzjAuefW-g5W7WwamkV7GMnA1W-R_3ePkRAb0KA6UxzZairle6c0Dw4B98Yw0clGsWef7Q"
+    },
+    "native_surface_binding": {
+      "document_id": "1-of8wyyXRsnKxEckl0sPiFguZO5AyJiBlECyRq2VsEs",
+      "revision_id": "AHj4eMSjFSTkzU11BizxiWhI9pRk3vGMfrhetDfzwjm-hTL66Z5g6khAc7E_BKKg8tudJuvmPKZAU93LH3A4ZMjzFXcLPyNDeZAyxdOBF08"
     }
   },
   "vx13": {
@@ -22,6 +26,10 @@
     "interflow_parity": {
       "document_id": "1EARZfK7E7VJAyGk1L8sRsA_VeE_yDNXg51PO9HuwVFU",
       "revision_id": "AHj4eMTJSwT69J6YVMi6mwAPa_XeBN1SxzdoQNR-wvzUclxg2RGf61yqGxf3l5DGBmeSpN0P116iZ9Vq_DH_56JkMsC4dF1WjpUwinClHM0"
+    },
+    "native_surface_boundaries": {
+      "document_id": "1D8SKuoi25dKkDnBcqAI0mAw6OhlM-7DkKja_jjqDCpk",
+      "revision_id": "AHj4eMQKF1kgNo1ALhh2pZgxrwxRjMEsTLy0CAhjMkVyRijf_W6cNCRNXkA4OyFipTW-ZnfxORlCNptSyrQOUmdygyqW65ta324Mc9CGFwI"
     }
   },
   "readback": "PASS",
