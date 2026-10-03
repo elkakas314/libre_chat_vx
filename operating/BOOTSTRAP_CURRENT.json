@@ -1,0 +1,49 @@
+{
+  "schema": "libre-chat-vx.operating-bootstrap.v1",
+  "canon": "LIBRECHAT_OPERATING_CANON",
+  "target_version": 1,
+  "snapshot_id": "source-2026-10-03-fad1564a",
+  "evidence_cutoff_head": "fad1564a41d1f26296bec36cb6f48c0dfe00eec3",
+  "mode": "SOURCE_ONLY",
+  "runtime": {
+    "librechat": "NO_VERIFICADO",
+    "manojos3_binding": "PREPARED_UNCONFIGURED",
+    "vx13_binding": "UNCONFIGURED"
+  },
+  "git": {
+    "remote_main_at_cutoff": "fad1564a41d1f26296bec36cb6f48c0dfe00eec3",
+    "workspace": "NOT_READ_BY_USER_CONSTRAINT"
+  },
+  "proofs": {
+    "valid": ["semantic-model-source", "upstream-pin"],
+    "stale": ["nostromo-material-test"],
+    "unavailable": ["runtime-live"]
+  },
+  "ownership": {
+    "state": "UNOBSERVED",
+    "do_not_assume_free": true
+  },
+  "eligible_source_only": [
+    "LC-OPERATING-CANON",
+    "LC-M3-INTERFLOW-PROJECTION"
+  ],
+  "blocked_live": [
+    "LC-CURRENT-HEAD-TESTS",
+    "LC-M3-R0-BINDING",
+    "LC-UPSTREAM-OVERLAY-REVALIDATE",
+    "LC-VX13-BINDING",
+    "LC-ORACULO-R0",
+    "LC-FIRST-R2",
+    "LC-LOW-POWER-MEASURE"
+  ],
+  "do_not_touch": [
+    "local host while user restriction remains",
+    "MANOJOS3 repository",
+    "VX13 repository",
+    "target authority internals",
+    "secrets",
+    "automatic CURRENT to TARGET mutation"
+  ],
+  "closeout": "INCOMPLETE",
+  "next_action": "Finish Operating Canon source/Drive sync, then map MANOJOS3 Intent/Interflow semantics into LibreChat."
+}

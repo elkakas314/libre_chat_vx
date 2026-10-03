@@ -1,0 +1,54 @@
+{
+  "schema": "libre-chat-vx.operating-target.v1",
+  "canon": "LIBRECHAT_OPERATING_CANON",
+  "target_version": 1,
+  "authority": false,
+  "product_role": "EXTERNAL_CONVERSATION_UI_COCKPIT",
+  "desired": {
+    "single_conversation_experience": true,
+    "nostromo_shell": true,
+    "tentaculo_hud": true,
+    "target_scopes": ["AUTO", "BOTH", "MANOJOS3", "VX13"],
+    "concrete_targets": ["MANOJOS3", "VX13"],
+    "manojos3_priority": "FIRST",
+    "vx13_parity": "SAME_EXTERNAL_SLOTS_DISTINCT_AUTHORITY",
+    "oraculo": "ADVISORY_PROVIDER",
+    "native_librechat_reuse_first": true,
+    "interactive_artifacts": "UI_INTENT_ONLY_UNTIL_GOVERNED_SUBMISSION",
+    "mobile_continuity": "SAME_BACKEND_HISTORY",
+    "offline_mutation_replay": false,
+    "event_model": "EVENT_DRIVEN_LAZY_BACKPRESSURE_SNAPSHOT_RESYNC"
+  },
+  "authority_boundaries": {
+    "librechat": "NONE_MATERIAL",
+    "vx13_policy": "MADRE",
+    "vx13_execution": "SPAWNER_HIJA",
+    "vx13_verification": "MADRE",
+    "manojos3_admission": "GOVERNOR",
+    "manojos3_policy": "POLICY",
+    "manojos3_execution": "KERNEL",
+    "manojos3_verification": "VERIFIER"
+  },
+  "completion": {
+    "source_complete_requires": [
+      "source committed",
+      "remote readback",
+      "Drive canonical continuity",
+      "proof dependencies indexed"
+    ],
+    "material_complete_requires": [
+      "concrete target",
+      "fresh binding",
+      "governed route",
+      "readback",
+      "verification",
+      "receipt"
+    ]
+  },
+  "mutation_policy": {
+    "AUTO": "FORBIDDEN",
+    "BOTH": "FORBIDDEN",
+    "MANOJOS3": "GOVERNED_ONLY",
+    "VX13": "GOVERNED_ONLY"
+  }
+}

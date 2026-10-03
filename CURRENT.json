@@ -1,35 +1,23 @@
 {
   "schema": "libre-chat-vx.current.v1",
-  "status": "SEMANTIC_MODEL_RECONCILED_V2_SOURCE_ONLY",
+  "status": "OPERATING_CANON_SOURCE_BOOTSTRAP_IN_PROGRESS",
   "repository": "elkakas314/libre_chat_vx",
   "upstream_commit": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
-  "requirements_mapped": 120,
-  "source_unique_idea_ids": 112,
-  "missing_identifiers": 0,
+  "operating_canon": "LIBRECHAT_OPERATING_CANON_V1",
+  "operating_mode": "SOURCE_ONLY",
+  "operating_snapshot": "source-2026-10-03-fad1564a",
   "semantic_model": "RECONCILED_V2",
-  "semantic_collisions_fixed": [
-    "TARGET_SCOPE_VS_CONCRETE_TARGET",
-    "PATH_READINESS_VS_MATERIAL_COMPLETION",
-    "CONTROL_CLASS_VS_RISK",
-    "APPROVAL_UI_VS_TARGET_AUTHORIZATION",
-    "UI_INTENT_VS_MATERIAL_EFFECT",
-    "POLICY_VS_EXECUTION_VS_VERIFICATION_AUTHORITY",
-    "SUBAGENT_VS_HIJA_VS_TARGET_RUN"
-  ],
   "target_scope_model": "AUTO_BOTH_ARE_READ_VIEW_ONLY",
   "target_ids": ["VX13", "MANOJOS3"],
+  "manojos3_priority": "FIRST",
+  "manojos3_projection_rule": "INTENT_INTERFLOW_THEN_OPERATION_THEN_CAPABILITY",
   "oraculo_semantics": "ADVISORY_PROVIDER_NOT_PEER_TARGET",
-  "nostromo_semantics": "LIBRECHAT_COCKPIT_SHELL",
-  "tentaculo_hud_semantics": "VISIBLE_PROXY_NO_AUTHORITY",
-  "tentaculo_link_semantics": "VX13_INGRESS",
-  "current_commit_tests": "NOT_RUN_GITHUB_ONLY",
   "last_material_tested_commit": "94c632762f7afee7d9fa9d0f0c23c80d7494d2d2",
   "last_material_test_result": "26_PASS",
+  "current_commit_tests": "NOT_RUN_GITHUB_ONLY",
   "authority": false,
   "live": "NO_VERIFICADO",
   "material_verified": false,
-  "targets": {
-    "vx13": "DESIGN_CONSOLIDATION_UNCONFIGURED",
-    "manojos3": "PREPARED_UNCONFIGURED"
-  }
+  "local_touched_by_current_work": false,
+  "next_action": "PERSIST_AND_READBACK_OPERATING_CANON_IN_DRIVE_THEN_LC_M3_INTERFLOW_PROJECTION"
 }

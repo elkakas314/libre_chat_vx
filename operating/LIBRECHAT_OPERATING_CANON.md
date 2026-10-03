@@ -1,0 +1,166 @@
+# LIBRECHAT_OPERATING_CANON
+
+Versión: 1
+
+## Misión
+
+Convertir la continuidad de LibreChat VX en un contrato técnico reproducible para que un GPT nuevo pueda:
+
+- adquirir contexto sin arqueología de hilos;
+- reconstruir el estado tras una interrupción;
+- distinguir trabajo aplicado, parcial, no aplicado y desconocido;
+- no repetir efectos inciertos;
+- continuar por gaps independientes elegibles;
+- conservar la separación de autoridad VX13/MANOJOS3;
+- mantener GitHub y Google Drive reconciliados;
+- cerrar únicamente con evidencia proporcional al tipo de claim.
+
+## Autoridades
+
+Este Canon no ejecuta efectos materiales y no sustituye:
+
+- LibreChat native authorization/access surfaces;
+- VX13 Madre / Spawner-hija / verifier;
+- MANOJOS3 Governor / Policy / Kernel / Verifier;
+- repositorios o State externos.
+
+LibreChat/Nostromo/Tentáculo HUD conserva `authority=false`.
+
+## Verdad
+
+Prioridad:
+
+1. runtime/readback/receipt fresco cuando existe binding;
+2. GitHub remote source y commit/blob readback;
+3. Google Drive canonical docs y revision readback;
+4. CURRENT derivado;
+5. HANDOFF generado;
+6. blueprint/documentación;
+7. memoria de conversación;
+8. inferencia.
+
+En `SOURCE_ONLY`, los puntos 1 de runtime no están disponibles y deben quedar `NO_VERIFICADO`, nunca simulados.
+
+## TARGET y CURRENT
+
+`TARGET_CANON` es deseado, versionado y conscientemente modificado.
+
+`CURRENT` se deriva de evidencia.
+
+```text
+TARGET --------.
+               +--> compare --> DELTA
+EVIDENCE->CURRENT
+```
+
+Regla dura: `CURRENT -> TARGET` automático está prohibido.
+
+## Proofs
+
+No existe una segunda proof database.
+
+`PROOFS_CURRENT.json` es un índice derivado de Git commits/blobs, test receipts, Drive revisions y futuros runtime receipts.
+
+Un proof sólo se vuelve stale si cambia una dependencia relevante.
+
+```text
+dependency fingerprint igual -> no reabrir
+dependency fingerprint cambia -> STALE -> revalidar
+STALE != avería
+```
+
+## Ownership
+
+Un branch, worktree, conversación o archivo no implica ownership.
+
+Ownership sólo puede derivarse de una claim/lease/run/scope verificable. Si no hay plano de coordinación visible, el estado es `UNOBSERVED`, no `FREE`.
+
+## Gaps
+
+Estados canónicos:
+
+- PASS
+- OPEN
+- STALE_PROOF
+- OWNED
+- WAITING_INTERNAL
+- RECONCILE_REQUIRED
+- GATE_EXTERNAL
+- GATE_HUMAN
+- BLOCKED_DEPENDENCY
+- NOT_TESTED
+
+`nextEligible` salta gaps ocupados si existen otros independientes.
+
+`WAITING_INTERNAL` sólo aplica cuando todos los gaps elegibles están ocupados/bloqueados internamente.
+
+## Closeout
+
+`closeout.check` es R0/puro:
+
+- no ejecuta tests;
+- no escribe;
+- no repara;
+- sólo enumera evidencia faltante y gaps no cerrados.
+
+## Recuperación tras interrupción
+
+La ausencia de respuesta final no significa ausencia de ejecución.
+
+Secuencia:
+
+`INSPECT -> RECONSTRUCT -> READBACK -> CLASSIFY -> CONTINUE`
+
+Clasificación por acción:
+
+- CONFIRMED_APPLIED
+- CONFIRMED_NOT_APPLIED
+- PARTIAL
+- RUNNING
+- UNKNOWN
+
+Un `UNKNOWN` exige investigación antes de retry.
+
+## Semántica LibreChat
+
+- Nostromo = cockpit/shell.
+- Tentáculo HUD = proxy visual; no Tentáculo Link.
+- AUTO/BOTH = TargetScope de vista/lectura.
+- VX13/MANOJOS3 = ConcreteTargetId.
+- ORÁCULO = advisory provider.
+- ToolApproval != target authorization.
+- Artifact != TrustedSurfaceHost.
+- subagent != VX13 hija != target run.
+- readiness != ejecución != MATERIAL_VERIFIED.
+- MATERIAL_VERIFIED requiere readback + verification + receipt.
+
+## Prioridad de construcción
+
+MANOJOS3 primero porque su runtime/Intent-Interflow está más avanzado. VX13 ocupa los mismos slots visuales/semánticos pero permanece design-only hasta evidencia real.
+
+La proyección de MANOJOS3 debe usar:
+
+1. Intent/Interflow semántico;
+2. operación compuesta;
+3. capabilities concretas;
+
+y no usar el recuento de capabilities como techo funcional.
+
+## Regla de mutación
+
+Ninguna mutación desde `AUTO` o `BOTH`.
+
+Toda solicitud material exige:
+
+- ConcreteTargetId;
+- capability/intent route;
+- target-owned authorization cuando corresponda;
+- expected/preimage state cuando aplique;
+- idempotency/fence;
+- readback;
+- verification;
+- receipt.
+
+## Instrucción humana reducida
+
+> Entra en LIBRECHAT_OPERATING_CANON, ejecuta bootstrap, adquiere contexto vivo disponible y continúa por el siguiente gap elegible sin repetir trabajo confirmado.

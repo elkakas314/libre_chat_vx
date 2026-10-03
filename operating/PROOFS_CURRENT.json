@@ -1,0 +1,50 @@
+{
+  "schema": "libre-chat-vx.operating-proofs.v1",
+  "snapshot_id": "source-2026-10-03-fad1564a",
+  "proofs": [
+    {
+      "proof_id": "semantic-model-source",
+      "subject": "semantic model v2",
+      "proof_class": "SOURCE_READBACK",
+      "state": "VALID",
+      "verified_at_source_head": "fad1564a41d1f26296bec36cb6f48c0dfe00eec3",
+      "dependency_fingerprint": "gitblob:3227d97bf6f1168d4d572908979db5b0b462fdd2",
+      "dependencies": ["docs/SEMANTIC_MODEL_CURRENT.md"],
+      "evidence_refs": ["commit:fad1564a41d1f26296bec36cb6f48c0dfe00eec3"]
+    },
+    {
+      "proof_id": "nostromo-material-test",
+      "subject": "compiled core/UI tests",
+      "proof_class": "TEST",
+      "state": "STALE",
+      "verified_at_source_head": "94c632762f7afee7d9fa9d0f0c23c80d7494d2d2",
+      "dependency_fingerprint": "STALE_RELEVANT_SOURCE_CHANGED_AFTER_TEST",
+      "dependencies": [
+        "src/adapters/targetParity.ts",
+        "src/ui/NostromoCockpit.tsx",
+        "src/cockpit/windowRouter.ts",
+        "tests/semantic-contract.test.ts"
+      ],
+      "evidence_refs": ["test:26_PASS@94c632762f7afee7d9fa9d0f0c23c80d7494d2d2"]
+    },
+    {
+      "proof_id": "upstream-pin",
+      "subject": "LibreChat upstream source pin",
+      "proof_class": "SOURCE_READBACK",
+      "state": "VALID",
+      "verified_at_source_head": "fad1564a41d1f26296bec36cb6f48c0dfe00eec3",
+      "dependency_fingerprint": "upstream:f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
+      "dependencies": ["UPSTREAM.json", "overlay/UPSTREAM_INTEGRATION_MAP.json"],
+      "evidence_refs": ["upstream:f10b1d91f1eee3a2c82d5247bf620351486b7c1b"]
+    },
+    {
+      "proof_id": "runtime-live",
+      "subject": "LibreChat current runtime/live binding",
+      "proof_class": "RUNTIME_READBACK",
+      "state": "UNAVAILABLE",
+      "dependency_fingerprint": "NO_LIVE_BINDING_OBSERVED",
+      "dependencies": [],
+      "evidence_refs": []
+    }
+  ]
+}

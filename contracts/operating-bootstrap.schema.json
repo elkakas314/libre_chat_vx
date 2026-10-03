@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "operating-bootstrap.schema.json",
+  "type": "object",
+  "required": ["canon", "target_version", "snapshot_id", "mode", "git", "proofs", "ownership", "closeout"],
+  "properties": {
+    "canon": {"const": "LIBRECHAT_OPERATING_CANON"},
+    "target_version": {"type": "integer", "minimum": 1},
+    "snapshot_id": {"type": "string", "minLength": 1},
+    "evidence_cutoff_head": {"type": "string"},
+    "mode": {"enum": ["SOURCE_ONLY", "LIVE_BOUND"]},
+    "git": {"type": "object"},
+    "runtime": {"type": "object"},
+    "proofs": {"type": "object"},
+    "ownership": {"type": "object"},
+    "eligible_source_only": {"type": "array", "items": {"type": "string"}},
+    "blocked_live": {"type": "array", "items": {"type": "string"}},
+    "do_not_touch": {"type": "array", "items": {"type": "string"}},
+    "closeout": {"enum": ["COMPLETE", "INCOMPLETE"]},
+    "next_action": {"type": "string"}
+  },
+  "additionalProperties": true
+}

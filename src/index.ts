@@ -60,6 +60,10 @@ export * from './cockpit/targetRun';
 export * from './cockpit/shortMemory';
 export * from './artifacts/interactiveArtifact';
 
+export * from './operating/types';
+export * from './operating/reconcile';
+export * from './operating/bootstrap';
+
 export { resolveFocus, participantsForFocus } from './cockpit/currentFocus';
 export type {
   CurrentFocus as CockpitCurrentFocus,

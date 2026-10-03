@@ -1,0 +1,14 @@
+{
+  "schema": "libre-chat-vx.operating-ownership.v1",
+  "snapshot_id": "source-2026-10-03-fad1564a",
+  "mode": "SOURCE_ONLY",
+  "coordination_plane": "NOT_OBSERVED",
+  "scopes": [
+    {
+      "scope": "libre_chat_vx/main",
+      "state": "UNOBSERVED",
+      "reason": "A Git branch or conversation is not an ownership claim."
+    }
+  ],
+  "rule": "Never convert UNOBSERVED to FREE without a real coordination/claim readback."
+}

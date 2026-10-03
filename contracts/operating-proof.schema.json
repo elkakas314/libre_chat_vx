@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "operating-proof.schema.json",
+  "type": "object",
+  "required": ["proof_id", "subject", "proof_class", "state", "dependency_fingerprint", "dependencies", "evidence_refs"],
+  "properties": {
+    "proof_id": {"type": "string", "minLength": 1},
+    "subject": {"type": "string", "minLength": 1},
+    "proof_class": {"enum": ["SOURCE_READBACK", "TEST", "DRIVE_READBACK", "RUNTIME_READBACK", "MATERIAL"]},
+    "state": {"enum": ["VALID", "STALE", "MISSING", "UNAVAILABLE"]},
+    "verified_at_source_head": {"type": ["string", "null"]},
+    "dependency_fingerprint": {"type": "string", "minLength": 1},
+    "dependencies": {"type": "array", "items": {"type": "string"}},
+    "evidence_refs": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}
