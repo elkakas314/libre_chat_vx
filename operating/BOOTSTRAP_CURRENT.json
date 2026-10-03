@@ -2,8 +2,8 @@
   "schema": "libre-chat-vx.operating-bootstrap.v1",
   "canon": "LIBRECHAT_OPERATING_CANON",
   "target_version": 1,
-  "snapshot_id": "source-2026-10-03-fef7b552",
-  "evidence_cutoff_head": "fef7b5521792e50efd64dd3c4af1ed0dff62ef3c",
+  "snapshot_id": "source-2026-10-03-7a9ebc7d",
+  "evidence_cutoff_head": "7a9ebc7da0a172b5c6ff20999ab2b855a5999599",
   "continuity_metadata_may_advance_remote_main": true,
   "mode": "SOURCE_ONLY",
   "runtime": {
@@ -12,26 +12,37 @@
     "vx13_binding": "UNCONFIGURED"
   },
   "git": {
-    "product_source_head_at_cutoff": "fef7b5521792e50efd64dd3c4af1ed0dff62ef3c",
+    "product_source_head_at_cutoff": "7a9ebc7da0a172b5c6ff20999ab2b855a5999599",
     "workspace": "NOT_READ_BY_USER_CONSTRAINT"
   },
   "drive": {
     "operating_canon": "18RUJkUGwF8FDD2Vi4Yq1oywh7OnF5y5GGXmUmRRKK8E",
     "start_here": "1edwdFCitOoWPkVQV3aDWD0wdMnw8zfu8gmoIISeoP7w",
     "vx13_alignment": "1jWGRnP4gQvgKJ7eDTQyZIDdO8yc-pGoU70BNnPxAwO0",
+    "manojos3_interflow_projection": "1do7t2rY6Myiyce9Nrg6t_ReyQKrb1SjRCkZz9k7-Y6w",
+    "vx13_interflow_parity": "1EARZfK7E7VJAyGk1L8sRsA_VeE_yDNXg51PO9HuwVFU",
     "readback": "PASS"
   },
   "proofs": {
-    "valid": ["operating-canon-source-drive", "semantic-model-source", "upstream-pin"],
-    "stale": ["nostromo-material-test"],
-    "unavailable": ["runtime-live"]
+    "valid": [
+      "operating-canon-source-drive",
+      "m3-interflow-projection-source-drive",
+      "semantic-model-source",
+      "upstream-pin"
+    ],
+    "stale": [
+      "nostromo-material-test"
+    ],
+    "unavailable": [
+      "runtime-live"
+    ]
   },
   "ownership": {
     "state": "UNOBSERVED",
     "do_not_assume_free": true
   },
   "eligible_source_only": [
-    "LC-M3-INTERFLOW-PROJECTION"
+    "LC-NATIVE-SURFACE-BINDING"
   ],
   "blocked_live": [
     "LC-CURRENT-HEAD-TESTS",
@@ -51,5 +62,5 @@
     "automatic CURRENT to TARGET mutation"
   ],
   "closeout": "INCOMPLETE",
-  "next_action": "LC-M3-INTERFLOW-PROJECTION"
+  "next_action": "LC-NATIVE-SURFACE-BINDING"
 }

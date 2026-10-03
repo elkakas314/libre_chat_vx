@@ -1,6 +1,6 @@
 {
   "schema": "libre-chat-vx.operating-proofs.v1",
-  "snapshot_id": "source-2026-10-03-fef7b552",
+  "snapshot_id": "source-2026-10-03-7a9ebc7d",
   "proofs": [
     {
       "proof_id": "operating-canon-source-drive",
@@ -23,14 +23,39 @@
       ]
     },
     {
+      "proof_id": "m3-interflow-projection-source-drive",
+      "subject": "MANOJOS3 semantic Interflow projection into LibreChat",
+      "proof_class": "DRIVE_READBACK",
+      "state": "VALID",
+      "verified_at_source_head": "7a9ebc7da0a172b5c6ff20999ab2b855a5999599",
+      "dependency_fingerprint": "m3:cb772cca|semantic:30a63c9c|ops:3bbf760e|audit:253ea095|exec:2637bdbd|lc:7a9ebc7d",
+      "dependencies": [
+        "src/manojos3/interflowProjection.ts",
+        "config/manojos3_interflow_projection.current.json",
+        "src/ui/InterflowLensView.tsx",
+        "docs/MANOJOS3_INTERFLOW_PROJECTION_CURRENT.md",
+        "docs/MANOJOS3_ALIGNMENT_CURRENT.md"
+      ],
+      "evidence_refs": [
+        "commit:7a9ebc7da0a172b5c6ff20999ab2b855a5999599",
+        "manojos3:cb772cca141f7ae5ae03af9655b3c5186f5826f6",
+        "drive:1do7t2rY6Myiyce9Nrg6t_ReyQKrb1SjRCkZz9k7-Y6w",
+        "drive:1EARZfK7E7VJAyGk1L8sRsA_VeE_yDNXg51PO9HuwVFU"
+      ]
+    },
+    {
       "proof_id": "semantic-model-source",
       "subject": "semantic model v2",
       "proof_class": "SOURCE_READBACK",
       "state": "VALID",
       "verified_at_source_head": "fad1564a41d1f26296bec36cb6f48c0dfe00eec3",
       "dependency_fingerprint": "gitblob:3227d97bf6f1168d4d572908979db5b0b462fdd2",
-      "dependencies": ["docs/SEMANTIC_MODEL_CURRENT.md"],
-      "evidence_refs": ["commit:fad1564a41d1f26296bec36cb6f48c0dfe00eec3"]
+      "dependencies": [
+        "docs/SEMANTIC_MODEL_CURRENT.md"
+      ],
+      "evidence_refs": [
+        "commit:fad1564a41d1f26296bec36cb6f48c0dfe00eec3"
+      ]
     },
     {
       "proof_id": "nostromo-material-test",
@@ -43,9 +68,12 @@
         "src/adapters/targetParity.ts",
         "src/ui/NostromoCockpit.tsx",
         "src/cockpit/windowRouter.ts",
-        "tests/semantic-contract.test.ts"
+        "tests/semantic-contract.test.ts",
+        "tests/manojos3-interflow.test.ts"
       ],
-      "evidence_refs": ["test:26_PASS@94c632762f7afee7d9fa9d0f0c23c80d7494d2d2"]
+      "evidence_refs": [
+        "test:26_PASS@94c632762f7afee7d9fa9d0f0c23c80d7494d2d2"
+      ]
     },
     {
       "proof_id": "upstream-pin",
@@ -54,8 +82,13 @@
       "state": "VALID",
       "verified_at_source_head": "fad1564a41d1f26296bec36cb6f48c0dfe00eec3",
       "dependency_fingerprint": "upstream:f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
-      "dependencies": ["UPSTREAM.json", "overlay/UPSTREAM_INTEGRATION_MAP.json"],
-      "evidence_refs": ["upstream:f10b1d91f1eee3a2c82d5247bf620351486b7c1b"]
+      "dependencies": [
+        "UPSTREAM.json",
+        "overlay/UPSTREAM_INTEGRATION_MAP.json"
+      ],
+      "evidence_refs": [
+        "upstream:f10b1d91f1eee3a2c82d5247bf620351486b7c1b"
+      ]
     },
     {
       "proof_id": "runtime-live",

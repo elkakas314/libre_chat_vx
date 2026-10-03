@@ -9,18 +9,26 @@ Canonical Drive Operating Canon: `18RUJkUGwF8FDD2Vi4Yq1oywh7OnF5y5GGXmUmRRKK8E`.
 2. Read `operating/BOOTSTRAP_CURRENT.json`.
 3. Read `operating/HANDOFF_CURRENT.md`.
 4. Verify GitHub `main` and classify changes after `evidence_cutoff_head`; continuity-only metadata does not automatically stale product proofs.
-5. Verify the Drive Operating Canon/revisions when continuity is in question.
+5. Verify Drive readbacks when continuity is in question.
 6. If a live binding is available and permitted, acquire runtime/readback; otherwise remain `SOURCE_ONLY`.
 7. Derive CURRENT/DELTA/PROOFS/OWNERSHIP/GATES.
 8. Calculate every eligible gap.
 9. Continue with the highest-priority independent eligible gap.
 10. Read historical conversations only for a specific evidence hole.
 
+## MANOJOS3 projection rule
+
+Use:
+
+`domain → intent family → Interflow → operation → internal driver capability → verifier/receipt`
+
+Never use a capability count as the functional ceiling.
+
 ## Current next eligible
 
-`LC-M3-INTERFLOW-PROJECTION`
+`LC-NATIVE-SURFACE-BINDING`
 
-Use MANOJOS3 Intent/Interflow semantics + operation matrix + capabilities. Do not use capability count as the ceiling.
+Reuse native LibreChat surfaces before adding custom overlay code.
 
 ## Hard restriction
 

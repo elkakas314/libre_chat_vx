@@ -37,6 +37,36 @@
     "vx13_librechat_operating_alignment_drive": {
       "document_id": "1jWGRnP4gQvgKJ7eDTQyZIDdO8yc-pGoU70BNnPxAwO0",
       "revision_id": "ANLCKQlI_JzFGIsK0-q-P7S6LoNBApD2x5ci4cEbmGVvulLdOJmMfH5gtOmL8J8aXQ6p2AacGarENUtwk11ezaqpHx3ulhRuf2m5J-EnsWY"
+    },
+    "manojos3_current_source": {
+      "repository": "elkakas314/manojos3",
+      "head": "cb772cca141f7ae5ae03af9655b3c5186f5826f6",
+      "semantic_matrix": {
+        "path": "docs/flows/SEMANTIC_MATRIX_CANONICAL_CURRENT.json",
+        "blob_sha": "30a63c9c359e46a2743f711c2d5e1a5bd031a45e",
+        "internal_source_head": "e910fce958d9b7660ce0618ae7578a647016ee75"
+      },
+      "operation_matrix": {
+        "path": "docs/capabilities/OPERATION_MATRIX_CURRENT.json",
+        "blob_sha": "3bbf760e4b00aadd7716b263ba5b2009dbfdaa8c"
+      },
+      "runtime_audit": {
+        "path": "docs/flows/INTENT_RUNTIME_AUDIT_CURRENT.json",
+        "blob_sha": "253ea095dd26a73c1c749eddc7a4deb4d2a350a8"
+      },
+      "capability_execution_matrix": {
+        "path": "docs/CAPABILITY_EXECUTION_MATRIX.json",
+        "blob_sha": "2637bdbdf746f3d96ee529dc146d5e052c28b930",
+        "rows": 252
+      }
+    },
+    "librechat_manojos3_interflow_drive": {
+      "document_id": "1do7t2rY6Myiyce9Nrg6t_ReyQKrb1SjRCkZz9k7-Y6w",
+      "revision_id": "AHj4eMS8tWqAmtSJmGz-I0wbILp69DalGSV7uWzjAuefW-g5W7WwamkV7GMnA1W-R_3ePkRAb0KA6UxzZairle6c0Dw4B98Yw0clGsWef7Q"
+    },
+    "vx13_interflow_parity_drive": {
+      "document_id": "1EARZfK7E7VJAyGk1L8sRsA_VeE_yDNXg51PO9HuwVFU",
+      "revision_id": "AHj4eMTJSwT69J6YVMi6mwAPa_XeBN1SxzdoQNR-wvzUclxg2RGf61yqGxf3l5DGBmeSpN0P116iZ9Vq_DH_56JkMsC4dF1WjpUwinClHM0"
     }
   },
   "operating_canon": {

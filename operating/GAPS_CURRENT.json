@@ -1,6 +1,6 @@
 {
   "schema": "libre-chat-vx.operating-gaps.v1",
-  "snapshot_id": "source-2026-10-03-fef7b552",
+  "snapshot_id": "source-2026-10-03-7a9ebc7d",
   "gaps": [
     {
       "gap_id": "LC-OPERATING-CANON",
@@ -19,23 +19,34 @@
     },
     {
       "gap_id": "LC-CURRENT-HEAD-TESTS",
-      "summary": "Revalidate current source after semantic/operating changes",
+      "summary": "Revalidate current source after semantic/operating/Interflow changes",
       "state": "STALE_PROOF",
       "priority": 10,
       "scope": "source_tests",
       "requires_live": true,
-      "dependencies": ["LC-OPERATING-CANON"],
+      "dependencies": [
+        "LC-OPERATING-CANON",
+        "LC-M3-INTERFLOW-PROJECTION"
+      ],
       "preferred_route": "host_test_when_local_allowed"
     },
     {
       "gap_id": "LC-M3-INTERFLOW-PROJECTION",
       "summary": "Project MANOJOS3 Intent/Interflow semantics and operation matrix into bounded LibreChat lenses; capability count is not the functional ceiling",
-      "state": "OPEN",
+      "state": "PASS",
       "priority": 20,
       "scope": "manojos3_projection",
       "requires_live": false,
-      "dependencies": ["LC-OPERATING-CANON"],
-      "preferred_route": "github_source_read_manojos3_then_libre_chat_vx"
+      "dependencies": [
+        "LC-OPERATING-CANON"
+      ],
+      "preferred_route": "github_source_read_manojos3_then_libre_chat_vx",
+      "evidence_refs": [
+        "manojos3:cb772cca141f7ae5ae03af9655b3c5186f5826f6",
+        "commit:7a9ebc7da0a172b5c6ff20999ab2b855a5999599",
+        "drive:1do7t2rY6Myiyce9Nrg6t_ReyQKrb1SjRCkZz9k7-Y6w",
+        "drive:1EARZfK7E7VJAyGk1L8sRsA_VeE_yDNXg51PO9HuwVFU"
+      ]
     },
     {
       "gap_id": "LC-M3-R0-BINDING",
@@ -44,7 +55,10 @@
       "priority": 30,
       "scope": "manojos3_binding",
       "requires_live": true,
-      "dependencies": ["LC-CURRENT-HEAD-TESTS", "LC-M3-INTERFLOW-PROJECTION"],
+      "dependencies": [
+        "LC-CURRENT-HEAD-TESTS",
+        "LC-M3-INTERFLOW-PROJECTION"
+      ],
       "preferred_route": "manojos3_existing_control_plane"
     },
     {
@@ -54,17 +68,21 @@
       "priority": 40,
       "scope": "upstream_overlay",
       "requires_live": true,
-      "dependencies": ["LC-CURRENT-HEAD-TESTS"],
+      "dependencies": [
+        "LC-CURRENT-HEAD-TESTS"
+      ],
       "preferred_route": "pinned_upstream_overlay_test"
     },
     {
       "gap_id": "LC-NATIVE-SURFACE-BINDING",
-      "summary": "Wire Nostromo to native Artifacts/MCP UI/ToolApproval/Files/Subagents/background calls without duplicating native surfaces",
+      "summary": "Wire Nostromo source contracts to native Artifacts/MCP UI/ToolApproval/Files/Subagents/background calls without duplicating native surfaces",
       "state": "OPEN",
       "priority": 50,
       "scope": "librechat_native",
       "requires_live": false,
-      "dependencies": ["LC-M3-INTERFLOW-PROJECTION"],
+      "dependencies": [
+        "LC-M3-INTERFLOW-PROJECTION"
+      ],
       "preferred_route": "minimal_feature_flagged_overlay"
     },
     {
@@ -74,7 +92,9 @@
       "priority": 60,
       "scope": "mobile_recovery",
       "requires_live": false,
-      "dependencies": ["LC-NATIVE-SURFACE-BINDING"],
+      "dependencies": [
+        "LC-NATIVE-SURFACE-BINDING"
+      ],
       "preferred_route": "native_resumable_streams_plus_vx_fences"
     },
     {
@@ -84,7 +104,9 @@
       "priority": 70,
       "scope": "vx13_binding",
       "requires_live": true,
-      "dependencies": ["LC-CURRENT-HEAD-TESTS"],
+      "dependencies": [
+        "LC-CURRENT-HEAD-TESTS"
+      ],
       "preferred_route": "vx13_runtime_when_materialized"
     },
     {
@@ -94,7 +116,9 @@
       "priority": 80,
       "scope": "oraculo_advisory",
       "requires_live": true,
-      "dependencies": ["LC-M3-R0-BINDING"],
+      "dependencies": [
+        "LC-M3-R0-BINDING"
+      ],
       "preferred_route": "librechat_to_manojos3_to_oraculo"
     },
     {
@@ -104,7 +128,10 @@
       "priority": 90,
       "scope": "material_mutation",
       "requires_live": true,
-      "dependencies": ["LC-M3-R0-BINDING", "LC-UPSTREAM-OVERLAY-REVALIDATE"],
+      "dependencies": [
+        "LC-M3-R0-BINDING",
+        "LC-UPSTREAM-OVERLAY-REVALIDATE"
+      ],
       "preferred_route": "concrete_target_governed_path"
     },
     {
@@ -114,7 +141,9 @@
       "priority": 100,
       "scope": "host_measurement",
       "requires_live": true,
-      "dependencies": ["LC-UPSTREAM-OVERLAY-REVALIDATE"],
+      "dependencies": [
+        "LC-UPSTREAM-OVERLAY-REVALIDATE"
+      ],
       "preferred_route": "local_measurement_only_when_allowed"
     }
   ]
