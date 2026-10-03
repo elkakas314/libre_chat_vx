@@ -2,44 +2,103 @@
   "schema": "libre-chat-vx.operating-bootstrap.v1",
   "canon": "LIBRECHAT_OPERATING_CANON",
   "target_version": 1,
-  "snapshot_id": "source-2026-10-03-a54b1f66",
-  "evidence_cutoff_head": "a54b1f66327f0b4279f7024c92e70183b51cee14",
+  "snapshot_id": "source-2026-10-03-5f6d0c10",
   "mode": "SOURCE_ONLY",
-  "source_only_closeout": "COMPLETE_NOSTROMO_HYBRID",
-  "active_llm_architecture": "NOSTROMO_HYBRID",
-  "active_llm_architecture_count": 1,
+  "evidence_cutoff_head": "5f6d0c1099ae9cb64f602a4cbbfadd1713e625ad",
+  "git": {
+    "head": "5f6d0c1099ae9cb64f602a4cbbfadd1713e625ad",
+    "origin_main": "ebbd17573d9f3f0e8599728a3540a3ce05ee72ca",
+    "status": "FEATURE_BRANCH_AHEAD_PENDING_VALIDATION"
+  },
   "runtime": {
+    "status": "NO_VERIFICADO",
     "librechat": "NO_VERIFICADO",
     "local_voice": "UNCONFIGURED",
     "manojos3_mcp": "PREPARED_UNCONFIGURED",
     "manojos3_free_reasoner": "SOURCE_CONFLICT_REQUIRES_LIVE_READBACK",
     "vx13_binding": "UNCONFIGURED"
   },
-  "drive": {
-    "start_here_current": "10sokDQr6eFQGSceTl0KYwfVinmF8ixTUz-XG0e8RyjQ",
-    "nostromo_hybrid": "1PqXk7nM8M_arbI472RU5n4T0rFQI1Yt-MH54VSapYc8",
-    "manojos3_gpt_semantic_bridge": "1gAbtU0XISM4GWuspp-6wWEZACAycWtZBqzMrEJUu6y0",
-    "manojos3_entrypoints": "19WZ2DM3pXyIe9-mhyq_3oVXQ63QmvDBf7i720mGW1N4",
-    "vx13_hybrid_parity": "1i_sw3ZYXdu3-wFrmAxTw42PppT6wxMOK8G2jKI4onF8",
-    "readback": "PASS"
+  "proofs": {
+    "valid": [
+      "nostromo-hybrid-source-drive",
+      "m3-gpt-semantic-bridge-source-drive",
+      "tentacle-hud-model-independence"
+    ],
+    "stale": [
+      "nostromo-material-test"
+    ],
+    "missing": [],
+    "unavailable": [
+      "m3-live-binding",
+      "m3-free-reasoner-live"
+    ]
+  },
+  "ownership": {
+    "owned": [],
+    "stale_claims": [],
+    "free": [],
+    "unobserved": [
+      "source_tests",
+      "manojos3_binding",
+      "manojos3_llm_live",
+      "upstream_overlay",
+      "vx13_binding",
+      "material_mutation",
+      "host_measurement"
+    ]
+  },
+  "delta": {
+    "pass": [
+      "LC-OPERATING-CANON",
+      "LC-M3-INTERFLOW-PROJECTION",
+      "LC-NOSTROMO-HYBRID",
+      "LC-M3-GPT-SEMANTIC-BRIDGE",
+      "LC-M3-ENTRYPOINT-CONTRACTS",
+      "LC-NATIVE-SURFACE-BINDING",
+      "LC-MOBILE-RECOVERY"
+    ],
+    "open": [],
+    "stale_proof": [
+      "LC-CURRENT-HEAD-TESTS"
+    ],
+    "reconcile_required": [],
+    "not_tested": [],
+    "owned": [],
+    "blocked_dependency": [
+      "LC-M3-R0-BINDING",
+      "LC-M3-LLM-LIVE-READBACK",
+      "LC-UPSTREAM-OVERLAY-REVALIDATE",
+      "LC-FIRST-R2"
+    ],
+    "external_gates": [
+      "LC-VX13-BINDING"
+    ],
+    "human_gates": [
+      "LC-LOW-POWER-MEASURE"
+    ],
+    "blocked_live": [
+      "LC-CURRENT-HEAD-TESTS"
+    ]
+  },
+  "living_plan": {
+    "eligible": [],
+    "blocked_live": [
+      "LC-CURRENT-HEAD-TESTS"
+    ],
+    "owned_ready": [],
+    "waiting_internal": false
   },
   "eligible_source_only": [],
-  "blocked_or_gated": [
-    "LC-CURRENT-HEAD-TESTS",
-    "LC-M3-R0-BINDING",
-    "LC-M3-LLM-LIVE-READBACK",
-    "LC-UPSTREAM-OVERLAY-REVALIDATE",
-    "LC-VX13-BINDING",
-    "LC-FIRST-R2",
-    "LC-LOW-POWER-MEASURE"
+  "blocked_live": [
+    "LC-CURRENT-HEAD-TESTS"
   ],
   "do_not_touch": [
-    "local host while user restriction remains",
+    "local host without an explicit live/local boundary",
     "MANOJOS3 repository",
     "VX13 repository",
     "secrets",
     "target authority internals"
   ],
   "closeout": "INCOMPLETE",
-  "next_action": "WAIT_FOR_LOCAL_REVALIDATION_PERMISSION_OR_LIVE_BINDING"
+  "next_action": "BIND_LIVE_AND_REVALIDATE"
 }
