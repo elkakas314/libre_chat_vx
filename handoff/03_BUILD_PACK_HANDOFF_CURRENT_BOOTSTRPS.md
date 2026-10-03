@@ -1,0 +1,135 @@
+# BUILD PACK — HANDOFF CURRENT BOOTSTRPS
+
+Objetivo: dejar LibreChat VX listo para ser construido y validado por MANOJOS3 sin duplicar arquitectura ni saltar gates.
+
+## Base
+- branch de pack: `handoff_current_bootstrps`
+- base source candidate: `657e00dcf1c2111f722ca3a8a333fb9efda5abb5`
+- upstream pin: `f10b1d91f1eee3a2c82d5247bf620351486b7c1b`
+- current runtime truth: `NO_VERIFICADO`
+
+## Fase A — identidad y source
+```bash
+git status --short
+git rev-parse HEAD
+git rev-parse origin/main
+node --version
+npm --version
+npm install
+npm test
+```
+PASS sólo si `npm test` pasa sobre el HEAD exacto que se pretende promover.
+
+## Fase B — upstream pin
+Preparar LibreChat upstream como sibling `../upstream`, limpio y exactamente en el pin. No hacer reset destructivo sobre trabajo ajeno.
+
+```bash
+git -C ../upstream rev-parse HEAD
+git -C ../upstream status --short
+npm run verify:upstream
+```
+
+`verify-upstream.mjs` exige commit exacto y cuatro blobs conocidos. Un mismatch es gate, no permiso para parchear a ciegas.
+
+## Fase C — overlay reversible
+```bash
+npm run overlay:install
+cat ../upstream/.librechat-vx-overlay.json
+```
+Readback esperado:
+- `status=OVERLAY_INSTALLED`
+- `upstreamCommit=f10b...`
+- `uiPatch=FEATURE_FLAGGED_SHARED_PANEL`
+- `mutationEnabled=false`
+
+Después ejecutar los tests/build oficiales del upstream necesarios para probar que el patch compila y arranca. No declararlos PASS hasta ejecución real.
+
+Rollback:
+```bash
+npm run overlay:uninstall
+git -C ../upstream status --short
+```
+Readback esperado: `OVERLAY_REMOVED`; verificar working tree.
+
+## Fase D — networking/config
+No copiar `127.0.0.1` a ciegas desde host a container.
+
+Contratos:
+- `MANOJOS3_MCP_URL`: endpoint real alcanzable por LibreChat para MCP.
+- `MANOJOS3_LLM_BASE_URL`: endpoint OpenAI-compatible de LiteLLM M3.
+- secrets: referencias/secret store, nunca repo.
+
+Primero probar red y ACL; después modelo/herramientas.
+
+## Fase E — bootstrap MANOJOS3 R0
+Orden:
+1. migration profile/status/self;
+2. capabilities;
+3. skills;
+4. optional attach;
+5. no submit sólo para “adquirir contexto”.
+
+Luego un objetivo R0 mínimo gobernado; aceptar éxito sólo con run final + readback + verified receipt.
+
+## Fase F — voz local
+No existe modelo canónico fijado.
+Benchmark required:
+- memoria residente idle/active;
+- cold/warm latency;
+- español/referencias cortas;
+- fidelidad al truth envelope;
+- unload/reload;
+- CPU sostenida.
+Comparar al menos un runtime operacional simple (Ollama) y uno de control fino GGUF (llama.cpp server). Promover sólo por evidencia host.
+
+## Fase G — LiteLLM
+Verificar aliases servidos realmente:
+- manojos-general-free
+- manojos-reasoning-free
+- manojos-coding-free
+- manojos-fast-free
+- manojos-long-context-free
+
+Confirmar `paid_fallback=false`. Source config no prueba servicio LIVE.
+
+## Fase H — conversación/HUD
+Canary:
+- chat local;
+- deep reasoning delegado;
+- TargetRun/HUD read-only;
+- Interflow/Capability lenses;
+- ArtifactDock;
+- DecisionInbox;
+- Files/Browser/Audio/Build panels;
+- native ToolApproval/MCP UI;
+- mobile/reconnect;
+- no offline replay.
+
+## Fase I — primer R2
+Sólo después de A-H.
+Target concreto MANOJOS3.
+Una mutación mínima y reversible.
+Cadena: submit -> Governor/Policy -> Kernel -> driver -> readback -> Verifier -> Receipt.
+Timeout ambiguo: STOP_BLIND_RETRY, readback/reconcile.
+
+## Fase J — VX13
+No tocar repo VX13.
+Primero binding R0 con misma shell, slots paritarios y `DISTINCT_TARGET_AUTHORITY`.
+R2 VX13 sólo por Link/Madre/Spawner y gates propios.
+
+## Fase K — ORÁCULO
+Advisory only. Puede aportar diagnóstico/reasoning, nunca autoridad ni receipt material.
+
+## Criterios de aceptación
+Ver `05_TESTS_Y_GATES_LIBRECHAT.md`. El orden de promoción es:
+`SOURCE_TESTS -> UPSTREAM_OVERLAY -> M3_R0 -> MODEL_LIVE -> UX_E2E -> FIRST_R2 -> VX13_BINDING`.
+
+## No construir
+- otro Kernel/Governor/Policy;
+- segundo executor;
+- segundo MCP para M3;
+- segundo frontend;
+- router paralelo a Intent/Interflow;
+- ledger propio de verdad material;
+- paid LLM fallback;
+- offline mutation replay.
