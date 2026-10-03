@@ -6,14 +6,6 @@
       "commit": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
       "tree": "badb948a90643dfb22332b17549b4c598090c9d7"
     },
-    "librechat_drive_master": {
-      "document_id": "1OwadKf4vBKJyRx5Pe3QB2HgjqJlSe2xb52TT7nK3Scc"
-    },
-    "librechat_v7_source": {
-      "document_id": "10gIRe5KVBE3QLcIJYpPEkvaJQOBUcz0iMCID8flOZ4M",
-      "idea_occurrences_indexed": 208,
-      "unique_idea_ids": 112
-    },
     "manojos3_current_source": {
       "repository": "elkakas314/manojos3",
       "head": "cb772cca141f7ae5ae03af9655b3c5186f5826f6",
@@ -21,6 +13,9 @@
       "operation_matrix_blob": "3bbf760e4b00aadd7716b263ba5b2009dbfdaa8c",
       "runtime_audit_blob": "253ea095dd26a73c1c749eddc7a4deb4d2a350a8",
       "capability_execution_matrix_blob": "2637bdbdf746f3d96ee529dc146d5e052c28b930"
+    },
+    "librechat_drive_master": {
+      "document_id": "1OwadKf4vBKJyRx5Pe3QB2HgjqJlSe2xb52TT7nK3Scc"
     },
     "operating_canon_drive": {
       "document_id": "18RUJkUGwF8FDD2Vi4Yq1oywh7OnF5y5GGXmUmRRKK8E"
@@ -31,14 +26,12 @@
     "native_surface_binding_drive": {
       "document_id": "1-of8wyyXRsnKxEckl0sPiFguZO5AyJiBlECyRq2VsEs"
     },
-    "vx13_native_surface_boundaries_drive": {
-      "document_id": "1D8SKuoi25dKkDnBcqAI0mAw6OhlM-7DkKja_jjqDCpk"
+    "mobile_recovery_drive": {
+      "document_id": "1THisMjuDsfvSkGrAu4tMRQq3qUxomjDdC5WkL5FU1ow"
+    },
+    "vx13_mobile_recovery_drive": {
+      "document_id": "1sQQV1tMmHGbqvI3-B5j-DoT50We26WFIGDrEY76y0jo"
     }
-  },
-  "operating_canon": {
-    "name": "LIBRECHAT_OPERATING_CANON",
-    "version": 1,
-    "mode": "SOURCE_ONLY"
   },
   "truth_priority": [
     "READBACK_LIVE",

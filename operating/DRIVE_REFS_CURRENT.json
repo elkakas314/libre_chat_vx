@@ -1,35 +1,31 @@
 {
   "schema": "libre-chat-vx.operating-drive-refs.v1",
   "librechat": {
-    "start_here_initial": {
-      "document_id": "1edwdFCitOoWPkVQV3aDWD0wdMnw8zfu8gmoIISeoP7w",
-      "revision_id": "AHj4eMTYmgX1-kgMqG9Mc5ZzNtyUdLhM1O1segAva_cyZv-tjNscPVWqAmT-D8X5SPQc6F31dg5tyhroU4Yq-_olZG606teArJNVu8K8RRQ"
-    },
     "operating_canon": {
-      "document_id": "18RUJkUGwF8FDD2Vi4Yq1oywh7OnF5y5GGXmUmRRKK8E",
-      "revision_id": "AHj4eMQ-cNMFJn_VNgPKgkvyDjh3_8TE62HfA8avHMcA5k0zhy_xL6nOT-yIoD_97UV8fvqYGmW4v1MV9nRVN_V_fAS8kC8q9TnHPeOudFg"
+      "document_id": "18RUJkUGwF8FDD2Vi4Yq1oywh7OnF5y5GGXmUmRRKK8E"
     },
     "manojos3_interflow_projection": {
-      "document_id": "1do7t2rY6Myiyce9Nrg6t_ReyQKrb1SjRCkZz9k7-Y6w",
-      "revision_id": "AHj4eMS8tWqAmtSJmGz-I0wbILp69DalGSV7uWzjAuefW-g5W7WwamkV7GMnA1W-R_3ePkRAb0KA6UxzZairle6c0Dw4B98Yw0clGsWef7Q"
+      "document_id": "1do7t2rY6Myiyce9Nrg6t_ReyQKrb1SjRCkZz9k7-Y6w"
     },
     "native_surface_binding": {
-      "document_id": "1-of8wyyXRsnKxEckl0sPiFguZO5AyJiBlECyRq2VsEs",
-      "revision_id": "AHj4eMSjFSTkzU11BizxiWhI9pRk3vGMfrhetDfzwjm-hTL66Z5g6khAc7E_BKKg8tudJuvmPKZAU93LH3A4ZMjzFXcLPyNDeZAyxdOBF08"
+      "document_id": "1-of8wyyXRsnKxEckl0sPiFguZO5AyJiBlECyRq2VsEs"
+    },
+    "mobile_recovery": {
+      "document_id": "1THisMjuDsfvSkGrAu4tMRQq3qUxomjDdC5WkL5FU1ow"
     }
   },
   "vx13": {
-    "alignment": {
-      "document_id": "1jWGRnP4gQvgKJ7eDTQyZIDdO8yc-pGoU70BNnPxAwO0",
-      "revision_id": "ANLCKQlI_JzFGIsK0-q-P7S6LoNBApD2x5ci4cEbmGVvulLdOJmMfH5gtOmL8J8aXQ6p2AacGarENUtwk11ezaqpHx3ulhRuf2m5J-EnsWY"
+    "operating_alignment": {
+      "document_id": "1jWGRnP4gQvgKJ7eDTQyZIDdO8yc-pGoU70BNnPxAwO0"
     },
     "interflow_parity": {
-      "document_id": "1EARZfK7E7VJAyGk1L8sRsA_VeE_yDNXg51PO9HuwVFU",
-      "revision_id": "AHj4eMTJSwT69J6YVMi6mwAPa_XeBN1SxzdoQNR-wvzUclxg2RGf61yqGxf3l5DGBmeSpN0P116iZ9Vq_DH_56JkMsC4dF1WjpUwinClHM0"
+      "document_id": "1EARZfK7E7VJAyGk1L8sRsA_VeE_yDNXg51PO9HuwVFU"
     },
     "native_surface_boundaries": {
-      "document_id": "1D8SKuoi25dKkDnBcqAI0mAw6OhlM-7DkKja_jjqDCpk",
-      "revision_id": "AHj4eMQKF1kgNo1ALhh2pZgxrwxRjMEsTLy0CAhjMkVyRijf_W6cNCRNXkA4OyFipTW-ZnfxORlCNptSyrQOUmdygyqW65ta324Mc9CGFwI"
+      "document_id": "1D8SKuoi25dKkDnBcqAI0mAw6OhlM-7DkKja_jjqDCpk"
+    },
+    "mobile_recovery_boundaries": {
+      "document_id": "1sQQV1tMmHGbqvI3-B5j-DoT50We26WFIGDrEY76y0jo"
     }
   },
   "readback": "PASS",

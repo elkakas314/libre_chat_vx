@@ -2,26 +2,26 @@
   "schema": "libre-chat-vx.operating-bootstrap.v1",
   "canon": "LIBRECHAT_OPERATING_CANON",
   "target_version": 1,
-  "snapshot_id": "source-2026-10-03-587090f7",
-  "evidence_cutoff_head": "587090f7fea2d5fd6ef94fa470458009bfd136dc",
+  "snapshot_id": "source-2026-10-03-62815f4a",
+  "evidence_cutoff_head": "62815f4a8378c60e268e9ae4daff4cbe32e711e3",
   "continuity_metadata_may_advance_remote_main": true,
   "mode": "SOURCE_ONLY",
+  "source_only_closeout": "COMPLETE",
   "runtime": {
     "librechat": "NO_VERIFICADO",
     "manojos3_binding": "PREPARED_UNCONFIGURED",
     "vx13_binding": "UNCONFIGURED"
   },
   "git": {
-    "product_source_head_at_cutoff": "587090f7fea2d5fd6ef94fa470458009bfd136dc",
+    "product_source_head_at_cutoff": "62815f4a8378c60e268e9ae4daff4cbe32e711e3",
     "workspace": "NOT_READ_BY_USER_CONSTRAINT"
   },
   "drive": {
     "operating_canon": "18RUJkUGwF8FDD2Vi4Yq1oywh7OnF5y5GGXmUmRRKK8E",
-    "start_here_initial": "1edwdFCitOoWPkVQV3aDWD0wdMnw8zfu8gmoIISeoP7w",
-    "manojos3_interflow_projection": "1do7t2rY6Myiyce9Nrg6t_ReyQKrb1SjRCkZz9k7-Y6w",
-    "vx13_interflow_parity": "1EARZfK7E7VJAyGk1L8sRsA_VeE_yDNXg51PO9HuwVFU",
+    "interflow": "1do7t2rY6Myiyce9Nrg6t_ReyQKrb1SjRCkZz9k7-Y6w",
     "native_surface_binding": "1-of8wyyXRsnKxEckl0sPiFguZO5AyJiBlECyRq2VsEs",
-    "vx13_native_surface_boundaries": "1D8SKuoi25dKkDnBcqAI0mAw6OhlM-7DkKja_jjqDCpk",
+    "mobile_recovery": "1THisMjuDsfvSkGrAu4tMRQq3qUxomjDdC5WkL5FU1ow",
+    "vx13_mobile_boundaries": "1sQQV1tMmHGbqvI3-B5j-DoT50We26WFIGDrEY76y0jo",
     "readback": "PASS"
   },
   "proofs": {
@@ -29,6 +29,7 @@
       "operating-canon-source-drive",
       "m3-interflow-projection-source-drive",
       "native-surface-binding-source-drive",
+      "mobile-recovery-source-drive",
       "semantic-model-source",
       "upstream-pin"
     ],
@@ -43,10 +44,8 @@
     "state": "UNOBSERVED",
     "do_not_assume_free": true
   },
-  "eligible_source_only": [
-    "LC-MOBILE-RECOVERY"
-  ],
-  "blocked_live": [
+  "eligible_source_only": [],
+  "blocked_or_gated": [
     "LC-CURRENT-HEAD-TESTS",
     "LC-M3-R0-BINDING",
     "LC-UPSTREAM-OVERLAY-REVALIDATE",
@@ -64,5 +63,5 @@
     "automatic CURRENT to TARGET mutation"
   ],
   "closeout": "INCOMPLETE",
-  "next_action": "LC-MOBILE-RECOVERY"
+  "next_action": "WAIT_FOR_LOCAL_REVALIDATION_PERMISSION_OR_LIVE_BINDING"
 }

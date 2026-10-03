@@ -1,11 +1,12 @@
 {
   "schema": "libre-chat-vx.current.v1",
-  "status": "NATIVE_SURFACE_BINDING_SOURCE_DRIVE_SYNCED",
+  "status": "SOURCE_ONLY_CLOSEOUT_COMPLETE_PENDING_LIVE_REVALIDATION",
   "repository": "elkakas314/libre_chat_vx",
   "upstream_commit": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
   "operating_canon": "LIBRECHAT_OPERATING_CANON_V1",
   "operating_mode": "SOURCE_ONLY",
-  "operating_snapshot": "source-2026-10-03-587090f7",
+  "operating_snapshot": "source-2026-10-03-62815f4a",
+  "source_only_closeout": "COMPLETE",
   "semantic_model": "RECONCILED_V2",
   "target_ids": [
     "VX13",
@@ -17,8 +18,7 @@
   "manojos3_operation_gateways": 6,
   "manojos3_capability_execution_rows": 252,
   "native_surface_bindings": 9,
-  "native_surface_binding_drive": "1-of8wyyXRsnKxEckl0sPiFguZO5AyJiBlECyRq2VsEs",
-  "vx13_native_surface_boundaries_drive": "1D8SKuoi25dKkDnBcqAI0mAw6OhlM-7DkKja_jjqDCpk",
+  "mobile_recovery": "IMPLEMENTED_SOURCE",
   "last_material_tested_commit": "94c632762f7afee7d9fa9d0f0c23c80d7494d2d2",
   "last_material_test_result": "26_PASS",
   "current_commit_tests": "NOT_RUN_GITHUB_ONLY",
@@ -26,5 +26,5 @@
   "live": "NO_VERIFICADO",
   "material_verified": false,
   "local_touched_by_current_work": false,
-  "next_action": "LC-MOBILE-RECOVERY"
+  "next_action": "WAIT_FOR_LOCAL_REVALIDATION_PERMISSION_OR_LIVE_BINDING"
 }

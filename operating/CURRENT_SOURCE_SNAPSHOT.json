@@ -1,25 +1,18 @@
 {
   "schema": "libre-chat-vx.operating-current.v1",
-  "snapshot_id": "source-2026-10-03-7a9ebc7d",
+  "snapshot_id": "source-2026-10-03-62815f4a",
   "mode": "SOURCE_ONLY",
-  "evidence_cutoff_head": "7a9ebc7da0a172b5c6ff20999ab2b855a5999599",
-  "remote_main_at_cutoff": "7a9ebc7da0a172b5c6ff20999ab2b855a5999599",
+  "evidence_cutoff_head": "62815f4a8378c60e268e9ae4daff4cbe32e711e3",
+  "remote_main_at_cutoff": "62815f4a8378c60e268e9ae4daff4cbe32e711e3",
   "upstream_pin": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
+  "source_only_closeout": "COMPLETE",
   "source_state": {
     "semantic_model": "RECONCILED_V2",
     "nostromo_source": "IMPLEMENTED",
-    "interactive_artifacts_source": "IMPLEMENTED",
-    "native_surface_map": "IMPLEMENTED_SOURCE_NOT_BOUND",
-    "target_parity": "IMPLEMENTED_SOURCE",
-    "operating_canon": "SOURCE_AND_DRIVE_SYNCED",
-    "manojos3_interflow_projection": "IMPLEMENTED_SOURCE_AND_DRIVE_SYNCED"
-  },
-  "manojos3_source": {
-    "head": "cb772cca141f7ae5ae03af9655b3c5186f5826f6",
-    "semantic_domains": 31,
-    "operation_gateways": 6,
-    "capability_execution_rows": 252,
-    "projection_rule": "DOMAIN_THEN_INTENT_FAMILY_THEN_OPERATION_THEN_INTERNAL_DRIVER"
+    "manojos3_interflow_projection": "IMPLEMENTED_SOURCE_AND_DRIVE_SYNCED",
+    "native_surface_binding": "IMPLEMENTED_SOURCE_AND_DRIVE_SYNCED",
+    "mobile_recovery": "IMPLEMENTED_SOURCE_AND_DRIVE_SYNCED",
+    "operating_canon": "SOURCE_AND_DRIVE_SYNCED"
   },
   "runtime_state": {
     "librechat": "NO_VERIFICADO",

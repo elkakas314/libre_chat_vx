@@ -1,6 +1,6 @@
 {
   "schema": "libre-chat-vx.operating-gaps.v1",
-  "snapshot_id": "source-2026-10-03-587090f7",
+  "snapshot_id": "source-2026-10-03-62815f4a",
   "gaps": [
     {
       "gap_id": "LC-OPERATING-CANON",
@@ -13,13 +13,12 @@
       "preferred_route": "github_and_drive_source",
       "evidence_refs": [
         "commit:fef7b5521792e50efd64dd3c4af1ed0dff62ef3c",
-        "drive:18RUJkUGwF8FDD2Vi4Yq1oywh7OnF5y5GGXmUmRRKK8E",
-        "drive:1edwdFCitOoWPkVQV3aDWD0wdMnw8zfu8gmoIISeoP7w"
+        "drive:18RUJkUGwF8FDD2Vi4Yq1oywh7OnF5y5GGXmUmRRKK8E"
       ]
     },
     {
       "gap_id": "LC-CURRENT-HEAD-TESTS",
-      "summary": "Revalidate current source after semantic/operating/Interflow/native-surface changes",
+      "summary": "Revalidate current source after semantic/operating/Interflow/native/mobile changes",
       "state": "STALE_PROOF",
       "priority": 10,
       "scope": "source_tests",
@@ -27,13 +26,14 @@
       "dependencies": [
         "LC-OPERATING-CANON",
         "LC-M3-INTERFLOW-PROJECTION",
-        "LC-NATIVE-SURFACE-BINDING"
+        "LC-NATIVE-SURFACE-BINDING",
+        "LC-MOBILE-RECOVERY"
       ],
       "preferred_route": "host_test_when_local_allowed"
     },
     {
       "gap_id": "LC-M3-INTERFLOW-PROJECTION",
-      "summary": "Project MANOJOS3 Intent/Interflow semantics and operation matrix into bounded LibreChat lenses",
+      "summary": "Project MANOJOS3 Intent/Interflow semantics into bounded LibreChat lenses",
       "state": "PASS",
       "priority": 20,
       "scope": "manojos3_projection",
@@ -43,10 +43,8 @@
       ],
       "preferred_route": "github_source_read_manojos3_then_libre_chat_vx",
       "evidence_refs": [
-        "manojos3:cb772cca141f7ae5ae03af9655b3c5186f5826f6",
         "commit:7a9ebc7da0a172b5c6ff20999ab2b855a5999599",
-        "drive:1do7t2rY6Myiyce9Nrg6t_ReyQKrb1SjRCkZz9k7-Y6w",
-        "drive:1EARZfK7E7VJAyGk1L8sRsA_VeE_yDNXg51PO9HuwVFU"
+        "drive:1do7t2rY6Myiyce9Nrg6t_ReyQKrb1SjRCkZz9k7-Y6w"
       ]
     },
     {
@@ -64,7 +62,7 @@
     },
     {
       "gap_id": "LC-UPSTREAM-OVERLAY-REVALIDATE",
-      "summary": "Revalidate Nostromo overlay against pinned LibreChat upstream after current source changes",
+      "summary": "Revalidate current Nostromo overlay against pinned LibreChat upstream after source changes",
       "state": "NOT_TESTED",
       "priority": 40,
       "scope": "upstream_overlay",
@@ -87,22 +85,25 @@
       "preferred_route": "minimal_feature_flagged_overlay",
       "evidence_refs": [
         "commit:587090f7fea2d5fd6ef94fa470458009bfd136dc",
-        "upstream:f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
-        "drive:1-of8wyyXRsnKxEckl0sPiFguZO5AyJiBlECyRq2VsEs",
-        "drive:1D8SKuoi25dKkDnBcqAI0mAw6OhlM-7DkKja_jjqDCpk"
+        "drive:1-of8wyyXRsnKxEckl0sPiFguZO5AyJiBlECyRq2VsEs"
       ]
     },
     {
       "gap_id": "LC-MOBILE-RECOVERY",
-      "summary": "PC/mobile same history, reconnect/resumable streams, offline read-only and no effect replay",
-      "state": "OPEN",
+      "summary": "PC/mobile same history, native resume/reconnect, offline read-only and no target effect replay",
+      "state": "PASS",
       "priority": 60,
       "scope": "mobile_recovery",
       "requires_live": false,
       "dependencies": [
         "LC-NATIVE-SURFACE-BINDING"
       ],
-      "preferred_route": "native_resumable_streams_plus_vx_fences"
+      "preferred_route": "native_resumable_streams_plus_vx_fences",
+      "evidence_refs": [
+        "commit:62815f4a8378c60e268e9ae4daff4cbe32e711e3",
+        "drive:1THisMjuDsfvSkGrAu4tMRQq3qUxomjDdC5WkL5FU1ow",
+        "drive:1sQQV1tMmHGbqvI3-B5j-DoT50We26WFIGDrEY76y0jo"
+      ]
     },
     {
       "gap_id": "LC-VX13-BINDING",

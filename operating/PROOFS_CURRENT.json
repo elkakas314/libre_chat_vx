@@ -1,66 +1,78 @@
 {
   "schema": "libre-chat-vx.operating-proofs.v1",
-  "snapshot_id": "source-2026-10-03-587090f7",
+  "snapshot_id": "source-2026-10-03-62815f4a",
   "proofs": [
     {
       "proof_id": "operating-canon-source-drive",
-      "subject": "Operating Canon persisted in GitHub and canonical Drive folders",
+      "subject": "Operating Canon persisted in GitHub and Drive",
       "proof_class": "DRIVE_READBACK",
       "state": "VALID",
       "verified_at_source_head": "fef7b5521792e50efd64dd3c4af1ed0dff62ef3c",
-      "dependency_fingerprint": "repo:fef7b552|drive:18RUJkUG|start:1edwdFCi|vx13:1jWGRnP4",
+      "dependency_fingerprint": "repo:fef7b552|drive:18RUJkUG",
       "dependencies": [
         "operating/LIBRECHAT_OPERATING_CANON.md",
         "operating/BOOTSTRAP_CURRENT.json",
-        "operating/HANDOFF_CURRENT.md",
-        "operating/START_HERE_GPT.md"
+        "operating/HANDOFF_CURRENT.md"
       ],
       "evidence_refs": [
         "commit:fef7b5521792e50efd64dd3c4af1ed0dff62ef3c",
-        "drive:18RUJkUGwF8FDD2Vi4Yq1oywh7OnF5y5GGXmUmRRKK8E",
-        "drive:1edwdFCitOoWPkVQV3aDWD0wdMnw8zfu8gmoIISeoP7w",
-        "drive:1jWGRnP4gQvgKJ7eDTQyZIDdO8yc-pGoU70BNnPxAwO0"
+        "drive:18RUJkUGwF8FDD2Vi4Yq1oywh7OnF5y5GGXmUmRRKK8E"
       ]
     },
     {
       "proof_id": "m3-interflow-projection-source-drive",
-      "subject": "MANOJOS3 semantic Interflow projection into LibreChat",
+      "subject": "MANOJOS3 Interflow projection",
       "proof_class": "DRIVE_READBACK",
       "state": "VALID",
       "verified_at_source_head": "7a9ebc7da0a172b5c6ff20999ab2b855a5999599",
-      "dependency_fingerprint": "m3:cb772cca|semantic:30a63c9c|ops:3bbf760e|audit:253ea095|exec:2637bdbd|lc:7a9ebc7d",
+      "dependency_fingerprint": "m3:cb772cca|lc:7a9ebc7d",
       "dependencies": [
         "src/manojos3/interflowProjection.ts",
-        "config/manojos3_interflow_projection.current.json",
-        "src/ui/InterflowLensView.tsx",
         "docs/MANOJOS3_INTERFLOW_PROJECTION_CURRENT.md"
       ],
       "evidence_refs": [
         "commit:7a9ebc7da0a172b5c6ff20999ab2b855a5999599",
-        "manojos3:cb772cca141f7ae5ae03af9655b3c5186f5826f6",
         "drive:1do7t2rY6Myiyce9Nrg6t_ReyQKrb1SjRCkZz9k7-Y6w"
       ]
     },
     {
       "proof_id": "native-surface-binding-source-drive",
-      "subject": "Native LibreChat surface binding contracts and exact upstream pins",
+      "subject": "Native LibreChat surface bindings",
       "proof_class": "DRIVE_READBACK",
       "state": "VALID",
       "verified_at_source_head": "587090f7fea2d5fd6ef94fa470458009bfd136dc",
-      "dependency_fingerprint": "lc:587090f7|upstream:f10b1d91|presentation:46a17609|approval:a75d05ec|mcpui:f5bc460d|tools:64fc779b|files:f3b2dbfd|subagents:250d914c|tasks:aa8527ed|resume:67dc162c",
+      "dependency_fingerprint": "lc:587090f7|upstream:f10b1d91",
       "dependencies": [
         "src/librechat/nativeSurfaceBinding.ts",
         "src/librechat/panelArbiter.ts",
         "src/librechat/approvalBridge.ts",
         "src/librechat/resumableBoundary.ts",
-        "src/librechat/accessComposition.ts",
-        "overlay/UPSTREAM_INTEGRATION_MAP.json",
-        "docs/NATIVE_SURFACE_BINDING_CURRENT.md"
+        "overlay/UPSTREAM_INTEGRATION_MAP.json"
       ],
       "evidence_refs": [
         "commit:587090f7fea2d5fd6ef94fa470458009bfd136dc",
-        "drive:1-of8wyyXRsnKxEckl0sPiFguZO5AyJiBlECyRq2VsEs",
-        "drive:1D8SKuoi25dKkDnBcqAI0mAw6OhlM-7DkKja_jjqDCpk"
+        "drive:1-of8wyyXRsnKxEckl0sPiFguZO5AyJiBlECyRq2VsEs"
+      ]
+    },
+    {
+      "proof_id": "mobile-recovery-source-drive",
+      "subject": "Mobile/recovery no-replay source implementation",
+      "proof_class": "DRIVE_READBACK",
+      "state": "VALID",
+      "verified_at_source_head": "62815f4a8378c60e268e9ae4daff4cbe32e711e3",
+      "dependency_fingerprint": "lc:62815f4a|resume:4dc45d8b|sse:67dc162c",
+      "dependencies": [
+        "src/mobile/mobileContinuity.ts",
+        "src/mobile/mobileRecovery.ts",
+        "src/mobile/offlineDraft.ts",
+        "src/mobile/pushRefresh.ts",
+        "src/mobile/resumeSource.ts",
+        "docs/MOBILE_RECOVERY_CURRENT.md"
+      ],
+      "evidence_refs": [
+        "commit:62815f4a8378c60e268e9ae4daff4cbe32e711e3",
+        "drive:1THisMjuDsfvSkGrAu4tMRQq3qUxomjDdC5WkL5FU1ow",
+        "drive:1sQQV1tMmHGbqvI3-B5j-DoT50We26WFIGDrEY76y0jo"
       ]
     },
     {
@@ -90,7 +102,8 @@
         "src/cockpit/windowRouter.ts",
         "tests/semantic-contract.test.ts",
         "tests/manojos3-interflow.test.ts",
-        "tests/native-surface-binding.test.ts"
+        "tests/native-surface-binding.test.ts",
+        "tests/mobile-recovery.test.ts"
       ],
       "evidence_refs": [
         "test:26_PASS@94c632762f7afee7d9fa9d0f0c23c80d7494d2d2"
@@ -102,7 +115,7 @@
       "proof_class": "SOURCE_READBACK",
       "state": "VALID",
       "verified_at_source_head": "587090f7fea2d5fd6ef94fa470458009bfd136dc",
-      "dependency_fingerprint": "upstream:f10b1d91f1eee3a2c82d5247bf620351486b7c1b|tree:badb948a90643dfb22332b17549b4c598090c9d7",
+      "dependency_fingerprint": "upstream:f10b1d91|tree:badb948a",
       "dependencies": [
         "UPSTREAM.json",
         "overlay/UPSTREAM_INTEGRATION_MAP.json"
