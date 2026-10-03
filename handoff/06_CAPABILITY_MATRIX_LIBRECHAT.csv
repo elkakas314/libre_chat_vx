@@ -1,0 +1,28 @@
+capability,owner,source_state,live_state,risk,authority,notes
+conversation,LibreChat,IMPLEMENTED_SOURCE,NO_VERIFICADO,GREEN,NONE,Native conversation plane
+nostromo_local_voice,LibreChat,ARCHITECTURE_SOURCE,UNCONFIGURED,GREEN,NONE,Model deployment benchmark required
+deep_reasoning,MANOJOS3_LITELLM,CONTRACT_SOURCE,REQUIRES_LIVE_READBACK,GREEN,NONE,Free aliases; paid fallback forbidden
+governed_objective,MANOJOS3_MCP,PREPARED_SOURCE,PREPARED_UNCONFIGURED,VARIES,M3_GOVERNOR_POLICY_KERNEL,Natural objective
+manojos_status,MANOJOS3_MCP,AVAILABLE_SOURCE,NO_VERIFICADO,GREEN,NONE,Read only
+manojos_capabilities,MANOJOS3_MCP,AVAILABLE_SOURCE,NO_VERIFICADO,GREEN,NONE,Read only
+manojos_skills,MANOJOS3_MCP,AVAILABLE_SOURCE,NO_VERIFICADO,GREEN,NONE,Read only
+librechat_thread_read,MANOJOS3_ADAPTER,INSTALLED_FAIL_CLOSED,UNCONFIGURED,GREEN,M3,Capability R0
+librechat_message_send,MANOJOS3_ADAPTER,INSTALLED_FAIL_CLOSED,UNCONFIGURED,RED,M3,Capability R2 with readback
+tentaculo_hud,LibreChat,IMPLEMENTED_SOURCE,NO_VERIFICADO,GREEN,NONE,Truth from structured target readback
+focus_router,LibreChat,IMPLEMENTED_SOURCE,NO_VERIFICADO,GREEN,NONE,Focus not authority
+artifact_dock,LibreChat,IMPLEMENTED_SOURCE,NO_VERIFICADO,GREEN,NONE,Evidence/receipt presentation
+interactive_artifact,LibreChat,IMPLEMENTED_SOURCE,NO_VERIFICADO,YELLOW,NONE,UI intent only
+tool_approval,LibreChat_native,SOURCE_PINNED,NO_VERIFICADO,YELLOW,NONE,UI approval != target authorization
+mcp_ui,LibreChat_native,SOURCE_PINNED,NO_VERIFICADO,GREEN,NONE,Sandbox renderer
+tools_dropdown,LibreChat_native,SOURCE_WRAPPER_IMPLEMENTED,NO_VERIFICADO,GREEN,NONE,LibreChat permission AND target binding
+files,LibreChat_native,SOURCE_PINNED,NO_VERIFICADO,VARIES,NONE,Read/view green; mutations governed
+subagents,LibreChat_native,SOURCE_PINNED,NO_VERIFICADO,GREEN,NONE,Cognitive only
+background_tasks,LibreChat_native,SOURCE_PINNED,NO_VERIFICADO,GREEN,NONE,Not TargetRun proof
+resumable_streams,LibreChat_native,SOURCE_WRAPPER_IMPLEMENTED,NO_VERIFICADO,GREEN,NONE,Never replay material effects
+mobile_same_history,LibreChat,IMPLEMENTED_SOURCE,NO_VERIFICADO,GREEN,NONE,Same backend/history
+offline_mutation_replay,LibreChat,FORBIDDEN,FORBIDDEN,RED,NONE,Drafts only
+vx13_projection,VX13+LibreChat,DOCUMENTED_CURRENT,UNCONFIGURED,GREEN,NONE,Same external slots distinct authority
+vx13_mutation,VX13,DOCUMENTED_CURRENT,UNCONFIGURED,RED,VX13_MADRE_SPAWNER,Future binding
+oraculo_advisory,ORACULO,DOCUMENTED_SOURCE,NO_VERIFICADO,GREEN,NONE,authority=false
+receipts,Target,CONTRACT_SOURCE,NO_VERIFICADO,GREEN,TARGET_VERIFIER,LibreChat projects refs only
+scheduled_background_mutation,Target,NOT_GRANTED,NO_VERIFICADO,RED,TARGET,Must use target scheduler/governance
