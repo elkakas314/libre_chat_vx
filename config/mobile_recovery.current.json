@@ -1,0 +1,34 @@
+{
+  "schema": "libre-chat-vx.mobile-recovery.v1",
+  "source": {
+    "repository": "LibreChat-AI/LibreChat",
+    "commit": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
+    "resume_on_load": {
+      "path": "client/src/hooks/SSE/useResumeOnLoad.ts",
+      "blob_sha": "4dc45d8bcf756aedb41df9bd60b8c73f76e034dc"
+    },
+    "resumable_sse": {
+      "path": "client/src/hooks/SSE/useResumableSSE.ts",
+      "blob_sha": "67dc162c2651cb59551060857c1d1e528b2a1bfb"
+    }
+  },
+  "surfaces": ["DESKTOP_WEB", "MOBILE_WEB"],
+  "same_backend_history": true,
+  "offline": {
+    "snapshot_mode": "READONLY",
+    "text_draft_only": true,
+    "target_action_outbox": false,
+    "authorization_outbox": false,
+    "automatic_effect_replay": false
+  },
+  "reconnect": {
+    "fresh_acl_required": true,
+    "active_stream_may_resume": true,
+    "possible_target_effect": "UNKNOWN_OUTCOME_THEN_TARGET_READBACK"
+  },
+  "backend_down": "LIBRECHAT_UNAVAILABLE_EVEN_IF_REMOTE_TARGET_RUN_CONTINUES",
+  "voice_authorization": false,
+  "push": "OPAQUE_REF_THEN_FRESH_FETCH",
+  "pwa_assumption": "NO_NATIVE_PWA_REQUIRED",
+  "authority": false
+}

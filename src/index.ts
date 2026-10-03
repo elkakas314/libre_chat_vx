@@ -56,6 +56,12 @@ export * from './librechat/approvalBridge';
 export * from './librechat/resumableBoundary';
 export * from './librechat/accessComposition';
 
+export * from './mobile/mobileContinuity';
+export * from './mobile/mobileRecovery';
+export * from './mobile/offlineDraft';
+export * from './mobile/pushRefresh';
+export * from './mobile/resumeSource';
+
 export { emptyCockpitState } from './runtime/cockpitState';
 export type { CockpitState, TargetRuntimeState } from './runtime/cockpitState';
 export { CockpitReducer } from './runtime/eventReducer';
@@ -105,7 +111,6 @@ export { combineTargetReads } from './discovery/crossTargetRead';
 export { EventDeduper, requiresResync } from './recovery/snapshotResync';
 export { rendererMode } from './cockpit/rendererFailureIsolation';
 export { canUseResource } from './files/externalResourceRef';
-export { mobileLibreChatState } from './mobile/mobileContinuity';
 export { safePrivacyMode } from './cockpit/privacyPresentation';
 export { validateDraftForApply } from './cockpit/controlDraft';
 export { acceptVisualAction } from './security/trustedSurfaceHost';
