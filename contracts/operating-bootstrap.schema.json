@@ -2,22 +2,107 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "operating-bootstrap.schema.json",
   "type": "object",
-  "required": ["canon", "target_version", "snapshot_id", "mode", "git", "proofs", "ownership", "closeout"],
+  "required": [
+    "canon",
+    "target_version",
+    "snapshot_id",
+    "mode",
+    "evidence_cutoff_head",
+    "git",
+    "runtime",
+    "proofs",
+    "ownership",
+    "delta",
+    "living_plan",
+    "eligible_source_only",
+    "blocked_live",
+    "do_not_touch",
+    "closeout"
+  ],
   "properties": {
     "canon": {"const": "LIBRECHAT_OPERATING_CANON"},
     "target_version": {"type": "integer", "minimum": 1},
     "snapshot_id": {"type": "string", "minLength": 1},
-    "evidence_cutoff_head": {"type": "string"},
+    "evidence_cutoff_head": {"type": "string", "minLength": 1},
     "mode": {"enum": ["SOURCE_ONLY", "LIVE_BOUND"]},
-    "git": {"type": "object"},
+    "git": {
+      "type": "object",
+      "properties": {
+        "head": {"type": "string"},
+        "origin_main": {"type": "string"},
+        "clean": {"type": "boolean"},
+        "status": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
     "runtime": {"type": "object"},
-    "proofs": {"type": "object"},
-    "ownership": {"type": "object"},
+    "proofs": {
+      "type": "object",
+      "required": ["valid", "stale", "missing", "unavailable"],
+      "properties": {
+        "valid": {"type": "array", "items": {"type": "string"}},
+        "stale": {"type": "array", "items": {"type": "string"}},
+        "missing": {"type": "array", "items": {"type": "string"}},
+        "unavailable": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "ownership": {
+      "type": "object",
+      "required": ["owned", "stale_claims", "free", "unobserved"],
+      "properties": {
+        "owned": {"type": "array", "items": {"type": "string"}},
+        "stale_claims": {"type": "array", "items": {"type": "string"}},
+        "free": {"type": "array", "items": {"type": "string"}},
+        "unobserved": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "delta": {
+      "type": "object",
+      "required": [
+        "pass",
+        "open",
+        "stale_proof",
+        "reconcile_required",
+        "not_tested",
+        "owned",
+        "blocked_dependency",
+        "external_gates",
+        "human_gates",
+        "blocked_live"
+      ],
+      "properties": {
+        "pass": {"type": "array", "items": {"type": "string"}},
+        "open": {"type": "array", "items": {"type": "string"}},
+        "stale_proof": {"type": "array", "items": {"type": "string"}},
+        "reconcile_required": {"type": "array", "items": {"type": "string"}},
+        "not_tested": {"type": "array", "items": {"type": "string"}},
+        "owned": {"type": "array", "items": {"type": "string"}},
+        "blocked_dependency": {"type": "array", "items": {"type": "string"}},
+        "external_gates": {"type": "array", "items": {"type": "string"}},
+        "human_gates": {"type": "array", "items": {"type": "string"}},
+        "blocked_live": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "living_plan": {
+      "type": "object",
+      "required": ["eligible", "blocked_live", "owned_ready", "waiting_internal"],
+      "properties": {
+        "eligible": {"type": "array", "items": {"type": "string"}},
+        "blocked_live": {"type": "array", "items": {"type": "string"}},
+        "owned_ready": {"type": "array", "items": {"type": "string"}},
+        "waiting_internal": {"type": "boolean"},
+        "next_eligible": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
     "eligible_source_only": {"type": "array", "items": {"type": "string"}},
     "blocked_live": {"type": "array", "items": {"type": "string"}},
     "do_not_touch": {"type": "array", "items": {"type": "string"}},
     "closeout": {"enum": ["COMPLETE", "INCOMPLETE"]},
     "next_action": {"type": "string"}
   },
-  "additionalProperties": true
+  "additionalProperties": false
 }
