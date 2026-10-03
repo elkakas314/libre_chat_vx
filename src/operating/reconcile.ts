@@ -140,8 +140,8 @@ export function buildLivingPlan(
     .filter((gap) => dependenciesSatisfied(gap, gaps))
     .filter((gap) => mode === 'LIVE_BOUND' || !gap.requiresLive)
     .filter((gap) => {
-      const state = gap.state;
-      return ACTIONABLE.has(state) || state === 'OWNED' || state === 'WAITING_INTERNAL';
+      const state = effectiveGapState(gap, gaps, ownership);
+      return ACTIONABLE.has(state) || state === 'OWNED';
     });
 
   const ownedReady = dependencyReady
