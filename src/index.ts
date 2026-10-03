@@ -49,6 +49,13 @@ export { VX13_ADAPTER_STATE, VX13_AUTHORITY_CHAIN, vx13Parity } from './adapters
 
 export * from './manojos3/interflowProjection';
 
+export * from './librechat/nativeSurfaces';
+export * from './librechat/nativeSurfaceBinding';
+export * from './librechat/panelArbiter';
+export * from './librechat/approvalBridge';
+export * from './librechat/resumableBoundary';
+export * from './librechat/accessComposition';
+
 export { emptyCockpitState } from './runtime/cockpitState';
 export type { CockpitState, TargetRuntimeState } from './runtime/cockpitState';
 export { CockpitReducer } from './runtime/eventReducer';

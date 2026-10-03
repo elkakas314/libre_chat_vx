@@ -5,6 +5,7 @@ import type { TentacleHudModel } from '../cockpit/tentacleHud';
 import type { TargetParityTruth } from '../adapters/targetParity';
 import type { CapabilityCatalogItem } from '../cockpit/capabilityLens';
 import type { Manojos3InterflowDomain } from '../manojos3/interflowProjection';
+import type { NativeSurfaceBindingDescriptor } from '../librechat/nativeSurfaceBinding';
 import type { TargetRunProjection } from '../cockpit/targetRun';
 import type { DockItem } from '../cockpit/artifactDock';
 import type { DecisionCard } from '../cockpit/decisionInbox';
@@ -24,6 +25,7 @@ import { ArtifactDockView } from './ArtifactDockView';
 import { ModuleIndexView } from './ModuleIndexView';
 import { InterflowLensView } from './InterflowLensView';
 import { CapabilityLensView } from './CapabilityLensView';
+import { NativeSurfaceStatusView } from './NativeSurfaceStatusView';
 import { TargetRunView } from './TargetRunView';
 import { FilesPanelView } from './FilesPanelView';
 import { AudioPanelView } from './AudioPanelView';
@@ -43,6 +45,7 @@ export interface NostromoCockpitProps {
   artifacts?: DockItem[];
   modules?: ModuleVisualCard[];
   interflowDomains?: readonly Manojos3InterflowDomain[];
+  nativeSurfaceBindings?: readonly NativeSurfaceBindingDescriptor[];
   capabilities?: CapabilityCatalogItem[];
   run?: TargetRunProjection;
   files?: ExternalResourceRef[];
@@ -68,6 +71,7 @@ export function NostromoCockpit(props: NostromoCockpitProps) {
       {has('MODULE_INDEX') ? <ModuleIndexView modules={props.modules ?? []} /> : null}
       {has('INTERFLOW_MAP') ? <InterflowLensView domains={props.interflowDomains ?? []} /> : null}
       {has('CAPABILITY_LENSES') ? <CapabilityLensView capabilities={props.capabilities ?? []} /> : null}
+      {has('NATIVE_SURFACES') ? <NativeSurfaceStatusView bindings={props.nativeSurfaceBindings ?? []} /> : null}
       {has('TARGET_RUN') && props.run ? <TargetRunView run={props.run} /> : null}
       {has('FILES') ? <FilesPanelView resources={props.files ?? []} /> : null}
       {has('AUDIO') ? <AudioPanelView projection={props.audio} /> : null}

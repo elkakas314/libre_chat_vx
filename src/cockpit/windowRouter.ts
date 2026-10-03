@@ -28,6 +28,7 @@ export type CockpitWindow =
   | 'ACTIVE_FLOW'
   | 'INTERFLOW_MAP'
   | 'CAPABILITY_LENSES'
+  | 'NATIVE_SURFACES'
   | 'EVIDENCE'
   | 'FILES'
   | 'AUDIO'
@@ -51,7 +52,7 @@ const TOKENS: ReadonlyArray<[FocusDomain, readonly string[]]> = [
   ['MODEL', ['modelo', 'model', 'llm', 'provider', 'router', 'hermes']],
   ['SECURITY', ['seguridad', 'security', 'permiso', 'acl', 'grant', 'autorización', 'authorization', 'token']],
   ['PLAN', ['plan', 'manifestator', 'dag', 'blueprint', 'evolución', 'evolution', 'composite']],
-  ['LIBRECHAT', ['librechat', 'chat', 'artifact', 'skill', 'subagent']],
+  ['LIBRECHAT', ['librechat', 'chat', 'artifact', 'skill', 'subagent', 'background task', 'tool approval', 'side panel']],
   ['TARGET', ['vx13', 'manojos3', 'target', 'sistema', 'interflow', 'intent']],
 ];
 
@@ -90,7 +91,7 @@ export function windowsForDomain(domain: FocusDomain): CockpitWindow[] {
     THREADS: ['INTERFLOW_MAP', 'CAPABILITY_LENSES', 'ACTIVE_FLOW'],
     HOST: ['INTERFLOW_MAP', 'CAPABILITY_LENSES', 'TARGET_RUN'],
     TOOLBUS: ['INTERFLOW_MAP', 'CAPABILITY_LENSES', 'ACTIVE_FLOW'],
-    LIBRECHAT: ['MODULE_INDEX', 'ARTIFACT_DOCK', 'BACKGROUND_TASKS'],
+    LIBRECHAT: ['MODULE_INDEX', 'NATIVE_SURFACES', 'ARTIFACT_DOCK', 'BACKGROUND_TASKS'],
   };
 
   return [...new Set([...BASE, ...extra[domain]])];

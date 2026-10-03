@@ -1,58 +1,79 @@
 {
-  "schema": "libre-chat-vx.upstream-integration-map.v1",
+  "schema": "libre-chat-vx.upstream-integration-map.v2",
   "upstream": {
     "repository": "LibreChat-AI/LibreChat",
-    "commit": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b"
+    "commit": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
+    "tree": "badb948a90643dfb22332b17549b4c598090c9d7"
   },
-  "native_reuse": [
+  "surface_bindings": [
     {
-      "feature": "DecisionInbox",
-      "paths": [
-        "client/src/components/Chat/approval/Review.tsx",
-        "client/src/components/Chat/Messages/Content/ToolApproval.tsx"
+      "surface": "SIDE_PANEL",
+      "mode": "WRAP_NATIVE",
+      "sources": [
+        ["client/src/components/Chat/Presentation.tsx", "46a176099fa1e6ae1afae709c559a42a19c719fa"],
+        ["client/src/components/SidePanel/SidePanelGroup.tsx", "aa611b145289dd5b03381c0dce200e2bcd5da3a5"]
       ],
-      "rule": "Reuse native approval state and submission. The VX cockpit never mints authority."
+      "rule": "One shared panel. Preserve native Artifact > Subagent priority; Nostromo uses it only when native panel is free."
     },
     {
-      "feature": "TrustedSurfaceHost base",
-      "paths": [
-        "client/src/components/MCPUIResource/Renderer.tsx",
-        "client/src/components/MCPUIResource/plugin.ts"
+      "surface": "TOOL_APPROVAL",
+      "mode": "EVENT_BRIDGE",
+      "sources": [
+        ["client/src/components/Chat/Messages/Content/ToolApproval.tsx", "a75d05ecdf2e21515ba4a6a7a718fc43efc316c3"],
+        ["client/src/components/Chat/Messages/Content/ApprovalContext.tsx", "ed1bf597ea939a88d72a16e2307952080787506e"]
       ],
-      "rule": "Build on the existing sandboxed HTML MCP UI renderer instead of introducing a parallel renderer."
+      "rule": "Reuse approve/reject/edit/respond and resume lifecycle. Native approval never becomes Madre/Policy authorization."
     },
     {
-      "feature": "TargetToolGate",
-      "paths": ["client/src/components/Chat/Input/ToolsDropdown.tsx"],
-      "rule": "Reuse existing permission checks for MCP, skills, file search, web search, code and artifacts."
-    },
-    {
-      "feature": "FilesView",
-      "paths": ["client/src/components/SidePanel/Files/Panel.tsx"],
-      "rule": "Extend the native Files panel while keeping preview/download/edit permissions separate."
-    },
-    {
-      "feature": "Voice",
-      "paths": [
-        "api/server/routes/files/speech/stt.js",
-        "client/src/components/Nav/SettingsTabs/Speech"
+      "surface": "MCP_UI",
+      "mode": "WRAP_NATIVE",
+      "sources": [
+        ["client/src/components/MCPUIResource/Renderer.tsx", "f5bc460d19a51a920be50a269771343fda303365"]
       ],
-      "rule": "Speech is input and presentation only. Voice authorization remains disabled."
+      "rule": "Reuse sandboxed inline text/html renderer; TrustedSurfaceHost adds separate schema/provenance/action gates."
+    },
+    {
+      "surface": "TOOLS_DROPDOWN",
+      "mode": "PROJECTION_ONLY",
+      "sources": [
+        ["client/src/components/Chat/Input/ToolsDropdown.tsx", "64fc779bba4eb2536a5b16e946a2b79d91409b6c"]
+      ],
+      "rule": "Native LibreChat permission AND target capability/binding gate."
+    },
+    {
+      "surface": "FILES",
+      "mode": "WRAP_NATIVE",
+      "sources": [
+        ["client/src/components/SidePanel/Files/Panel.tsx", "f3b2dbfd2cd82e58b1f834d401610befde9ece23"]
+      ],
+      "rule": "Reuse native file listing; external preview/download/edit/delete/move remain per-operation governed."
+    },
+    {
+      "surface": "SUBAGENTS",
+      "mode": "EVENT_BRIDGE",
+      "sources": [
+        ["client/src/components/Chat/Subagents/SubagentThreadPanel.tsx", "250d914cc1afa773b5a86d4cad7b7c3521545022"]
+      ],
+      "rule": "Cognitive child tasks only; never alias to VX13 hija or MANOJOS3 material executor."
+    },
+    {
+      "surface": "BACKGROUND_TASKS",
+      "mode": "EVENT_BRIDGE",
+      "sources": [
+        ["client/src/components/Chat/BackgroundTasks/Section.tsx", "aa8527ed87c645f3e7d2a323999d640cf118778c"]
+      ],
+      "rule": "LibreChat task projection is distinct from TargetRun and cannot prove material completion."
+    },
+    {
+      "surface": "RESUMABLE_STREAMS",
+      "mode": "EVENT_BRIDGE",
+      "sources": [
+        ["client/src/hooks/SSE/useResumableSSE.ts", "67dc162c2651cb59551060857c1d1e528b2a1bfb"]
+      ],
+      "rule": "Resume conversation/tool/subagent UI streams only; never replay target material effects."
     }
   ],
-  "minimal_overlay": [
-    {
-      "feature": "Cockpit side panel",
-      "path": "client/src/components/Chat/Presentation.tsx",
-      "observed_blob_sha": "46a176099fa1e6ae1afae709c559a42a19c719fa",
-      "mode": "FEATURE_FLAGGED_SHARED_PANEL"
-    }
-  ],
-  "conditional": [
-    {
-      "feature": "PWA BackgroundMutationFence",
-      "state": "NO_NATIVE_PWA_SURFACE_CONFIRMED",
-      "rule": "Do not add background mutation replay."
-    }
-  ]
+  "source_state": "SOURCE_BINDINGS_IMPLEMENTED_RUNTIME_UNVERIFIED",
+  "material_overlay": "NOT_REVALIDATED_AFTER_SOURCE_CHANGES",
+  "authority": false
 }
