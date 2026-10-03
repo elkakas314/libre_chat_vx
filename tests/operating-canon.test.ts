@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import { buildBootstrap, closeoutCheck } from '../src/operating/bootstrap';
-import { proofNeedsRevalidation } from '../src/operating/reconcile';
+import { buildLivingPlan, proofNeedsRevalidation } from '../src/operating/reconcile';
 import type { OperatingSnapshot } from '../src/operating/types';
 
 function snapshot(): OperatingSnapshot {
@@ -10,6 +10,8 @@ function snapshot(): OperatingSnapshot {
     snapshotId: 's1',
     mode: 'SOURCE_ONLY',
     evidenceCutoffHead: 'abc',
+    targetVersion: 1,
+    git: { head:'abc', originMain:'abc', clean:true, status:'ALIGNED' },
     doNotTouch: ['local'],
     ownership: [{ scope:'busy', state:'OWNED', ownerRef:'other' }],
     proofs: [
@@ -64,16 +66,63 @@ function snapshot(): OperatingSnapshot {
   };
 }
 
-test('bootstrap skips owned gap and live-only gap in SOURCE_ONLY', () => {
+test('bootstrap emits canonical JSON shape and skips owned/live-only gaps in SOURCE_ONLY', () => {
   const result = buildBootstrap(snapshot());
-  assert.deepEqual(result.eligible, ['source']);
-  assert.equal(result.nextAction, 'source');
+  assert.equal(result.canon, 'LIBRECHAT_OPERATING_CANON');
+  assert.equal(result.target_version, 1);
+  assert.equal(result.snapshot_id, 's1');
+  assert.deepEqual(result.eligible_source_only, ['source']);
+  assert.deepEqual(result.blocked_live, ['live']);
+  assert.deepEqual(result.ownership.owned, ['busy']);
+  assert.equal(result.next_action, 'source');
 });
 
-test('closeout check is pure and reports gaps/proofs', () => {
-  const result = closeoutCheck(snapshot());
+test('dependency-cleared BLOCKED_DEPENDENCY reopens without editing the gap file', () => {
+  const state = snapshot();
+  state.mode = 'LIVE_BOUND';
+  state.gaps = [
+    state.gaps[0],
+    {
+      gapId:'was-blocked',
+      summary:'dependency now satisfied',
+      state:'BLOCKED_DEPENDENCY',
+      priority:1,
+      scope:'ready',
+      requiresLive:true,
+      dependencies:['done'],
+    },
+  ];
+
+  const plan = buildLivingPlan(state.mode, state.gaps, state.ownership);
+  assert.deepEqual(plan.eligible, ['was-blocked']);
+});
+
+test('WAITING_INTERNAL only applies when every dependency-ready actionable gap is owned', () => {
+  const state = snapshot();
+  state.gaps = [state.gaps[0], state.gaps[1]];
+  const plan = buildLivingPlan(state.mode, state.gaps, state.ownership);
+  assert.deepEqual(plan.eligible, []);
+  assert.equal(plan.waitingInternal, true);
+});
+
+test('closeout check is pure and external gates do not become overall COMPLETE', () => {
+  const state = snapshot();
+  state.gaps = [
+    state.gaps[0],
+    {
+      gapId:'external',
+      summary:'external boundary',
+      state:'GATE_EXTERNAL',
+      priority:1,
+      scope:'external',
+      requiresLive:true,
+      dependencies:['done'],
+    },
+  ];
+  const result = closeoutCheck(state);
   assert.equal(result.complete, false);
-  assert.equal(result.openGaps.includes('source'), true);
+  assert.equal(result.internalComplete, true);
+  assert.deepEqual(result.externalGates, ['external']);
 });
 
 test('proof invalidation depends on relevant fingerprint, not global HEAD', () => {
