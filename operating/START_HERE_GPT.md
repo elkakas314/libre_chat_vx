@@ -1,49 +1,27 @@
 # START HERE — GPT
 
-Usa este archivo como primera instrucción para un hilo nuevo.
+Canonical Drive pointer: `1edwdFCitOoWPkVQV3aDWD0wdMnw8zfu8gmoIISeoP7w`.
+Canonical Drive Operating Canon: `18RUJkUGwF8FDD2Vi4Yq1oywh7OnF5y5GGXmUmRRKK8E`.
 
-## Orden
+## Order
 
-1. Lee `operating/TARGET_CANON.json`.
-2. Lee `operating/BOOTSTRAP_CURRENT.json`.
-3. Lee `operating/HANDOFF_CURRENT.md`.
-4. Verifica GitHub `main` actual y compáralo con `evidence_cutoff_head`.
-5. Verifica los Google Docs canónicos listados en SOURCE_MANIFEST cuando la tarea dependa de ellos.
-6. Si existe binding live autorizado, adquiere runtime/readback; si no, permanece `SOURCE_ONLY`.
-7. Deriva CURRENT/DELTA/PROOFS/OWNERSHIP/GATES.
-8. Calcula todos los gaps elegibles.
-9. Continúa por el de mayor prioridad que no esté poseído/bloqueado.
-10. No leas hilos históricos salvo que el Canon marque una evidencia faltante concreta.
+1. Read `operating/TARGET_CANON.json`.
+2. Read `operating/BOOTSTRAP_CURRENT.json`.
+3. Read `operating/HANDOFF_CURRENT.md`.
+4. Verify GitHub `main` and classify changes after `evidence_cutoff_head`; continuity-only metadata does not automatically stale product proofs.
+5. Verify the Drive Operating Canon/revisions when continuity is in question.
+6. If a live binding is available and permitted, acquire runtime/readback; otherwise remain `SOURCE_ONLY`.
+7. Derive CURRENT/DELTA/PROOFS/OWNERSHIP/GATES.
+8. Calculate every eligible gap.
+9. Continue with the highest-priority independent eligible gap.
+10. Read historical conversations only for a specific evidence hole.
 
-## No repetir
+## Current next eligible
 
-Antes de cualquier escritura:
+`LC-M3-INTERFLOW-PROJECTION`
 
-- busca evidencia de que ya fue aplicada;
-- compara dependencia/proof;
-- comprueba remote main;
-- comprueba Drive readback si el gap afecta Drive;
-- si el estado material es UNKNOWN, no repitas a ciegas.
+Use MANOJOS3 Intent/Interflow semantics + operation matrix + capabilities. Do not use capability count as the ceiling.
 
-## No asumir
+## Hard restriction
 
-No inferir:
-
-- runtime LIVE desde código;
-- target readiness desde HTTP/source;
-- authorization desde ToolApproval;
-- material verification desde test/source;
-- ownership desde branch/worktree;
-- VX13 runtime desde Maestro;
-- MANOJOS3 capability surface sólo desde un recuento estático.
-
-## Continuación autónoma
-
-No pedir instrucciones salvo:
-
-- decisión humana real;
-- dato imposible de recuperar;
-- riesgo irreversible;
-- autorización material explícita requerida.
-
-Un bloqueo parcial no detiene gaps independientes.
+Do not touch the local host while the current user restriction remains.

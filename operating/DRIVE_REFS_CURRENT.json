@@ -1,0 +1,21 @@
+{
+  "schema": "libre-chat-vx.operating-drive-refs.v1",
+  "librechat": {
+    "start_here": {
+      "document_id": "1edwdFCitOoWPkVQV3aDWD0wdMnw8zfu8gmoIISeoP7w",
+      "revision_id": "AHj4eMTYmgX1-kgMqG9Mc5ZzNtyUdLhM1O1segAva_cyZv-tjNscPVWqAmT-D8X5SPQc6F31dg5tyhroU4Yq-_olZG606teArJNVu8K8RRQ"
+    },
+    "operating_canon": {
+      "document_id": "18RUJkUGwF8FDD2Vi4Yq1oywh7OnF5y5GGXmUmRRKK8E",
+      "revision_id": "AHj4eMQ-cNMFJn_VNgPKgkvyDjh3_8TE62HfA8avHMcA5k0zhy_xL6nOT-yIoD_97UV8fvqYGmW4v1MV9nRVN_V_fAS8kC8q9TnHPeOudFg"
+    }
+  },
+  "vx13": {
+    "alignment": {
+      "document_id": "1jWGRnP4gQvgKJ7eDTQyZIDdO8yc-pGoU70BNnPxAwO0",
+      "revision_id": "ANLCKQlI_JzFGIsK0-q-P7S6LoNBApD2x5ci4cEbmGVvulLdOJmMfH5gtOmL8J8aXQ6p2AacGarENUtwk11ezaqpHx3ulhRuf2m5J-EnsWY"
+    }
+  },
+  "readback": "PASS",
+  "local_touched": false
+}

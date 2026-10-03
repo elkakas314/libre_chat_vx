@@ -1,16 +1,21 @@
 {
   "schema": "libre-chat-vx.operating-gaps.v1",
-  "snapshot_id": "source-2026-10-03-fad1564a",
+  "snapshot_id": "source-2026-10-03-fef7b552",
   "gaps": [
     {
       "gap_id": "LC-OPERATING-CANON",
-      "summary": "Operating Canon + bootstrap + handoff source",
-      "state": "OPEN",
+      "summary": "Operating Canon + bootstrap + handoff source and Drive continuity",
+      "state": "PASS",
       "priority": 0,
       "scope": "continuity",
       "requires_live": false,
       "dependencies": [],
-      "preferred_route": "github_and_drive_source"
+      "preferred_route": "github_and_drive_source",
+      "evidence_refs": [
+        "commit:fef7b5521792e50efd64dd3c4af1ed0dff62ef3c",
+        "drive:18RUJkUGwF8FDD2Vi4Yq1oywh7OnF5y5GGXmUmRRKK8E",
+        "drive:1edwdFCitOoWPkVQV3aDWD0wdMnw8zfu8gmoIISeoP7w"
+      ]
     },
     {
       "gap_id": "LC-CURRENT-HEAD-TESTS",

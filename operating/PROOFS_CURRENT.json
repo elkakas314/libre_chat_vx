@@ -1,7 +1,27 @@
 {
   "schema": "libre-chat-vx.operating-proofs.v1",
-  "snapshot_id": "source-2026-10-03-fad1564a",
+  "snapshot_id": "source-2026-10-03-fef7b552",
   "proofs": [
+    {
+      "proof_id": "operating-canon-source-drive",
+      "subject": "Operating Canon persisted in GitHub and canonical Drive folders",
+      "proof_class": "DRIVE_READBACK",
+      "state": "VALID",
+      "verified_at_source_head": "fef7b5521792e50efd64dd3c4af1ed0dff62ef3c",
+      "dependency_fingerprint": "repo:fef7b552|drive:18RUJkUG|start:1edwdFCi|vx13:1jWGRnP4",
+      "dependencies": [
+        "operating/LIBRECHAT_OPERATING_CANON.md",
+        "operating/BOOTSTRAP_CURRENT.json",
+        "operating/HANDOFF_CURRENT.md",
+        "operating/START_HERE_GPT.md"
+      ],
+      "evidence_refs": [
+        "commit:fef7b5521792e50efd64dd3c4af1ed0dff62ef3c",
+        "drive:18RUJkUGwF8FDD2Vi4Yq1oywh7OnF5y5GGXmUmRRKK8E",
+        "drive:1edwdFCitOoWPkVQV3aDWD0wdMnw8zfu8gmoIISeoP7w",
+        "drive:1jWGRnP4gQvgKJ7eDTQyZIDdO8yc-pGoU70BNnPxAwO0"
+      ]
+    },
     {
       "proof_id": "semantic-model-source",
       "subject": "semantic model v2",

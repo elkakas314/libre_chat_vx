@@ -1,17 +1,17 @@
 {
   "schema": "libre-chat-vx.current.v1",
-  "status": "OPERATING_CANON_SOURCE_BOOTSTRAP_IN_PROGRESS",
+  "status": "OPERATING_CANON_SOURCE_AND_DRIVE_SYNCED",
   "repository": "elkakas314/libre_chat_vx",
   "upstream_commit": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
   "operating_canon": "LIBRECHAT_OPERATING_CANON_V1",
   "operating_mode": "SOURCE_ONLY",
-  "operating_snapshot": "source-2026-10-03-fad1564a",
+  "operating_snapshot": "source-2026-10-03-fef7b552",
+  "drive_operating_canon": "18RUJkUGwF8FDD2Vi4Yq1oywh7OnF5y5GGXmUmRRKK8E",
+  "drive_start_here": "1edwdFCitOoWPkVQV3aDWD0wdMnw8zfu8gmoIISeoP7w",
   "semantic_model": "RECONCILED_V2",
-  "target_scope_model": "AUTO_BOTH_ARE_READ_VIEW_ONLY",
   "target_ids": ["VX13", "MANOJOS3"],
   "manojos3_priority": "FIRST",
   "manojos3_projection_rule": "INTENT_INTERFLOW_THEN_OPERATION_THEN_CAPABILITY",
-  "oraculo_semantics": "ADVISORY_PROVIDER_NOT_PEER_TARGET",
   "last_material_tested_commit": "94c632762f7afee7d9fa9d0f0c23c80d7494d2d2",
   "last_material_test_result": "26_PASS",
   "current_commit_tests": "NOT_RUN_GITHUB_ONLY",
@@ -19,5 +19,5 @@
   "live": "NO_VERIFICADO",
   "material_verified": false,
   "local_touched_by_current_work": false,
-  "next_action": "PERSIST_AND_READBACK_OPERATING_CANON_IN_DRIVE_THEN_LC_M3_INTERFLOW_PROJECTION"
+  "next_action": "LC-M3-INTERFLOW-PROJECTION"
 }

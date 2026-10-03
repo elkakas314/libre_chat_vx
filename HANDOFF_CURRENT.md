@@ -1,27 +1,31 @@
 # HANDOFF CURRENT
 
-Canonical continuity entry moved to:
+Canonical continuity is now under `operating/`.
 
-- `operating/BOOTSTRAP_CURRENT.json`
-- `operating/HANDOFF_CURRENT.md`
-- `operating/TARGET_CANON.json`
-- `operating/GAPS_CURRENT.json`
-- `operating/PROOFS_CURRENT.json`
+Start with:
 
-## Rule
+1. `operating/START_HERE_GPT.md`
+2. `operating/BOOTSTRAP_CURRENT.json`
+3. `operating/HANDOFF_CURRENT.md`
 
-This root Handoff is a pointer, not authority.
+Drive START HERE:
+`1edwdFCitOoWPkVQV3aDWD0wdMnw8zfu8gmoIISeoP7w`
 
-A new GPT must start with `operating/START_HERE_GPT.md`.
+Drive Operating Canon:
+`18RUJkUGwF8FDD2Vi4Yq1oywh7OnF5y5GGXmUmRRKK8E`
 
 ## Current mode
 
 `SOURCE_ONLY`
 
-No local host was touched by the Operating Canon build.
+No local host was touched.
 
-## Important
+## Proof boundary
 
-The previous `26 PASS` belongs to head `94c632762f7afee7d9fa9d0f0c23c80d7494d2d2`.
+Last executed proof remains `26 PASS @ 94c632762f7afee7d9fa9d0f0c23c80d7494d2d2`.
 
-Relevant source changed afterwards. Current-head material test proof is `STALE_PROOF`, not PASS.
+Current-head tests remain `NOT_RUN` / `STALE_PROOF` for changed dependencies.
+
+## Next eligible
+
+`LC-M3-INTERFLOW-PROJECTION`

@@ -10,13 +10,12 @@
     },
     "librechat_v7_source": {
       "document_id": "10gIRe5KVBE3QLcIJYpPEkvaJQOBUcz0iMCID8flOZ4M",
-      "revision_id": "ANLCKQktb56Sr5XUT1pMUC0gmd7E0KOZLwZLkOjGTZ9JSkPXvv7Pb9uo_rImF8sUveW0xdBwv_zI83hIrVmOl-Q0JlxDfZVSsn5gfiNkvIw",
       "idea_occurrences_indexed": 208,
       "unique_idea_ids": 112
     },
     "vx13_master": {
       "document_id": "1vqdo1WnIOx1tAN543eYrIM0QYU77TeCQ1Q_dk5PDMLg",
-      "direct_write_status": "FAILED_PRECONDITION_CURRENT_SESSION"
+      "direct_write_status": "FAILED_PRECONDITION_PRIOR_SESSION"
     },
     "vx13_librechat_addendum": {
       "document_id": "1i-Dyj_KePeAeQl4d90ZjVQVsmE8Ca-2bGKPHM9vNZO0"
@@ -26,15 +25,33 @@
     },
     "vx13_drive_matrix": {
       "document_id": "1QBtIQibuLew82dxrZ0lPt0MjX3u6Enm1S7GoSEs-IOE"
+    },
+    "librechat_operating_canon_drive": {
+      "document_id": "18RUJkUGwF8FDD2Vi4Yq1oywh7OnF5y5GGXmUmRRKK8E",
+      "revision_id": "AHj4eMQ-cNMFJn_VNgPKgkvyDjh3_8TE62HfA8avHMcA5k0zhy_xL6nOT-yIoD_97UV8fvqYGmW4v1MV9nRVN_V_fAS8kC8q9TnHPeOudFg"
+    },
+    "librechat_operating_start_here_drive": {
+      "document_id": "1edwdFCitOoWPkVQV3aDWD0wdMnw8zfu8gmoIISeoP7w",
+      "revision_id": "AHj4eMTYmgX1-kgMqG9Mc5ZzNtyUdLhM1O1segAva_cyZv-tjNscPVWqAmT-D8X5SPQc6F31dg5tyhroU4Yq-_olZG606teArJNVu8K8RRQ"
+    },
+    "vx13_librechat_operating_alignment_drive": {
+      "document_id": "1jWGRnP4gQvgKJ7eDTQyZIDdO8yc-pGoU70BNnPxAwO0",
+      "revision_id": "ANLCKQlI_JzFGIsK0-q-P7S6LoNBApD2x5ci4cEbmGVvulLdOJmMfH5gtOmL8J8aXQ6p2AacGarENUtwk11ezaqpHx3ulhRuf2m5J-EnsWY"
     }
+  },
+  "operating_canon": {
+    "name": "LIBRECHAT_OPERATING_CANON",
+    "version": 1,
+    "source_commit": "fef7b5521792e50efd64dd3c4af1ed0dff62ef3c",
+    "mode": "SOURCE_ONLY"
   },
   "truth_priority": [
     "READBACK_LIVE",
-    "SOURCE",
-    "CURRENT",
-    "HANDOFF",
-    "BLUEPRINT",
-    "DOCUMENTATION",
+    "REMOTE_SOURCE",
+    "DRIVE_CANONICAL_READBACK",
+    "CURRENT_DERIVED",
+    "HANDOFF_GENERATED",
+    "BLUEPRINT_DOCUMENTATION",
     "MEMORY",
     "INFERENCE"
   ]

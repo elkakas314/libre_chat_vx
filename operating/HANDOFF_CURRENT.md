@@ -6,18 +6,21 @@ Generated/derived continuity summary. This file is not authority.
 
 - canon: `LIBRECHAT_OPERATING_CANON`
 - target_version: `1`
-- snapshot: `source-2026-10-03-fad1564a`
+- snapshot: `source-2026-10-03-fef7b552`
 - mode: `SOURCE_ONLY`
-- evidence_cutoff_head: `fad1564a41d1f26296bec36cb6f48c0dfe00eec3`
+- product-source cutoff: `fef7b5521792e50efd64dd3c4af1ed0dff62ef3c`
+- Drive Operating Canon: `18RUJkUGwF8FDD2Vi4Yq1oywh7OnF5y5GGXmUmRRKK8E`
+- Drive START HERE: `1edwdFCitOoWPkVQV3aDWD0wdMnw8zfu8gmoIISeoP7w`
+- VX13 alignment: `1jWGRnP4gQvgKJ7eDTQyZIDdO8yc-pGoU70BNnPxAwO0`
 
-## Just closed before this Canon
+## Closed
 
 - semantic model reconciled v2;
-- Scope vs ConcreteTarget corrected;
-- path readiness vs material completion corrected;
-- ToolApproval vs target authorization separated;
-- UI intent vs material effect separated;
-- policy/execution/verification authorities split.
+- Operating Canon source created;
+- bootstrap/gaps/proofs/ownership/recovery contracts created;
+- Drive canonical continuity created and read back;
+- START HERE created in LibreChat Drive;
+- VX13 alignment copy created without altering VX13 authority/repo.
 
 ## Material proof
 
@@ -26,7 +29,7 @@ Last executed host proof:
 - head: `94c632762f7afee7d9fa9d0f0c23c80d7494d2d2`
 - result: `26 PASS`
 
-Relevant source changed afterwards, therefore current-head test proof is `STALE_PROOF`, not PASS.
+Relevant source changed afterwards. Current-head test proof is `STALE_PROOF`.
 
 ## Current source truth
 
@@ -40,23 +43,18 @@ Relevant source changed afterwards, therefore current-head test proof is `STALE_
 - VX13 binding: UNCONFIGURED.
 - local host intentionally not touched.
 
-## Current priority
-
-1. close source+Drive bootstrap Canon;
-2. map MANOJOS3 Intent/Interflow and operation semantics, not just capability counts;
-3. when local is allowed, revalidate current source and overlay;
-4. then one governed MANOJOS3 R0 binding/readback;
-5. only after R0 and verification consider R2.
-
 ## Do not repeat
 
 - do not rebuild semantic model;
-- do not treat 134 capabilities as the MANOJOS3 functional ceiling;
+- do not rebuild Operating Canon;
+- do not treat a capability count as the MANOJOS3 functional ceiling;
 - do not build a second frontend/router/kernel/authority;
-- do not reinstall/change local while restriction remains;
+- do not touch local while restriction remains;
 - do not claim current source tests PASS;
 - do not treat VX13 design as runtime.
 
-## Next eligible source gap
+## Next eligible
 
-`LC-M3-INTERFLOW-PROJECTION` after the Operating Canon itself is persisted/read back.
+`LC-M3-INTERFLOW-PROJECTION`
+
+Project MANOJOS3 into LibreChat using Intent/Interflow semantics + operation matrix + capabilities, in that order.
