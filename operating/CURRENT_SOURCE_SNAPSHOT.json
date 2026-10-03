@@ -1,24 +1,27 @@
 {
   "schema": "libre-chat-vx.operating-current.v1",
-  "snapshot_id": "source-2026-10-03-9267b1c9",
+  "snapshot_id": "source-2026-10-03-5f6d0c10",
   "mode": "SOURCE_ONLY",
-  "evidence_cutoff_head": "9267b1c9c5ffe567c067294719c0bc3aee5ddc61",
-  "remote_main_at_cutoff": "9267b1c9c5ffe567c067294719c0bc3aee5ddc61",
+  "evidence_cutoff_head": "5f6d0c1099ae9cb64f602a4cbbfadd1713e625ad",
+  "origin_main_at_cutoff": "ebbd17573d9f3f0e8599728a3540a3ce05ee72ca",
   "upstream_pin": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
-  "source_only_closeout": "COMPLETE_WITH_LLM_PLANE",
+  "active_llm_architecture": "NOSTROMO_HYBRID",
+  "active_llm_architecture_count": 1,
   "source_state": {
     "semantic_model": "RECONCILED_V2",
-    "nostromo_source": "IMPLEMENTED",
+    "nostromo_hybrid": "IMPLEMENTED_SOURCE_AND_DRIVE_SYNCED",
     "manojos3_interflow_projection": "IMPLEMENTED_SOURCE_AND_DRIVE_SYNCED",
+    "manojos3_gpt_semantic_bridge": "IMPLEMENTED_SOURCE_AND_DRIVE_SYNCED",
+    "manojos3_entrypoints": "IMPLEMENTED_SOURCE_AND_DRIVE_SYNCED",
     "native_surface_binding": "IMPLEMENTED_SOURCE_AND_DRIVE_SYNCED",
     "mobile_recovery": "IMPLEMENTED_SOURCE_AND_DRIVE_SYNCED",
-    "llm_plane_topologies": "IMPLEMENTED_SOURCE_AND_DRIVE_SYNCED",
-    "manojos3_entrypoints": "IMPLEMENTED_SOURCE_AND_DRIVE_SYNCED",
-    "operating_canon": "SOURCE_AND_DRIVE_SYNCED"
+    "operating_canon": "RECONCILER_WIRED_ON_FEATURE_BRANCH_UNTESTED"
   },
   "llm_plane": {
-    "topology_count": 5,
+    "architecture": "NOSTROMO_HYBRID",
     "paid_fallback_allowed": false,
+    "local_voice": "DEPLOYMENT_BENCHMARK_REQUIRED",
+    "reasoning_owner": "MANOJOS3_LITELLM",
     "action_plane": "MANOJOS3_MCP",
     "manojos3_action_source_endpoint": "http://127.0.0.1:8790/mcp",
     "manojos3_action_deployment_env": "MANOJOS3_MCP_URL",
@@ -36,11 +39,15 @@
   "tests": {
     "last_material_tested_head": "94c632762f7afee7d9fa9d0f0c23c80d7494d2d2",
     "last_result": "26_PASS",
-    "current_head": "NOT_RUN",
+    "current_branch": "NOT_RUN",
     "proof_state_for_changed_dependencies": "STALE_PROOF"
+  },
+  "ownership": {
+    "state": "UNOBSERVED",
+    "reason": "SOURCE_ONLY_NO_LIVE_COORDINATION_READBACK"
   },
   "local": {
     "touched_by_current_work": false,
-    "workspace_state": "NOT_READ_BY_USER_CONSTRAINT"
+    "workspace_state": "NOT_READ"
   }
 }
