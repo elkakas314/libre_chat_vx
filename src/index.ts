@@ -48,6 +48,11 @@ export { MANOJOS3_FLOW, manojos3Parity } from './adapters/manojos3Contract';
 export { VX13_ADAPTER_STATE, VX13_AUTHORITY_CHAIN, vx13Parity } from './adapters/vx13Contract';
 
 export * from './manojos3/interflowProjection';
+export * from './manojos3/entrypoints';
+export * from './manojos3/submitProjection';
+
+export * from './llm/llmPlane';
+export * from './llm/fallbackPolicy';
 
 export * from './librechat/nativeSurfaces';
 export * from './librechat/nativeSurfaceBinding';

@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "manojos3-entrypoint.schema.json",
+  "type": "object",
+  "required": [
+    "kind",
+    "state",
+    "authority"
+  ],
+  "properties": {
+    "kind": {
+      "enum": [
+        "ACTION_MCP",
+        "INFERENCE_OPENAI_COMPATIBLE",
+        "INTERNAL_ADVISORY_INTERFLOW"
+      ]
+    },
+    "state": {
+      "enum": [
+        "SOURCE_EXISTS_DEPLOYMENT_UNBOUND",
+        "SOURCE_DISCOVERED_LIVE_UNVERIFIED",
+        "SOURCE_INTERNAL_ONLY"
+      ]
+    },
+    "endpoint_env": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "transport": {
+      "type": "string"
+    },
+    "authority": {
+      "const": false
+    }
+  },
+  "additionalProperties": true
+}

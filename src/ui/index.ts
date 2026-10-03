@@ -14,6 +14,7 @@ export * from './ControlDeckView';
 export * from './InterflowLensView';
 export * from './CapabilityLensView';
 export * from './NativeSurfaceStatusView';
+export * from './LLMPlaneView';
 export * from './TargetRunView';
 export * from './InteractiveArtifactView';
 export * from './FilesPanelView';
