@@ -1,10 +1,18 @@
 {
   "schema": "libre-chat-vx.operating-drive-refs.v1",
+  "current_start_here": {
+    "document_id": "1L8hJa91MBVf5NREm1hQV2yPkTWxOGYSQ9xlHCkOZNc4",
+    "revision_id": "AHj4eMSEySFvjB4pbbaolPUoosJ3q0auPCwph96mNzR4vVVAc2y98Xl06G9PRuXi8qFodx2IFXUULVZvL1uPW6fBXL_d5DDiT6j6xGqU4Vc"
+  },
+  "current_snapshot": {
+    "document_id": "11elY3LeQK8pYbnG66dZI85coRKBpoYC0EtJPWV_B1dw",
+    "revision_id": "AHj4eMREY2rNI74u1pHHHXgAFK9uOSVxNq9XOyYTjlhyaWbWWzGe-tPT3Vu7THah6uoCBgKDPxrweRQFGTwYSu2ZDRiNEhTeM_Irqq0wmCo"
+  },
+  "core_canon": {
+    "document_id": "18RUJkUGwF8FDD2Vi4Yq1oywh7OnF5y5GGXmUmRRKK8E"
+  },
   "librechat": {
-    "operating_canon": {
-      "document_id": "18RUJkUGwF8FDD2Vi4Yq1oywh7OnF5y5GGXmUmRRKK8E"
-    },
-    "manojos3_interflow_projection": {
+    "interflow": {
       "document_id": "1do7t2rY6Myiyce9Nrg6t_ReyQKrb1SjRCkZz9k7-Y6w"
     },
     "native_surface_binding": {
@@ -15,9 +23,6 @@
     }
   },
   "vx13": {
-    "operating_alignment": {
-      "document_id": "1jWGRnP4gQvgKJ7eDTQyZIDdO8yc-pGoU70BNnPxAwO0"
-    },
     "interflow_parity": {
       "document_id": "1EARZfK7E7VJAyGk1L8sRsA_VeE_yDNXg51PO9HuwVFU"
     },
@@ -27,6 +32,10 @@
     "mobile_recovery_boundaries": {
       "document_id": "1sQQV1tMmHGbqvI3-B5j-DoT50We26WFIGDrEY76y0jo"
     }
+  },
+  "superseded_start_here": {
+    "document_id": "1edwdFCitOoWPkVQV3aDWD0wdMnw8zfu8gmoIISeoP7w",
+    "state": "SUPERSEDED_BY_CURRENT_START_HERE"
   },
   "readback": "PASS",
   "local_touched": false

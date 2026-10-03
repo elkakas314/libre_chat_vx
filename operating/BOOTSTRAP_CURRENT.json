@@ -4,7 +4,7 @@
   "target_version": 1,
   "snapshot_id": "source-2026-10-03-62815f4a",
   "evidence_cutoff_head": "62815f4a8378c60e268e9ae4daff4cbe32e711e3",
-  "continuity_metadata_may_advance_remote_main": true,
+  "continuity_metadata_head_before_this_commit": "8199caad9dc6a5d623438ac73fdcce75c36a58ee",
   "mode": "SOURCE_ONLY",
   "source_only_closeout": "COMPLETE",
   "runtime": {
@@ -17,32 +17,10 @@
     "workspace": "NOT_READ_BY_USER_CONSTRAINT"
   },
   "drive": {
-    "operating_canon": "18RUJkUGwF8FDD2Vi4Yq1oywh7OnF5y5GGXmUmRRKK8E",
-    "interflow": "1do7t2rY6Myiyce9Nrg6t_ReyQKrb1SjRCkZz9k7-Y6w",
-    "native_surface_binding": "1-of8wyyXRsnKxEckl0sPiFguZO5AyJiBlECyRq2VsEs",
-    "mobile_recovery": "1THisMjuDsfvSkGrAu4tMRQq3qUxomjDdC5WkL5FU1ow",
-    "vx13_mobile_boundaries": "1sQQV1tMmHGbqvI3-B5j-DoT50We26WFIGDrEY76y0jo",
+    "start_here_current": "1L8hJa91MBVf5NREm1hQV2yPkTWxOGYSQ9xlHCkOZNc4",
+    "current_snapshot": "11elY3LeQK8pYbnG66dZI85coRKBpoYC0EtJPWV_B1dw",
+    "core_canon": "18RUJkUGwF8FDD2Vi4Yq1oywh7OnF5y5GGXmUmRRKK8E",
     "readback": "PASS"
-  },
-  "proofs": {
-    "valid": [
-      "operating-canon-source-drive",
-      "m3-interflow-projection-source-drive",
-      "native-surface-binding-source-drive",
-      "mobile-recovery-source-drive",
-      "semantic-model-source",
-      "upstream-pin"
-    ],
-    "stale": [
-      "nostromo-material-test"
-    ],
-    "unavailable": [
-      "runtime-live"
-    ]
-  },
-  "ownership": {
-    "state": "UNOBSERVED",
-    "do_not_assume_free": true
   },
   "eligible_source_only": [],
   "blocked_or_gated": [
@@ -53,14 +31,6 @@
     "LC-ORACULO-R0",
     "LC-FIRST-R2",
     "LC-LOW-POWER-MEASURE"
-  ],
-  "do_not_touch": [
-    "local host while user restriction remains",
-    "MANOJOS3 repository",
-    "VX13 repository",
-    "target authority internals",
-    "secrets",
-    "automatic CURRENT to TARGET mutation"
   ],
   "closeout": "INCOMPLETE",
   "next_action": "WAIT_FOR_LOCAL_REVALIDATION_PERMISSION_OR_LIVE_BINDING"

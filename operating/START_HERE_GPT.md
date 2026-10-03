@@ -1,41 +1,34 @@
 # START HERE — GPT
 
-Enter `LIBRECHAT_OPERATING_CANON`.
+Canonical Drive entry:
+`1L8hJa91MBVf5NREm1hQV2yPkTWxOGYSQ9xlHCkOZNc4`
 
-Mode: `SOURCE_ONLY`.
+Canonical current snapshot:
+`11elY3LeQK8pYbnG66dZI85coRKBpoYC0EtJPWV_B1dw`
 
-## Read first
+Core Canon:
+`18RUJkUGwF8FDD2Vi4Yq1oywh7OnF5y5GGXmUmRRKK8E`
 
-1. `operating/TARGET_CANON.json`
-2. `operating/BOOTSTRAP_CURRENT.json`
-3. `operating/HANDOFF_CURRENT.md`
+## State
 
-## Source-only state
+- mode: SOURCE_ONLY
+- source-only closeout: COMPLETE
+- product source cutoff: `62815f4a8378c60e268e9ae4daff4cbe32e711e3`
+- current source tests: NOT_RUN / STALE_PROOF
+- local touched: false
 
-Complete:
+## Closed source layers
+
 - Operating Canon
 - semantic model
 - MANOJOS3 Interflow projection
 - native LibreChat surface binding
-- mobile/recovery source design
+- mobile/recovery
 
-No independent source-only gap remains in the current plan.
-
-## Do not repeat
-
-Do not rebuild those layers unless a relevant dependency fingerprint changes.
+No independent source-only gap remains.
 
 ## Next boundary
 
-Current HEAD must be revalidated before runtime/material claims.
+`WAIT_FOR_LOCAL_REVALIDATION_PERMISSION_OR_LIVE_BINDING`
 
-If local remains forbidden, stop at SOURCE_ONLY and do not fake PASS.
-
-If local becomes allowed:
-1. fetch exact current HEAD;
-2. build/test;
-3. verify pinned upstream compatibility/overlay;
-4. then MANOJOS3 R0 binding/readback;
-5. only later R2.
-
-Never touch MANOJOS3/VX13 repos from this LibreChat continuation.
+If local remains forbidden, do not invent further material progress.
