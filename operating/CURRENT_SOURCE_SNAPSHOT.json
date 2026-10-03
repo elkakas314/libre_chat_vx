@@ -1,22 +1,35 @@
 {
   "schema": "libre-chat-vx.operating-current.v1",
-  "snapshot_id": "source-2026-10-03-62815f4a",
+  "snapshot_id": "source-2026-10-03-9267b1c9",
   "mode": "SOURCE_ONLY",
-  "evidence_cutoff_head": "62815f4a8378c60e268e9ae4daff4cbe32e711e3",
-  "remote_main_at_cutoff": "62815f4a8378c60e268e9ae4daff4cbe32e711e3",
+  "evidence_cutoff_head": "9267b1c9c5ffe567c067294719c0bc3aee5ddc61",
+  "remote_main_at_cutoff": "9267b1c9c5ffe567c067294719c0bc3aee5ddc61",
   "upstream_pin": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
-  "source_only_closeout": "COMPLETE",
+  "source_only_closeout": "COMPLETE_WITH_LLM_PLANE",
   "source_state": {
     "semantic_model": "RECONCILED_V2",
     "nostromo_source": "IMPLEMENTED",
     "manojos3_interflow_projection": "IMPLEMENTED_SOURCE_AND_DRIVE_SYNCED",
     "native_surface_binding": "IMPLEMENTED_SOURCE_AND_DRIVE_SYNCED",
     "mobile_recovery": "IMPLEMENTED_SOURCE_AND_DRIVE_SYNCED",
+    "llm_plane_topologies": "IMPLEMENTED_SOURCE_AND_DRIVE_SYNCED",
+    "manojos3_entrypoints": "IMPLEMENTED_SOURCE_AND_DRIVE_SYNCED",
     "operating_canon": "SOURCE_AND_DRIVE_SYNCED"
+  },
+  "llm_plane": {
+    "topology_count": 5,
+    "paid_fallback_allowed": false,
+    "action_plane": "MANOJOS3_MCP",
+    "manojos3_action_source_endpoint": "http://127.0.0.1:8790/mcp",
+    "manojos3_action_deployment_env": "MANOJOS3_MCP_URL",
+    "manojos3_inference_source_endpoint": "http://127.0.0.1:4000/v1",
+    "manojos3_inference_deployment_env": "MANOJOS3_LLM_BASE_URL",
+    "free_model_source_status": "CONFLICT_REQUIRES_LIVE_READBACK"
   },
   "runtime_state": {
     "librechat": "NO_VERIFICADO",
     "manojos3_binding": "PREPARED_UNCONFIGURED",
+    "manojos3_llm_binding": "SOURCE_DISCOVERED_LIVE_UNVERIFIED",
     "vx13_binding": "UNCONFIGURED",
     "oraculo": "ADVISORY_NOT_LIVE_VERIFIED"
   },

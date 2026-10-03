@@ -2,35 +2,69 @@
   "schema": "libre-chat-vx.operating-bootstrap.v1",
   "canon": "LIBRECHAT_OPERATING_CANON",
   "target_version": 1,
-  "snapshot_id": "source-2026-10-03-62815f4a",
-  "evidence_cutoff_head": "62815f4a8378c60e268e9ae4daff4cbe32e711e3",
-  "continuity_metadata_head_before_this_commit": "8199caad9dc6a5d623438ac73fdcce75c36a58ee",
+  "snapshot_id": "source-2026-10-03-9267b1c9",
+  "evidence_cutoff_head": "9267b1c9c5ffe567c067294719c0bc3aee5ddc61",
+  "continuity_metadata_may_advance_remote_main": true,
   "mode": "SOURCE_ONLY",
-  "source_only_closeout": "COMPLETE",
+  "source_only_closeout": "COMPLETE_WITH_LLM_PLANE",
   "runtime": {
     "librechat": "NO_VERIFICADO",
     "manojos3_binding": "PREPARED_UNCONFIGURED",
+    "manojos3_llm_binding": "SOURCE_DISCOVERED_LIVE_UNVERIFIED",
     "vx13_binding": "UNCONFIGURED"
   },
   "git": {
-    "product_source_head_at_cutoff": "62815f4a8378c60e268e9ae4daff4cbe32e711e3",
+    "product_source_head_at_cutoff": "9267b1c9c5ffe567c067294719c0bc3aee5ddc61",
     "workspace": "NOT_READ_BY_USER_CONSTRAINT"
   },
   "drive": {
     "start_here_current": "1L8hJa91MBVf5NREm1hQV2yPkTWxOGYSQ9xlHCkOZNc4",
-    "current_snapshot": "11elY3LeQK8pYbnG66dZI85coRKBpoYC0EtJPWV_B1dw",
     "core_canon": "18RUJkUGwF8FDD2Vi4Yq1oywh7OnF5y5GGXmUmRRKK8E",
+    "llm_plane": "1eopGIXRbeOZwwfotCbmObeIDDalpGLsGZGWI_fMNpgI",
+    "manojos3_entrypoints": "19WZ2DM3pXyIe9-mhyq_3oVXQ63QmvDBf7i720mGW1N4",
+    "vx13_llm_alignment": "1Oq3BPniuQI96z5e6T_vmUl2AhHP1Iu05_iPD6MKOOLM",
     "readback": "PASS"
+  },
+  "proofs": {
+    "valid": [
+      "operating-canon-source-drive",
+      "m3-interflow-projection-source-drive",
+      "native-surface-binding-source-drive",
+      "mobile-recovery-source-drive",
+      "llm-plane-topologies-source-drive",
+      "m3-entrypoints-source-drive",
+      "semantic-model-source"
+    ],
+    "stale": [
+      "nostromo-material-test"
+    ],
+    "unavailable": [
+      "runtime-live",
+      "m3-llm-live-readback"
+    ]
+  },
+  "ownership": {
+    "state": "UNOBSERVED",
+    "do_not_assume_free": true
   },
   "eligible_source_only": [],
   "blocked_or_gated": [
     "LC-CURRENT-HEAD-TESTS",
     "LC-M3-R0-BINDING",
+    "LC-M3-LLM-LIVE-READBACK",
     "LC-UPSTREAM-OVERLAY-REVALIDATE",
     "LC-VX13-BINDING",
     "LC-ORACULO-R0",
     "LC-FIRST-R2",
     "LC-LOW-POWER-MEASURE"
+  ],
+  "do_not_touch": [
+    "local host while user restriction remains",
+    "MANOJOS3 repository",
+    "VX13 repository",
+    "target authority internals",
+    "secrets",
+    "automatic CURRENT to TARGET mutation"
   ],
   "closeout": "INCOMPLETE",
   "next_action": "WAIT_FOR_LOCAL_REVALIDATION_PERMISSION_OR_LIVE_BINDING"

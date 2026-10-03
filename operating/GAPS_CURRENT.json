@@ -1,6 +1,6 @@
 {
   "schema": "libre-chat-vx.operating-gaps.v1",
-  "snapshot_id": "source-2026-10-03-62815f4a",
+  "snapshot_id": "source-2026-10-03-9267b1c9",
   "gaps": [
     {
       "gap_id": "LC-OPERATING-CANON",
@@ -18,7 +18,7 @@
     },
     {
       "gap_id": "LC-CURRENT-HEAD-TESTS",
-      "summary": "Revalidate current source after semantic/operating/Interflow/native/mobile changes",
+      "summary": "Revalidate current source after semantic/operating/Interflow/native/mobile/LLM changes",
       "state": "STALE_PROOF",
       "priority": 10,
       "scope": "source_tests",
@@ -27,7 +27,9 @@
         "LC-OPERATING-CANON",
         "LC-M3-INTERFLOW-PROJECTION",
         "LC-NATIVE-SURFACE-BINDING",
-        "LC-MOBILE-RECOVERY"
+        "LC-MOBILE-RECOVERY",
+        "LC-LLM-PLANE-TOPOLOGIES",
+        "LC-M3-ENTRYPOINT-CONTRACTS"
       ],
       "preferred_route": "host_test_when_local_allowed"
     },
@@ -48,17 +50,52 @@
       ]
     },
     {
+      "gap_id": "LC-LLM-PLANE-TOPOLOGIES",
+      "summary": "Define LibreChat model-plane topologies with no-paid fail-closed routing and explicit separation from the target action plane",
+      "state": "PASS",
+      "priority": 25,
+      "scope": "llm_plane",
+      "requires_live": false,
+      "dependencies": [
+        "LC-OPERATING-CANON"
+      ],
+      "preferred_route": "librechat_custom_endpoints_plus_optional_manojos3_model_router",
+      "evidence_refs": [
+        "commit:9267b1c9c5ffe567c067294719c0bc3aee5ddc61",
+        "drive:1eopGIXRbeOZwwfotCbmObeIDDalpGLsGZGWI_fMNpgI",
+        "manojos3:cb772cca141f7ae5ae03af9655b3c5186f5826f6"
+      ]
+    },
+    {
+      "gap_id": "LC-M3-ENTRYPOINT-CONTRACTS",
+      "summary": "Define separate MANOJOS3 action MCP, model inference and internal advisory Interflow entrypoints for LibreChat",
+      "state": "PASS",
+      "priority": 26,
+      "scope": "manojos3_entrypoints",
+      "requires_live": false,
+      "dependencies": [
+        "LC-M3-INTERFLOW-PROJECTION",
+        "LC-LLM-PLANE-TOPOLOGIES"
+      ],
+      "preferred_route": "mcp_for_actions_openai_compatible_for_models",
+      "evidence_refs": [
+        "commit:9267b1c9c5ffe567c067294719c0bc3aee5ddc61",
+        "drive:19WZ2DM3pXyIe9-mhyq_3oVXQ63QmvDBf7i720mGW1N4",
+        "drive:1Oq3BPniuQI96z5e6T_vmUl2AhHP1Iu05_iPD6MKOOLM"
+      ]
+    },
+    {
       "gap_id": "LC-M3-R0-BINDING",
-      "summary": "Real governed MANOJOS3 read binding and one R0 readback",
+      "summary": "Real governed MANOJOS3 MCP read binding and one R0 objective/readback/receipt",
       "state": "BLOCKED_DEPENDENCY",
       "priority": 30,
       "scope": "manojos3_binding",
       "requires_live": true,
       "dependencies": [
         "LC-CURRENT-HEAD-TESTS",
-        "LC-M3-INTERFLOW-PROJECTION"
+        "LC-M3-ENTRYPOINT-CONTRACTS"
       ],
-      "preferred_route": "manojos3_existing_control_plane"
+      "preferred_route": "manojos3_inbound_mcp"
     },
     {
       "gap_id": "LC-UPSTREAM-OVERLAY-REVALIDATE",
@@ -101,9 +138,21 @@
       "preferred_route": "native_resumable_streams_plus_vx_fences",
       "evidence_refs": [
         "commit:62815f4a8378c60e268e9ae4daff4cbe32e711e3",
-        "drive:1THisMjuDsfvSkGrAu4tMRQq3qUxomjDdC5WkL5FU1ow",
-        "drive:1sQQV1tMmHGbqvI3-B5j-DoT50We26WFIGDrEY76y0jo"
+        "drive:1THisMjuDsfvSkGrAu4tMRQq3qUxomjDdC5WkL5FU1ow"
       ]
+    },
+    {
+      "gap_id": "LC-M3-LLM-LIVE-READBACK",
+      "summary": "Resolve contradictory MANOJOS3 free-model source status with live LiteLLM/ModelRouter canaries before LibreChat promotion",
+      "state": "BLOCKED_DEPENDENCY",
+      "priority": 65,
+      "scope": "manojos3_llm_live",
+      "requires_live": true,
+      "dependencies": [
+        "LC-CURRENT-HEAD-TESTS",
+        "LC-LLM-PLANE-TOPOLOGIES"
+      ],
+      "preferred_route": "llm_router_status_litellm_status_exact_model_canary"
     },
     {
       "gap_id": "LC-VX13-BINDING",

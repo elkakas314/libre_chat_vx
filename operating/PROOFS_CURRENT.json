@@ -1,6 +1,6 @@
 {
   "schema": "libre-chat-vx.operating-proofs.v1",
-  "snapshot_id": "source-2026-10-03-62815f4a",
+  "snapshot_id": "source-2026-10-03-9267b1c9",
   "proofs": [
     {
       "proof_id": "operating-canon-source-drive",
@@ -65,14 +65,49 @@
         "src/mobile/mobileContinuity.ts",
         "src/mobile/mobileRecovery.ts",
         "src/mobile/offlineDraft.ts",
-        "src/mobile/pushRefresh.ts",
-        "src/mobile/resumeSource.ts",
-        "docs/MOBILE_RECOVERY_CURRENT.md"
+        "src/mobile/pushRefresh.ts"
       ],
       "evidence_refs": [
         "commit:62815f4a8378c60e268e9ae4daff4cbe32e711e3",
-        "drive:1THisMjuDsfvSkGrAu4tMRQq3qUxomjDdC5WkL5FU1ow",
-        "drive:1sQQV1tMmHGbqvI3-B5j-DoT50We26WFIGDrEY76y0jo"
+        "drive:1THisMjuDsfvSkGrAu4tMRQq3qUxomjDdC5WkL5FU1ow"
+      ]
+    },
+    {
+      "proof_id": "llm-plane-topologies-source-drive",
+      "subject": "LibreChat LLM model-plane topology contracts",
+      "proof_class": "DRIVE_READBACK",
+      "state": "VALID",
+      "verified_at_source_head": "9267b1c9c5ffe567c067294719c0bc3aee5ddc61",
+      "dependency_fingerprint": "lc:9267b1c9|m3:cb772cca|modelrouter:ab3070fb|litellm:1ae3b1f8",
+      "dependencies": [
+        "src/llm/llmPlane.ts",
+        "src/llm/fallbackPolicy.ts",
+        "config/llm_topologies.current.json",
+        "config/librechat.llm-plane.example.yaml",
+        "docs/LLM_PLANE_CURRENT.md"
+      ],
+      "evidence_refs": [
+        "commit:9267b1c9c5ffe567c067294719c0bc3aee5ddc61",
+        "drive:1eopGIXRbeOZwwfotCbmObeIDDalpGLsGZGWI_fMNpgI",
+        "manojos3:cb772cca141f7ae5ae03af9655b3c5186f5826f6"
+      ]
+    },
+    {
+      "proof_id": "m3-entrypoints-source-drive",
+      "subject": "MANOJOS3 action/inference/advisory entrypoint contracts for LibreChat",
+      "proof_class": "DRIVE_READBACK",
+      "state": "VALID",
+      "verified_at_source_head": "9267b1c9c5ffe567c067294719c0bc3aee5ddc61",
+      "dependency_fingerprint": "lc:9267b1c9|mcp:fc21e6bf|plugin:9941eb55|router:ab3070fb",
+      "dependencies": [
+        "src/manojos3/entrypoints.ts",
+        "src/manojos3/submitProjection.ts",
+        "docs/MANOJOS3_ENTRYPOINTS_CURRENT.md"
+      ],
+      "evidence_refs": [
+        "commit:9267b1c9c5ffe567c067294719c0bc3aee5ddc61",
+        "drive:19WZ2DM3pXyIe9-mhyq_3oVXQ63QmvDBf7i720mGW1N4",
+        "drive:1Oq3BPniuQI96z5e6T_vmUl2AhHP1Iu05_iPD6MKOOLM"
       ]
     },
     {
@@ -100,28 +135,30 @@
         "src/adapters/targetParity.ts",
         "src/ui/NostromoCockpit.tsx",
         "src/cockpit/windowRouter.ts",
-        "tests/semantic-contract.test.ts",
-        "tests/manojos3-interflow.test.ts",
-        "tests/native-surface-binding.test.ts",
-        "tests/mobile-recovery.test.ts"
+        "src/llm/llmPlane.ts",
+        "src/manojos3/entrypoints.ts",
+        "tests/llm-plane.test.ts",
+        "tests/manojos3-entrypoints.test.ts"
       ],
       "evidence_refs": [
         "test:26_PASS@94c632762f7afee7d9fa9d0f0c23c80d7494d2d2"
       ]
     },
     {
-      "proof_id": "upstream-pin",
-      "subject": "LibreChat upstream source pin",
-      "proof_class": "SOURCE_READBACK",
-      "state": "VALID",
-      "verified_at_source_head": "587090f7fea2d5fd6ef94fa470458009bfd136dc",
-      "dependency_fingerprint": "upstream:f10b1d91|tree:badb948a",
+      "proof_id": "m3-llm-live-readback",
+      "subject": "MANOJOS3 current free-model route and exact served-model state",
+      "proof_class": "RUNTIME_READBACK",
+      "state": "UNAVAILABLE",
+      "dependency_fingerprint": "SOURCE_CONFLICT_REQUIRES_LIVE_READBACK",
       "dependencies": [
-        "UPSTREAM.json",
-        "overlay/UPSTREAM_INTEGRATION_MAP.json"
+        "MANOJOS3 llm.router.status",
+        "MANOJOS3 llm.litellm.status",
+        "exact model completion canary"
       ],
       "evidence_refs": [
-        "upstream:f10b1d91f1eee3a2c82d5247bf620351486b7c1b"
+        "m3blob:1ae3b1f8d9ad835bf3620ae3f99d4b408c4d3f08",
+        "m3blob:94941ce2bab049b7e03f7f2cc1d323c962222f02",
+        "m3blob:7fc89ae2c9368432655542f8bc3b5597e3314008"
       ]
     },
     {

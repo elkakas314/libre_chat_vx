@@ -1,21 +1,16 @@
 # START HERE — GPT
 
-Canonical Drive entry:
-`1L8hJa91MBVf5NREm1hQV2yPkTWxOGYSQ9xlHCkOZNc4`
+Enter `LIBRECHAT_OPERATING_CANON`.
 
-Canonical current snapshot:
-`11elY3LeQK8pYbnG66dZI85coRKBpoYC0EtJPWV_B1dw`
+Mode: `SOURCE_ONLY`.
+Source-only closeout: `COMPLETE_WITH_LLM_PLANE`.
 
-Core Canon:
-`18RUJkUGwF8FDD2Vi4Yq1oywh7OnF5y5GGXmUmRRKK8E`
+## Read first
 
-## State
-
-- mode: SOURCE_ONLY
-- source-only closeout: COMPLETE
-- product source cutoff: `62815f4a8378c60e268e9ae4daff4cbe32e711e3`
-- current source tests: NOT_RUN / STALE_PROOF
-- local touched: false
+1. `operating/TARGET_CANON.json`
+2. `operating/BOOTSTRAP_CURRENT.json`
+3. `operating/HANDOFF_CURRENT.md`
+4. selected source docs only when a proof/gap requires them.
 
 ## Closed source layers
 
@@ -24,11 +19,22 @@ Core Canon:
 - MANOJOS3 Interflow projection
 - native LibreChat surface binding
 - mobile/recovery
+- LLM plane topologies
+- MANOJOS3 action/inference/advisory entrypoint contracts
 
-No independent source-only gap remains.
+## Key LLM rule
+
+Model path != action path.
+
+A model supplies language/reasoning.
+MANOJOS3 MCP supplies governed objectives/runs/receipts.
+
+Do not bypass the MCP gateway to call private MANOJOS3 control-plane HTTP.
+Do not auto-fallback to paid models.
+Do not promote MANOJOS3 free aliases until live readback resolves the current source conflict.
 
 ## Next boundary
 
 `WAIT_FOR_LOCAL_REVALIDATION_PERMISSION_OR_LIVE_BINDING`
 
-If local remains forbidden, do not invent further material progress.
+If local remains forbidden, do not fabricate further material progress.
