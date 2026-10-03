@@ -11,6 +11,7 @@ export * from './TentacleHud';
 export * from './MinimalTruthView';
 export * from './ContextInspectorView';
 export * from './ControlDeckView';
+export * from './InterflowLensView';
 export * from './CapabilityLensView';
 export * from './TargetRunView';
 export * from './InteractiveArtifactView';

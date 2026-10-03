@@ -47,6 +47,8 @@ export type {
 export { MANOJOS3_FLOW, manojos3Parity } from './adapters/manojos3Contract';
 export { VX13_ADAPTER_STATE, VX13_AUTHORITY_CHAIN, vx13Parity } from './adapters/vx13Contract';
 
+export * from './manojos3/interflowProjection';
+
 export { emptyCockpitState } from './runtime/cockpitState';
 export type { CockpitState, TargetRuntimeState } from './runtime/cockpitState';
 export { CockpitReducer } from './runtime/eventReducer';

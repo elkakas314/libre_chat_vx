@@ -26,6 +26,7 @@ export type CockpitWindow =
   | 'MODULE_INDEX'
   | 'PLAN_GRAPH'
   | 'ACTIVE_FLOW'
+  | 'INTERFLOW_MAP'
   | 'CAPABILITY_LENSES'
   | 'EVIDENCE'
   | 'FILES'
@@ -40,18 +41,18 @@ const TOKENS: ReadonlyArray<[FocusDomain, readonly string[]]> = [
   ['AUDIO', ['audio', 'reaper', 'mezcla', 'mastering', 'plugin', 'pedal', 'shub', 'pista']],
   ['BROWSER', ['browser', 'navegador', 'playwright', 'cdp', 'pestaña', 'tab']],
   ['REPO', ['repo', 'git', 'commit', 'branch', 'rama']],
-  ['BUILD', ['build', 'constructor', 'construction', 'opencode', 'parche', 'patch']],
-  ['CONNECTORS', ['connector', 'conector', 'drive', 'onedrive', 'sharepoint']],
+  ['BUILD', ['build', 'constructor', 'construction', 'opencode', 'parche', 'patch', 'blueprint', 'autoconstruction']],
+  ['CONNECTORS', ['connector', 'conector', 'drive', 'onedrive', 'sharepoint', 'google', 'outlook', 'whatsapp']],
   ['FILES', ['archivo', 'archivos', 'documento', 'pdf', 'zip', 'file']],
-  ['THREADS', ['thread', 'hilo', 'hilos']],
-  ['HOST', ['host', 'remote desktop', 'desktop commander']],
-  ['TOOLBUS', ['toolbus', 'mcp', 'tool bus']],
-  ['RUNTIME', ['runtime', 'servicio', 'service', 'proceso', 'health', 'readiness', 'estado', 'fallo', 'error']],
+  ['THREADS', ['thread', 'hilo', 'hilos', 'dispatcher']],
+  ['HOST', ['host', 'remote desktop', 'desktop commander', 'cli', 'container']],
+  ['TOOLBUS', ['toolbus', 'mcp', 'tool bus', 'transport']],
+  ['RUNTIME', ['runtime', 'servicio', 'service', 'proceso', 'health', 'readiness', 'estado', 'fallo', 'error', 'stabilization']],
   ['MODEL', ['modelo', 'model', 'llm', 'provider', 'router', 'hermes']],
-  ['SECURITY', ['seguridad', 'security', 'permiso', 'acl', 'grant', 'autorización', 'authorization']],
-  ['PLAN', ['plan', 'manifestator', 'dag', 'blueprint', 'evolución', 'evolution']],
+  ['SECURITY', ['seguridad', 'security', 'permiso', 'acl', 'grant', 'autorización', 'authorization', 'token']],
+  ['PLAN', ['plan', 'manifestator', 'dag', 'blueprint', 'evolución', 'evolution', 'composite']],
   ['LIBRECHAT', ['librechat', 'chat', 'artifact', 'skill', 'subagent']],
-  ['TARGET', ['vx13', 'manojos3', 'target', 'sistema']],
+  ['TARGET', ['vx13', 'manojos3', 'target', 'sistema', 'interflow', 'intent']],
 ];
 
 export function deriveFocusDomain(text: string, explicit?: FocusDomain): FocusDomain {
@@ -73,22 +74,22 @@ const BASE: CockpitWindow[] = [
 
 export function windowsForDomain(domain: FocusDomain): CockpitWindow[] {
   const extra: Record<FocusDomain, CockpitWindow[]> = {
-    OVERVIEW: ['MODULE_INDEX', 'CAPABILITY_LENSES'],
+    OVERVIEW: ['MODULE_INDEX', 'INTERFLOW_MAP', 'CAPABILITY_LENSES'],
     FILES: ['FILES', 'EVIDENCE'],
     AUDIO: ['AUDIO', 'EVIDENCE'],
-    BROWSER: ['BROWSER', 'ACTIVE_FLOW'],
-    BUILD: ['BUILD', 'PLAN_GRAPH', 'ACTIVE_FLOW'],
-    RUNTIME: ['TARGET_RUN', 'ACTIVE_FLOW', 'CAPABILITY_LENSES'],
-    MODEL: ['CAPABILITY_LENSES', 'TARGET_RUN'],
+    BROWSER: ['BROWSER', 'INTERFLOW_MAP', 'ACTIVE_FLOW'],
+    BUILD: ['BUILD', 'INTERFLOW_MAP', 'PLAN_GRAPH', 'ACTIVE_FLOW'],
+    RUNTIME: ['TARGET_RUN', 'INTERFLOW_MAP', 'ACTIVE_FLOW', 'CAPABILITY_LENSES'],
+    MODEL: ['INTERFLOW_MAP', 'CAPABILITY_LENSES', 'TARGET_RUN'],
     EVIDENCE: ['EVIDENCE', 'ARTIFACT_DOCK'],
-    SECURITY: ['DECISION_INBOX', 'MINIMAL_TRUTH'],
-    PLAN: ['PLAN_GRAPH', 'ACTIVE_FLOW'],
-    TARGET: ['TARGET_RUN', 'CAPABILITY_LENSES'],
-    REPO: ['BUILD', 'CAPABILITY_LENSES', 'EVIDENCE'],
-    CONNECTORS: ['FILES', 'CAPABILITY_LENSES'],
-    THREADS: ['CAPABILITY_LENSES', 'ACTIVE_FLOW'],
-    HOST: ['CAPABILITY_LENSES', 'TARGET_RUN'],
-    TOOLBUS: ['CAPABILITY_LENSES', 'ACTIVE_FLOW'],
+    SECURITY: ['INTERFLOW_MAP', 'DECISION_INBOX', 'MINIMAL_TRUTH'],
+    PLAN: ['INTERFLOW_MAP', 'PLAN_GRAPH', 'ACTIVE_FLOW'],
+    TARGET: ['TARGET_RUN', 'INTERFLOW_MAP', 'CAPABILITY_LENSES'],
+    REPO: ['BUILD', 'INTERFLOW_MAP', 'CAPABILITY_LENSES', 'EVIDENCE'],
+    CONNECTORS: ['FILES', 'INTERFLOW_MAP', 'CAPABILITY_LENSES'],
+    THREADS: ['INTERFLOW_MAP', 'CAPABILITY_LENSES', 'ACTIVE_FLOW'],
+    HOST: ['INTERFLOW_MAP', 'CAPABILITY_LENSES', 'TARGET_RUN'],
+    TOOLBUS: ['INTERFLOW_MAP', 'CAPABILITY_LENSES', 'ACTIVE_FLOW'],
     LIBRECHAT: ['MODULE_INDEX', 'ARTIFACT_DOCK', 'BACKGROUND_TASKS'],
   };
 

@@ -1,0 +1,414 @@
+{
+  "schema": "libre-chat-vx.manojos3-interflow-projection.v1",
+  "source": {
+    "repository": "elkakas314/manojos3",
+    "head": "cb772cca141f7ae5ae03af9655b3c5186f5826f6",
+    "semantic_matrix": {
+      "path": "docs/flows/SEMANTIC_MATRIX_CANONICAL_CURRENT.json",
+      "blob_sha": "30a63c9c359e46a2743f711c2d5e1a5bd031a45e",
+      "internal_source_head": "e910fce958d9b7660ce0618ae7578a647016ee75",
+      "registry_count_recorded": 248
+    },
+    "operation_matrix": {
+      "path": "docs/capabilities/OPERATION_MATRIX_CURRENT.json",
+      "blob_sha": "3bbf760e4b00aadd7716b263ba5b2009dbfdaa8c"
+    },
+    "runtime_audit": {
+      "path": "docs/flows/INTENT_RUNTIME_AUDIT_CURRENT.json",
+      "blob_sha": "253ea095dd26a73c1c749eddc7a4deb4d2a350a8"
+    },
+    "capability_execution_matrix": {
+      "path": "docs/CAPABILITY_EXECUTION_MATRIX.json",
+      "blob_sha": "2637bdbdf746f3d96ee529dc146d5e052c28b930",
+      "total": 252,
+      "planning_candidates": 189,
+      "unconfigured": 63,
+      "by_risk": {
+        "R0": 141,
+        "R1": 46,
+        "R2": 54,
+        "R3": 11
+      },
+      "functional_effects_verified_by_matrix": 0,
+      "functional_parity_claim": false
+    }
+  },
+  "semantic_domains_count": 31,
+  "classic_router_domains_count": 14,
+  "router_actions": {
+    "IN_ROUTER_14": 14,
+    "EXTEND_ROUTER": 12,
+    "STANDALONE_NO_ROUTE": 4,
+    "DELEGATE_SEMANTIC": 1
+  },
+  "operation_gateways": [
+    "operation.status",
+    "operation.catalog",
+    "operation.read",
+    "operation.canary",
+    "operation.act",
+    "operation.sync"
+  ],
+  "target_stack": [
+    "Intent Router",
+    "Slot Resolver",
+    "Operation Compiler",
+    "Operation Gateway",
+    "Policy/Kernel",
+    "Driver Adapters",
+    "Verifier/Receipt"
+  ],
+  "core_rule": "User gives objective; MANOJOS3 resolves flow and asks only for missing essential data or real risk gates.",
+  "librechat_projection_rule": "DOMAIN_THEN_INTENT_FAMILY_THEN_OPERATION_THEN_INTERNAL_DRIVER",
+  "domains": [
+    {
+      "domain": "audit.watch",
+      "intent_capability": "audit.watch.intent.plan",
+      "provider": "audit_watch",
+      "risk": "R0",
+      "availability": "AVAILABLE",
+      "router_action": "EXTEND_ROUTER",
+      "flow_file": null,
+      "lens": "OBSERVABILITY",
+      "visibility": "CONTEXTUAL"
+    },
+    {
+      "domain": "capability.audit",
+      "intent_capability": "capability.audit.intent.plan",
+      "provider": "capability-audit-intent",
+      "risk": "R0",
+      "availability": "AVAILABLE",
+      "router_action": "EXTEND_ROUTER",
+      "flow_file": "CAPABILITY_AUDIT_INTENT_FLOW_CURRENT.json",
+      "lens": "CAPABILITIES",
+      "visibility": "PRIMARY"
+    },
+    {
+      "domain": "mail",
+      "intent_capability": "mail.intent.plan",
+      "provider": "mail-intent",
+      "risk": "R0",
+      "availability": "AVAILABLE",
+      "router_action": "IN_ROUTER_14",
+      "flow_file": "MAIL_INTENT_FLOW_CURRENT.json",
+      "lens": "COMMUNICATIONS",
+      "visibility": "PRIMARY"
+    },
+    {
+      "domain": "graph",
+      "intent_capability": "graph.intent.plan",
+      "provider": "graph-intent",
+      "risk": "R0",
+      "availability": "AVAILABLE",
+      "router_action": "IN_ROUTER_14",
+      "flow_file": "GRAPH_INTENT_FLOW_CURRENT.json",
+      "lens": "CONNECTORS",
+      "visibility": "PRIMARY"
+    },
+    {
+      "domain": "onedrive",
+      "intent_capability": "onedrive.intent.plan",
+      "provider": "onedrive-intent",
+      "risk": "R0",
+      "availability": "AVAILABLE",
+      "router_action": "IN_ROUTER_14",
+      "flow_file": "ONEDRIVE_INTENT_FLOW_CURRENT.json",
+      "lens": "CONNECTORS",
+      "visibility": "PRIMARY"
+    },
+    {
+      "domain": "google",
+      "intent_capability": "google.intent.plan",
+      "provider": "google-intent",
+      "risk": "R0",
+      "availability": "AVAILABLE",
+      "router_action": "IN_ROUTER_14",
+      "flow_file": "GOOGLE_INTENT_FLOW_CURRENT.json",
+      "lens": "CONNECTORS",
+      "visibility": "PRIMARY"
+    },
+    {
+      "domain": "whatsapp",
+      "intent_capability": "whatsapp.intent.plan",
+      "provider": "whatsapp-intent",
+      "risk": "R0",
+      "availability": "AVAILABLE",
+      "router_action": "IN_ROUTER_14",
+      "flow_file": "WHATSAPP_INTENT_FLOW_CURRENT.json",
+      "lens": "COMMUNICATIONS",
+      "visibility": "PRIMARY"
+    },
+    {
+      "domain": "browser",
+      "intent_capability": "browser.intent.plan",
+      "provider": "browser-intent",
+      "risk": "R0",
+      "availability": "AVAILABLE",
+      "router_action": "IN_ROUTER_14",
+      "flow_file": "BROWSER_INTENT_FLOW_CURRENT.json",
+      "lens": "BROWSER",
+      "visibility": "PRIMARY"
+    },
+    {
+      "domain": "dispatcher",
+      "intent_capability": "dispatcher.intent.plan",
+      "provider": "dispatcher-intent",
+      "risk": "R0",
+      "availability": "AVAILABLE",
+      "router_action": "IN_ROUTER_14",
+      "flow_file": "DISPATCHER_INTENT_FLOW_CURRENT.json",
+      "lens": "THREADS",
+      "visibility": "PRIMARY"
+    },
+    {
+      "domain": "repo",
+      "intent_capability": "repo.intent.plan",
+      "provider": "repo-intent",
+      "risk": "R0",
+      "availability": "AVAILABLE",
+      "router_action": "IN_ROUTER_14",
+      "flow_file": "REPO_INTENT_FLOW_CURRENT.json",
+      "lens": "REPO",
+      "visibility": "PRIMARY"
+    },
+    {
+      "domain": "stabilization",
+      "intent_capability": "stabilization.intent.plan",
+      "provider": "stabilization-intent",
+      "risk": "R0",
+      "availability": "AVAILABLE",
+      "router_action": "IN_ROUTER_14",
+      "flow_file": "STABILIZATION_INTENT_FLOW_CURRENT.json",
+      "lens": "CONTINUITY",
+      "visibility": "PRIMARY"
+    },
+    {
+      "domain": "context",
+      "intent_capability": "context.intent.plan",
+      "provider": "context-intent",
+      "risk": "R0",
+      "availability": "AVAILABLE",
+      "router_action": "EXTEND_ROUTER",
+      "flow_file": "CONTEXT_INTENT_FLOW_CURRENT.json",
+      "lens": "CONTINUITY",
+      "visibility": "PRIMARY"
+    },
+    {
+      "domain": "construction",
+      "intent_capability": "construction.intent.plan",
+      "provider": "construction-intent",
+      "risk": "R0",
+      "availability": "AVAILABLE",
+      "router_action": "IN_ROUTER_14",
+      "flow_file": "CONSTRUCTION_INTENT_FLOW_CURRENT.json",
+      "lens": "BUILD",
+      "visibility": "PRIMARY"
+    },
+    {
+      "domain": "blueprint",
+      "intent_capability": "blueprint.intent.plan",
+      "provider": "blueprint-intent",
+      "risk": "R0",
+      "availability": "AVAILABLE",
+      "router_action": "IN_ROUTER_14",
+      "flow_file": "BLUEPRINT_INTENT_FLOW_CURRENT.json",
+      "lens": "BUILD",
+      "visibility": "PRIMARY"
+    },
+    {
+      "domain": "autoconstruction",
+      "intent_capability": "autoconstruction.intent.plan",
+      "provider": "autoconstruction-intent",
+      "risk": "R0",
+      "availability": "AVAILABLE",
+      "router_action": "IN_ROUTER_14",
+      "flow_file": "AUTOCONSTRUCTION_INTENT_FLOW_CURRENT.json",
+      "lens": "BUILD",
+      "visibility": "PRIMARY"
+    },
+    {
+      "domain": "repair.advisory",
+      "intent_capability": "repair.advisory.intent.plan",
+      "provider": "repair-advisory-intent",
+      "risk": "R1",
+      "availability": "AVAILABLE",
+      "router_action": "EXTEND_ROUTER",
+      "flow_file": null,
+      "lens": "REPAIR",
+      "visibility": "PRIMARY"
+    },
+    {
+      "domain": "llm.models",
+      "intent_capability": "llm.models.intent.plan",
+      "provider": "llm-models-intent",
+      "risk": "R0",
+      "availability": "AVAILABLE",
+      "router_action": "IN_ROUTER_14",
+      "flow_file": "LLM_MODELS_INTENT_FLOW_CURRENT.json",
+      "lens": "MODELS",
+      "visibility": "PRIMARY"
+    },
+    {
+      "domain": "host",
+      "intent_capability": "host.intent.plan",
+      "provider": "host-intent",
+      "risk": "R0",
+      "availability": "AVAILABLE",
+      "router_action": "IN_ROUTER_14",
+      "flow_file": "HOST_INTENT_FLOW_CURRENT.json",
+      "lens": "HOST",
+      "visibility": "PRIMARY"
+    },
+    {
+      "domain": "scheduler",
+      "intent_capability": "scheduler.intent.plan",
+      "provider": "scheduler-intent",
+      "risk": "R0",
+      "availability": "AVAILABLE",
+      "router_action": "EXTEND_ROUTER",
+      "flow_file": "SCHEDULER_INTENT_FLOW_CURRENT.json",
+      "lens": "SCHEDULER",
+      "visibility": "PRIMARY"
+    },
+    {
+      "domain": "token",
+      "intent_capability": "token.intent.plan",
+      "provider": "token-intent",
+      "risk": "R0",
+      "availability": "AVAILABLE",
+      "router_action": "STANDALONE_NO_ROUTE",
+      "flow_file": "TOKEN_INTENT_FLOW_CURRENT.json",
+      "lens": "SECURITY",
+      "visibility": "CONTEXTUAL"
+    },
+    {
+      "domain": "mcp",
+      "intent_capability": "mcp.intent.plan",
+      "provider": "mcp-intent",
+      "risk": "R0",
+      "availability": "AVAILABLE",
+      "router_action": "EXTEND_ROUTER",
+      "flow_file": "MCP_INTENT_FLOW_CURRENT.json",
+      "lens": "TOOLBUS",
+      "visibility": "PRIMARY"
+    },
+    {
+      "domain": "cli",
+      "intent_capability": "cli.intent.plan",
+      "provider": "cli-intent",
+      "risk": "R0",
+      "availability": "AVAILABLE",
+      "router_action": "EXTEND_ROUTER",
+      "flow_file": "CLI_INTENT_FLOW_CURRENT.json",
+      "lens": "HOST",
+      "visibility": "CONTEXTUAL"
+    },
+    {
+      "domain": "skills",
+      "intent_capability": "skills.intent.plan",
+      "provider": "skills-intent",
+      "risk": "R0",
+      "availability": "AVAILABLE",
+      "router_action": "STANDALONE_NO_ROUTE",
+      "flow_file": "SKILLS_INTENT_FLOW_CURRENT.json",
+      "lens": "SKILLS",
+      "visibility": "CONTEXTUAL"
+    },
+    {
+      "domain": "module",
+      "intent_capability": "module.intent.plan",
+      "provider": "module-intent",
+      "risk": "R0",
+      "availability": "AVAILABLE",
+      "router_action": "EXTEND_ROUTER",
+      "flow_file": "MODULE_INTENT_FLOW_CURRENT.json",
+      "lens": "BUILD",
+      "visibility": "PRIMARY"
+    },
+    {
+      "domain": "worker",
+      "intent_capability": "worker.intent.plan",
+      "provider": "worker-intent",
+      "risk": "R0",
+      "availability": "AVAILABLE",
+      "router_action": "EXTEND_ROUTER",
+      "flow_file": "WORKER_INTENT_FLOW_CURRENT.json",
+      "lens": "BUILD",
+      "visibility": "PRIMARY"
+    },
+    {
+      "domain": "container",
+      "intent_capability": "container.intent.plan",
+      "provider": "container-intent",
+      "risk": "R0",
+      "availability": "AVAILABLE",
+      "router_action": "EXTEND_ROUTER",
+      "flow_file": "CONTAINER_INTENT_FLOW_CURRENT.json",
+      "lens": "BUILD",
+      "visibility": "PRIMARY"
+    },
+    {
+      "domain": "transport",
+      "intent_capability": "transport.intent.plan",
+      "provider": "transport-intent",
+      "risk": "R0",
+      "availability": "AVAILABLE",
+      "router_action": "EXTEND_ROUTER",
+      "flow_file": "TRANSPORT_INTENT_FLOW_CURRENT.json",
+      "lens": "TOOLBUS",
+      "visibility": "CONTEXTUAL"
+    },
+    {
+      "domain": "cleanup",
+      "intent_capability": "cleanup.intent.plan",
+      "provider": "semantic-intents",
+      "risk": "R0",
+      "availability": "AVAILABLE",
+      "router_action": "EXTEND_ROUTER",
+      "flow_file": null,
+      "lens": "MAINTENANCE",
+      "visibility": "CONTEXTUAL"
+    },
+    {
+      "domain": "state",
+      "intent_capability": null,
+      "provider": "state_admin",
+      "risk": "R0",
+      "availability": "AVAILABLE",
+      "router_action": "STANDALONE_NO_ROUTE",
+      "flow_file": null,
+      "lens": "STATE_EVIDENCE",
+      "visibility": "INTERNAL"
+    },
+    {
+      "domain": "calendar_fixture",
+      "intent_capability": "calendar_fixture.intent.plan",
+      "provider": "semantic-intents",
+      "risk": "R0",
+      "availability": "AVAILABLE",
+      "router_action": "STANDALONE_NO_ROUTE",
+      "flow_file": null,
+      "lens": "INTERNAL",
+      "visibility": "INTERNAL"
+    },
+    {
+      "domain": "composite",
+      "intent_capability": "composite.intent.plan",
+      "provider": "semantic-intents",
+      "risk": "R0",
+      "availability": "AVAILABLE",
+      "router_action": "DELEGATE_SEMANTIC",
+      "flow_file": null,
+      "lens": "COMPOSITE",
+      "visibility": "PRIMARY"
+    }
+  ],
+  "notes": [
+    "Capabilities are internal drivers behind Interflows; capability count is not the functional ceiling.",
+    "Router action describes routing semantics, not proof that a live route is currently bound from LibreChat.",
+    "STANDALONE_NO_ROUTE domains are contextual/internal unless explicitly selected.",
+    "DELEGATE_SEMANTIC composite is multi-domain planning, not a material executor.",
+    "OpenCode/LiteLLM are advisory only; Policy/Kernel decides and executes."
+  ],
+  "authority": false
+}

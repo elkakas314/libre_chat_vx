@@ -1,54 +1,53 @@
 # LibreChat VX alignment with MANOJOS3 — CURRENT
 
-Observed MANOJOS3 source reference: `elkakas314/manojos3@5e13e29772b5eee97376ddfba7b9bd2ba2dadff2`.
+## Source
 
-Observed current capability matrix: 134 capabilities.
+MANOJOS3 remote source inspected: `cb772cca141f7ae5ae03af9655b3c5186f5826f6`.
 
-Category counts observed from `docs/MANOJOS3_CAPABILITY_MATRIX_CURRENT.json`:
+## Alignment rule
 
-- browser 18
-- process 4
-- cli_registry 2
-- observability 13
-- networking 4
-- connectors 30
-- construction 7
-- git 10
-- librechat 2
-- models 6
-- system 10
-- mcp 2
-- mcp_toolbus 2
-- openai_plugin 1
-- coding 2
-- external_advisory 4
-- remote_desktop 2
-- filesystem 2
-- service 2
-- state 4
-- threads 7
+LibreChat aligns with MANOJOS3 by semantic layers, not by mirroring its raw registry.
 
-Risk distribution observed: R0=78, R1=16, R2=34, R3=6.
+```text
+OBJECTIVE
+→ DOMAIN
+→ INTENT FAMILY
+→ INTERFLOW
+→ OPERATION
+→ POLICY/KERNEL
+→ DRIVER CAPABILITIES
+→ VERIFIER/RECEIPT
+```
 
-LibreChat does not render 134 raw actions. It projects bounded lenses:
+### Current semantic surface
 
-`BROWSER | RUNTIME | CONNECTORS_FILES | BUILD | REPO | LIBRECHAT | MODELS | TOOLBUS_MCP | THREADS | HOST | STATE_EVIDENCE`
+- 31 semantic domains.
+- 14 classic router domains.
+- 12 domains marked EXTEND_ROUTER.
+- 4 standalone/no-route domains.
+- 1 composite semantic delegation domain.
+- 6 operation gateways.
+- 252 rows in the current capability execution matrix, of which 189 are AVAILABLE and 63 UNCONFIGURED.
 
-A concrete tool/action is exposed only if live registry, ACL and target binding admit it.
+The execution matrix is not a functional parity proof and reports zero functional effects established by that matrix.
 
-MANOJOS3 authority remains:
+## LibreChat behaviour
 
-`Governor → Policy → Kernel → Adapter → Readback → Verifier → Receipt`
+Nostromo/Tentáculo shows Interflow/domain lenses first.
 
-LibreChat/Tentáculo is presentation/control intent only.
+Raw capabilities are drill-down details used for:
 
-MANOJOS3 already defines a LibreChat adapter with:
+- driver provenance;
+- risk/effect display;
+- live capability checks;
+- readback/evidence linkage.
 
-- `librechat.thread.read` R0
-- `librechat.message.send` R2
+The UI must never treat a capability count as the set of user actions.
 
-and deliberately keeps it UNCONFIGURED without a real binding. LibreChat follows the same fail-closed rule in the opposite direction.
+## Authority
 
-## Shared HUD
+MANOJOS3 remains:
 
-The same visual HUD can move to VX13 or MANOJOS3 because it consumes the TargetParityContract, not target internals. Each target retains its own execution chain and authority owner.
+`Intent/Interflow → Governor/Policy → Kernel → adapter/driver → readback → Verifier/Receipt`
+
+LibreChat remains authority=false.
