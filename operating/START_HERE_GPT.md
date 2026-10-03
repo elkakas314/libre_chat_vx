@@ -1,40 +1,26 @@
 # START HERE — GPT
 
-Enter `LIBRECHAT_OPERATING_CANON`.
+Active architecture: `NOSTROMO_HYBRID`.
 
-Mode: `SOURCE_ONLY`.
-Source-only closeout: `COMPLETE_WITH_LLM_PLANE`.
+Drive START HERE: `10sokDQr6eFQGSceTl0KYwfVinmF8ixTUz-XG0e8RyjQ`.
 
-## Read first
+Read:
+1. `operating/BOOTSTRAP_CURRENT.json`
+2. `operating/HANDOFF_CURRENT.md`
+3. `docs/NOSTROMO_HYBRID_CURRENT.md`
+4. `docs/MANOJOS3_GPT_SEMANTIC_BRIDGE_CURRENT.md`
 
-1. `operating/TARGET_CANON.json`
-2. `operating/BOOTSTRAP_CURRENT.json`
-3. `operating/HANDOFF_CURRENT.md`
-4. selected source docs only when a proof/gap requires them.
+Rules:
+- one active hybrid architecture only;
+- local voice is personality/presentation, not target authority;
+- deep reasoning uses the free MANOJOS3 LiteLLM pool when available;
+- actions use MANOJOS3 MCP;
+- use MANOJOS3 GPT semantics, not raw capability-menu behavior;
+- Tentáculo HUD derives truth from structured readback, not model prose;
+- no paid fallback;
+- no direct LibreChat call to private MANOJOS3 control-plane HTTP;
+- do not touch local while the restriction remains.
 
-## Closed source layers
+Current source tests are NOT_RUN.
 
-- Operating Canon
-- semantic model
-- MANOJOS3 Interflow projection
-- native LibreChat surface binding
-- mobile/recovery
-- LLM plane topologies
-- MANOJOS3 action/inference/advisory entrypoint contracts
-
-## Key LLM rule
-
-Model path != action path.
-
-A model supplies language/reasoning.
-MANOJOS3 MCP supplies governed objectives/runs/receipts.
-
-Do not bypass the MCP gateway to call private MANOJOS3 control-plane HTTP.
-Do not auto-fallback to paid models.
-Do not promote MANOJOS3 free aliases until live readback resolves the current source conflict.
-
-## Next boundary
-
-`WAIT_FOR_LOCAL_REVALIDATION_PERMISSION_OR_LIVE_BINDING`
-
-If local remains forbidden, do not fabricate further material progress.
+Next boundary: `WAIT_FOR_LOCAL_REVALIDATION_PERMISSION_OR_LIVE_BINDING`.

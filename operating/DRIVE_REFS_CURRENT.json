@@ -1,44 +1,32 @@
 {
   "schema": "libre-chat-vx.operating-drive-refs.v1",
   "current_start_here": {
-    "document_id": "1L8hJa91MBVf5NREm1hQV2yPkTWxOGYSQ9xlHCkOZNc4"
-  },
-  "core_canon": {
-    "document_id": "18RUJkUGwF8FDD2Vi4Yq1oywh7OnF5y5GGXmUmRRKK8E"
+    "document_id": "10sokDQr6eFQGSceTl0KYwfVinmF8ixTUz-XG0e8RyjQ",
+    "revision_id": "AHj4eMSdC3jni5ZNbS1vmP_tBQYKe3No-jQGn3rV1yK6h9n7gcE-DfD4rIbZU_gLoRMSIL86Gkogv-ZtECA26cX-RMccc5VLQPjZr0gHzOc"
   },
   "librechat": {
-    "interflow": {
-      "document_id": "1do7t2rY6Myiyce9Nrg6t_ReyQKrb1SjRCkZz9k7-Y6w"
+    "nostromo_hybrid": {
+      "document_id": "1PqXk7nM8M_arbI472RU5n4T0rFQI1Yt-MH54VSapYc8",
+      "revision_id": "AHj4eMQo3k798DjuQrGBnYRdYAWTtPputlXmQsdr4fSjjPjBpSxVBaVDnwYOZmmJHLYSr0NJodSUnlOYA-q1C3MamFG2uL_e21SwHviMfkk"
     },
-    "native_surface_binding": {
-      "document_id": "1-of8wyyXRsnKxEckl0sPiFguZO5AyJiBlECyRq2VsEs"
-    },
-    "mobile_recovery": {
-      "document_id": "1THisMjuDsfvSkGrAu4tMRQq3qUxomjDdC5WkL5FU1ow"
-    },
-    "llm_plane": {
-      "document_id": "1eopGIXRbeOZwwfotCbmObeIDDalpGLsGZGWI_fMNpgI",
-      "revision_id": "ANLCKQlNzT7O_YRfkp065FgDIczqEgFqHWozoBLHFtTJ_WrRzq5HqtXxvZ_0Qwgps5XAH5ANbZZs5gmmQzU6WYm7ci5d_Q5vOhci0vhIU94"
+    "manojos3_gpt_semantic_bridge": {
+      "document_id": "1gAbtU0XISM4GWuspp-6wWEZACAycWtZBqzMrEJUu6y0",
+      "revision_id": "ANLCKQlQQDulUMqF3O17_O4sBD9eX6g0mCR0mz2kkNUbNb_sE0Lq2uo3DghlroX0DB4tHkO7QKX2MXBTIh8B61rMdrEPWwAtKs09T9HjhNY"
     },
     "manojos3_entrypoints": {
-      "document_id": "19WZ2DM3pXyIe9-mhyq_3oVXQ63QmvDBf7i720mGW1N4",
-      "revision_id": "AHj4eMQiwa5DU8JtZX9-1lU9t2DXrEYKFUthN8pq0mJcxaFyWA8XdKqSLAGs9v0JgyC4PRR6B98N3nGh7Wkt5lKNS1vRwPjC6LVbboM6_Xk"
+      "document_id": "19WZ2DM3pXyIe9-mhyq_3oVXQ63QmvDBf7i720mGW1N4"
     }
   },
   "vx13": {
-    "interflow_parity": {
-      "document_id": "1EARZfK7E7VJAyGk1L8sRsA_VeE_yDNXg51PO9HuwVFU"
-    },
-    "native_surface_boundaries": {
-      "document_id": "1D8SKuoi25dKkDnBcqAI0mAw6OhlM-7DkKja_jjqDCpk"
-    },
-    "mobile_recovery_boundaries": {
-      "document_id": "1sQQV1tMmHGbqvI3-B5j-DoT50We26WFIGDrEY76y0jo"
-    },
-    "llm_plane_alignment": {
-      "document_id": "1Oq3BPniuQI96z5e6T_vmUl2AhHP1Iu05_iPD6MKOOLM",
-      "revision_id": "AHj4eMQYGKLfqiekRvCvn9pb76z_SX-G3VVQ9VYwoC2dFtTFBjM8QFk9sKFJ0zn9Fuh_2FLxnzGy-l4Kant_74PzfxyPjJmsx7KE-755REE"
+    "nostromo_hybrid_parity": {
+      "document_id": "1i_sw3ZYXdu3-wFrmAxTw42PppT6wxMOK8G2jKI4onF8",
+      "revision_id": "AHj4eMRQM8hmQSLsjwNbH0g0c2o3p7udcll5GuFqZKouwwnZGkF8Ojl3O5e-cHmRsepB1NYRqesm0Q_NYYsYVdwH537nm9lZ2tPUNNVfdTo"
     }
+  },
+  "superseded": {
+    "llm_topology_matrix_drive": "1eopGIXRbeOZwwfotCbmObeIDDalpGLsGZGWI_fMNpgI",
+    "pre_hybrid_start_here_drive": "1L8hJa91MBVf5NREm1hQV2yPkTWxOGYSQ9xlHCkOZNc4",
+    "vx13_llm_plane_alignment_drive": "1Oq3BPniuQI96z5e6T_vmUl2AhHP1Iu05_iPD6MKOOLM"
   },
   "readback": "PASS",
   "local_touched": false

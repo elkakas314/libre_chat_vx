@@ -1,127 +1,56 @@
 {
   "schema": "libre-chat-vx.operating-proofs.v1",
-  "snapshot_id": "source-2026-10-03-9267b1c9",
+  "snapshot_id": "source-2026-10-03-a54b1f66",
   "proofs": [
     {
-      "proof_id": "operating-canon-source-drive",
-      "subject": "Operating Canon persisted in GitHub and Drive",
+      "proof_id": "nostromo-hybrid-source-drive",
+      "subject": "Single NOSTROMO_HYBRID source architecture + Drive readback",
       "proof_class": "DRIVE_READBACK",
       "state": "VALID",
-      "verified_at_source_head": "fef7b5521792e50efd64dd3c4af1ed0dff62ef3c",
-      "dependency_fingerprint": "repo:fef7b552|drive:18RUJkUG",
+      "verified_at_source_head": "a54b1f66327f0b4279f7024c92e70183b51cee14",
+      "dependency_fingerprint": "lc:a54b1f66|drive:1PqXk7nM|m3:cb772cca",
       "dependencies": [
-        "operating/LIBRECHAT_OPERATING_CANON.md",
-        "operating/BOOTSTRAP_CURRENT.json",
-        "operating/HANDOFF_CURRENT.md"
+        "src/llm/nostromoHybrid.ts",
+        "src/llm/responseContract.ts",
+        "config/nostromo_hybrid.current.json",
+        "docs/NOSTROMO_HYBRID_CURRENT.md"
       ],
       "evidence_refs": [
-        "commit:fef7b5521792e50efd64dd3c4af1ed0dff62ef3c",
-        "drive:18RUJkUGwF8FDD2Vi4Yq1oywh7OnF5y5GGXmUmRRKK8E"
+        "commit:a54b1f66327f0b4279f7024c92e70183b51cee14",
+        "drive:1PqXk7nM8M_arbI472RU5n4T0rFQI1Yt-MH54VSapYc8"
       ]
     },
     {
-      "proof_id": "m3-interflow-projection-source-drive",
-      "subject": "MANOJOS3 Interflow projection",
+      "proof_id": "m3-gpt-semantic-bridge-source-drive",
+      "subject": "MANOJOS3 GPT/controller semantic contract imported into Nostromo",
       "proof_class": "DRIVE_READBACK",
       "state": "VALID",
-      "verified_at_source_head": "7a9ebc7da0a172b5c6ff20999ab2b855a5999599",
-      "dependency_fingerprint": "m3:cb772cca|lc:7a9ebc7d",
+      "verified_at_source_head": "a54b1f66327f0b4279f7024c92e70183b51cee14",
+      "dependency_fingerprint": "lc:a54b1f66|mcp:fc21e6bf|m3canon:79fe2eff|m3:cb772cca",
       "dependencies": [
-        "src/manojos3/interflowProjection.ts",
-        "docs/MANOJOS3_INTERFLOW_PROJECTION_CURRENT.md"
+        "src/manojos3/gptSemanticBridge.ts",
+        "src/manojos3/hudBridge.ts",
+        "docs/MANOJOS3_GPT_SEMANTIC_BRIDGE_CURRENT.md"
       ],
       "evidence_refs": [
-        "commit:7a9ebc7da0a172b5c6ff20999ab2b855a5999599",
-        "drive:1do7t2rY6Myiyce9Nrg6t_ReyQKrb1SjRCkZz9k7-Y6w"
+        "commit:a54b1f66327f0b4279f7024c92e70183b51cee14",
+        "drive:1gAbtU0XISM4GWuspp-6wWEZACAycWtZBqzMrEJUu6y0"
       ]
     },
     {
-      "proof_id": "native-surface-binding-source-drive",
-      "subject": "Native LibreChat surface bindings",
-      "proof_class": "DRIVE_READBACK",
-      "state": "VALID",
-      "verified_at_source_head": "587090f7fea2d5fd6ef94fa470458009bfd136dc",
-      "dependency_fingerprint": "lc:587090f7|upstream:f10b1d91",
-      "dependencies": [
-        "src/librechat/nativeSurfaceBinding.ts",
-        "src/librechat/panelArbiter.ts",
-        "src/librechat/approvalBridge.ts",
-        "src/librechat/resumableBoundary.ts",
-        "overlay/UPSTREAM_INTEGRATION_MAP.json"
-      ],
-      "evidence_refs": [
-        "commit:587090f7fea2d5fd6ef94fa470458009bfd136dc",
-        "drive:1-of8wyyXRsnKxEckl0sPiFguZO5AyJiBlECyRq2VsEs"
-      ]
-    },
-    {
-      "proof_id": "mobile-recovery-source-drive",
-      "subject": "Mobile/recovery no-replay source implementation",
-      "proof_class": "DRIVE_READBACK",
-      "state": "VALID",
-      "verified_at_source_head": "62815f4a8378c60e268e9ae4daff4cbe32e711e3",
-      "dependency_fingerprint": "lc:62815f4a|resume:4dc45d8b|sse:67dc162c",
-      "dependencies": [
-        "src/mobile/mobileContinuity.ts",
-        "src/mobile/mobileRecovery.ts",
-        "src/mobile/offlineDraft.ts",
-        "src/mobile/pushRefresh.ts"
-      ],
-      "evidence_refs": [
-        "commit:62815f4a8378c60e268e9ae4daff4cbe32e711e3",
-        "drive:1THisMjuDsfvSkGrAu4tMRQq3qUxomjDdC5WkL5FU1ow"
-      ]
-    },
-    {
-      "proof_id": "llm-plane-topologies-source-drive",
-      "subject": "LibreChat LLM model-plane topology contracts",
-      "proof_class": "DRIVE_READBACK",
-      "state": "VALID",
-      "verified_at_source_head": "9267b1c9c5ffe567c067294719c0bc3aee5ddc61",
-      "dependency_fingerprint": "lc:9267b1c9|m3:cb772cca|modelrouter:ab3070fb|litellm:1ae3b1f8",
-      "dependencies": [
-        "src/llm/llmPlane.ts",
-        "src/llm/fallbackPolicy.ts",
-        "config/llm_topologies.current.json",
-        "config/librechat.llm-plane.example.yaml",
-        "docs/LLM_PLANE_CURRENT.md"
-      ],
-      "evidence_refs": [
-        "commit:9267b1c9c5ffe567c067294719c0bc3aee5ddc61",
-        "drive:1eopGIXRbeOZwwfotCbmObeIDDalpGLsGZGWI_fMNpgI",
-        "manojos3:cb772cca141f7ae5ae03af9655b3c5186f5826f6"
-      ]
-    },
-    {
-      "proof_id": "m3-entrypoints-source-drive",
-      "subject": "MANOJOS3 action/inference/advisory entrypoint contracts for LibreChat",
-      "proof_class": "DRIVE_READBACK",
-      "state": "VALID",
-      "verified_at_source_head": "9267b1c9c5ffe567c067294719c0bc3aee5ddc61",
-      "dependency_fingerprint": "lc:9267b1c9|mcp:fc21e6bf|plugin:9941eb55|router:ab3070fb",
-      "dependencies": [
-        "src/manojos3/entrypoints.ts",
-        "src/manojos3/submitProjection.ts",
-        "docs/MANOJOS3_ENTRYPOINTS_CURRENT.md"
-      ],
-      "evidence_refs": [
-        "commit:9267b1c9c5ffe567c067294719c0bc3aee5ddc61",
-        "drive:19WZ2DM3pXyIe9-mhyq_3oVXQ63QmvDBf7i720mGW1N4",
-        "drive:1Oq3BPniuQI96z5e6T_vmUl2AhHP1Iu05_iPD6MKOOLM"
-      ]
-    },
-    {
-      "proof_id": "semantic-model-source",
-      "subject": "semantic model v2",
+      "proof_id": "tentacle-hud-model-independence",
+      "subject": "Tentáculo HUD state depends on structured target readback, not local/reasoning LLM prose",
       "proof_class": "SOURCE_READBACK",
       "state": "VALID",
-      "verified_at_source_head": "fad1564a41d1f26296bec36cb6f48c0dfe00eec3",
-      "dependency_fingerprint": "gitblob:3227d97bf6f1168d4d572908979db5b0b462fdd2",
+      "verified_at_source_head": "a54b1f66327f0b4279f7024c92e70183b51cee14",
+      "dependency_fingerprint": "hud:8b7ac8a5|bridge:a54b1f66",
       "dependencies": [
-        "docs/SEMANTIC_MODEL_CURRENT.md"
+        "src/cockpit/tentacleHud.ts",
+        "src/manojos3/hudBridge.ts",
+        "src/llm/nostromoHybrid.ts"
       ],
       "evidence_refs": [
-        "commit:fad1564a41d1f26296bec36cb6f48c0dfe00eec3"
+        "commit:a54b1f66327f0b4279f7024c92e70183b51cee14"
       ]
     },
     {
@@ -132,41 +61,30 @@
       "verified_at_source_head": "94c632762f7afee7d9fa9d0f0c23c80d7494d2d2",
       "dependency_fingerprint": "STALE_RELEVANT_SOURCE_CHANGED_AFTER_TEST",
       "dependencies": [
-        "src/adapters/targetParity.ts",
+        "src/llm/nostromoHybrid.ts",
+        "src/manojos3/gptSemanticBridge.ts",
         "src/ui/NostromoCockpit.tsx",
-        "src/cockpit/windowRouter.ts",
-        "src/llm/llmPlane.ts",
-        "src/manojos3/entrypoints.ts",
-        "tests/llm-plane.test.ts",
-        "tests/manojos3-entrypoints.test.ts"
+        "tests/nostromo-hybrid.test.ts"
       ],
       "evidence_refs": [
         "test:26_PASS@94c632762f7afee7d9fa9d0f0c23c80d7494d2d2"
       ]
     },
     {
-      "proof_id": "m3-llm-live-readback",
-      "subject": "MANOJOS3 current free-model route and exact served-model state",
+      "proof_id": "m3-live-binding",
+      "subject": "MANOJOS3 MCP live binding from LibreChat",
+      "proof_class": "RUNTIME_READBACK",
+      "state": "UNAVAILABLE",
+      "dependency_fingerprint": "DEPLOYMENT_UNBOUND",
+      "dependencies": [],
+      "evidence_refs": []
+    },
+    {
+      "proof_id": "m3-free-reasoner-live",
+      "subject": "MANOJOS3 LiteLLM free aliases live verification",
       "proof_class": "RUNTIME_READBACK",
       "state": "UNAVAILABLE",
       "dependency_fingerprint": "SOURCE_CONFLICT_REQUIRES_LIVE_READBACK",
-      "dependencies": [
-        "MANOJOS3 llm.router.status",
-        "MANOJOS3 llm.litellm.status",
-        "exact model completion canary"
-      ],
-      "evidence_refs": [
-        "m3blob:1ae3b1f8d9ad835bf3620ae3f99d4b408c4d3f08",
-        "m3blob:94941ce2bab049b7e03f7f2cc1d323c962222f02",
-        "m3blob:7fc89ae2c9368432655542f8bc3b5597e3314008"
-      ]
-    },
-    {
-      "proof_id": "runtime-live",
-      "subject": "LibreChat current runtime/live binding",
-      "proof_class": "RUNTIME_READBACK",
-      "state": "UNAVAILABLE",
-      "dependency_fingerprint": "NO_LIVE_BINDING_OBSERVED",
       "dependencies": [],
       "evidence_refs": []
     }

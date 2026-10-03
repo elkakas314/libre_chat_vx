@@ -2,71 +2,63 @@
 
 Mode: `SOURCE_ONLY`.
 
-## Source-only closeout
+## Active architecture
 
-`COMPLETE_WITH_LLM_PLANE`
+`NOSTROMO_HYBRID`
 
-Closed source/Drive layers:
+There is one active LLM architecture, not five.
 
-- `LC-OPERATING-CANON = PASS`
-- `LC-M3-INTERFLOW-PROJECTION = PASS`
-- `LC-NATIVE-SURFACE-BINDING = PASS`
-- `LC-MOBILE-RECOVERY = PASS`
-- `LC-LLM-PLANE-TOPOLOGIES = PASS`
-- `LC-M3-ENTRYPOINT-CONTRACTS = PASS`
+```text
+LibreChat
+→ Nostromo local voice (~1–2 GB)
+   ├─ MANOJOS3 LiteLLM free reasoning when needed
+   └─ MANOJOS3 MCP for governed actions
+→ same personality to user
+```
 
-## LLM architecture now fixed
+## MANOJOS3 GPT semantics imported
 
-Model plane and action plane are separate.
+Bootstrap is read-only:
+`manojos_gpt_migration_profile → status → capabilities → skills → optional attach`.
 
-Model topology families:
-1. direct provider;
-2. local OpenAI-compatible model;
-3. external OpenAI-compatible router;
-4. MANOJOS3-managed LiteLLM;
-5. hybrid model endpoint + MANOJOS3 MCP.
+Do not submit an objective just to acquire context.
 
-MANOJOS3 action entrypoint:
-- MCP streamable-http;
-- source loopback `127.0.0.1:8790/mcp`;
-- deployment variable `MANOJOS3_MCP_URL`;
-- 14 bounded tools;
-- no arbitrary capability execution;
-- no direct LibreChat call to private control-plane HTTP.
+Human input is a natural objective. Capabilities are internal drivers.
 
-MANOJOS3 inference entrypoint:
-- OpenAI-compatible LiteLLM/ModelRouter plane;
-- source loopback `127.0.0.1:4000/v1`;
-- deployment variable `MANOJOS3_LLM_BASE_URL`;
-- authority=false.
+Technical slots are resolved/inferred when possible. Ask the user only for true semantic ambiguity, real risk/authorization, irreversible choice or unavailable required data.
 
-Advisory model use through MANOJOS3:
-- LibreChat submits a bounded objective with `manojos_submit`;
-- MANOJOS3 chooses `llm.models` / repair advisory Interflow internally.
+MCP and LLM routing have `authority=false`.
 
-## Unresolved live truth
+Material success requires verified receipt + current evidence + readback.
 
-MANOJOS3 source disagrees about currently promoted free models:
-- managed LiteLLM config marks aliases LIVE_VERIFIED_FREE;
-- LLM_MODELS_CURRENT says none active;
-- CONTROL_PLANE_STATUS says live_verified_free_models=0.
+Ambiguous effects require readback/reconcile before retry.
 
-Do not resolve from source. `LC-M3-LLM-LIVE-READBACK` requires live canaries.
+## Tentáculo HUD
 
-## Drive
+HUD state is model-independent.
 
-- LLM plane: `1eopGIXRbeOZwwfotCbmObeIDDalpGLsGZGWI_fMNpgI`
-- MANOJOS3 entrypoints: `19WZ2DM3pXyIe9-mhyq_3oVXQ63QmvDBf7i720mGW1N4`
-- VX13 LLM alignment: `1Oq3BPniuQI96z5e6T_vmUl2AhHP1Iu05_iPD6MKOOLM`
+It derives from structured target state:
+status/capabilities/skills/Interflow/run/authorization/receipt/readback.
+
+Therefore a small local model does not reduce HUD correctness.
+
+## Drive CURRENT
+
+- Start Here: `10sokDQr6eFQGSceTl0KYwfVinmF8ixTUz-XG0e8RyjQ`
+- Nostromo Hybrid: `1PqXk7nM8M_arbI472RU5n4T0rFQI1Yt-MH54VSapYc8`
+- MANOJOS3 GPT Semantic Bridge: `1gAbtU0XISM4GWuspp-6wWEZACAycWtZBqzMrEJUu6y0`
+- VX13 parity: `1i_sw3ZYXdu3-wFrmAxTw42PppT6wxMOK8G2jKI4onF8`
+
+The old five-topology Drive documents are marked SUPERSEDED.
 
 ## Proof boundary
 
-Last executed host proof remains `26 PASS @ 94c632762f7afee7d9fa9d0f0c23c80d7494d2d2`.
+Current source tests: `NOT_RUN / STALE_PROOF`.
 
-Current-head tests are `NOT_RUN / STALE_PROOF`.
+Last material proof remains `26 PASS @ 94c632762f7afee7d9fa9d0f0c23c80d7494d2d2`.
+
+No local host was touched.
 
 ## Next boundary
 
 `WAIT_FOR_LOCAL_REVALIDATION_PERMISSION_OR_LIVE_BINDING`
-
-No local host was touched.

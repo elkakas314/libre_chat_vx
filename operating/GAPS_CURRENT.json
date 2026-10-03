@@ -1,41 +1,35 @@
 {
   "schema": "libre-chat-vx.operating-gaps.v1",
-  "snapshot_id": "source-2026-10-03-9267b1c9",
+  "snapshot_id": "source-2026-10-03-a54b1f66",
   "gaps": [
     {
       "gap_id": "LC-OPERATING-CANON",
-      "summary": "Operating Canon + bootstrap + handoff source and Drive continuity",
+      "summary": "Operating Canon + bootstrap + handoff source/Drive continuity",
       "state": "PASS",
       "priority": 0,
       "scope": "continuity",
       "requires_live": false,
       "dependencies": [],
-      "preferred_route": "github_and_drive_source",
       "evidence_refs": [
-        "commit:fef7b5521792e50efd64dd3c4af1ed0dff62ef3c",
-        "drive:18RUJkUGwF8FDD2Vi4Yq1oywh7OnF5y5GGXmUmRRKK8E"
+        "commit:fef7b5521792e50efd64dd3c4af1ed0dff62ef3c"
       ]
     },
     {
       "gap_id": "LC-CURRENT-HEAD-TESTS",
-      "summary": "Revalidate current source after semantic/operating/Interflow/native/mobile/LLM changes",
+      "summary": "Revalidate current source after Nostromo Hybrid consolidation",
       "state": "STALE_PROOF",
       "priority": 10,
       "scope": "source_tests",
       "requires_live": true,
       "dependencies": [
-        "LC-OPERATING-CANON",
-        "LC-M3-INTERFLOW-PROJECTION",
-        "LC-NATIVE-SURFACE-BINDING",
-        "LC-MOBILE-RECOVERY",
-        "LC-LLM-PLANE-TOPOLOGIES",
-        "LC-M3-ENTRYPOINT-CONTRACTS"
+        "LC-NOSTROMO-HYBRID",
+        "LC-M3-GPT-SEMANTIC-BRIDGE"
       ],
       "preferred_route": "host_test_when_local_allowed"
     },
     {
       "gap_id": "LC-M3-INTERFLOW-PROJECTION",
-      "summary": "Project MANOJOS3 Intent/Interflow semantics into bounded LibreChat lenses",
+      "summary": "MANOJOS3 Intent/Interflow semantic projection",
       "state": "PASS",
       "priority": 20,
       "scope": "manojos3_projection",
@@ -43,75 +37,58 @@
       "dependencies": [
         "LC-OPERATING-CANON"
       ],
-      "preferred_route": "github_source_read_manojos3_then_libre_chat_vx",
       "evidence_refs": [
-        "commit:7a9ebc7da0a172b5c6ff20999ab2b855a5999599",
-        "drive:1do7t2rY6Myiyce9Nrg6t_ReyQKrb1SjRCkZz9k7-Y6w"
+        "commit:7a9ebc7da0a172b5c6ff20999ab2b855a5999599"
       ]
     },
     {
-      "gap_id": "LC-LLM-PLANE-TOPOLOGIES",
-      "summary": "Define LibreChat model-plane topologies with no-paid fail-closed routing and explicit separation from the target action plane",
+      "gap_id": "LC-NOSTROMO-HYBRID",
+      "summary": "Single local-voice + free-reasoning + MANOJOS3-MCP architecture",
       "state": "PASS",
-      "priority": 25,
-      "scope": "llm_plane",
+      "priority": 21,
+      "scope": "hybrid_llm",
       "requires_live": false,
       "dependencies": [
-        "LC-OPERATING-CANON"
+        "LC-M3-INTERFLOW-PROJECTION"
       ],
-      "preferred_route": "librechat_custom_endpoints_plus_optional_manojos3_model_router",
       "evidence_refs": [
-        "commit:9267b1c9c5ffe567c067294719c0bc3aee5ddc61",
-        "drive:1eopGIXRbeOZwwfotCbmObeIDDalpGLsGZGWI_fMNpgI",
-        "manojos3:cb772cca141f7ae5ae03af9655b3c5186f5826f6"
+        "commit:a54b1f66327f0b4279f7024c92e70183b51cee14",
+        "drive:1PqXk7nM8M_arbI472RU5n4T0rFQI1Yt-MH54VSapYc8"
+      ]
+    },
+    {
+      "gap_id": "LC-M3-GPT-SEMANTIC-BRIDGE",
+      "summary": "Import MANOJOS3 GPT/controller semantics into LibreChat/Nostromo",
+      "state": "PASS",
+      "priority": 22,
+      "scope": "manojos3_semantics",
+      "requires_live": false,
+      "dependencies": [
+        "LC-M3-INTERFLOW-PROJECTION",
+        "LC-NOSTROMO-HYBRID"
+      ],
+      "evidence_refs": [
+        "commit:a54b1f66327f0b4279f7024c92e70183b51cee14",
+        "drive:1gAbtU0XISM4GWuspp-6wWEZACAycWtZBqzMrEJUu6y0"
       ]
     },
     {
       "gap_id": "LC-M3-ENTRYPOINT-CONTRACTS",
-      "summary": "Define separate MANOJOS3 action MCP, model inference and internal advisory Interflow entrypoints for LibreChat",
+      "summary": "MANOJOS3 MCP action and managed-LiteLLM supporting entrypoints",
       "state": "PASS",
-      "priority": 26,
+      "priority": 23,
       "scope": "manojos3_entrypoints",
       "requires_live": false,
       "dependencies": [
-        "LC-M3-INTERFLOW-PROJECTION",
-        "LC-LLM-PLANE-TOPOLOGIES"
+        "LC-M3-GPT-SEMANTIC-BRIDGE"
       ],
-      "preferred_route": "mcp_for_actions_openai_compatible_for_models",
       "evidence_refs": [
-        "commit:9267b1c9c5ffe567c067294719c0bc3aee5ddc61",
-        "drive:19WZ2DM3pXyIe9-mhyq_3oVXQ63QmvDBf7i720mGW1N4",
-        "drive:1Oq3BPniuQI96z5e6T_vmUl2AhHP1Iu05_iPD6MKOOLM"
+        "drive:19WZ2DM3pXyIe9-mhyq_3oVXQ63QmvDBf7i720mGW1N4"
       ]
     },
     {
-      "gap_id": "LC-M3-R0-BINDING",
-      "summary": "Real governed MANOJOS3 MCP read binding and one R0 objective/readback/receipt",
-      "state": "BLOCKED_DEPENDENCY",
-      "priority": 30,
-      "scope": "manojos3_binding",
-      "requires_live": true,
-      "dependencies": [
-        "LC-CURRENT-HEAD-TESTS",
-        "LC-M3-ENTRYPOINT-CONTRACTS"
-      ],
-      "preferred_route": "manojos3_inbound_mcp"
-    },
-    {
-      "gap_id": "LC-UPSTREAM-OVERLAY-REVALIDATE",
-      "summary": "Revalidate current Nostromo overlay against pinned LibreChat upstream after source changes",
-      "state": "NOT_TESTED",
-      "priority": 40,
-      "scope": "upstream_overlay",
-      "requires_live": true,
-      "dependencies": [
-        "LC-CURRENT-HEAD-TESTS"
-      ],
-      "preferred_route": "pinned_upstream_overlay_test"
-    },
-    {
       "gap_id": "LC-NATIVE-SURFACE-BINDING",
-      "summary": "Bind Nostromo source contracts to native Artifacts/MCP UI/ToolApproval/Files/Subagents/background/resumable/SidePanel surfaces",
+      "summary": "Native LibreChat surface reuse",
       "state": "PASS",
       "priority": 50,
       "scope": "librechat_native",
@@ -119,15 +96,13 @@
       "dependencies": [
         "LC-M3-INTERFLOW-PROJECTION"
       ],
-      "preferred_route": "minimal_feature_flagged_overlay",
       "evidence_refs": [
-        "commit:587090f7fea2d5fd6ef94fa470458009bfd136dc",
-        "drive:1-of8wyyXRsnKxEckl0sPiFguZO5AyJiBlECyRq2VsEs"
+        "commit:587090f7fea2d5fd6ef94fa470458009bfd136dc"
       ]
     },
     {
       "gap_id": "LC-MOBILE-RECOVERY",
-      "summary": "PC/mobile same history, native resume/reconnect, offline read-only and no target effect replay",
+      "summary": "Same history, resume/reconnect, no material replay",
       "state": "PASS",
       "priority": 60,
       "scope": "mobile_recovery",
@@ -135,52 +110,59 @@
       "dependencies": [
         "LC-NATIVE-SURFACE-BINDING"
       ],
-      "preferred_route": "native_resumable_streams_plus_vx_fences",
       "evidence_refs": [
-        "commit:62815f4a8378c60e268e9ae4daff4cbe32e711e3",
-        "drive:1THisMjuDsfvSkGrAu4tMRQq3qUxomjDdC5WkL5FU1ow"
+        "commit:62815f4a8378c60e268e9ae4daff4cbe32e711e3"
       ]
     },
     {
-      "gap_id": "LC-M3-LLM-LIVE-READBACK",
-      "summary": "Resolve contradictory MANOJOS3 free-model source status with live LiteLLM/ModelRouter canaries before LibreChat promotion",
+      "gap_id": "LC-M3-R0-BINDING",
+      "summary": "Real governed MANOJOS3 MCP bootstrap + one R0 objective/readback/receipt",
       "state": "BLOCKED_DEPENDENCY",
-      "priority": 65,
-      "scope": "manojos3_llm_live",
-      "requires_live": true,
-      "dependencies": [
-        "LC-CURRENT-HEAD-TESTS",
-        "LC-LLM-PLANE-TOPOLOGIES"
-      ],
-      "preferred_route": "llm_router_status_litellm_status_exact_model_canary"
-    },
-    {
-      "gap_id": "LC-VX13-BINDING",
-      "summary": "VX13 real binding through Tentaculo Link/Madre chain",
-      "state": "GATE_EXTERNAL",
       "priority": 70,
-      "scope": "vx13_binding",
+      "scope": "manojos3_binding",
       "requires_live": true,
       "dependencies": [
         "LC-CURRENT-HEAD-TESTS"
       ],
-      "preferred_route": "vx13_runtime_when_materialized"
+      "preferred_route": "manojos3_inbound_mcp"
     },
     {
-      "gap_id": "LC-ORACULO-R0",
-      "summary": "Advisory R0 via MANOJOS3 preferred route",
+      "gap_id": "LC-M3-LLM-LIVE-READBACK",
+      "summary": "Resolve MANOJOS3 free-model source conflict and verify exact served aliases",
       "state": "BLOCKED_DEPENDENCY",
-      "priority": 80,
-      "scope": "oraculo_advisory",
+      "priority": 71,
+      "scope": "manojos3_llm_live",
       "requires_live": true,
       "dependencies": [
-        "LC-M3-R0-BINDING"
+        "LC-CURRENT-HEAD-TESTS"
       ],
-      "preferred_route": "librechat_to_manojos3_to_oraculo"
+      "preferred_route": "llm_router_status_litellm_status_exact_model_canary"
+    },
+    {
+      "gap_id": "LC-UPSTREAM-OVERLAY-REVALIDATE",
+      "summary": "Revalidate Nostromo overlay on pinned LibreChat upstream",
+      "state": "NOT_TESTED",
+      "priority": 72,
+      "scope": "upstream_overlay",
+      "requires_live": true,
+      "dependencies": [
+        "LC-CURRENT-HEAD-TESTS"
+      ]
+    },
+    {
+      "gap_id": "LC-VX13-BINDING",
+      "summary": "Future VX13 real binding with same Nostromo identity and distinct authority",
+      "state": "GATE_EXTERNAL",
+      "priority": 80,
+      "scope": "vx13_binding",
+      "requires_live": true,
+      "dependencies": [
+        "LC-CURRENT-HEAD-TESTS"
+      ]
     },
     {
       "gap_id": "LC-FIRST-R2",
-      "summary": "First minimal governed material mutation",
+      "summary": "First minimal governed material mutation through MANOJOS3",
       "state": "BLOCKED_DEPENDENCY",
       "priority": 90,
       "scope": "material_mutation",
@@ -188,20 +170,18 @@
       "dependencies": [
         "LC-M3-R0-BINDING",
         "LC-UPSTREAM-OVERLAY-REVALIDATE"
-      ],
-      "preferred_route": "concrete_target_governed_path"
+      ]
     },
     {
       "gap_id": "LC-LOW-POWER-MEASURE",
-      "summary": "Measure idle/active/stream/reconnect resource use on target host",
+      "summary": "Measure idle/active/local-model/reasoner/MCP resource use",
       "state": "GATE_HUMAN",
       "priority": 100,
       "scope": "host_measurement",
       "requires_live": true,
       "dependencies": [
-        "LC-UPSTREAM-OVERLAY-REVALIDATE"
-      ],
-      "preferred_route": "local_measurement_only_when_allowed"
+        "LC-CURRENT-HEAD-TESTS"
+      ]
     }
   ]
 }

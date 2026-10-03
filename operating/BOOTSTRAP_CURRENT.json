@@ -2,50 +2,26 @@
   "schema": "libre-chat-vx.operating-bootstrap.v1",
   "canon": "LIBRECHAT_OPERATING_CANON",
   "target_version": 1,
-  "snapshot_id": "source-2026-10-03-9267b1c9",
-  "evidence_cutoff_head": "9267b1c9c5ffe567c067294719c0bc3aee5ddc61",
-  "continuity_metadata_may_advance_remote_main": true,
+  "snapshot_id": "source-2026-10-03-a54b1f66",
+  "evidence_cutoff_head": "a54b1f66327f0b4279f7024c92e70183b51cee14",
   "mode": "SOURCE_ONLY",
-  "source_only_closeout": "COMPLETE_WITH_LLM_PLANE",
+  "source_only_closeout": "COMPLETE_NOSTROMO_HYBRID",
+  "active_llm_architecture": "NOSTROMO_HYBRID",
+  "active_llm_architecture_count": 1,
   "runtime": {
     "librechat": "NO_VERIFICADO",
-    "manojos3_binding": "PREPARED_UNCONFIGURED",
-    "manojos3_llm_binding": "SOURCE_DISCOVERED_LIVE_UNVERIFIED",
+    "local_voice": "UNCONFIGURED",
+    "manojos3_mcp": "PREPARED_UNCONFIGURED",
+    "manojos3_free_reasoner": "SOURCE_CONFLICT_REQUIRES_LIVE_READBACK",
     "vx13_binding": "UNCONFIGURED"
   },
-  "git": {
-    "product_source_head_at_cutoff": "9267b1c9c5ffe567c067294719c0bc3aee5ddc61",
-    "workspace": "NOT_READ_BY_USER_CONSTRAINT"
-  },
   "drive": {
-    "start_here_current": "1L8hJa91MBVf5NREm1hQV2yPkTWxOGYSQ9xlHCkOZNc4",
-    "core_canon": "18RUJkUGwF8FDD2Vi4Yq1oywh7OnF5y5GGXmUmRRKK8E",
-    "llm_plane": "1eopGIXRbeOZwwfotCbmObeIDDalpGLsGZGWI_fMNpgI",
+    "start_here_current": "10sokDQr6eFQGSceTl0KYwfVinmF8ixTUz-XG0e8RyjQ",
+    "nostromo_hybrid": "1PqXk7nM8M_arbI472RU5n4T0rFQI1Yt-MH54VSapYc8",
+    "manojos3_gpt_semantic_bridge": "1gAbtU0XISM4GWuspp-6wWEZACAycWtZBqzMrEJUu6y0",
     "manojos3_entrypoints": "19WZ2DM3pXyIe9-mhyq_3oVXQ63QmvDBf7i720mGW1N4",
-    "vx13_llm_alignment": "1Oq3BPniuQI96z5e6T_vmUl2AhHP1Iu05_iPD6MKOOLM",
+    "vx13_hybrid_parity": "1i_sw3ZYXdu3-wFrmAxTw42PppT6wxMOK8G2jKI4onF8",
     "readback": "PASS"
-  },
-  "proofs": {
-    "valid": [
-      "operating-canon-source-drive",
-      "m3-interflow-projection-source-drive",
-      "native-surface-binding-source-drive",
-      "mobile-recovery-source-drive",
-      "llm-plane-topologies-source-drive",
-      "m3-entrypoints-source-drive",
-      "semantic-model-source"
-    ],
-    "stale": [
-      "nostromo-material-test"
-    ],
-    "unavailable": [
-      "runtime-live",
-      "m3-llm-live-readback"
-    ]
-  },
-  "ownership": {
-    "state": "UNOBSERVED",
-    "do_not_assume_free": true
   },
   "eligible_source_only": [],
   "blocked_or_gated": [
@@ -54,7 +30,6 @@
     "LC-M3-LLM-LIVE-READBACK",
     "LC-UPSTREAM-OVERLAY-REVALIDATE",
     "LC-VX13-BINDING",
-    "LC-ORACULO-R0",
     "LC-FIRST-R2",
     "LC-LOW-POWER-MEASURE"
   ],
@@ -62,9 +37,8 @@
     "local host while user restriction remains",
     "MANOJOS3 repository",
     "VX13 repository",
-    "target authority internals",
     "secrets",
-    "automatic CURRENT to TARGET mutation"
+    "target authority internals"
   ],
   "closeout": "INCOMPLETE",
   "next_action": "WAIT_FOR_LOCAL_REVALIDATION_PERMISSION_OR_LIVE_BINDING"
