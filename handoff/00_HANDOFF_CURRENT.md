@@ -167,3 +167,60 @@ No secretos en repo, Drive, receipts o logs.
 `MATERIAL_COMPLETE` exige target concreto + binding fresco + ruta gobernada + readback + verificación + receipt.
 
 No declarar LibreChat funcional completo hasta cerrar esos gates.
+
+## 13. Capacidades oficiales LibreChat incorporadas al diseño — 2026-10-05
+
+Estas capacidades se incorporan como superficies nativas o contratos de integración; no convierten LibreChat en autoridad material:
+
+- **Tool Search / herramientas diferidas**: cargar herramientas bajo demanda para no inflar el contexto; MANOJOS3 sigue siendo el owner de acciones gobernadas.
+- **Skills nativas**: reutilizar skills tipo `SKILL.md` y recursos auxiliares sin inventar un registry paralelo.
+- **Control de agente en ejecución**: permitir interrumpir, corregir o aportar contexto mientras una tarea cognitiva está en marcha.
+- **Conversation Trace + Context Usage + compactación**: exponer trazas y consumo de contexto y permitir compactar conversaciones largas sin perder continuidad operativa.
+- **Adjuntos inteligentes / File Context / RAG**: elegir entre contexto completo, recuperación o herramienta de código según el archivo y la tarea.
+- **MCP activables desde la UI + OAuth por usuario + sesiones request-scoped**: conectar herramientas sin hacerlas autoridad y reducir credenciales globales.
+- **Agent Management API**: administrar agentes/skills/configuración desde automatización gobernada.
+- **Tool intents visibles**: mostrar en lenguaje humano qué pretende hacer una herramienta antes/durante la ejecución.
+- **Artifacts React/HTML/Mermaid**: usar superficies nativas para HUD, grafos, receipts y paneles sin crear un segundo frontend.
+- **Background tools / Scheduled Chats**: permitidos como scheduling/presentación; cualquier efecto material debe reenviarse al target gobernado.
+- **Programmatic Tool Calling / workspaces de código**: sólo detrás de los gates de MANOJOS3; nunca como segundo HOST_CONTROL ni executor paralelo.
+- **Subagentes**: cognición aislada; nunca equivalen a Kernel workers, Spawner/hijas ni receipts materiales.
+
+Fuentes oficiales revisadas: LibreChat Compatibility Matrix, Custom Endpoints, Model Specs, Agents/Skills/MCP/Composer y changelog 0.8.8-rc3.
+
+## 14. NOSTROMO Provider Mesh — no dependencia rígida de IA local
+
+Se mantiene una sola arquitectura: `NOSTROMO_HYBRID`. Se añade una capa de selección de proveedor, no un sistema paralelo.
+
+Principios:
+- La voz/modelo local pasa a ser **opcional y reemplazable**, útil para baja latencia, privacidad o degradado, pero no requisito para conversar.
+- El razonamiento usa **aliases semánticos** (`general`, `reasoning`, `coding`, `fast`, `long-context`) y el proveedor real se resuelve por disponibilidad LIVE.
+- MANOJOS3 LiteLLM permanece como plano preferente de routing de razonamiento porque mantiene una política única y permite cambiar de proveedor sin cambiar la UX.
+- LibreChat puede exponer **Custom Endpoints** OpenAI-compatible o Anthropic-compatible para conversación directa cuando interese; esto no concede autoridad sobre acciones.
+- Los Custom Endpoints permiten conectar servicios remotos o locales (por ejemplo OpenRouter, Groq, Mistral, Ollama, vLLM, DeepSeek u otros compatibles); cada binding debe verificarse LIVE antes de declararlo usable.
+- **Model Specs** presenta nombres estables al usuario y oculta la rotación de proveedores/modelos.
+- Las claves pueden ser por entorno o `user_provided`; no se guardan secretos en repo/Drive.
+- `paid_fallback_allowed=false` se conserva: no habrá salto automático a una API de pago.
+- La política recomendada es **REMOTE_FREE_CAPABLE + LOCAL_OPTIONAL**: remoto gratuito/coste cero si está disponible, local si conviene o como degradado, sin dependencia dura de ninguno.
+- Si cambia un proveedor, la conversación puede continuar; la ruta de acciones sigue siendo MANOJOS3 MCP o VX13 y no depende del modelo elegido.
+- Ningún endpoint/modelo se marca PASS por documentación: disponibilidad, límites, tool calling, visión y latencia requieren readback/benchmark.
+
+### Selección por clase de trabajo
+
+```text
+chat/voz/personalidad -> local opcional o proveedor remoto ligero
+razonamiento general -> alias general
+razonamiento difícil -> alias reasoning
+código -> alias coding
+contexto grande -> alias long-context
+respuesta rápida -> alias fast
+acciones materiales -> SIEMPRE target gobernado (M3/VX13), nunca el LLM
+```
+
+### Gates añadidos
+
+- `LC-PROVIDER-MESH-CONFIG`: Model Specs + endpoints/aliases definidos sin secretos.
+- `LC-PROVIDER-MESH-LIVE`: al menos dos rutas de razonamiento verificadas, de las cuales una puede ser no local.
+- `LC-PROVIDER-FAILOVER`: caída de un proveedor no cambia autoridad ni duplica una acción.
+- `LC-MODEL-CAPABILITY-READBACK`: tools/vision/context se comprueban por modelo, no por nombre del endpoint.
+- `LC-NO-PAID-AUTO-FALLBACK`: prueba negativa de que no existe fallback automático de pago.
+
