@@ -78,3 +78,26 @@ flowchart TD
 8. `AUTO/BOTH` no mutan.
 9. PASS material exige readback + verifier + receipt.
 10. Polling fijo no es baseline; event-driven/lazy/backpressure/snapshot-resync.
+
+## Provider Mesh de razonamiento
+
+```mermaid
+flowchart LR
+  U[Usuario] --> LC[LibreChat / Nostromo]
+  LC --> MS[Model Specs / perfiles semánticos]
+  MS --> PM[Provider Mesh]
+  PM --> M3L[MANOJOS3 LiteLLM aliases]
+  PM --> REM[Custom Endpoints remotos compatibles]
+  PM --> LOC[Modelo local opcional]
+  LC --> ACT[MANOJOS3 MCP / VX13 ingress]
+  ACT --> AUTH[Autoridad del target]
+  AUTH --> RB[Readback + Verifier + Receipt]
+```
+
+Invariantes adicionales:
+11. El proveedor del LLM es intercambiable y no forma parte de la autoridad.
+12. Modelo local = opcional; remoto = posible; ninguno es requisito único.
+13. Model Specs/aliases son identidades semánticas; el binding real se verifica LIVE.
+14. Fallover de inferencia no reenvía ni duplica acciones.
+15. No existe fallback automático a proveedor de pago.
+
