@@ -117,3 +117,23 @@ No afirmar LIVE ni MATERIAL_VERIFIED.
 - `manojos3@a7b2647:src/manojos3/adapters/librechat.py:L7-L15`.
 - `manojos3@a7b2647:src/manojos3/mcp_gateway.py:L94-L180`.
 - Drive VX13 A-50 CURRENT `1i-Dyj_KePeAeQl4d90ZjVQVsmE8Ca-2bGKPHM9vNZO0`, indexes 4819–7023.
+
+## Capacidades nativas LibreChat incorporadas — 2026-10-05
+
+Se prioriza reutilizar capacidades oficiales antes de desarrollar equivalentes propios: Tool Search, Skills, control de agentes en ejecución, trazas, inspector de contexto/compactación, adjuntos inteligentes y RAG, MCP con OAuth/request scope, Agent Management API, tool intents, artifacts, background tasks, scheduled chats y subagentes.
+
+Regla de integración: cualquier superficie que pueda terminar en efecto material se traduce a intención y vuelve al owner del target. LibreChat no obtiene autoridad por tener MCP, Agents, Programmatic Tool Calling, workspaces o Tool Approval.
+
+## Provider Mesh dentro de NOSTROMO_HYBRID
+
+El diseño ya era híbrido y no se sustituye. Se formaliza la independencia del proveedor:
+
+- `nostromo-voice-local` queda como acelerador/voz opcional, no dependencia dura.
+- MANOJOS3 LiteLLM conserva aliases semánticos y es el router preferente del plano de razonamiento.
+- LibreChat Custom Endpoints puede conectar proveedores OpenAI-compatible o Anthropic-compatible, locales o remotos, cuando la conversación lo necesite.
+- LibreChat Model Specs presenta perfiles estables y evita que la UX dependa del nombre real del modelo.
+- `paid_fallback_allowed=false` continúa vigente.
+- Objetivo operacional: `REMOTE_FREE_CAPABLE + LOCAL_OPTIONAL + PROVIDER_AGNOSTIC_UI`.
+- Un fallo de proveedor sólo cambia la ruta de inferencia; nunca cambia target, grants, autorización, receipt ni replay de mutaciones.
+- Ningún proveedor remoto “gratuito” se considera garantizado: debe comprobarse LIVE su cuota, compatibilidad, tool calling, límites y estabilidad.
+
