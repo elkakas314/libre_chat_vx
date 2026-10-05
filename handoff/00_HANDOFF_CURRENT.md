@@ -224,3 +224,27 @@ acciones materiales -> SIEMPRE target gobernado (M3/VX13), nunca el LLM
 - `LC-MODEL-CAPABILITY-READBACK`: tools/vision/context se comprueban por modelo, no por nombre del endpoint.
 - `LC-NO-PAID-AUTO-FALLBACK`: prueba negativa de que no existe fallback automático de pago.
 
+## 15. Reconciliación arquitectónica externa — 2026-10-05
+
+Se incorporó una revisión externa avanzada centrada en Tentáculo HUD, Provider Mesh, recuperación, Tool Search y contratos. La reconciliación canónica está en `handoff/07_ARCHITECTURE_RECONCILIATION_2026-10-05.md`.
+
+Adoptado:
+- Tentáculo HUD como proyección read-only sin verdad propia.
+- CORE_MINIMUM: `TARGET|CONNECTION|READINESS|WORK|EVIDENCE|AUTH|PROVIDER|FRESHNESS`.
+- carriles ortogonales CONNECTION/READINESS/WORK/EVIDENCE.
+- read models: TargetStatusView, ProviderStatusView, ActiveRunView, DecisionInboxView, EvidenceView, ContextUsageView, ToolSkillView, ConversationTraceView.
+- event-driven con cursor/dedupe/gap/snapshot-resync.
+- UNKNOWN_OUTCOME como bloqueo duro antes de retry material.
+- Tool Search descriptor-first + schema lazy.
+- mobile/recovery sin replay material.
+- Provider Mesh fuera de la autoridad.
+
+Correcciones SOURCE contra la revisión externa:
+- MANOJOS3 MCP real por defecto: `127.0.0.1:8790/mcp`; control plane interno default `127.0.0.1:8787`; LiteLLM local default `127.0.0.1:4000/v1`.
+- se rechazan como canon los puertos hipotéticos 7001/7002/7101/7201.
+- se usan tools MCP reales `manojos_status/capabilities/skills/attach/prepare/submit/run/authorization*/resume/advance/pause/cancel/receipt`; no se crea otro API.
+- autorización R2/R3 se proyecta desde `grant_interface` LIVE; no se fuerza aprobación humana si MANOJOS3 reporta OPERATOR_MODE_AUTONOMOUS.
+- Redis NO es dependencia nueva obligatoria; se reutiliza infraestructura nativa/existente primero y sólo se añade cache externo si el baseline o benchmark lo justifica.
+
+Estado sigue: `SOURCE_HANDOFF_READY / LIVE_NO_VERIFICADO / MATERIAL_VERIFIED=NO`.
+
