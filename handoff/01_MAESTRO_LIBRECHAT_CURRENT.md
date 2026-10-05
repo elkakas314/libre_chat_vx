@@ -137,3 +137,50 @@ El diseño ya era híbrido y no se sustituye. Se formaliza la independencia del 
 - Un fallo de proveedor sólo cambia la ruta de inferencia; nunca cambia target, grants, autorización, receipt ni replay de mutaciones.
 - Ningún proveedor remoto “gratuito” se considera garantizado: debe comprobarse LIVE su cuota, compatibilidad, tool calling, límites y estabilidad.
 
+## Tentáculo HUD — contrato maestro reconciliado
+
+Tentáculo HUD es una superficie nativa de verdad operacional proyectada dentro de LibreChat. No es dashboard separado, base de datos, authority ni sistema de receipts.
+
+CORE_MINIMUM siempre visible:
+`TARGET | CONNECTION | READINESS | WORK | EVIDENCE | AUTH | PROVIDER | FRESHNESS`.
+
+Paneles lazy:
+- Target & Run
+- Evidence
+- Decision Inbox
+- Provider Mesh
+- Context
+- Tools & Skills
+- Conversation Trace
+- Recovery / Alerts
+
+Read models derivados:
+`TargetStatusView`, `ProviderStatusView`, `ActiveRunView`, `DecisionInboxView`, `EvidenceView`, `ContextUsageView`, `ToolSkillView`, `ConversationTraceView`.
+
+Invariantes:
+- CONNECTED != READY.
+- FINISHED != VERIFIED.
+- VERIFIED != RECEIPT_AVAILABLE.
+- focus != target.
+- Tool Approval != target authorization.
+- BackgroundTask/Subagent != TargetRun.
+- cognitive trace != material proof.
+- stale projection never becomes target truth.
+- UNKNOWN_OUTCOME blocks blind material retry.
+
+El projector se mantiene dentro de LibreChat y usa infraestructura nativa/existente. No se introduce un HUD service ni HUD database. Cache externo adicional sólo tras source/benchmark.
+
+## MANOJOS3 binding real
+
+El adapter interno de LibreChat puede presentar una interfaz estable, pero debe mapear a las tools MCP publicadas por MANOJOS3 y no inventar un segundo execution API.
+
+Source actual observado:
+- MCP loopback default: `http://127.0.0.1:8790/mcp`.
+- control plane interno del gateway: `http://127.0.0.1:8787`.
+- LiteLLM managed loopback: `http://127.0.0.1:4000/v1`.
+En contenedores se usa la dirección alcanzable real del deployment; nunca loopback ajeno copiado a ciegas.
+
+Tools source: status, capabilities, skills, attach, prepare, submit, run, authorization requirement/read, resume, advance, pause, cancel, receipt.
+
+La UX de autorización deriva del `grant_interface` LIVE de MANOJOS3. `OPERATOR_MODE_AUTONOMOUS` no se transforma artificialmente en aprobación humana por paso; `LOCAL_CLI_AUTHORIZE_STEP_ONLY` conserva el gate local exacto.
+
