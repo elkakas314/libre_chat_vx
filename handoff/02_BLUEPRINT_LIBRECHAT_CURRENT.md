@@ -101,3 +101,56 @@ Invariantes adicionales:
 14. Fallover de inferencia no reenvía ni duplica acciones.
 15. No existe fallback automático a proveedor de pago.
 
+## Tentáculo HUD / Projection Plane
+
+```mermaid
+flowchart LR
+  M3[MANOJOS3 owner] -->|events/snapshots| TP[Tentáculo Projection Module]
+  VX[VX13 owner] -->|events/snapshots| TP
+  PM[Provider Mesh] -->|health/route| TP
+  CTX[LibreChat context/trace] --> TP
+  TP --> RM[Derived Read Models]
+  RM --> HUD[CORE_MINIMUM + lazy panels]
+  HUD --> UI[LibreChat UI]
+```
+
+El Projection Module es in-process con LibreChat; no tiene authority ni truth database.
+
+### Carriles independientes
+
+```text
+CONNECTION: UNKNOWN -> CONNECTING -> CONNECTED -> DEGRADED -> DISCONNECTED
+READINESS:  UNKNOWN -> DISCOVERING -> READY | NOT_READY | DEGRADED
+WORK:       IDLE -> PLANNING -> ADMITTED -> WAIT_AUTH -> QUEUED -> RUNNING -> READBACK -> VERIFYING -> SUCCEEDED | FAILED | CANCELLED | UNKNOWN_OUTCOME
+EVIDENCE:   NONE -> EXPECTED -> READBACK_AVAILABLE -> VERIFIED -> RECEIPT_AVAILABLE
+```
+
+### Event contract
+
+Cada evento proyectado incluye `event_id`, `stream_id`, `sequence`, owner/provenance, timestamps, target/run refs y payload. Duplicados se descartan; gaps marcan STALE/GAP_DETECTED; se recuperan por replay si existe o snapshot autoritativo. No se coalescen authorization/evidence/terminal transitions. Polling fijo sólo fallback.
+
+### Provider critical path
+
+```text
+browser -> LibreChat -> ProviderRouteResolver -> selected inference route -> stream
+```
+
+Tentáculo HUD no bloquea TTFT. Health/routing usa estado cacheado/derivado y no sondea todos los proveedores por turno.
+
+### MANOJOS3 real binding
+
+```text
+LibreChat
+ -> MANOJOS3 MCP deployment URL
+    -> manojos_status / capabilities / skills
+    -> manojos_prepare or manojos_submit
+    -> manojos_run / authorization reads
+    -> resume / advance / pause / cancel
+    -> manojos_receipt
+ -> MANOJOS3 control plane internally
+ -> Governor / Policy / Kernel / driver
+ -> readback / Verifier / Receipt
+```
+
+El deployment puede traducir networking, pero no cambia el contrato ni crea tools paralelas.
+
