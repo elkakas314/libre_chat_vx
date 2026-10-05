@@ -1,15 +1,23 @@
 {
   "schema": "libre-chat-vx.operating-target.v1",
   "canon": "LIBRECHAT_OPERATING_CANON",
-  "target_version": 1,
+  "target_version": 2,
   "authority": false,
   "product_role": "EXTERNAL_CONVERSATION_UI_COCKPIT",
   "desired": {
     "single_conversation_experience": true,
     "nostromo_shell": true,
     "tentaculo_hud": true,
-    "target_scopes": ["AUTO", "BOTH", "MANOJOS3", "VX13"],
-    "concrete_targets": ["MANOJOS3", "VX13"],
+    "target_scopes": [
+      "AUTO",
+      "BOTH",
+      "MANOJOS3",
+      "VX13"
+    ],
+    "concrete_targets": [
+      "MANOJOS3",
+      "VX13"
+    ],
     "manojos3_priority": "FIRST",
     "vx13_parity": "SAME_EXTERNAL_SLOTS_DISTINCT_AUTHORITY",
     "oraculo": "ADVISORY_PROVIDER",
@@ -17,7 +25,50 @@
     "interactive_artifacts": "UI_INTENT_ONLY_UNTIL_GOVERNED_SUBMISSION",
     "mobile_continuity": "SAME_BACKEND_HISTORY",
     "offline_mutation_replay": false,
-    "event_model": "EVENT_DRIVEN_LAZY_BACKPRESSURE_SNAPSHOT_RESYNC"
+    "event_model": "EVENT_DRIVEN_LAZY_BACKPRESSURE_SNAPSHOT_RESYNC",
+    "provider_mesh": {
+      "architecture": "REMOTE_FREE_CAPABLE_LOCAL_OPTIONAL_PROVIDER_AGNOSTIC_UI",
+      "preferred_gateway": "MANOJOS3_LITELLM",
+      "paid_fallback_allowed": false,
+      "cognitive_failover_only": true,
+      "material_replay_on_provider_failover": false,
+      "aliases": [
+        "fast",
+        "general",
+        "reasoning",
+        "coding",
+        "long-context",
+        "vision"
+      ]
+    },
+    "tentaculo_hud_contract": {
+      "mode": "READ_ONLY_DERIVED_PROJECTION",
+      "core_minimum": [
+        "TARGET",
+        "CONNECTION",
+        "READINESS",
+        "WORK",
+        "EVIDENCE",
+        "AUTH",
+        "PROVIDER",
+        "FRESHNESS"
+      ],
+      "read_models": [
+        "TargetStatusView",
+        "ProviderStatusView",
+        "ActiveRunView",
+        "DecisionInboxView",
+        "EvidenceView",
+        "ContextUsageView",
+        "ToolSkillView",
+        "ConversationTraceView"
+      ],
+      "truth_owner": "TARGET_PROVIDER_OWNERS",
+      "cache_policy": "REUSE_NATIVE_OR_EXISTING_FIRST_NO_HUD_DATABASE",
+      "event_recovery": "CURSOR_DEDUPE_GAP_SNAPSHOT_RESYNC",
+      "unknown_outcome_retry": "READBACK_RECONCILE_THEN_DECIDE"
+    },
+    "native_capability_policy": "VERIFY_UPSTREAM_SOURCE_BEFORE_BINDING_NO_PARALLEL_REIMPLEMENTATION"
   },
   "authority_boundaries": {
     "librechat": "NONE_MATERIAL",
