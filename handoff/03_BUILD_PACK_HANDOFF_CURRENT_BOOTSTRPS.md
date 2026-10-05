@@ -133,3 +133,41 @@ Ver `05_TESTS_Y_GATES_LIBRECHAT.md`. El orden de promoción es:
 - ledger propio de verdad material;
 - paid LLM fallback;
 - offline mutation replay.
+
+## Fase 0 — contratos reconciliados antes de UI
+
+Antes de añadir UI nueva:
+1. congelar/versionar contratos de projection, evidence, receipt, recovery, provider health y target capability;
+2. añadir invariantes tests: AUTO/BOTH no mutan, model/focus no cambia authority, Tool Approval no crea target grant, trace no crea receipt, UNKNOWN_OUTCOME no reintenta;
+3. auditar que cada feature “nativa” reclamada existe realmente en el upstream pin elegido.
+
+## Networking MANOJOS3 source-backed
+
+No usar los puertos hipotéticos de la revisión externa.
+
+Source MANOJOS3 actual observado:
+- plugin/MCP default: `127.0.0.1:8790/mcp`;
+- control plane default usado por gateway: `127.0.0.1:8787`;
+- LiteLLM managed: `127.0.0.1:4000/v1`.
+
+En deployment containerizado, `MANOJOS3_MCP_URL` y `MANOJOS3_LLM_BASE_URL` deben resolverse a nombres/addresses realmente alcanzables; 127.0.0.1 sólo vale dentro del mismo namespace.
+
+No conectar LibreChat directamente a host-control ni al control plane interno como contrato de aplicación.
+
+## Tentáculo HUD build order
+
+Después de source/overlay:
+1. TargetCapabilityProjection descriptor-first.
+2. ProviderHealth/ProviderRoute.
+3. event envelope + cursor/dedupe/gap/snapshot.
+4. derived read models.
+5. CORE_MINIMUM.
+6. Decision Inbox.
+7. Evidence/Receipt.
+8. Context/Tools/Skills/Trace lazy panels.
+9. RecoveryEnvelope desktop↔móvil.
+10. UNKNOWN_OUTCOME/reconcile fence.
+11. first material M3 canary.
+
+No añadir Redis/HUD DB como nueva dependencia salvo que el baseline ya lo use o un benchmark demuestre necesidad.
+
