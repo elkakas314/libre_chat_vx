@@ -71,16 +71,16 @@ Orden:
 
 Luego un objetivo R0 mínimo gobernado; aceptar éxito sólo con run final + readback + verified receipt.
 
-## Fase F — voz local
-No existe modelo canónico fijado.
-Benchmark required:
+## Fase F — modelo/voz local OPCIONAL
+No existe modelo local canónico ni requisito de instalar uno.
+Si el deployment habilita ruta local, ejecutar benchmark:
 - memoria residente idle/active;
 - cold/warm latency;
 - español/referencias cortas;
 - fidelidad al truth envelope;
 - unload/reload;
 - CPU sostenida.
-Comparar al menos un runtime operacional simple (Ollama) y uno de control fino GGUF (llama.cpp server). Promover sólo por evidencia host.
+Comparar runtime sólo cuando se vaya a activar local. `OFF/UNINSTALLED` es un estado válido y no bloquea LibreChat si existe una ruta remota zero-cost admitida.
 
 ## Fase G — LiteLLM
 Verificar aliases servidos realmente:
@@ -90,7 +90,7 @@ Verificar aliases servidos realmente:
 - manojos-fast-free
 - manojos-long-context-free
 
-Confirmar `paid_fallback=false`. Source config no prueba servicio LIVE.
+Confirmar la política real de no pago: `llm_router.no_paid_only=true`, fallbacks únicamente hacia aliases/deployments zero-cost admitidos y prueba negativa de que una ruta de pago no puede seleccionarse. No depender de un flag documental `paid_fallback=false`. Source config no prueba servicio LIVE.
 
 ## Fase H — conversación/HUD
 Canary:
@@ -171,3 +171,20 @@ Después de source/overlay:
 
 No añadir Redis/HUD DB como nueva dependencia salvo que el baseline ya lo use o un benchmark demuestre necesidad.
 
+
+
+## Fase G2 — Provider admission / Gemini opcional
+
+Gemini se trata como deployment, no alias UX nuevo.
+
+Antes de añadirlo:
+1. discovery de modelos actuales;
+2. validar soporte en la versión LiteLLM desplegada;
+3. SecretRef/env para `GEMINI_API_KEY`, nunca valor en repo;
+4. comprobar que la cuenta/ruta usada no puede generar gasto inesperado;
+5. canary de text/vision/audio/structured output/context según perfil;
+6. añadirlo detrás de un alias semántico existente;
+7. probar failover cognitivo sin tocar TargetRun;
+8. mostrar provider/model sólo en detalle avanzado del HUD.
+
+La identidad Nostromo se configura en LibreChat/Model Specs, no mediante prompt global compartido en LiteLLM.
