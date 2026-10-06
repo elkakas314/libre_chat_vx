@@ -207,3 +207,17 @@ Pasos:
 10. mantener LiteLLM M3 sin cambios hasta canary de desacoplamiento;
 11. verificar no loops ni doble routing;
 12. rollback = volver LibreChat a la ruta de inferencia anterior sin tocar la autoridad M3.
+
+
+## Fase G4 — Transport binding MANOJOS3
+
+1. leer LIVE `edge.cli.status`, Cloudflare tunnel metrics y Tailscale status/netcheck/serve/funnel;
+2. confirmar estado del OpenAI Secure MCP Tunnel por su servicio/perfil;
+3. elegir perfil A/B/C según ubicación real del backend LibreChat;
+4. si A: probar initialize/tools/list/status directo a `:8790`;
+5. si B: habilitar sólo private Serve/authenticated MCP; no Funnel público baseline;
+6. si C: desplegar primero `manojos3-mcp-canary` con `MANOJOS3_VPC` y validar 401 sin auth + initialize/tools/list/status con auth;
+7. sólo después promover un edge MCP LibreChat dedicado;
+8. confirmar que legacy Action Proxy sigue funcionando sin convertirse en dependencia LibreChat;
+9. confirmar host-control no es alcanzable por la ruta normal;
+10. rollback restaura binding anterior sin tocar Governor/Policy/Kernel.
