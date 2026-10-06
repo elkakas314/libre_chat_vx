@@ -11,24 +11,35 @@
   "local_voice": {
     "alias": "nostromo-voice-local",
     "size_target": "1-2GB",
-    "lifecycle": "LIBRECHAT_COUPLED_ON_DEMAND",
-    "model_selection": "DEPLOYMENT_BENCHMARK_REQUIRED"
+    "lifecycle": "OPTIONAL_ON_DEMAND",
+    "model_selection": "OPTIONAL_DEPLOYMENT_BENCHMARK_REQUIRED_ONLY_IF_ENABLED",
+    "required": false
   },
   "reasoning": {
-    "owner": "MANOJOS3_LITELLM",
+    "owner": "LIBRECHAT_NOSTROMO_VIA_CLOUDFLARE_AI_GATEWAY",
+    "primary_gateway": "CLOUDFLARE_AI_GATEWAY",
+    "gateway_authority": false,
+    "manojos3_litellm_role": "INTERNAL_ADVISORY_COMPATIBILITY",
     "paid_fallback_allowed": false,
-    "live_status": "SOURCE_CONFLICT_REQUIRES_LIVE_READBACK"
+    "live_status": "SOURCE_DESIGN_NOT_BOUND"
   },
   "action_plane": {
     "owner": "MANOJOS3_MCP",
     "deployment_env": "MANOJOS3_MCP_URL",
-    "live_status": "PREPARED_UNCONFIGURED"
+    "live_status": "PREPARED_UNCONFIGURED_TRANSPORT_PROFILE_NOT_SELECTED",
+    "transport_profiles": {
+      "same_host": "DIRECT_127.0.0.1_8790_MCP",
+      "remote_private": "TAILSCALE_SERVE_PRIVATE_AUTHENTICATED_MCP",
+      "remote_public": "DEDICATED_CLOUDFLARE_MCP_EDGE_TO_MANOJOS3_VPC_TO_TUNNEL_TO_8790"
+    },
+    "legacy_action_proxy_for_librechat": false
   },
   "manojos3_semantic_bridge": "IMPLEMENTED_SOURCE_AND_DRIVE_SYNCED",
   "tentacle_hud": {
     "local_voice_required": false,
     "free_reasoner_required": false,
-    "source_of_truth": "STRUCTURED_TARGET_READBACK"
+    "source_of_truth": "STRUCTURED_TARGET_READBACK",
+    "inference_source": "CLOUDFLARE_AI_GATEWAY_PROJECTION"
   },
   "operating_reconciler": {
     "target_to_current_direction": "ONE_WAY",
@@ -46,5 +57,7 @@
   "material_verified": false,
   "authority": false,
   "local_touched_by_current_work": false,
-  "next_action": "BIND_LIVE_AND_REVALIDATE"
+  "next_action": "SOURCE_TESTS_THEN_CLOUDFLARE_INFERENCE_AND_M3_TRANSPORT_LIVE_READBACK",
+  "source_design_reconciled_at": "2026-10-06",
+  "transport_documentation_gap": "M3-DOC-001_CONFIRMED_M3-DOC-002_003_REQUIRE_LIVE_READBACK"
 }
