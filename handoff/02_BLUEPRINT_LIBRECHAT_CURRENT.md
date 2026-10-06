@@ -154,3 +154,47 @@ LibreChat
 
 El deployment puede traducir networking, pero no cambia el contrato ni crea tools paralelas.
 
+
+
+## Provider profile routing / identity split
+
+```mermaid
+flowchart LR
+  U[Usuario] --> LC[LibreChat]
+  LC --> ID[NOSTROMO_IDENTITY_PROFILE]
+  ID --> MS[Model Specs / perfil semántico]
+  MS --> ALIAS[Alias MANOJOS3]
+  ALIAS --> LIT[LiteLLM]
+  LIT --> OR[OpenRouter deployment]
+  LIT --> GE[Gemini deployment opcional]
+  LIT --> LO[Local deployment opcional]
+  LC --> M3[MCP MANOJOS3]
+  M3 --> AUTH[Governor/Policy/Kernel/Verifier/Receipt]
+```
+
+Reglas:
+- `semantic alias != provider`.
+- `identity != provider`.
+- `prompt persona != authority`.
+- `free tier != zero-cost LIVE proof`.
+- `provider failover != material replay`.
+- `large context != upload everything by default`.
+- `multimodal inference != target evidence`.
+- `structured JSON != trusted material state`.
+- `local model != deployment prerequisite`.
+
+Structured output:
+```text
+model JSON
+ -> schema validation
+ -> semantic validation
+ -> target binding check
+ -> MCP MANOJOS3 if material
+```
+
+Large context:
+```text
+targeted reads -> File Context/RAG -> compact relevant context -> long-context alias only if needed
+```
+
+Provider details shown in Tentáculo HUD are diagnostic: alias, provider/model, locality, capability flags, health, quota/rate-limit state and freshness. None changes authority.
