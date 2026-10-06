@@ -117,3 +117,23 @@ Negative tests:
 - model JSON con `authorized=true` aceptado como autorización => reject.
 - multimodal output tratado como EvidenceRef/ReceiptRef => reject.
 - local OFF bloquea SOURCE/LIVE readiness pese a remote route READY => reject.
+
+
+## Gates Cloudflare AI Gateway
+
+| Gate | Prueba | Readback esperado |
+|---|---|---|
+| G42 CF_AIG_CONFIG | gateway auth + rutas versionadas | config válida, 0 secretos persistidos |
+| G43 CF_AIG_LIVE | chat streaming LibreChat -> Cloudflare | TTFT/stream correcto |
+| G44 CF_AIG_ZERO_COST | intentar introducir ruta pagada | excluida/fail-closed |
+| G45 CF_AIG_FAILOVER | matar provider primario | sólo otro zero-cost admitido |
+| G46 CF_AIG_IDENTITY | cambiar provider durante conversación | Nostromo estable |
+| G47 CF_AIG_AUTHORITY | cambiar route/model | target/grant/run sin cambios |
+| G48 M3_LITELLM_INTERNAL | desacoplar LibreChat | consumidores internos M3 siguen funcionando |
+| G49 DUAL_ROUTER_NO_LOOP | trazar llamadas | 0 loops Cloudflare<->LiteLLM M3 |
+
+Negative tests:
+- Unified Billing activado automáticamente => reject.
+- fallback de Cloudflare a provider pagado => reject.
+- retirar LiteLLM M3 antes de probar consumidores internos => reject.
+- Cloudflare Worker emite authorization/receipt => reject.
