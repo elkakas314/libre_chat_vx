@@ -222,3 +222,38 @@ Invariantes:
 - no hay loop Cloudflare -> M3 LiteLLM -> Cloudflare.
 - paid route no puede aparecer como fallback implícito.
 - provider search/tool output no es EvidenceRef/ReceiptRef.
+
+
+## Transport topology
+
+```mermaid
+flowchart LR
+  LC[LibreChat] --> CFAG[Cloudflare AI Gateway]
+  CFAG --> LLM[Remote LLM providers]
+
+  LC --> MCPB{MCP binding}
+  MCPB -->|same host| M8790[MANOJOS3 MCP :8790]
+  MCPB -->|private remote| TS[Tailscale Serve/private]
+  TS --> M8790
+  MCPB -->|public remote| MEdge[Dedicated authenticated Cloudflare MCP Edge]
+  MEdge --> VPC[MANOJOS3_VPC]
+  VPC --> CFT[Cloudflare Tunnel]
+  CFT --> M8790
+
+  GPTA[Legacy GPT Actions] --> AP[manojos2-action-proxy]
+  AP --> VPC2[MANOJOS3_VPC]
+  VPC2 --> CFT2[Cloudflare Tunnel]
+  CFT2 --> CP[Control plane :8787]
+
+  GPTP[ChatGPT Plugin] --> OAIT[OpenAI Secure MCP Tunnel]
+  OAIT --> M8790
+
+  HC[host-control :8791] -. recovery only .-> M3[MANOJOS3]
+```
+
+Separación obligatoria:
+- AI Gateway != Cloudflare Tunnel.
+- LibreChat MCP edge != legacy Action Proxy.
+- OpenAI Secure MCP Tunnel != generic LibreChat transport.
+- Tailscale Funnel != baseline public MCP.
+- host-control != normal action route.
