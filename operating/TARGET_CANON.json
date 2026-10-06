@@ -1,7 +1,7 @@
 {
   "schema": "libre-chat-vx.operating-target.v1",
   "canon": "LIBRECHAT_OPERATING_CANON",
-  "target_version": 5,
+  "target_version": 6,
   "authority": false,
   "product_role": "EXTERNAL_CONVERSATION_UI_COCKPIT",
   "desired": {
@@ -125,7 +125,6 @@
     "transport_topology": {
       "inference_plane": "LIBRECHAT_TO_CLOUDFLARE_AI_GATEWAY_NO_LENOVO_TUNNEL",
       "legacy_actions": "CLOUDFLARE_ACTION_PROXY_TO_MANOJOS3_VPC_TO_CLOUDFLARE_TUNNEL_TO_8787",
-      "chatgpt_plugin": "OPENAI_SECURE_MCP_TUNNEL_TO_8790",
       "tailscale": "PRIVATE_RECOVERY_DIAGNOSTIC_FALLBACK",
       "host_control": "SEPARATE_RECOVERY_ONLY",
       "librechat_action_profiles": {
@@ -135,7 +134,9 @@
       },
       "action_proxy_for_librechat": false,
       "openai_secure_tunnel_for_generic_librechat": false,
-      "public_funnel_baseline": false
+      "public_funnel_baseline": false,
+      "chatgpt_desktop": "LOCAL_CONNECTOR_PLUGIN_TO_LOCAL_MCP_APP_TO_8790",
+      "openai_secure_mcp_tunnel": "OPTIONAL_REMOTE_PRIVATE_TRANSPORT_ONLY_WHEN_LOCAL_DESKTOP_MCP_IS_NOT_USED"
     }
   },
   "authority_boundaries": {
