@@ -1,50 +1,72 @@
 # Nostromo / Tentáculo feature matrix — CURRENT
 
-Status: `SOURCE_IMPLEMENTED / UPSTREAM_BINDING_PARTIAL / TARGET_RUNTIME_PENDING`
+Status: `SOURCE_IMPLEMENTED_PARTIAL / UPSTREAM_BINDING_PARTIAL / TARGET_RUNTIME_PENDING`
 
 ## Core feature map
 
-| Feature | Behaviour | Implementation |
-|---|---|---|
-| One voice / no operator modes | Conversation remains primary; target and windows move underneath it | `NostromoCockpit`, `TargetScopeNavigator`, `windowRouter` |
-| Tentáculo HUD | Same visual HUD moves across MANOJOS3, VX13, BOTH or AUTO; authority always false | `tentacleHud.ts`, `TentacleHud.tsx` |
-| MANOJOS3 Interflow map | Domain → intent family → operation → internal driver; not raw capability navigation | `manojos3/interflowProjection.ts`, `InterflowLensView.tsx` |
-| Capability drilldown | Driver/evidence detail only, grouped into bounded lenses | `capabilityLens.ts` |
-| StatusRail | Connection/readiness/freshness/source truth remain separate | `statusRail.ts` + `StatusRailView` |
-| MinimalTruth | Binding/runtime/source alignment without inventing material completion | `MinimalTruthView.tsx` |
-| CurrentFocus / "eso" | Focus + short referential memory with TTL | currentFocus/referentialContinuity + `shortMemory.ts` |
-| ContextInspector | System/module/capability/run/artifact refs without power | `ContextInspectorView.tsx` |
-| Automatic windows | Files/audio/browser/build/runtime/model/plan/security/interflow from focus | `windowRouter.ts` |
-| GREEN controls | Explain/refresh/evidence/context/read-gap; read/local only | `controlDeck.ts` |
-| YELLOW controls | Prepare proposal/audit/quarantine/evolution | `controlDeck.ts` |
-| RED controls | Prepare governed material request only | `controlDeck.ts` |
-| DecisionInbox | Owner-issued decisions only | native ToolApproval reuse + DecisionInbox |
-| Interactive Artifacts | buttons/sliders/knobs/decision/authorization response → UiIntent | `interactiveArtifact.ts`, `InteractiveArtifactView.tsx` |
-| ActiveFlow | Executed/evidenced edges only | `ActiveFlowView` |
-| PlanGraph | PLAN_CREATED != MATERIAL_VERIFIED | `PlanGraphView` |
-| TargetRun | Same projection shell, distinct target authority chains | `targetRun.ts`, `TargetRunView.tsx` |
-| Files | ExternalResourceRef operations remain separately authorized | `FilesPanelView.tsx` |
-| SHUB/REAPER | Project/track/plugin/parameter/readback/A-B evidence | `AudioPanelView.tsx` |
-| Browser | Remote DOM untrusted; ambiguous effect timeout → UNKNOWN_OUTCOME | `BrowserPanelView.tsx` |
-| Build | plan/package/test/material stages remain distinct | `BuildPanelView.tsx` |
-| Background tasks | LibreChat cognitive/tool task != target run | `BackgroundTasksView.tsx` |
-| Mobile | same conversation/backend; offline read-only | mobile contracts |
-| Voice | input/presentation only | pushVoice contract |
-| PWA mutation replay | forbidden | BackgroundMutationFence |
-
-## MANOJOS3 current source projection
-
-Current source inspected at `cb772cca...`:
-
-- 31 semantic domains;
-- 6 operation gateways;
-- target stack: Intent Router → Slot Resolver → Operation Compiler → Operation Gateway → Policy/Kernel → Driver Adapters → Verifier/Receipt;
-- capability execution matrix: 252 rows, not a functional parity claim.
+| Feature | Source state | LIVE | Implementation / contract |
+|---|---|---|---|
+| One voice / no operator modes | IMPLEMENTED_SOURCE | NO_VERIFICADO | `NostromoCockpit`, focus + contextual windows |
+| Tentáculo HUD | IMPLEMENTED_SOURCE | NO_VERIFICADO | HUD model + React projection; authority=false |
+| StatusRail / truth lanes | IMPLEMENTED_SOURCE | NO_VERIFICADO | connection/readiness/work/evidence separated |
+| CurrentFocus / referential continuity | IMPLEMENTED_SOURCE | NO_VERIFICADO | focus + short memory/TTL |
+| Automatic contextual windows | IMPLEMENTED_SOURCE | NO_VERIFICADO | Files/audio/browser/build/runtime/model/plan/security/interflow |
+| ArtifactDock / evidence projection | IMPLEMENTED_SOURCE | NO_VERIFICADO | artifacts/evidence/receipt presentation only |
+| Interactive UI intent | IMPLEMENTED_SOURCE | NO_VERIFICADO | preview/UiIntent; no direct target effect |
+| DecisionInbox | SOURCE_COMPOSED | NO_VERIFICADO | native ToolApproval reused as interaction surface |
+| ActiveFlow | IMPLEMENTED_SOURCE | NO_VERIFICADO | observed/evidenced edges only |
+| PlanGraph | IMPLEMENTED_SOURCE | NO_VERIFICADO | plan != material completion |
+| TargetRun | IMPLEMENTED_SOURCE | NO_VERIFICADO | same shell, distinct target authorities |
+| Files panel | IMPLEMENTED_SOURCE + NATIVE_REUSE | NO_VERIFICADO | ExternalResourceRef + governed mutations |
+| SHUB/REAPER panel | IMPLEMENTED_SOURCE | NO_VERIFICADO | project/track/plugin/parameter/readback/A-B projection |
+| Browser panel | IMPLEMENTED_SOURCE | NO_VERIFICADO | remote DOM untrusted; UNKNOWN_OUTCOME on ambiguous effect |
+| Build panel | IMPLEMENTED_SOURCE | NO_VERIFICADO | plan/package/test/material stages separated |
+| Background tasks | NATIVE_REUSE + SOURCE_PROJECTION | NO_VERIFICADO | cognitive/tool task != target run |
+| Mobile continuity | IMPLEMENTED_SOURCE | NO_VERIFICADO | same backend/history; offline read-only |
+| Voice | SOURCE_CONTRACT | NO_VERIFICADO | input/presentation only; authorization disabled |
+| PWA mutation replay | FORBIDDEN | FORBIDDEN | BackgroundMutationFence |
+| Semantic inference profiles | IMPLEMENTED_SOURCE | NO_VERIFICADO | Rápido/Normal/Pensar/Código/Contexto largo/Visión |
+| Provider capability model | IMPLEMENTED_SOURCE | NO_VERIFICADO | TEXT/VISION/AUDIO/STRUCTURED_OUTPUT/TOOLS/LONG_CONTEXT |
+| Zero-cost provider admission | IMPLEMENTED_SOURCE | NO_VERIFICADO | fail-closed health/quota/privacy/freshness/capability |
+| Cloudflare AI Gateway client | IMPLEMENTED_SOURCE | NO_VERIFICADO | OpenAI-compatible request contract + no-wholesale guard |
+| NOSTROMO identity | IMPLEMENTED_SOURCE | NO_VERIFICADO | versioned provider-independent identity |
+| Structured output guard | IMPLEMENTED_SOURCE | NO_VERIFICADO | rejects model-authored material authority fields |
+| Provider status projection | IMPLEMENTED_SOURCE | NO_VERIFICADO | provider/model/caps/health/latency/quota/freshness |
+| Provider status → HUD bridge | PARTIAL_SOURCE | NO_VERIFICADO | projection exists; live cockpit bridge not connected |
+| NostromoTargetGateway facade | DESIGNED_CURRENT | NOT_IMPLEMENTED | in-process target abstraction; authority=false |
+| MANOJOS3 TargetAdapter | SOURCE_ENTRYPOINTS_PREPARED | UNCONFIGURED | adapter must use real MANOJOS3 MCP |
+| VX13 TargetAdapter | DESIGNED_CURRENT | UNCONFIGURED | future Tentáculo Link binding |
+| ORÁCULO advisory | DOCUMENTED_CURRENT | NO_VERIFICADO | advisory/provider only; authority=false |
 
 ## Native LibreChat reuse
 
-Do not duplicate Agents, Artifacts, MCP/MCP UI, ToolApproval, Skills, Subagents, background tool calls, Files/RAG, Speech, resumable streams, ACL or SidePanel.
+Do not duplicate:
+- Agents;
+- Artifacts;
+- MCP/MCP UI;
+- ToolApproval;
+- Skills;
+- Subagents;
+- background tool calls;
+- Files/RAG;
+- Speech;
+- resumable streams;
+- ACL;
+- SidePanel.
+
+## Router rule
+
+Cloudflare AI Gateway is the inference gateway only.
+
+Target actions use:
+```text
+LibreChat -> NostromoTargetGateway -> TargetAdapter -> target frontdoor
+```
+
+For MANOJOS3 the TargetAdapter uses MCP. For VX13 the future adapter uses Tentáculo Link.
 
 ## Materiality
 
-Source implementation does not prove target binding. Current-head tests remain NOT_RUN under the no-local restriction.
+Source implementation does not prove target binding or LIVE provider routing.
+
+Current-head full tests, upstream overlay revalidation, Cloudflare live binding, HUD provider bridge and target bindings remain separate gates.
