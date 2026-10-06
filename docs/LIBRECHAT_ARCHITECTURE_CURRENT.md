@@ -261,6 +261,29 @@ LibreChat reuses the same NOSTROMO identity, HUD, TargetRun, DecisionInbox, Arti
 13. Offline mutation replay is forbidden.
 14. VX13 and MANOJOS3 keep distinct authority chains.
 
+
+## 10.5 Cockpit, seguridad, recovery y rendimiento que se conservan
+
+La consolidación del router no elimina ninguna de estas piezas ya diseñadas:
+
+- `TrustedSurfaceHost` separado de Artifact para controles operativos;
+- `ControlDraft`, `RendererFailureIsolation` y `PrivacyPresentation`;
+- `ProjectionBackpressure`, coalescing seguro, `ViewInterestNegotiation` y lazy views;
+- `ModuleIndex` y `TargetOverride` de un solo turno READ;
+- `CORE_MINIMUM = TARGET | CONNECTION | READINESS | WORK | EVIDENCE | AUTH | PROVIDER | FRESHNESS`;
+- read models: `TargetStatusView`, `ProviderStatusView`, `ActiveRunView`, `DecisionInboxView`, `EvidenceView`, `ContextUsageView`, `ToolSkillView`, `ConversationTraceView`;
+- event contract con `event_id`, `stream_id`, `sequence`, provenance, target/run refs, dedupe y detección de gaps;
+- gap/out-of-order → `STALE/GAP_DETECTED` → replay seguro cuando exista o snapshot/resync autoritativo;
+- authorization/evidence/terminal transitions nunca se coalescen;
+- polling periódico sólo como fallback acotado;
+- sesión/ACL/CSRF, schema/provenance validation, allowlists e idempotencia en superficies de control;
+- timeout tras posible efecto → `UNKNOWN_OUTCOME` y readback/reconcile obligatorio antes de retry;
+- accesibilidad por texto además de color, reduced motion, teclado/screen reader y aria-live no invasivo;
+- móvil/reconnect comparte backend e historia, sin outbox ni replay material;
+- presupuesto de recursos/low-power se mide en host real; no se declara por diseño.
+
+Gates de no regresión asociados: HUD lanes, event recovery, context protection, provider swap, NOSTROMO identity, structured-output malicious input, Cloudflare config, dual-router-no-loop y Cloudflare inference/action plane separation.
+
 ## 11. Estado y siguiente cierre
 
 `LIVE=NO_VERIFICADO`
