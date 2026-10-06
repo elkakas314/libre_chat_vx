@@ -1,5 +1,23 @@
 version: 1.3.17
 
+# SOURCE EXAMPLE ONLY.
+# GitHub Skill Sync is disabled by default so a deployment remains inert until
+# the operator explicitly enables it and provides a read-only repository token.
+skillSync:
+  github:
+    enabled: false
+    intervalMinutes: 60
+    runOnStartup: true
+    sources:
+      - id: librechat-vx-skills
+        owner: elkakas314
+        repo: libre_chat_vx
+        ref: handoff_current_bootstrps
+        paths:
+          - skills
+        skillDiscoveryDepth: 2
+        token: '${GITHUB_SKILLS_TOKEN}'
+
 interface:
   modelSelect: true
   parameters: true
@@ -9,6 +27,9 @@ interface:
 
 endpoints:
   agents:
+    skills:
+      # Prevent an oversized model-visible Skill catalog.
+      maxCatalogSkills: 20
     capabilities:
       - deferred_tools
       - file_search
@@ -26,7 +47,6 @@ endpoints:
       # execute_code / programmatic_tools intentionally omitted until
       # Code Interpreter is separately admitted and governed.
 
-# SOURCE EXAMPLE ONLY.
 # Deployment must bind the OpenAI-compatible endpoint to the authenticated
 # Cloudflare AI Gateway configured for LibreChat/NOSTROMO.
 #

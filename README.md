@@ -21,13 +21,17 @@ Repositorio independiente para construir la capa LibreChat de VX13/MANOJOS3/ORÁ
 5. No secretos, no force-push, no duplicación de executors/MCP/routers.
 6. Timeout tras posible efecto => `UNKNOWN_OUTCOME` => readback/reconcile antes de retry.
 7. Polling fijo no es baseline: usar event-driven + lazy views + backpressure/coalescing + snapshot/resync.
+8. Extensión: native/config → Skill → MCP/Action → Agent Plugin → wrapper fino → código propio.
+9. Un recurso nuevo no implica un módulo nuevo: usar Resource Tree/renderers/adapters genéricos cuando sea suficiente.
 
 ## Estructura
 
 ```text
 contracts/   contratos de proyección/acciones/fencing
-config/      ejemplos sin secretos
-docs/        arquitectura, seguridad, roadmap y auditoría
+config/      ejemplos sin secretos + catálogo/sync de Skills
+docs/        arquitectura, seguridad, roadmap, Resource Tree y auditorías
+skills/      Skills canónicas versionadas para GitHub Skill Sync/deployment
+plugins/     paquetes Agent Plugin opcionales/experimentales
 src/
   adapters/  fronteras por target
   cockpit/   UI/focus/projection, sin autoridad material
