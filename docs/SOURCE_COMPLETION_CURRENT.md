@@ -1,10 +1,10 @@
 # LibreChat VX — SOURCE completion current
 
-Status: `SOURCE_CORE_COMPLETE / EXACT_HEAD_TESTS_PASS / LIVE_NO_VERIFICADO`
+Status: `SOURCE_CORE_COMPLETE / EXACT_HEAD_TESTS_PASS / UPSTREAM_OVERLAY_BUILD_PASS / LIVE_NO_VERIFICADO`
 
 Source implementation: `aed4a617d8c19a9761a687da24715cce0ff8c2a9`.
 
-Exact-head CI evidence: `53c172863671a4396e773addf2ebb5b1e4ac6a46`, GitHub Actions `source-check` run `37541743838` = `SUCCESS`.
+Exact-head CI evidence: `24b971a2bcabf828d2c99afa1f3fede2151178c1`, GitHub Actions `source-check` run `37542785302`: `build-test=SUCCESS`, `overlay-smoke=SUCCESS`.
 
 ## Source gaps closed
 
@@ -39,12 +39,26 @@ These were previously carried as development backlog but already existed in sour
 
 ## Remaining closure gates
 
-1. pinned upstream overlay install/build/uninstall validation;
-2. authenticated Cloudflare live route canaries;
-3. MANOJOS3 R0 bootstrap/readback/receipt;
-4. mobile/reconnect and UNKNOWN_OUTCOME live verification;
-5. first minimal governed R2 only after the preceding gates;
-6. low-power host measurement;
-7. VX13 binding later, when its canonical frontdoor exists.
+1. authenticated Cloudflare live route canaries;
+2. MANOJOS3 R0 bootstrap/readback/receipt;
+3. mobile/reconnect and UNKNOWN_OUTCOME live verification;
+4. first minimal governed R2 only after the preceding gates;
+5. low-power host measurement;
+6. VX13 binding later, when its canonical frontdoor exists.
 
 SOURCE completion is not LIVE completion.
+
+
+## Pinned upstream overlay CI
+
+GitHub Actions run `37542785302` validated against `LibreChat-AI/LibreChat@f10b1d91f1eee3a2c82d5247bf620351486b7c1b`:
+
+- pinned upstream dependency install via its committed lockfile: PASS;
+- upstream blob/revision verification: PASS;
+- reversible overlay install: PASS;
+- copied `@librechat/vx` TypeScript build: PASS;
+- LibreChat `frontend:ci` build with the VX bridge: PASS;
+- overlay uninstall: PASS;
+- clean upstream verification after uninstall: PASS.
+
+This proves source compatibility/build/reversibility for the pinned upstream. It does not prove a deployed host, authenticated Cloudflare routes or target LIVE bindings.

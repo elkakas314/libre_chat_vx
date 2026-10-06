@@ -1,6 +1,6 @@
 {
   "schema": "libre-chat-vx.operating-gaps.v1",
-  "snapshot_id": "source-tested-2026-10-07-core-complete",
+  "snapshot_id": "source-and-overlay-ci-pass-2026-10-07",
   "gaps": [
     {
       "gap_id": "LC-OPERATING-CANON",
@@ -23,9 +23,9 @@
       "requires_live": false,
       "dependencies": [],
       "evidence_refs": [
-        "commit:53c172863671a4396e773addf2ebb5b1e4ac6a46",
-        "github_actions_run:37541743838",
-        "workflow:.github/workflows/source-check.yml"
+        "commit:24b971a2bcabf828d2c99afa1f3fede2151178c1",
+        "github_actions_run:37542785302",
+        "job:build-test:SUCCESS"
       ]
     },
     {
@@ -241,12 +241,18 @@
     },
     {
       "gap_id": "LC-UPSTREAM-OVERLAY-REVALIDATE",
-      "summary": "Revalidate Nostromo overlay on pinned LibreChat upstream",
-      "state": "NOT_TESTED",
+      "summary": "Pinned LibreChat upstream overlay install + VX workspace build + frontend build + uninstall + clean readback",
+      "state": "PASS",
       "priority": 72,
       "scope": "upstream_overlay",
-      "requires_live": true,
-      "dependencies": []
+      "requires_live": false,
+      "dependencies": [],
+      "evidence_refs": [
+        "commit:24b971a2bcabf828d2c99afa1f3fede2151178c1",
+        "github_actions_run:37542785302",
+        "job:overlay-smoke:SUCCESS",
+        "upstream:f10b1d91f1eee3a2c82d5247bf620351486b7c1b"
+      ]
     },
     {
       "gap_id": "LC-VX13-BINDING",

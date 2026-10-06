@@ -71,4 +71,4 @@ For MANOJOS3 the TargetAdapter uses MCP. For VX13 the future adapter uses Tentá
 
 Source implementation does not prove target binding or LIVE provider routing.
 
-Exact-head TypeScript build and source tests PASS under GitHub Actions (`source-check`, run `37541743838` on `53c172863671a4396e773addf2ebb5b1e4ac6a46`). Upstream overlay revalidation, Cloudflare live binding and real target bindings remain separate gates. SOURCE/CI PASS does not prove LIVE.
+Exact-head source tests and pinned-upstream overlay build PASS under GitHub Actions run `37542785302` on `24b971a2bcabf828d2c99afa1f3fede2151178c1`.
