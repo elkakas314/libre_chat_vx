@@ -223,3 +223,28 @@ Gemini puede añadirse como deployment opcional detrás de estos aliases si:
 - no existe fallback automático de pago.
 
 El modelo local deja de formar parte de cualquier gate obligatorio salvo que ese deployment lo active explícitamente.
+
+
+## Cloudflare AI Gateway — separación definitiva de inferencia
+
+Cloudflare AI Gateway pasa a ser el gateway remoto preferente del plano de inferencia de LibreChat/NOSTROMO.
+
+Responsabilidades:
+- routing/fallback de modelos;
+- rate/budget limits;
+- health/analytics de proveedores;
+- selección entre rutas zero-cost admitidas.
+
+No tiene authority material.
+
+MANOJOS3 mantiene LiteLLM por compatibilidad e inteligencia interna. LibreChat deja de depender de ese LiteLLM para su conversación principal.
+
+Regla de transición:
+- Cloudflare = primary inference para LibreChat.
+- LiteLLM MANOJOS3 = internal/advisory/compatibility.
+- no retirar LiteLLM M3 hasta probar OpenCode/agentes/internal reasoning + rollback.
+- no duplicar políticas de autoridad entre ambos.
+
+Cloudflare Worker, si existe, sólo puede ser edge auth/policy/rate-limit; nunca Governor, Kernel ni Receipt authority.
+
+La búsqueda web del provider es cognitiva. Evidence material sigue viniendo de tools/readback/receipts.
