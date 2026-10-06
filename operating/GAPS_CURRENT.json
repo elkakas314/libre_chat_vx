@@ -1,6 +1,6 @@
 {
   "schema": "libre-chat-vx.operating-gaps.v1",
-  "snapshot_id": "source-design-2026-10-06-cloudflare-transport-reconciled",
+  "snapshot_id": "source-design-2026-10-06-librechat-router-capabilities-consolidated",
   "gaps": [
     {
       "gap_id": "LC-OPERATING-CANON",
@@ -87,6 +87,16 @@
       ]
     },
     {
+      "gap_id": "LC-M3-TRANSPORT-DOC-DRIFT",
+      "summary": "Resolve Action Proxy origin documentation contradiction and classify plugin/public_origin drift from LIVE evidence",
+      "state": "SOURCE_CONFLICT_REQUIRES_LIVE_READBACK",
+      "priority": 24,
+      "scope": "manojos3_transport_documentation",
+      "requires_live": true,
+      "dependencies": [],
+      "preferred_route": "handoff_11_m3_transport_documentation_gaps"
+    },
+    {
       "gap_id": "LC-NATIVE-SURFACE-BINDING",
       "summary": "Native LibreChat surface reuse",
       "state": "PASS",
@@ -113,6 +123,55 @@
       "evidence_refs": [
         "commit:62815f4a8378c60e268e9ae4daff4cbe32e711e3"
       ]
+    },
+    {
+      "gap_id": "LC-PROVIDER-HUD-BRIDGE",
+      "summary": "Wire ProviderStatusView into Tentaculo HUD while preserving separate inference and target truth lanes",
+      "state": "OPEN",
+      "priority": 63,
+      "scope": "provider_status_hud_bridge",
+      "requires_live": false,
+      "dependencies": [
+        "LC-NOSTROMO-HYBRID"
+      ],
+      "preferred_route": "librechat_source_projection_bridge"
+    },
+    {
+      "gap_id": "LC-TARGET-GATEWAY-FACADE",
+      "summary": "Implement NostromoTargetGateway as an in-process authority=false facade with MANOJOS3 and future VX13 adapters",
+      "state": "OPEN",
+      "priority": 64,
+      "scope": "target_gateway_source",
+      "requires_live": false,
+      "dependencies": [
+        "LC-NOSTROMO-HYBRID"
+      ],
+      "preferred_route": "in_process_target_adapter_facade"
+    },
+    {
+      "gap_id": "LC-CF-AIG-BINDING",
+      "summary": "Bind LibreChat semantic profiles to authenticated Cloudflare AI Gateway with zero-cost fail-closed routes",
+      "state": "BLOCKED_DEPENDENCY",
+      "priority": 65,
+      "scope": "remote_inference_gateway",
+      "requires_live": true,
+      "dependencies": [
+        "LC-CURRENT-HEAD-TESTS",
+        "LC-PROVIDER-HUD-BRIDGE"
+      ],
+      "preferred_route": "librechat_to_cloudflare_ai_gateway"
+    },
+    {
+      "gap_id": "LC-M3-TRANSPORT-LIVE",
+      "summary": "Read back current Cloudflare/Tailscale/OpenAI Secure MCP transport state and select LibreChat action binding profile A/B/C",
+      "state": "BLOCKED_DEPENDENCY",
+      "priority": 66,
+      "scope": "manojos3_transport",
+      "requires_live": true,
+      "dependencies": [
+        "LC-CURRENT-HEAD-TESTS"
+      ],
+      "preferred_route": "governed_m3_edge_cli_r0"
     },
     {
       "gap_id": "LC-M3-R0-BINDING",
@@ -151,13 +210,14 @@
     },
     {
       "gap_id": "LC-VX13-BINDING",
-      "summary": "Future VX13 real binding with same Nostromo identity and distinct authority",
+      "summary": "Future VX13 binding through NostromoTargetGateway to Tentaculo Link/canonical VX13 frontdoor",
       "state": "GATE_EXTERNAL",
       "priority": 80,
       "scope": "vx13_binding",
       "requires_live": true,
       "dependencies": [
-        "LC-CURRENT-HEAD-TESTS"
+        "LC-CURRENT-HEAD-TESTS",
+        "LC-TARGET-GATEWAY-FACADE"
       ]
     },
     {
@@ -182,40 +242,6 @@
       "dependencies": [
         "LC-CURRENT-HEAD-TESTS"
       ]
-    },
-    {
-      "gap_id": "LC-CF-AIG-BINDING",
-      "summary": "Bind LibreChat semantic profiles to authenticated Cloudflare AI Gateway with zero-cost fail-closed routes",
-      "state": "BLOCKED_DEPENDENCY",
-      "priority": 65,
-      "scope": "remote_inference_gateway",
-      "requires_live": true,
-      "dependencies": [
-        "LC-CURRENT-HEAD-TESTS"
-      ],
-      "preferred_route": "librechat_to_cloudflare_ai_gateway"
-    },
-    {
-      "gap_id": "LC-M3-TRANSPORT-LIVE",
-      "summary": "Read back current Cloudflare/Tailscale/OpenAI Secure MCP transport state and select LibreChat action binding profile A/B/C",
-      "state": "BLOCKED_DEPENDENCY",
-      "priority": 66,
-      "scope": "manojos3_transport",
-      "requires_live": true,
-      "dependencies": [
-        "LC-CURRENT-HEAD-TESTS"
-      ],
-      "preferred_route": "governed_m3_edge_cli_r0"
-    },
-    {
-      "gap_id": "LC-M3-TRANSPORT-DOC-DRIFT",
-      "summary": "Resolve Action Proxy origin documentation contradiction and classify plugin/public_origin drift from LIVE evidence",
-      "state": "SOURCE_CONFLICT_REQUIRES_LIVE_READBACK",
-      "priority": 24,
-      "scope": "manojos3_transport_documentation",
-      "requires_live": true,
-      "dependencies": [],
-      "preferred_route": "handoff_11_m3_transport_documentation_gaps"
     }
   ]
 }

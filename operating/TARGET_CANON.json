@@ -1,7 +1,7 @@
 {
   "schema": "libre-chat-vx.operating-target.v1",
   "canon": "LIBRECHAT_OPERATING_CANON",
-  "target_version": 6,
+  "target_version": 7,
   "authority": false,
   "product_role": "EXTERNAL_CONVERSATION_UI_COCKPIT",
   "desired": {
@@ -28,36 +28,40 @@
     "event_model": "EVENT_DRIVEN_LAZY_BACKPRESSURE_SNAPSHOT_RESYNC",
     "provider_mesh": {
       "architecture": "REMOTE_FREE_CAPABLE_LOCAL_OPTIONAL_PROVIDER_AGNOSTIC_UI",
-      "preferred_gateway": "MANOJOS3_LITELLM",
+      "preferred_gateway": "CLOUDFLARE_AI_GATEWAY",
+      "authority": false,
       "paid_fallback_allowed": false,
       "cognitive_failover_only": true,
       "material_replay_on_provider_failover": false,
-      "aliases": [
-        "fast",
-        "general",
-        "reasoning",
-        "coding",
-        "long-context",
-        "vision"
-      ],
       "semantic_profiles": {
-        "fast": "manojos-fast-free",
-        "general": "manojos-general-free",
-        "reasoning": "manojos-reasoning-free",
-        "coding": "manojos-coding-free",
-        "long_context": "manojos-long-context-free",
-        "vision": "CAPABILITY_ROUTED_NOT_YET_CLAIMED_LIVE"
+        "RAPIDO": "dynamic/nostromo-rapido",
+        "NORMAL": "dynamic/nostromo-normal",
+        "PENSAR": "dynamic/nostromo-pensar",
+        "CODIGO": "dynamic/nostromo-codigo",
+        "CONTEXTO_LARGO": "dynamic/nostromo-contexto-largo",
+        "VISION": "dynamic/nostromo-vision"
       },
-      "provider_deployments": "INTERCHANGEABLE_BEHIND_SEMANTIC_ALIAS",
+      "provider_capabilities": [
+        "TEXT",
+        "VISION",
+        "AUDIO",
+        "STRUCTURED_OUTPUT",
+        "TOOLS",
+        "LONG_CONTEXT"
+      ],
+      "provider_deployments": "INTERCHANGEABLE_BEHIND_CLOUDFLARE_DYNAMIC_ROUTES",
       "provider_admission": [
         "LIVE_REACHABLE",
+        "HEALTH_READY",
+        "QUOTA_AVAILABLE",
         "CAPABILITY_READBACK",
         "CONTEXT_FIT",
         "PRIVACY_ALLOWED",
         "ZERO_COST_ACCOUNT_ROUTE_VERIFIED",
-        "NO_AUTOMATIC_PAID_FALLBACK"
+        "NO_AUTOMATIC_PAID_FALLBACK",
+        "FRESH_READBACK"
       ],
-      "gemini": "OPTIONAL_PROVIDER_FAMILY_DISCOVERY_AND_CANARY_REQUIRED",
+      "provider_brand_in_ui_contract": false,
       "local_model": "OPTIONAL_NOT_A_PROMOTION_PREREQUISITE"
     },
     "tentaculo_hud_contract": {
@@ -103,15 +107,16 @@
       "primary_for_librechat": "CLOUDFLARE_AI_GATEWAY",
       "authority": false,
       "authentication": "REQUIRED",
-      "routing": "VERSIONED_DYNAMIC_ROUTES",
+      "routing": "VERSIONED_DYNAMIC_ROUTES_BY_SEMANTIC_PROFILE",
       "provider_keys": "BYOK_SECRETREF_ONLY",
       "unified_billing_default": false,
       "default_route_cost_policy": "ZERO_COST_ACCOUNT_ROUTE_VERIFIED_ONLY",
       "paid_auto_fallback": false,
-      "provider_web_search": "COGNITIVE_ONLY_NOT_MATERIAL_EVIDENCE"
+      "provider_web_search": "COGNITIVE_ONLY_NOT_MATERIAL_EVIDENCE",
+      "local_model_required": false
     },
     "manojos3_litellm": {
-      "state": "KEEP_DURING_MIGRATION",
+      "state": "KEEP",
       "role": [
         "INTERNAL_ADVISORY",
         "OPENCODE_COMPATIBILITY",
@@ -137,6 +142,25 @@
       "public_funnel_baseline": false,
       "chatgpt_desktop": "LOCAL_CONNECTOR_PLUGIN_TO_LOCAL_MCP_APP_TO_8790",
       "openai_secure_mcp_tunnel": "OPTIONAL_REMOTE_PRIVATE_TRANSPORT_ONLY_WHEN_LOCAL_DESKTOP_MCP_IS_NOT_USED"
+    },
+    "target_gateway": {
+      "name": "NOSTROMO_TARGET_GATEWAY",
+      "kind": "IN_PROCESS_FACADE",
+      "authority": false,
+      "purpose": "DECOUPLE_LIBRECHAT_UI_FROM_TARGET_TRANSPORT_AND_FUTURE_TARGETS",
+      "adapters": {
+        "MANOJOS3": "MANOJOS3_MCP",
+        "VX13": "TENTACULO_LINK_OR_CANONICAL_VX13_FRONTDOOR_FUTURE"
+      },
+      "rules": [
+        "NO_SECOND_MCP",
+        "NO_SECOND_POLICY",
+        "NO_SECOND_KERNEL",
+        "NO_EXECUTION",
+        "NO_RECEIPT_MINTING",
+        "NO_LEDGER",
+        "NO_MATERIAL_REPLAY"
+      ]
     }
   },
   "authority_boundaries": {
