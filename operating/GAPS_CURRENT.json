@@ -1,6 +1,6 @@
 {
   "schema": "libre-chat-vx.operating-gaps.v1",
-  "snapshot_id": "source-completion-2026-10-07-core-bridges-resource-tree",
+  "snapshot_id": "source-tested-2026-10-07-core-complete",
   "gaps": [
     {
       "gap_id": "LC-OPERATING-CANON",
@@ -16,18 +16,17 @@
     },
     {
       "gap_id": "LC-CURRENT-HEAD-TESTS",
-      "summary": "Run exact-head build/test after LibreChat VX source completion",
-      "state": "STALE_PROOF",
+      "summary": "Exact-head TypeScript build and full source test suite",
+      "state": "PASS",
       "priority": 10,
       "scope": "source_tests",
-      "requires_live": true,
-      "dependencies": [
-        "LC-NOSTROMO-HYBRID",
-        "LC-M3-GPT-SEMANTIC-BRIDGE",
-        "LC-PROVIDER-HUD-BRIDGE",
-        "LC-TARGET-GATEWAY-FACADE"
-      ],
-      "preferred_route": "host_test_when_local_allowed"
+      "requires_live": false,
+      "dependencies": [],
+      "evidence_refs": [
+        "commit:53c172863671a4396e773addf2ebb5b1e4ac6a46",
+        "github_actions_run:37541743838",
+        "workflow:.github/workflows/source-check.yml"
+      ]
     },
     {
       "gap_id": "LC-M3-INTERFLOW-PROJECTION",
@@ -204,7 +203,6 @@
       "scope": "remote_inference_gateway",
       "requires_live": true,
       "dependencies": [
-        "LC-CURRENT-HEAD-TESTS",
         "LC-PROVIDER-HUD-BRIDGE"
       ],
       "preferred_route": "librechat_to_cloudflare_ai_gateway"
@@ -216,9 +214,7 @@
       "priority": 66,
       "scope": "manojos3_transport",
       "requires_live": true,
-      "dependencies": [
-        "LC-CURRENT-HEAD-TESTS"
-      ],
+      "dependencies": [],
       "preferred_route": "governed_m3_edge_cli_r0"
     },
     {
@@ -229,7 +225,6 @@
       "scope": "manojos3_binding",
       "requires_live": true,
       "dependencies": [
-        "LC-CURRENT-HEAD-TESTS",
         "LC-M3-ADAPTER-SOURCE"
       ],
       "preferred_route": "manojos3_inbound_mcp"
@@ -241,9 +236,7 @@
       "priority": 71,
       "scope": "manojos3_internal_llm_live",
       "requires_live": true,
-      "dependencies": [
-        "LC-CURRENT-HEAD-TESTS"
-      ],
+      "dependencies": [],
       "preferred_route": "m3_internal_litellm_status_and_consumer_canary"
     },
     {
@@ -253,9 +246,7 @@
       "priority": 72,
       "scope": "upstream_overlay",
       "requires_live": true,
-      "dependencies": [
-        "LC-CURRENT-HEAD-TESTS"
-      ]
+      "dependencies": []
     },
     {
       "gap_id": "LC-VX13-BINDING",
@@ -265,7 +256,6 @@
       "scope": "vx13_binding",
       "requires_live": true,
       "dependencies": [
-        "LC-CURRENT-HEAD-TESTS",
         "LC-TARGET-GATEWAY-FACADE",
         "VX13_CANONICAL_FRONTDOOR"
       ]
@@ -289,9 +279,7 @@
       "priority": 100,
       "scope": "host_measurement",
       "requires_live": true,
-      "dependencies": [
-        "LC-CURRENT-HEAD-TESTS"
-      ]
+      "dependencies": []
     }
   ]
 }

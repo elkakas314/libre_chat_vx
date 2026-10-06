@@ -50,3 +50,4 @@ transport_doc_reconciliation,MANOJOS3_DOCS,SOURCE_CONFLICT,REQUIRES_LIVE_READBAC
 
 resource_tree,LibreChat,IMPLEMENTED_SOURCE,NO_VERIFICADO,GREEN,NONE,Generic lazy tree with source adapters; cloud/target contents are loaded only on demand
 adapter_compatibility_report,LibreChat,IMPLEMENTED_SOURCE,NO_VERIFICADO,GREEN,NONE,Fail-closed upstream revision/blob/cleanliness/overlay report contract
+source_ci,GitHub_Actions,PASS,PASS,GREEN,NONE,Exact-head npm install + TypeScript build + full node test suite passed on commit 53c172863671a4396e773addf2ebb5b1e4ac6a46 run 37541743838
