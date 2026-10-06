@@ -1,28 +1,37 @@
 # BLUEPRINT LIBRECHAT CURRENT
 
+> CURRENT routing canon 2026-10-06: `docs/LIBRECHAT_ARCHITECTURE_CURRENT.md`.
+> Cualquier topología histórica LiteLLM-first queda superseded por Cloudflare AI Gateway + NostromoTargetGateway/TargetAdapters.
+
+
 ## Arquitectura general
 
 ```mermaid
 flowchart LR
-  U[Usuario PC / móvil] --> LC[LibreChat]
-  LC --> NC[NOSTROMO_CONVERSATION_CORE]
-  NC --> LV[Voz local reemplazable]
-  NC --> LR[MANOJOS3 LiteLLM]
-  NC --> MCP[MANOJOS3 MCP]
+  U[Usuario PC / móvil] --> LC[LibreChat / NOSTROMO]
+  LC --> COG[NostromoInferenceGateway]
+  COG --> CF[Cloudflare AI Gateway]
+  CF --> P[Providers/modelos admitidos]
+  LC --> TG[NostromoTargetGateway<br/>in-process · authority=false]
+  TG --> M3A[MANOJOS3 TargetAdapter]
+  M3A --> MCP[MANOJOS3 MCP]
   MCP --> I[Intent / Interflow]
   I --> GP[Governor / Policy]
   GP --> K[Kernel / driver]
   K --> RB[Readback]
   RB --> VR[Verifier / Receipt]
-  VR --> HUD[Tentáculo HUD / ArtifactDock]
-  HUD --> LC
-  LC -. target futuro .-> TL[Tentáculo Link VX13]
-  TL --> SW[Switch]
-  SW --> M[Madre]
+  TG -. future .-> VXA[VX13 TargetAdapter]
+  VXA --> TL[Tentáculo Link]
+  TL --> M[Madre]
   M --> SP[Spawner / hija]
-  SP --> V13RB[Readback + verificación Madre]
-  OR[ORÁCULO advisory] -. authority=false .-> LR
+  SP --> V13RB[Readback + verificación]
+  LC --> HUD[Tentáculo HUD / ArtifactDock]
+  VR --> HUD
+  V13RB --> HUD
+  OR[ORÁCULO advisory] -. authority=false .-> COG
 ```
+
+Cloudflare es inferencia únicamente. TargetGateway desacopla UX de transportes; no añade autoridad ni ejecución.
 
 ## Focus / ventana
 
@@ -83,23 +92,28 @@ flowchart TD
 
 ```mermaid
 flowchart LR
-  U[Usuario] --> LC[LibreChat / Nostromo]
+  U[Usuario] --> LC[LibreChat / NOSTROMO]
   LC --> MS[Model Specs / perfiles semánticos]
-  MS --> PM[Provider Mesh]
-  PM --> M3L[MANOJOS3 LiteLLM aliases]
-  PM --> REM[Custom Endpoints remotos compatibles]
-  PM --> LOC[Modelo local opcional]
-  LC --> ACT[MANOJOS3 MCP / VX13 ingress]
-  ACT --> AUTH[Autoridad del target]
-  AUTH --> RB[Readback + Verifier + Receipt]
+  MS --> CF[Cloudflare AI Gateway]
+  CF --> P1[Provider A]
+  CF --> P2[Provider B]
+  CF --> P3[Provider C]
+  LC --> LOC[Modelo local opcional]
+  LC --> TG[NostromoTargetGateway]
+  TG --> M3A[MANOJOS3 adapter -> MCP]
+  TG -. future .-> VXA[VX13 adapter -> Tentáculo Link]
+  M3A --> AUTH1[Autoridad MANOJOS3]
+  VXA --> AUTH2[Autoridad VX13]
 ```
 
 Invariantes adicionales:
-11. El proveedor del LLM es intercambiable y no forma parte de la autoridad.
-12. Modelo local = opcional; remoto = posible; ninguno es requisito único.
-13. Model Specs/aliases son identidades semánticas; el binding real se verifica LIVE.
-14. Fallover de inferencia no reenvía ni duplica acciones.
-15. No existe fallback automático a proveedor de pago.
+11. `semantic profile != provider`.
+12. Modelo local = opcional.
+13. Cloudflare AI Gateway = inference only, authority=false.
+14. TargetGateway = facade only, authority=false.
+15. MCP es transporte del adapter MANOJOS3, no contrato UX.
+16. Fallover de inferencia no reenvía ni duplica acciones.
+17. No existe fallback automático a proveedor de pago.
 
 ## Tentáculo HUD / Projection Plane
 
