@@ -1,14 +1,25 @@
 capability,owner,source_state,live_state,risk,authority,notes
 conversation,LibreChat,IMPLEMENTED_SOURCE,NO_VERIFICADO,GREEN,NONE,Native conversation plane
-nostromo_local_voice,LibreChat,OPTIONAL_ARCHITECTURE_SOURCE,UNCONFIGURED,GREEN,NONE,Optional only; OFF/UNINSTALLED is valid
-deep_reasoning,Cloudflare_AI_Gateway,SOURCE_DESIGN,NO_VERIFICADO,GREEN,NONE,Primary LibreChat inference gateway; zero-cost admitted routes only
+nostromo_identity,LibreChat,IMPLEMENTED_SOURCE,NO_VERIFICADO,GREEN,NONE,Stable across providers/models/targets
+nostromo_local_voice,LibreChat,OPTIONAL_ARCHITECTURE_SOURCE,UNCONFIGURED,GREEN,NONE,OFF/UNINSTALLED is valid
+semantic_profile_router,LibreChat,IMPLEMENTED_SOURCE,NO_VERIFICADO,GREEN,NONE,RAPIDO NORMAL PENSAR CODIGO CONTEXTO_LARGO VISION
+provider_capability_router,LibreChat,IMPLEMENTED_SOURCE,NO_VERIFICADO,GREEN,NONE,TEXT VISION AUDIO STRUCTURED_OUTPUT TOOLS LONG_CONTEXT
+provider_admission_zero_cost,LibreChat,IMPLEMENTED_SOURCE,NO_VERIFICADO,GREEN,NONE,Fail-closed on health quota privacy freshness capability and zero-cost
+cloudflare_ai_gateway,Cloudflare_AI_Gateway,IMPLEMENTED_SOURCE,NO_VERIFICADO,GREEN,NONE,Primary remote inference gateway only
+structured_output_guard,LibreChat,IMPLEMENTED_SOURCE,NO_VERIFICADO,GREEN,NONE,Model output cannot mint material authority fields
+provider_status_projection,LibreChat,IMPLEMENTED_SOURCE,NO_VERIFICADO,GREEN,NONE,Provider/model/caps/health/latency/quota/freshness
+provider_status_hud_bridge,LibreChat,PARTIAL_SOURCE,NO_VERIFICADO,GREEN,NONE,Projection exists but live cockpit bridge is not connected
+deep_reasoning,Cloudflare_AI_Gateway,IMPLEMENTED_SOURCE,NO_VERIFICADO,GREEN,NONE,Semantic profiles route through admitted providers
+nostromo_target_gateway,LibreChat,DESIGNED_CURRENT,NOT_IMPLEMENTED,GREEN,NONE,In-process facade only; not a server/proxy/authority
+manojos3_target_adapter,LibreChat+MANOJOS3_MCP,SOURCE_ENTRYPOINTS_PREPARED,UNCONFIGURED,VARIES,M3_GOVERNOR_POLICY_KERNEL,Uses real MANOJOS3 MCP under target gateway
+vx13_target_adapter,LibreChat+VX13,DESIGNED_CURRENT,UNCONFIGURED,VARIES,VX13,Future Tentaculo Link binding
 governed_objective,MANOJOS3_MCP,PREPARED_SOURCE,PREPARED_UNCONFIGURED,VARIES,M3_GOVERNOR_POLICY_KERNEL,Natural objective
 manojos_status,MANOJOS3_MCP,AVAILABLE_SOURCE,NO_VERIFICADO,GREEN,NONE,Read only
 manojos_capabilities,MANOJOS3_MCP,AVAILABLE_SOURCE,NO_VERIFICADO,GREEN,NONE,Read only
 manojos_skills,MANOJOS3_MCP,AVAILABLE_SOURCE,NO_VERIFICADO,GREEN,NONE,Read only
 librechat_thread_read,MANOJOS3_ADAPTER,INSTALLED_FAIL_CLOSED,UNCONFIGURED,GREEN,M3,Capability R0
 librechat_message_send,MANOJOS3_ADAPTER,INSTALLED_FAIL_CLOSED,UNCONFIGURED,RED,M3,Capability R2 with readback
-tentaculo_hud,LibreChat,IMPLEMENTED_SOURCE,NO_VERIFICADO,GREEN,NONE,Truth from structured target readback
+tentaculo_hud,LibreChat,IMPLEMENTED_SOURCE,NO_VERIFICADO,GREEN,NONE,Truth from structured target readback plus separate provider status
 focus_router,LibreChat,IMPLEMENTED_SOURCE,NO_VERIFICADO,GREEN,NONE,Focus not authority
 artifact_dock,LibreChat,IMPLEMENTED_SOURCE,NO_VERIFICADO,GREEN,NONE,Evidence/receipt presentation
 interactive_artifact,LibreChat,IMPLEMENTED_SOURCE,NO_VERIFICADO,YELLOW,NONE,UI intent only
@@ -20,18 +31,19 @@ subagents,LibreChat_native,SOURCE_PINNED,NO_VERIFICADO,GREEN,NONE,Cognitive only
 background_tasks,LibreChat_native,SOURCE_PINNED,NO_VERIFICADO,GREEN,NONE,Not TargetRun proof
 resumable_streams,LibreChat_native,SOURCE_WRAPPER_IMPLEMENTED,NO_VERIFICADO,GREEN,NONE,Never replay material effects
 mobile_same_history,LibreChat,IMPLEMENTED_SOURCE,NO_VERIFICADO,GREEN,NONE,Same backend/history
+audio_capability,LibreChat+Provider,SOURCE_PARTIAL,NO_VERIFICADO,GREEN,NONE,AUDIO capability exists; live route/canary pending
+vision_capability,LibreChat+Provider,IMPLEMENTED_SOURCE,NO_VERIFICADO,GREEN,NONE,Semantic VISION route defined; live canary pending
 offline_mutation_replay,LibreChat,FORBIDDEN,FORBIDDEN,RED,NONE,Drafts only
-vx13_projection,VX13+LibreChat,DOCUMENTED_CURRENT,UNCONFIGURED,GREEN,NONE,Same external slots distinct authority
+vx13_projection,VX13+LibreChat,DOCUMENTED_CURRENT,UNCONFIGURED,GREEN,NONE,Same external shell distinct authority
 vx13_mutation,VX13,DOCUMENTED_CURRENT,UNCONFIGURED,RED,VX13_MADRE_SPAWNER,Future binding
 oraculo_advisory,ORACULO,DOCUMENTED_SOURCE,NO_VERIFICADO,GREEN,NONE,authority=false
 receipts,Target,CONTRACT_SOURCE,NO_VERIFICADO,GREEN,TARGET_VERIFIER,LibreChat projects refs only
 scheduled_background_mutation,Target,NOT_GRANTED,NO_VERIFICADO,RED,TARGET,Must use target scheduler/governance
-cloudflare_ai_gateway,Cloudflare_AI_Gateway,SOURCE_DESIGN,NO_VERIFICADO,GREEN,NONE,Remote inference routing only; authority=false
-manojos3_internal_litellm,MANOJOS3_LITELLM,CONTRACT_SOURCE,REQUIRES_LIVE_READBACK,GREEN,NONE,Internal advisory/OpenCode/compatibility; not primary LibreChat inference
+manojos3_internal_litellm,MANOJOS3_LITELLM,CONTRACT_SOURCE,REQUIRES_LIVE_READBACK,GREEN,NONE,Internal advisory/OpenCode/compatibility only
 librechat_mcp_same_host,MANOJOS3_MCP,SOURCE_DESIGN,UNSELECTED,GREEN,NONE,Direct 127.0.0.1:8790 when backend colocated
 librechat_mcp_private_tailnet,MANOJOS3_MCP,SOURCE_DESIGN,UNSELECTED,GREEN,NONE,Tailscale Serve/private authenticated MCP
-librechat_mcp_cloudflare_edge,MANOJOS3_MCP,SOURCE_DESIGN,UNSELECTED,YELLOW,NONE,Dedicated authenticated MCP edge -> MANOJOS3_VPC -> tunnel -> 8790
+librechat_mcp_cloudflare_edge,MANOJOS3_MCP,SOURCE_DESIGN,UNSELECTED,YELLOW,NONE,Dedicated authenticated MCP edge -> MANOJOS3 transport
 legacy_action_proxy,MANOJOS3_COMPAT,SOURCE_CURRENT,NO_VERIFICADO,YELLOW,NONE,GPT Actions compatibility only; not LibreChat action contract
-openai_secure_mcp_tunnel,OpenAI_Transport,SOURCE_CURRENT,NO_VERIFICADO,GREEN,NONE,ChatGPT plugin transport only; not assumed generic LibreChat transport
-tailscale_recovery_transport,Tailscale,SOURCE_CURRENT,NO_VERIFICADO,GREEN,NONE,Private/recovery/diagnostic; public Funnel not baseline
-transport_doc_reconciliation,MANOJOS3_DOCS,SOURCE_CONFLICT,REQUIRES_LIVE_READBACK,GREEN,NONE,Action Proxy README conflicts with later CURRENT topology
+openai_secure_mcp_tunnel,OpenAI_Transport,SOURCE_CURRENT,NO_VERIFICADO,GREEN,NONE,ChatGPT-specific optional transport
+tailscale_recovery_transport,Tailscale,SOURCE_CURRENT,NO_VERIFICADO,GREEN,NONE,Private/recovery/diagnostic
+transport_doc_reconciliation,MANOJOS3_DOCS,SOURCE_CONFLICT,REQUIRES_LIVE_READBACK,GREEN,NONE,Current transport docs need readback reconciliation
