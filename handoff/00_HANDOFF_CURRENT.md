@@ -295,7 +295,7 @@ Se auditó la estructura SOURCE de MANOJOS3 y se integra sin crear un túnel nue
 
 Topología observada:
 - GPT Actions legado -> Worker `manojos2-action-proxy` -> `MANOJOS3_VPC` -> Cloudflare Tunnel -> control plane `:8787`.
-- ChatGPT plugin/developer App -> OpenAI Secure MCP Tunnel -> MCP `:8790/mcp`.
+- ChatGPT Desktop -> conector/complemento MANOJOS3 -> app MCP local -> MCP `:8790/mcp`. Secure MCP Tunnel es opcional sólo cuando un cliente OpenAI necesita alcanzar un MCP privado que no ejecuta/accede localmente.
 - Tailscale Serve/Funnel -> plano separado de private/recovery/diagnostics; Funnel no es baseline del Actions CURRENT.
 - host-control `:8791` -> recovery/readback independiente; nunca ruta normal LibreChat.
 - Cloudflare AI Gateway -> inferencia remota únicamente; no entra al Lenovo.
