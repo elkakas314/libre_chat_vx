@@ -184,3 +184,42 @@ Tools source: status, capabilities, skills, attach, prepare, submit, run, author
 
 La UX de autorización deriva del `grant_interface` LIVE de MANOJOS3. `OPERATOR_MODE_AUTONOMOUS` no se transforma artificialmente en aprobación humana por paso; `LOCAL_CLI_AUTHORIZE_STEP_ONLY` conserva el gate local exacto.
 
+
+
+## Identidad Nostromo independiente del modelo
+
+La identidad de producto no pertenece a Gemini, OpenRouter, un modelo local ni LiteLLM. Pertenece a LibreChat/NOSTROMO.
+
+Mecanismo preferente:
+- Model Specs + `promptPrefix` y/o Agent instructions;
+- perfil versionado `NOSTROMO_IDENTITY_PROFILE`;
+- aplicado de forma uniforme a Rápido/Normal/Pensar/Código/Contexto largo/Visión.
+
+LiteLLM conserva routing, no personalidad global obligatoria. Así puede seguir sirviendo OpenCode u otros clientes sin contaminar sus prompts.
+
+El perfil Nostromo recuerda al modelo:
+- `authority=false`;
+- no inventar autorización, readback, receipt ni PASS material;
+- usar proyecciones estructuradas para verdad operacional;
+- entregar cualquier intención material al target owner.
+
+La seguridad real no depende de que el modelo obedezca el prompt: MANOJOS3 sigue gobernando server-side.
+
+## Provider categories y capabilities
+
+LibreChat muestra perfiles semánticos, no marcas:
+- Rápido -> `manojos-fast-free`
+- Normal -> `manojos-general-free`
+- Pensar -> `manojos-reasoning-free`
+- Código -> `manojos-coding-free`
+- Contexto largo -> `manojos-long-context-free`
+- Visión -> capability-routed; no declarar alias servido hasta SOURCE/LIVE proof.
+
+Gemini puede añadirse como deployment opcional detrás de estos aliases si:
+- modelo actual descubierto;
+- LiteLLM desplegado lo soporta;
+- cuenta/ruta zero-cost verificada;
+- capabilities/context/structured output/multimodalidad verificadas;
+- no existe fallback automático de pago.
+
+El modelo local deja de formar parte de cualquier gate obligatorio salvo que ese deployment lo active explícitamente.
