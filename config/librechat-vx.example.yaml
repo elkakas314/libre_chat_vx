@@ -26,30 +26,72 @@ endpoints:
       # execute_code / programmatic_tools intentionally omitted until
       # Code Interpreter is separately admitted and governed.
 
+# SOURCE EXAMPLE ONLY.
+# Deployment must bind the OpenAI-compatible endpoint to the authenticated
+# Cloudflare AI Gateway configured for LibreChat/NOSTROMO.
+#
+# The user-facing model list is semantic. Concrete provider/model selection
+# happens behind Cloudflare dynamic routes and remains diagnostic detail.
 modelSpecs:
   enforce: false
   prioritize: true
   list:
-    - name: vx13-nostromo
-      label: VX13 · Nostromo
+    - name: nostromo-normal
+      label: NOSTROMO · Normal
       artifacts: custom
       preset:
         endpoint: openAI
-        model: vx13-language
-        greeting: "Cabina VX13. Conversación primero; evidencia antes de afirmar."
-        promptPrefix: |
-          Eres la voz conversacional de VX13. La UI no concede autoridad.
-          Todo efecto material pertenece a Madre y su cadena gobernada.
-    - name: manojos3-nostromo
-      label: MANOJOS3 · Nostromo
+        model: dynamic/nostromo-normal
+        greeting: "NOSTROMO. Conversación primero; evidencia antes de afirmar."
+        promptPrefix: &nostromo_identity |
+          Eres NOSTROMO, la identidad conversacional estable de LibreChat VX.
+          Tu identidad no depende del proveedor ni del modelo.
+          La UI y el modelo no conceden autoridad material.
+          Nunca inventes autorización, PASS, readback, evidence ni receipt.
+          Los efectos materiales pertenecen al target y a su cadena gobernada.
+    - name: nostromo-rapido
+      label: NOSTROMO · Rápido
       artifacts: custom
       preset:
         endpoint: openAI
-        model: manojos3-language
-        greeting: "Cabina MANOJOS3. Runtime y evidencia separados de la interfaz."
-        promptPrefix: |
-          Eres la voz conversacional de MANOJOS3. La UI no concede autoridad.
-          Policy/Kernel/Adapter/Verifier/Receipt siguen siendo soberanos.
+        model: dynamic/nostromo-rapido
+        promptPrefix: *nostromo_identity
+    - name: nostromo-pensar
+      label: NOSTROMO · Pensar
+      artifacts: custom
+      preset:
+        endpoint: openAI
+        model: dynamic/nostromo-pensar
+        promptPrefix: *nostromo_identity
+    - name: nostromo-codigo
+      label: NOSTROMO · Código
+      artifacts: custom
+      preset:
+        endpoint: openAI
+        model: dynamic/nostromo-codigo
+        promptPrefix: *nostromo_identity
+    - name: nostromo-contexto-largo
+      label: NOSTROMO · Contexto largo
+      artifacts: custom
+      preset:
+        endpoint: openAI
+        model: dynamic/nostromo-contexto-largo
+        promptPrefix: *nostromo_identity
+    - name: nostromo-vision
+      label: NOSTROMO · Visión
+      artifacts: custom
+      preset:
+        endpoint: openAI
+        model: dynamic/nostromo-vision
+        promptPrefix: *nostromo_identity
 
-# mcpServers are deployment-specific and intentionally omitted here.
-# Use MCP Settings or deployment config once a real governed binding exists.
+# AUDIO is capability-routed by voice/ASR/TTS integration when enabled.
+# It is not a separate operator mode.
+
+# Target selection is independent from model/profile selection.
+# LibreChat should call an in-process NostromoTargetGateway facade:
+#   MANOJOS3 adapter -> MANOJOS3 MCP
+#   VX13 adapter -> Tentáculo Link (future)
+#
+# mcpServers remain deployment-specific implementation detail of the
+# MANOJOS3 target adapter and are intentionally omitted here.
