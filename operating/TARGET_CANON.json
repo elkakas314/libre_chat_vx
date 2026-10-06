@@ -1,7 +1,7 @@
 {
   "schema": "libre-chat-vx.operating-target.v1",
   "canon": "LIBRECHAT_OPERATING_CANON",
-  "target_version": 2,
+  "target_version": 3,
   "authority": false,
   "product_role": "EXTERNAL_CONVERSATION_UI_COCKPIT",
   "desired": {
@@ -39,7 +39,26 @@
         "coding",
         "long-context",
         "vision"
-      ]
+      ],
+      "semantic_profiles": {
+        "fast": "manojos-fast-free",
+        "general": "manojos-general-free",
+        "reasoning": "manojos-reasoning-free",
+        "coding": "manojos-coding-free",
+        "long_context": "manojos-long-context-free",
+        "vision": "CAPABILITY_ROUTED_NOT_YET_CLAIMED_LIVE"
+      },
+      "provider_deployments": "INTERCHANGEABLE_BEHIND_SEMANTIC_ALIAS",
+      "provider_admission": [
+        "LIVE_REACHABLE",
+        "CAPABILITY_READBACK",
+        "CONTEXT_FIT",
+        "PRIVACY_ALLOWED",
+        "ZERO_COST_ACCOUNT_ROUTE_VERIFIED",
+        "NO_AUTOMATIC_PAID_FALLBACK"
+      ],
+      "gemini": "OPTIONAL_PROVIDER_FAMILY_DISCOVERY_AND_CANARY_REQUIRED",
+      "local_model": "OPTIONAL_NOT_A_PROMOTION_PREREQUISITE"
     },
     "tentaculo_hud_contract": {
       "mode": "READ_ONLY_DERIVED_PROJECTION",
@@ -68,7 +87,18 @@
       "event_recovery": "CURSOR_DEDUPE_GAP_SNAPSHOT_RESYNC",
       "unknown_outcome_retry": "READBACK_RECONCILE_THEN_DECIDE"
     },
-    "native_capability_policy": "VERIFY_UPSTREAM_SOURCE_BEFORE_BINDING_NO_PARALLEL_REIMPLEMENTATION"
+    "native_capability_policy": "VERIFY_UPSTREAM_SOURCE_BEFORE_BINDING_NO_PARALLEL_REIMPLEMENTATION",
+    "nostromo_identity": {
+      "owner": "LIBRECHAT_NOSTROMO",
+      "mechanism": "MODEL_SPECS_PROMPT_PREFIX_OR_AGENT_INSTRUCTIONS",
+      "versioned_profile": true,
+      "litellm_global_persona": false,
+      "prompt_is_security_boundary": false,
+      "target_truth": "STRUCTURED_PROJECTIONS_ONLY"
+    },
+    "context_policy": "TARGETED_READS_THEN_RAG_COMPACT_THEN_LONG_CONTEXT_IF_NEEDED",
+    "structured_output_policy": "UNTRUSTED_UNTIL_SCHEMA_AND_SEMANTIC_VALIDATED",
+    "multimodal_policy": "CAPABILITY_ROUTED_COGNITIVE_ONLY_NEVER_MATERIAL_EVIDENCE"
   },
   "authority_boundaries": {
     "librechat": "NONE_MATERIAL",
