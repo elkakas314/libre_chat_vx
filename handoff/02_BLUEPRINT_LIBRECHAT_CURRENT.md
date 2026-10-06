@@ -198,3 +198,27 @@ targeted reads -> File Context/RAG -> compact relevant context -> long-context a
 ```
 
 Provider details shown in Tentáculo HUD are diagnostic: alias, provider/model, locality, capability flags, health, quota/rate-limit state and freshness. None changes authority.
+
+
+## Cloudflare remote inference plane
+
+```mermaid
+flowchart LR
+  U[Usuario] --> LC[LibreChat / Nostromo]
+  LC --> CF[Cloudflare AI Gateway]
+  CF --> P1[Provider A]
+  CF --> P2[Provider B]
+  CF --> P3[Provider C]
+  LC --> M3[MCP MANOJOS3]
+  M3 --> GOV[Governor/Policy/Kernel]
+  GOV --> REC[Readback/Verifier/Receipt]
+  M3 -. internal advisory .-> LIT[LiteLLM MANOJOS3]
+```
+
+Invariantes:
+- Cloudflare route/model change nunca altera authority.
+- LibreChat conversation path no depende de LiteLLM M3.
+- LiteLLM M3 puede seguir sirviendo consumidores internos.
+- no hay loop Cloudflare -> M3 LiteLLM -> Cloudflare.
+- paid route no puede aparecer como fallback implícito.
+- provider search/tool output no es EvidenceRef/ReceiptRef.
