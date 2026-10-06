@@ -310,3 +310,14 @@ LibreChat NO usa el Action Proxy como contrato de acciones. Reutiliza el transpo
 Documento detallado: `handoff/10_TRANSPORT_TOPOLOGY_CURRENT.md`.
 
 No se crea script shell de auditoría porque MANOJOS3 ya dispone de capabilities gobernadas R0 para Cloudflare/Tailscale y un canary Worker MCP aislado.
+
+
+## 19. Gaps documentales MANOJOS3 — 2026-10-06
+
+Registro SOURCE: `handoff/11_MANOJOS3_TRANSPORT_DOCUMENTATION_GAPS.md`.
+
+- M3-DOC-001 CONFIRMED: Action Proxy README dice Tailscale Funnel como current origin; docs/HANDOFF/auditorías posteriores dicen MANOJOS3_VPC + Cloudflare Tunnel.
+- M3-DOC-002 REQUIRES_LIVE_READBACK: source/CURRENT mantienen registration_status=NOT_MIGRATED; contrastar con plugin/app/túnel realmente instalado antes de corregir.
+- M3-DOC-003 REQUIRES_CLASSIFICATION: cloudflare.public_origin apunta a Tailscale aunque el current preferido es VPC+Tunnel; determinar si es compatibility fallback o legacy.
+
+No mutar runtime para hacer coincidir documentación. Primero readback, después reconciliación documental.
