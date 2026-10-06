@@ -1,6 +1,6 @@
 export type Manojos3EntrypointKind =
   | 'ACTION_MCP'
-  | 'INFERENCE_OPENAI_COMPATIBLE'
+  | 'INTERNAL_ADVISORY_LITELLM'
   | 'INTERNAL_ADVISORY_INTERFLOW';
 
 export interface Manojos3Entrypoint {
@@ -9,7 +9,7 @@ export interface Manojos3Entrypoint {
   transport: string;
   sourceEndpoint?: string;
   deploymentEnv?: string;
-  state: 'SOURCE_EXISTS_DEPLOYMENT_UNBOUND' | 'SOURCE_DISCOVERED_LIVE_UNVERIFIED' | 'SOURCE_INTERNAL_ONLY';
+  state: 'SOURCE_EXISTS_DEPLOYMENT_UNBOUND' | 'SOURCE_INTERNAL_ONLY';
   authority: false;
   sourcePins: readonly { path:string; blobSha:string }[];
   notes: readonly string[];
@@ -53,11 +53,10 @@ export const MANOJOS3_ENTRYPOINTS: readonly Manojos3Entrypoint[] = [
   },
   {
     id:'manojos3-managed-litellm',
-    kind:'INFERENCE_OPENAI_COMPATIBLE',
-    transport:'openai-compatible-http',
+    kind:'INTERNAL_ADVISORY_LITELLM',
+    transport:'openai-compatible-http-internal',
     sourceEndpoint:'http://127.0.0.1:4000/v1',
-    deploymentEnv:'MANOJOS3_LLM_BASE_URL',
-    state:'SOURCE_DISCOVERED_LIVE_UNVERIFIED',
+    state:'SOURCE_INTERNAL_ONLY',
     authority:false,
     sourcePins:[
       { path:'src/manojos3/adapters/model_router.py', blobSha:'ab3070fb47376774df56f2f11dc5305c01d5be00' },
@@ -65,9 +64,9 @@ export const MANOJOS3_ENTRYPOINTS: readonly Manojos3Entrypoint[] = [
       { path:'docs/llm-router/LLM_PROVIDER_CATALOG_CURRENT.json', blobSha:'3fdbbd0ecc3751830472a353d0f6b48c7f35e44b' },
     ],
     notes:[
-      'This is the inference/model plane, not the action plane.',
-      'Use deployment URL/env rather than loopback when LibreChat runs in a separate network namespace.',
-      'Do not promote aliases until live zero-cost canary/readback resolves current source conflicts.',
+      'Internal MANOJOS3 inference/advisory compatibility infrastructure only.',
+      'It is not the primary LibreChat/Nostromo inference gateway.',
+      'Do not remove or alter it from LibreChat work; MANOJOS3 consumers are verified separately.',
     ],
   },
   {
@@ -82,7 +81,7 @@ export const MANOJOS3_ENTRYPOINTS: readonly Manojos3Entrypoint[] = [
     ],
     notes:[
       'Inbound MCP does not expose an arbitrary capability-call tool.',
-      'LibreChat should submit an objective through manojos_submit; MANOJOS3 chooses llm.models/repair advisory Interflow internally.',
+      'LibreChat should submit an objective through manojos_submit; MANOJOS3 chooses advisory Interflow internally.',
       'Advisor/OpenCode/model outputs never grant Policy/Kernel authority.',
     ],
   },

@@ -1,16 +1,16 @@
 {
-  "schema": "libre-chat-vx.nostromo-hybrid.v1",
+  "schema": "libre-chat-vx.nostromo-hybrid.v2",
   "architecture": "NOSTROMO_HYBRID",
-  "status": "SOURCE_IMPLEMENTED_RUNTIME_UNVERIFIED",
+  "status": "SOURCE_ROUTER_IMPLEMENTED_RUNTIME_UNVERIFIED",
   "one_active_architecture": true,
   "local_voice": {
     "alias": "nostromo-voice-local",
-    "model_selection": "DEPLOYMENT_BENCHMARK_REQUIRED",
+    "model_selection": "OPTIONAL_DEPLOYMENT_BENCHMARK_REQUIRED_ONLY_IF_ENABLED",
     "size_target": "1-2GB",
     "language_priority": [
       "es"
     ],
-    "lifecycle": "LIBRECHAT_COUPLED_ON_DEMAND",
+    "lifecycle": "OPTIONAL_ON_DEMAND",
     "unload_policy": "ALLOW_IDLE_UNLOAD",
     "responsibilities": [
       "personality",
@@ -19,21 +19,8 @@
       "light_classification",
       "final_render"
     ],
-    "authority": false
-  },
-  "free_reasoning": {
-    "owner": "MANOJOS3_LITELLM",
-    "base_url_env": "MANOJOS3_LLM_BASE_URL",
-    "aliases": [
-      "manojos-general-free",
-      "manojos-reasoning-free",
-      "manojos-coding-free",
-      "manojos-fast-free",
-      "manojos-long-context-free"
-    ],
-    "paid_fallback_allowed": false,
-    "source_status": "CONFLICT_REQUIRES_LIVE_READBACK",
-    "authority": false
+    "authority": false,
+    "required": false
   },
   "actions": {
     "owner": "MANOJOS3_MCP",
@@ -72,7 +59,31 @@
       "manojos_authorization",
       "manojos_receipt",
       "MANOJOS3_INTERFLOW_DOMAINS"
-    ]
+    ],
+    "inference_projection": "ProviderStatusView",
+    "source_of_material_truth": "structured-target-readback"
   },
-  "local_touched": false
+  "local_touched": false,
+  "primary_inference": {
+    "owner": "CLOUDFLARE_AI_GATEWAY",
+    "config": "config/cloudflare_ai_gateway.current.json",
+    "profiles": [
+      "RAPIDO",
+      "NORMAL",
+      "PENSAR",
+      "CODIGO",
+      "CONTEXTO_LARGO",
+      "VISION"
+    ],
+    "paid_fallback_allowed": false,
+    "local_model_required": false,
+    "live_status": "SOURCE_CONFIG_LIVE_NOT_VERIFIED",
+    "authority": false
+  },
+  "manojos3_litellm": {
+    "role": "INTERNAL_ADVISORY_COMPATIBILITY",
+    "primary_for_librechat": false,
+    "touched_by_current_work": false,
+    "authority": false
+  }
 }

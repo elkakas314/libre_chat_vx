@@ -5,6 +5,7 @@ import {
   NOSTROMO_HYBRID,
   chooseHybridLane,
   deriveHybridRuntimeMode,
+  localModelRequired,
   tentacleHudDependsOnLocalVoice,
   tentacleHudDependsOnReasoningRouter,
 } from '../src/llm/nostromoHybrid';
@@ -20,12 +21,15 @@ import {
   hudCanOperateWithoutLocalVoice,
 } from '../src/manojos3/hudBridge';
 
-test('only active architecture is NOSTROMO_HYBRID', () => {
+test('Nostromo inference is Cloudflare-first and MANOJOS3 LiteLLM stays internal', () => {
   assert.equal(NOSTROMO_HYBRID.id,'NOSTROMO_HYBRID');
-  assert.equal(NOSTROMO_HYBRID.freeReasoningRouter.paidFallbackAllowed,false);
+  assert.equal(NOSTROMO_HYBRID.primaryInferenceGateway.owner,'CLOUDFLARE_AI_GATEWAY');
+  assert.equal(NOSTROMO_HYBRID.primaryInferenceGateway.paidFallbackAllowed,false);
+  assert.equal(NOSTROMO_HYBRID.manojos3LiteLlm.role,'INTERNAL_ADVISORY_COMPATIBILITY');
+  assert.equal(NOSTROMO_HYBRID.manojos3LiteLlm.primaryForLibreChat,false);
 });
 
-test('actions bypass model routing and go to MANOJOS3 objective plane', () => {
+test('actions bypass cognitive routing and go to MANOJOS3 objective plane', () => {
   assert.equal(chooseHybridLane({
     conversationalOnly:false,
     needsDeepReasoning:true,
@@ -35,40 +39,48 @@ test('actions bypass model routing and go to MANOJOS3 objective plane', () => {
   }), 'MANOJOS3_OBJECTIVE');
 });
 
-test('deep non-material reasoning uses free reasoner', () => {
-  assert.equal(chooseHybridLane({
-    conversationalOnly:false,
-    needsDeepReasoning:true,
-    needsCoding:false,
-    needsLongContext:false,
-    targetActionRequested:false,
-  }), 'FREE_REASONING');
-});
-
-test('simple conversation stays local', () => {
+test('conversation uses remote inference by default and local voice only when explicitly preferred', () => {
   assert.equal(chooseHybridLane({
     conversationalOnly:true,
     needsDeepReasoning:false,
     needsCoding:false,
     needsLongContext:false,
     targetActionRequested:false,
+  }), 'REMOTE_INFERENCE');
+  assert.equal(chooseHybridLane({
+    conversationalOnly:true,
+    needsDeepReasoning:false,
+    needsCoding:false,
+    needsLongContext:false,
+    targetActionRequested:false,
+    preferLocalVoice:true,
   }), 'LOCAL_VOICE');
 });
 
-test('HUD does not depend on local voice or free reasoner', () => {
+test('LibreChat remains conversational with local model absent', () => {
+  assert.equal(localModelRequired(),false);
+  assert.equal(deriveHybridRuntimeMode({
+    libreChatAvailable:true,
+    localVoiceAvailable:false,
+    remoteInferenceAvailable:true,
+    manojos3McpReadable:false,
+  }),'REMOTE_ONLY');
+});
+
+test('MCP-readable without any inference route degrades to HUD_ONLY', () => {
+  assert.equal(deriveHybridRuntimeMode({
+    libreChatAvailable:true,
+    localVoiceAvailable:false,
+    remoteInferenceAvailable:false,
+    manojos3McpReadable:true,
+  }),'HUD_ONLY');
+});
+
+test('HUD does not depend on local voice or reasoning router', () => {
   assert.equal(tentacleHudDependsOnLocalVoice(),false);
   assert.equal(tentacleHudDependsOnReasoningRouter(),false);
   assert.equal(hudCanOperateWithoutLocalVoice(true),true);
   assert.equal(hudCanOperateWithoutFreeReasoner(true),true);
-});
-
-test('MCP-readable without local model degrades to HUD_ONLY', () => {
-  assert.equal(deriveHybridRuntimeMode({
-    libreChatAvailable:true,
-    localVoiceAvailable:false,
-    freeReasonerAvailable:false,
-    manojos3McpReadable:true,
-  }),'HUD_ONLY');
 });
 
 test('local voice never changes evidence semantics', () => {

@@ -17,12 +17,13 @@ test('MANOJOS3 inbound MCP surface contains 14 bounded tools', () => {
   assert.equal(MANOJOS3_ACTION_MCP_TOOLS.includes('manojos_receipt'), true);
 });
 
-test('action and inference entrypoints are distinct', () => {
+test('MANOJOS3 LiteLLM is documented only as internal advisory compatibility', () => {
   const action=entrypointById('manojos3-action-mcp');
   const inference=entrypointById('manojos3-managed-litellm');
   assert.equal(action?.kind,'ACTION_MCP');
-  assert.equal(inference?.kind,'INFERENCE_OPENAI_COMPATIBLE');
-  assert.notEqual(action?.deploymentEnv,inference?.deploymentEnv);
+  assert.equal(inference?.kind,'INTERNAL_ADVISORY_LITELLM');
+  assert.equal(inference?.state,'SOURCE_INTERNAL_ONLY');
+  assert.equal(inference?.deploymentEnv,undefined);
 });
 
 test('LibreChat never bypasses MCP to call control plane directly', () => {

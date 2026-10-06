@@ -55,6 +55,11 @@ export * from './manojos3/hudBridge';
 
 export * from './llm/nostromoHybrid';
 export * from './llm/responseContract';
+export * from './llm/inferenceGateway';
+export * from './llm/cloudflareAiGateway';
+export * from './llm/nostromoIdentity';
+export * from './llm/structuredOutput';
+export * from './llm/providerStatus';
 
 export * from './librechat/nativeSurfaces';
 export * from './librechat/nativeSurfaceBinding';
