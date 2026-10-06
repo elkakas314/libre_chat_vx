@@ -248,3 +248,26 @@ Regla de transición:
 Cloudflare Worker, si existe, sólo puede ser edge auth/policy/rate-limit; nunca Governor, Kernel ni Receipt authority.
 
 La búsqueda web del provider es cognitiva. Evidence material sigue viniendo de tools/readback/receipts.
+
+
+## Transporte MANOJOS3 / túneles
+
+Inference y actions usan carreteras distintas.
+
+Inference:
+LibreChat -> Cloudflare AI Gateway -> providers.
+No requiere túnel al Lenovo.
+
+Actions:
+LibreChat -> MCP MANOJOS3 real.
+
+Binding por despliegue:
+- same-host: `127.0.0.1:8790/mcp`;
+- remote/private: Tailscale Serve/private endpoint con autenticación MCP;
+- remote/public: Cloudflare MCP edge dedicado y autenticado usando `MANOJOS3_VPC` + Cloudflare Tunnel existente.
+
+No usar `manojos2-action-proxy` como contrato LibreChat: es compatibilidad HTTP/OpenAPI para GPT Actions.
+No reutilizar OpenAI Secure MCP Tunnel como túnel genérico de LibreChat: es el transporte privado de ChatGPT.
+No usar host-control como atajo de ejecución.
+
+Tailscale Funnel queda como recovery/compatibility y no exposición pública baseline.
