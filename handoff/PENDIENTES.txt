@@ -1,10 +1,11 @@
 LIBRECHAT VX — PENDIENTES CURRENT — 2026-10-06
 
 RESULTADO ACTUAL
-SOURCE_DESIGN_RECONCILED
+SOURCE_DESIGN_CONSOLIDATED
 LIVE=NO_VERIFICADO
 MATERIAL_VERIFIED=NO
 PRIMARY_INFERENCE=CLOUDFLARE_AI_GATEWAY
+TARGET_GATEWAY=NOSTROMO_TARGET_GATEWAY_IN_PROCESS_NOT_IMPLEMENTED
 M3_LITELLM=INTERNAL_ADVISORY_COMPATIBILITY
 LOCAL_MODEL_REQUIRED=false
 
@@ -15,43 +16,49 @@ P0 SOURCE / TESTS
 4. Mantener CURRENT/GAPS/PROOFS derivados; no convertir diseño en LIVE.
 
 P1 CLOUDFLARE INFERENCE
-5. Crear/bind authenticated Cloudflare AI Gateway para LibreChat.
-6. Configurar perfiles semánticos Rápido/Normal/Pensar/Código/Contexto largo/Visión.
-7. BYOK/SecretRef únicamente; Unified Billing no es requisito.
-8. Probar zero-cost fail-closed y ausencia de fallback automático a pago.
-9. Probar provider failover, identidad Nostromo y structured output validation.
-10. Probar LOCAL_ABSENT: local OFF/UNINSTALLED no bloquea conversación.
+5. Bind authenticated Cloudflare AI Gateway para LibreChat.
+6. Configurar Rápido/Normal/Pensar/Código/Contexto largo/Visión.
+7. BYOK/SecretRef; no secrets persistidos; no Unified Billing requerido.
+8. Probar VERIFIED_ZERO_COST fail-closed y ausencia de paid fallback.
+9. Probar failover de provider, identidad NOSTROMO y structured-output validation.
+10. Probar LOCAL_ABSENT y canary VISION.
+11. Implementar/probar ruta AUDIO sólo si Speech/ASR/TTS la necesita.
 
-P2 MANOJOS3 TRANSPORT
-11. Ejecutar R0 gobernado: edge.cli.status, cloudflare tunnel metrics/error1016, tailscale status/netcheck/serve/funnel y estado Secure MCP Tunnel.
-12. Resolver conflicto documental M3-DOC-001: Action Proxy README dice Funnel; CURRENT posterior dice MANOJOS3_VPC + Cloudflare Tunnel.
-13. Verificar M3-DOC-002: registration_status NOT_MIGRATED frente al estado real instalado/registrado.
-14. Clasificar M3-DOC-003: cloudflare.public_origin Tailscale como primary/fallback/legacy.
-15. Elegir action binding LibreChat según deployment:
-    A same-host -> 8790 directo;
-    B remote-private -> Tailscale Serve/private authenticated MCP;
-    C remote-public -> dedicated Cloudflare MCP Edge -> MANOJOS3_VPC -> tunnel -> 8790.
-16. No usar Action Proxy como contrato LibreChat.
-17. No usar host-control como ruta normal.
+P2 COCKPIT / HUD / TARGET GATEWAY
+12. Conectar ProviderStatusView LIVE al Tentáculo HUD.
+13. Implementar NostromoTargetGateway como facade in-process authority=false.
+14. Preservar TrustedSurfaceHost, ControlDraft, PrivacyPresentation y RendererFailureIsolation.
+15. Preservar ViewInterest/ProjectionBackpressure/lazy/snapshot-resync y CORE_MINIMUM.
+16. Probar accesibilidad: texto además de color, reduced motion, teclado/screen reader, aria-live no invasivo.
+17. Probar UNKNOWN_OUTCOME -> readback/reconcile antes de retry.
 
-P3 LIVE / VERIFIED
-18. Bootstrap M3 MCP: status/capabilities/skills.
-19. R0 objective real + readback + receipt.
-20. Verificar LiteLLM M3 sólo como consumidor interno/advisory y ausencia de loops con Cloudflare.
-21. Verificar Tentáculo HUD: connection/readiness/work/evidence separados.
-22. Desktop/móvil/reconnect sin replay.
-23. Primer R2 mínimo reversible según grant_interface LIVE.
-24. Chaos timeout -> UNKNOWN_OUTCOME -> readback/reconcile -> decisión.
+P3 MANOJOS3 ADAPTER / TRANSPORT
+18. Implementar/bind Manojos3TargetAdapter contra el MCP real.
+19. Elegir binding por deployment: A same-host :8790; B private authenticated; C dedicated authenticated Cloudflare MCP edge.
+20. No usar Action Proxy ni host-control como contrato normal.
+21. Bootstrap R0: status/capabilities/skills.
+22. R0 objective real + readback + receipt.
+23. Verificar LiteLLM M3 sólo como consumidor interno/advisory y 0 loops con Cloudflare.
 
-P4 EXTERNAL
-25. VX13 R0/paridad futura con authority separada.
-26. ORÁCULO advisory live si se habilita.
+P4 LIVE / VERIFIED
+24. Verificar HUD lanes independientemente: connection/readiness/work/evidence/provider/freshness.
+25. Desktop/móvil/reconnect sin replay material.
+26. Probar event dedupe/out-of-order/gap/snapshot-resync.
+27. Probar context protection: target/run/auth/evidence/receipt/UNKNOWN_OUTCOME sobreviven a compactación.
+28. Primer R2 mínimo reversible según authority/grant LIVE.
+
+P5 VX13 / ORÁCULO
+29. Mantener VX13TargetAdapter detrás de feature gate hasta contrato canónico.
+30. VX13 R0/paridad futura: TargetGateway -> VX13TargetAdapter -> Tentáculo Link.
+31. ORÁCULO advisory live si se habilita; nunca authority.
 
 NO HACER
-- no segundo Governor/Kernel/Policy/executor;
+- no segundo Governor/Kernel/Policy/executor/ledger;
 - no segundo LiteLLM para LibreChat;
+- no convertir NostromoTargetGateway en servidor/orquestador material;
+- no acoplar la UI directamente a MCP;
 - no reutilizar Action Proxy como MCP;
-- no publicar 8790 por Funnel sin MCP auth;
+- no publicar 8790 sin MCP auth;
 - no tratar Cloudflare AI Gateway como authority;
 - no paid fallback;
 - no secretos;
@@ -59,4 +66,4 @@ NO HACER
 - no declarar PASS por documentación coherente o HTTP 200.
 
 NEXT_ACTION
-SOURCE tests -> Cloudflare AI Gateway canary -> R0 transport audit -> choose MCP binding A/B/C -> M3 R0 -> HUD/recovery -> first controlled material canary.
+exact-HEAD tests -> upstream overlay revalidation -> Cloudflare live canary -> HUD provider bridge -> TargetGateway facade -> MANOJOS3 R0 adapter -> recovery gates -> first governed material canary.
