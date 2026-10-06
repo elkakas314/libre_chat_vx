@@ -94,3 +94,58 @@ export function buildCloudflareNonSecretHeaders(binding: CloudflareGatewayBindin
     'cf-aig-no-wholesale':'true',
   };
 }
+
+
+export interface CloudflareSecretResolver {
+  get(name: 'CLOUDFLARE_API_TOKEN'): string | undefined;
+}
+
+export interface CloudflareHttpRequest {
+  method: 'POST';
+  headers: Readonly<Record<string,string>>;
+  body: string;
+}
+
+export interface CloudflareHttpResponse {
+  ok: boolean;
+  status: number;
+  body?: unknown;
+}
+
+export type CloudflareHttpFetch = (
+  url: string,
+  request: CloudflareHttpRequest,
+) => Promise<CloudflareHttpResponse>;
+
+export class CloudflareAiGatewayClient {
+  constructor(
+    private readonly binding: CloudflareGatewayBinding,
+    private readonly secrets: CloudflareSecretResolver,
+    private readonly http: CloudflareHttpFetch,
+  ) {}
+
+  async createChatCompletion(
+    profile: SemanticProfileId,
+    messages: readonly CloudflareChatMessage[],
+    stream=true,
+  ): Promise<CloudflareHttpResponse> {
+    if (this.binding.state!=='CONFIGURED_SOURCE_ONLY' || !this.binding.baseURL) {
+      throw new Error('CLOUDFLARE_AI_GATEWAY_UNCONFIGURED');
+    }
+    const nonSecret=buildCloudflareNonSecretHeaders(this.binding);
+    if (!nonSecret) throw new Error('CLOUDFLARE_AI_GATEWAY_ID_MISSING');
+
+    const token=this.secrets.get('CLOUDFLARE_API_TOKEN')?.trim();
+    if (!token) throw new Error('CLOUDFLARE_API_TOKEN_MISSING');
+
+    return this.http(this.binding.baseURL+'/chat/completions',{
+      method:'POST',
+      headers:{
+        Authorization:'Bearer '+token,
+        'Content-Type':'application/json',
+        ...nonSecret,
+      },
+      body:JSON.stringify(buildCloudflareChatRequest(profile,messages,stream)),
+    });
+  }
+}

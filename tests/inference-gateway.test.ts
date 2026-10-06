@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import {
+  NostromoInferenceGateway,
   StrictZeroCostRouteResolver,
   admitProviderRoute,
   chooseContextStrategy,
@@ -9,6 +10,7 @@ import {
   type ProviderRoute,
 } from '../src/llm/inferenceGateway';
 import {
+  CloudflareAiGatewayClient,
   buildCloudflareChatRequest,
   resolveCloudflareGatewayBinding,
 } from '../src/llm/cloudflareAiGateway';
@@ -95,4 +97,44 @@ test('provider status exposes inference truth only and never authority', () => {
   assert.equal(view.freshness,'FRESH');
   assert.equal(view.authority,false);
   assert.equal(view.identityProfileVersion,'1.0.0');
+});
+
+
+test('InferenceGateway contract selects semantic profile and resolves an admitted route', () => {
+  const gateway=new NostromoInferenceGateway();
+  const profile=gateway.selectProfile({preferFast:true});
+  assert.equal(profile,'RAPIDO');
+  const selected=gateway.resolveProviderRoute({profile:'RAPIDO',nowMs:now},[
+    route({id:'fast',profile:'RAPIDO',routeModel:'dynamic/nostromo-rapido'}),
+  ]);
+  assert.equal(selected.selected?.id,'fast');
+  assert.equal(gateway.authority,false);
+});
+
+test('Cloudflare client sends OpenAI-compatible chat request without persisting the token', async () => {
+  const binding=resolveCloudflareGatewayBinding({
+    CLOUDFLARE_ACCOUNT_ID:'account',
+    CLOUDFLARE_AI_GATEWAY_ID:'gateway',
+    CLOUDFLARE_API_TOKEN:'present-only-for-binding-check',
+    CLOUDFLARE_AIG_BYOK_ONLY_REQUIRED:'true',
+  });
+  let observedUrl='';
+  let observedAuth='';
+  let observedNoWholesale='';
+  const client=new CloudflareAiGatewayClient(
+    binding,
+    {get:()=> 'runtime-token'},
+    async (url,request)=>{
+      observedUrl=url;
+      observedAuth=request.headers.Authorization;
+      observedNoWholesale=request.headers['cf-aig-no-wholesale'];
+      return {ok:true,status:200,body:{stream:true}};
+    },
+  );
+  const response=await client.createChatCompletion('NORMAL',[{role:'user',content:'hola'}]);
+  assert.equal(response.status,200);
+  assert.equal(observedUrl,'https://api.cloudflare.com/client/v4/accounts/account/ai/v1/chat/completions');
+  assert.equal(observedAuth,'Bearer runtime-token');
+  assert.equal(observedNoWholesale,'true');
+  assert.equal(JSON.stringify(binding).includes('runtime-token'),false);
 });

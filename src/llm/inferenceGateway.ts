@@ -148,6 +148,37 @@ export class StrictZeroCostRouteResolver implements ProviderRouteResolver {
   }
 }
 
+
+export interface InferenceGateway {
+  readonly owner: 'CLOUDFLARE_AI_GATEWAY';
+  readonly authority: false;
+  selectProfile(signals: InferenceIntentSignals): SemanticProfileId;
+  resolveProviderRoute(
+    request: ProviderAdmissionRequest,
+    routes: readonly ProviderRoute[],
+  ): ProviderResolution;
+}
+
+export class NostromoInferenceGateway implements InferenceGateway {
+  readonly owner='CLOUDFLARE_AI_GATEWAY' as const;
+  readonly authority=false as const;
+
+  constructor(
+    private readonly resolver: ProviderRouteResolver = new StrictZeroCostRouteResolver(),
+  ) {}
+
+  selectProfile(signals: InferenceIntentSignals): SemanticProfileId {
+    return selectSemanticProfile(signals);
+  }
+
+  resolveProviderRoute(
+    request: ProviderAdmissionRequest,
+    routes: readonly ProviderRoute[],
+  ): ProviderResolution {
+    return this.resolver.resolve(request,routes);
+  }
+}
+
 export type ContextStrategy = 'TARGETED_READS' | 'RAG' | 'COMPACT' | 'LONG_CONTEXT' | 'UNAVAILABLE';
 
 export interface ContextPolicySignals {
