@@ -268,3 +268,22 @@ Decisiones:
 - no se depende de un supuesto `paid_fallback:false` de LiteLLM: MANOJOS3 conserva `llm_router.no_paid_only=true`, sólo admite rutas zero-cost verificadas y prueba negativamente que no salta a pago.
 
 Estado permanece SOURCE hasta canary/readback.
+
+
+## 17. Cloudflare AI Gateway como plano de inferencia remoto — 2026-10-06
+
+Decisión:
+- LibreChat/NOSTROMO usa Cloudflare AI Gateway como Inference Gateway remoto principal.
+- Cloudflare enruta perfiles semánticos a proveedores/modelos y puede aplicar fallback/rate/budget rules.
+- Cloudflare sigue con `authority=false`.
+- MANOJOS3 conserva su LiteLLM actual durante la migración, pero sólo como infraestructura interna/advisory/compatibilidad.
+- LibreChat deja de depender del LiteLLM de MANOJOS3 para la conversación principal.
+- no se elimina LiteLLM de MANOJOS3 hasta demostrar que OpenCode/agentes/razonamiento interno y rollback no lo necesitan.
+- unified billing/pago no forma parte del baseline; rutas por defecto deben ser zero-cost verificadas en la cuenta real.
+- free-tier agotado => fallback sólo a otra ruta zero-cost admitida o DEGRADED/UNAVAILABLE.
+- un Worker Cloudflare puede ser edge auth/policy fino, nunca Governor/Kernel/Receipt authority.
+- búsquedas web del proveedor son cognitivas; evidencia material sigue viniendo de tools/readback/receipts.
+
+Documento detallado: `handoff/09_CLOUDFLARE_INFERENCE_GATEWAY_CURRENT.md`.
+
+Estado: SOURCE_DESIGN / LIVE_NO_VERIFICADO.
