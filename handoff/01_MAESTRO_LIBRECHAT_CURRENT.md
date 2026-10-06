@@ -1,5 +1,10 @@
 # MAESTRO LIBRECHAT CURRENT
 
+## CURRENT routing override — 2026-10-06
+
+Canon de arquitectura: `docs/LIBRECHAT_ARCHITECTURE_CURRENT.md`.
+Cloudflare AI Gateway = inferencia primaria. `NostromoTargetGateway` = fachada de target in-process. MANOJOS3 MCP y Tentáculo Link son transport/frontdoor específicos bajo sus adapters. MANOJOS3 LiteLLM no es el router primario de LibreChat.
+
 ## Identidad
 Repositorio independiente: `elkakas314/libre_chat_vx`.
 Rol: interfaz conversacional y cockpit gobernado para targets externos. `authority=false`.
@@ -9,13 +14,16 @@ Una única experiencia conversacional PC/móvil, una identidad Nostromo y un HUD
 
 ## Arquitectura activa
 `NOSTROMO_HYBRID` es la única arquitectura LLM CURRENT:
-- voz local pequeña/reemplazable: personalidad, español natural, continuidad corta y rendering final;
-- MANOJOS3 LiteLLM: razonamiento/coding/long-context gratis cuando proceda;
-- MANOJOS3 MCP: acciones gobernadas;
-- VX13: target futuro con misma identidad y slots externos, autoridad distinta;
+- identidad NOSTROMO propiedad de LibreChat;
+- voz/modelo local opcional y reemplazable;
+- Cloudflare AI Gateway: inferencia remota primaria mediante perfiles semánticos;
+- MANOJOS3 LiteLLM: infraestructura internal/advisory/compatibility;
+- NostromoTargetGateway: fachada in-process, authority=false, sin ejecución;
+- MANOJOS3 TargetAdapter -> MANOJOS3 MCP para acciones gobernadas;
+- VX13 TargetAdapter -> Tentáculo Link cuando VX13 se integre;
 - ORÁCULO: advisory only.
 
-La voz local no autoriza, no ejecuta, no inventa receipts, no altera evidencia y no sustituye Intent/Interflow.
+La voz, los modelos, Cloudflare, el TargetGateway y los transportes no autorizan ni ejecutan por sí mismos y no inventan receipts/readback.
 
 ## Canon operativo
 - TARGET_CANON es deliberado/versionado.
@@ -72,7 +80,7 @@ Reconnect revalida sesión/ACL/target/preimagen/revisión/autorización para cua
 ## Modelos
 No fijar un modelo local hasta benchmark de deployment.
 Objetivo de voz: ~1–2 GB, carga on-demand, warm activo, idle unload permitido.
-LiteLLM M3 mantiene aliases semánticos; su disponibilidad servida es LIVE, no se deduce de YAML.
+Los perfiles semánticos de LibreChat se resuelven por Cloudflare AI Gateway; LiteLLM M3 sólo se valida LIVE para sus consumidores internos/advisory.
 Paid fallback automático: prohibido.
 
 ### Decisión runtime local
@@ -129,7 +137,7 @@ Regla de integración: cualquier superficie que pueda terminar en efecto materia
 El diseño ya era híbrido y no se sustituye. Se formaliza la independencia del proveedor:
 
 - `nostromo-voice-local` queda como acelerador/voz opcional, no dependencia dura.
-- MANOJOS3 LiteLLM conserva aliases semánticos y es el router preferente del plano de razonamiento.
+- Cloudflare AI Gateway es el router preferente del plano de inferencia de LibreChat; MANOJOS3 LiteLLM queda internal/advisory/compatibility.
 - LibreChat Custom Endpoints puede conectar proveedores OpenAI-compatible o Anthropic-compatible, locales o remotos, cuando la conversación lo necesite.
 - LibreChat Model Specs presenta perfiles estables y evita que la UX dependa del nombre real del modelo.
 - `paid_fallback_allowed=false` continúa vigente.
