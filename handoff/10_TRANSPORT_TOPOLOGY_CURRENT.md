@@ -19,12 +19,15 @@ ChatGPT Actions
 This is compatibility-only. The Worker is transport, never authority.
 Tailscale origin remains compatibility/recovery fallback, not the preferred current Actions origin.
 
-### 2. ChatGPT plugin/developer MCP plane
-ChatGPT developer-mode App
--> OpenAI Secure MCP Tunnel
--> local MANOJOS3 MCP `127.0.0.1:8790/mcp`.
+### 2. ChatGPT Desktop connector/plugin plane
+ChatGPT Desktop
+-> MANOJOS3 connector/plugin
+-> local MCP app/server on the Lenovo
+-> MANOJOS3 MCP `127.0.0.1:8790/mcp`.
 
-This keeps MCP on loopback. The Secure MCP Tunnel is specific transport for ChatGPT integration and is not assumed to be a generic LibreChat tunnel.
+For the desktop installation this is the preferred interpretation: the connector/plugin is the ChatGPT integration surface and may include a local MCP app running on the computer. No public tunnel is required merely because ChatGPT Desktop is the client.
+
+OpenAI Secure MCP Tunnel is OPTIONAL transport only when an OpenAI client needs to reach a private/on-prem MCP server that it cannot access as a local desktop MCP app. It is not the canonical desktop-local hop and is not a separate authority plane.
 
 ### 3. Tailscale plane
 Tailscale Serve/Funnel remains separate from the Cloudflare VPC tunnel.
@@ -110,8 +113,11 @@ LibreChat -> MANOJOS3 MCP edge/direct binding -> 8790 -> MANOJOS3 -> Governor/Po
 Legacy GPT Actions:
 ChatGPT Actions -> Action Proxy -> MANOJOS3_VPC -> Cloudflare Tunnel -> 8787.
 
-ChatGPT plugin:
-ChatGPT Secure MCP Tunnel -> 8790.
+ChatGPT Desktop connector/plugin:
+ChatGPT Desktop -> MANOJOS3 connector/local MCP app -> 8790.
+
+OpenAI Secure MCP Tunnel:
+optional remote/private transport for OpenAI clients when local desktop MCP execution is not the path.
 
 Recovery:
 Tailscale Serve/Funnel + host-control according to their existing separate boundaries.
@@ -145,7 +151,7 @@ Treat the README statement as stale until MANOJOS3 itself reconciles the documen
 ## Gates
 
 - TRANSPORT-M3-SOURCE: exact MANOJOS3 transport topology read from current source.
-- TRANSPORT-M3-LIVE: actual Cloudflare/Tailscale/OpenAI tunnel states read back LIVE.
+- TRANSPORT-M3-LIVE: actual Cloudflare/Tailscale/ChatGPT Desktop connector state read back LIVE; Secure MCP Tunnel checked only if configured/used.
 - LC-MCP-DIRECT: local profile reaches 8790 when colocated.
 - LC-MCP-PRIVATE: Tailnet profile reaches authenticated MCP privately when used.
 - LC-MCP-CF-EDGE: dedicated Cloudflare MCP edge initializes/lists tools/calls `manojos_status`.
@@ -155,4 +161,4 @@ Treat the README statement as stale until MANOJOS3 itself reconciles the documen
 - LC-MCP-NO-HOSTCONTROL-BYPASS: normal LibreChat flow cannot route material work through host-control.
 - LC-CF-SEPARATION: AI Gateway resource and MANOJOS3 tunnel/Action Proxy remain separate planes.
 
-NEXT_IMPLEMENTATION_ACTION=Audit LIVE tunnel/Serve/Secure-MCP state using existing governed MANOJOS3 R0 capabilities, then choose LibreChat action binding Profile A/B/C from actual deployment location.
+NEXT_IMPLEMENTATION_ACTION=Audit LIVE Cloudflare/Tailscale state plus the installed ChatGPT Desktop MANOJOS3 connector/local MCP path; inspect Secure MCP Tunnel only if that transport is actually configured. Then choose LibreChat action binding Profile A/B/C from actual deployment location.
