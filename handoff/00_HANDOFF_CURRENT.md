@@ -4,6 +4,11 @@ Corte de reconciliación: 2026-10-04.
 Estado: `SOURCE_HANDOFF_READY / LIVE_NO_VERIFICADO / MATERIAL_VERIFIED=NO`.
 Next action material: `BIND_LIVE_AND_REVALIDATE`.
 
+## CURRENT routing override — 2026-10-06
+
+Canon de router: `docs/LIBRECHAT_ARCHITECTURE_CURRENT.md`.
+Cloudflare AI Gateway es el plano primario de inferencia de LibreChat. MANOJOS3 LiteLLM queda internal/advisory/compatibility. MCP queda debajo del adapter MANOJOS3; la UX usa `NostromoTargetGateway`. Cualquier texto histórico posterior que describa LiteLLM M3 como router primario de LibreChat queda SUPERSEDED.
+
 ## 1. Verdad operativa
 
 LibreChat es un repositorio y plano independiente. Es `Conversation/UI Plane + Cockpit/HUD`; no es Kernel, Governor, Policy, ledger, Madre, Spawner ni segundo frontdoor.
@@ -12,15 +17,14 @@ Arquitectura activa única: `NOSTROMO_HYBRID`.
 
 ```text
 Usuario
-  -> LibreChat / NOSTROMO_CONVERSATION_CORE
-       |- voz local reemplazable (~1-2 GB objetivo; modelo NO fijado)
-       |- MANOJOS3 LiteLLM para razonamiento gratis cuando proceda
-       '- MANOJOS3 MCP para acciones gobernadas
-             -> Intent/Interflow
-             -> Governor/Policy
-             -> Kernel/driver
-             -> readback
-             -> Verifier/Receipt
+  -> LibreChat / NOSTROMO
+       |- voz/modelo local OPCIONAL
+       |- NostromoInferenceGateway
+       |    -> Cloudflare AI Gateway
+       |    -> provider/model admitido
+       '- NostromoTargetGateway (in-process, authority=false)
+            |- MANOJOS3 adapter -> MANOJOS3 MCP -> Governor/Policy/Kernel -> Verifier/Receipt
+            '- VX13 adapter (future) -> Tentáculo Link -> Madre/Spawner/hijas
 ```
 
 VX13 es target futuro/paritario, con autoridad separada:
@@ -133,11 +137,11 @@ Timeout después de posible efecto => `UNKNOWN_OUTCOME` => readback/reconcile an
 4. `npm run verify:upstream`.
 5. Instalar overlay reversible con `npm run overlay:install`; confirmar `mutationEnabled:false`.
 6. Ejecutar build/tests oficiales necesarios del upstream tras overlay.
-7. Configurar red real para `MANOJOS3_MCP_URL` y `MANOJOS3_LLM_BASE_URL`; nunca copiar loopback a ciegas dentro de Docker.
+7. Configurar Cloudflare AI Gateway para inferencia y el TargetAdapter MANOJOS3 con `MANOJOS3_MCP_URL`; nunca copiar loopback a ciegas dentro de Docker.
 8. Bootstrap M3 read-only: status/self/capabilities/skills; attach sólo si procede.
 9. R0 gobernado con readback + receipt.
 10. Verificar modelo local elegido mediante benchmark de deployment.
-11. Verificar aliases LiteLLM exactos y `paid_fallback=false`.
+11. Verificar rutas semánticas Cloudflare, zero-cost fail-closed y ausencia de paid fallback; LiteLLM M3 se valida sólo como infraestructura interna/advisory.
 12. Verificar conversación + HUD + native surfaces + mobile/resume.
 13. Sólo después ejecutar el primer R2 mínimo por MANOJOS3.
 14. VX13 se enlaza después con la misma shell y autoridad separada.
