@@ -287,3 +287,26 @@ Decisión:
 Documento detallado: `handoff/09_CLOUDFLARE_INFERENCE_GATEWAY_CURRENT.md`.
 
 Estado: SOURCE_DESIGN / LIVE_NO_VERIFICADO.
+
+
+## 18. Topología de túneles MANOJOS3 integrada — 2026-10-06
+
+Se auditó la estructura SOURCE de MANOJOS3 y se integra sin crear un túnel nuevo por defecto.
+
+Topología observada:
+- GPT Actions legado -> Worker `manojos2-action-proxy` -> `MANOJOS3_VPC` -> Cloudflare Tunnel -> control plane `:8787`.
+- ChatGPT plugin/developer App -> OpenAI Secure MCP Tunnel -> MCP `:8790/mcp`.
+- Tailscale Serve/Funnel -> plano separado de private/recovery/diagnostics; Funnel no es baseline del Actions CURRENT.
+- host-control `:8791` -> recovery/readback independiente; nunca ruta normal LibreChat.
+- Cloudflare AI Gateway -> inferencia remota únicamente; no entra al Lenovo.
+
+LibreChat action binding:
+A) backend en Lenovo -> MCP directo `:8790`;
+B) backend remoto dentro de tailnet -> Tailscale Serve/private authenticated MCP;
+C) backend remoto/público -> Cloudflare MCP edge autenticado dedicado -> `MANOJOS3_VPC` -> túnel existente -> `:8790`.
+
+LibreChat NO usa el Action Proxy como contrato de acciones. Reutiliza el transporte/túnel subyacente cuando proceda, pero mantiene MCP real como contrato.
+
+Documento detallado: `handoff/10_TRANSPORT_TOPOLOGY_CURRENT.md`.
+
+No se crea script shell de auditoría porque MANOJOS3 ya dispone de capabilities gobernadas R0 para Cloudflare/Tailscale y un canary Worker MCP aislado.
