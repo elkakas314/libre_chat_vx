@@ -248,3 +248,23 @@ Correcciones SOURCE contra la revisión externa:
 
 Estado sigue: `SOURCE_HANDOFF_READY / LIVE_NO_VERIFICADO / MATERIAL_VERIFIED=NO`.
 
+## 16. Provider profiles, identidad Nostromo y multimodalidad — 2026-10-06
+
+Documento detallado: `handoff/08_PROVIDER_MESH_IDENTITY_MULTIMODAL_CURRENT.md`.
+
+Decisiones:
+- conservar aliases semánticos MANOJOS3 existentes: `manojos-fast-free`, `manojos-general-free`, `manojos-reasoning-free`, `manojos-coding-free`, `manojos-long-context-free`;
+- proveedores concretos (OpenRouter, Gemini, local u otros) son deployments intercambiables detrás de esos aliases;
+- no crear nombres UX acoplados a proveedor como `manojos-gemini-pro` como canon;
+- Gemini es proveedor opcional sujeto a discovery/canary actual; Gemini 2.0 no se fija en diseño;
+- identidad Nostromo vive en LibreChat/Model Specs/Agent instructions, no como persona global de LiteLLM;
+- Model Specs/promptPrefix mantiene la misma identidad al cambiar de modelo;
+- prompt/persona nunca es security boundary: MANOJOS3 sigue aplicando autoridad;
+- JSON estructurado del modelo se valida como dato no confiable antes de cualquier dispatch;
+- contexto masivo se usa por necesidad: retrieval/File Context/RAG antes de llenar ventanas enormes;
+- multimodalidad se resuelve por capability readback; imagen/audio no se convierten en evidencia material;
+- modelo local es opcional de verdad: OFF/UNINSTALLED no bloquea operación si existe una ruta remota admitida;
+- free tier/documentación de precio no equivale a zero-cost LIVE proof;
+- no se depende de un supuesto `paid_fallback:false` de LiteLLM: MANOJOS3 conserva `llm_router.no_paid_only=true`, sólo admite rutas zero-cost verificadas y prueba negativamente que no salta a pago.
+
+Estado permanece SOURCE hasta canary/readback.
