@@ -1,7 +1,7 @@
 {
   "schema": "libre-chat-vx.operating-target.v1",
   "canon": "LIBRECHAT_OPERATING_CANON",
-  "target_version": 3,
+  "target_version": 4,
   "authority": false,
   "product_role": "EXTERNAL_CONVERSATION_UI_COCKPIT",
   "desired": {
@@ -98,7 +98,30 @@
     },
     "context_policy": "TARGETED_READS_THEN_RAG_COMPACT_THEN_LONG_CONTEXT_IF_NEEDED",
     "structured_output_policy": "UNTRUSTED_UNTIL_SCHEMA_AND_SEMANTIC_VALIDATED",
-    "multimodal_policy": "CAPABILITY_ROUTED_COGNITIVE_ONLY_NEVER_MATERIAL_EVIDENCE"
+    "multimodal_policy": "CAPABILITY_ROUTED_COGNITIVE_ONLY_NEVER_MATERIAL_EVIDENCE",
+    "inference_gateway": {
+      "primary_for_librechat": "CLOUDFLARE_AI_GATEWAY",
+      "authority": false,
+      "authentication": "REQUIRED",
+      "routing": "VERSIONED_DYNAMIC_ROUTES",
+      "provider_keys": "BYOK_SECRETREF_ONLY",
+      "unified_billing_default": false,
+      "default_route_cost_policy": "ZERO_COST_ACCOUNT_ROUTE_VERIFIED_ONLY",
+      "paid_auto_fallback": false,
+      "provider_web_search": "COGNITIVE_ONLY_NOT_MATERIAL_EVIDENCE"
+    },
+    "manojos3_litellm": {
+      "state": "KEEP_DURING_MIGRATION",
+      "role": [
+        "INTERNAL_ADVISORY",
+        "OPENCODE_COMPATIBILITY",
+        "INTERNAL_REASONING",
+        "OPTIONAL_ROLLBACK_FALLBACK"
+      ],
+      "primary_for_librechat": false,
+      "remove_only_after": "INTERNAL_CONSUMER_CANARY_AND_ROLLBACK_PROVEN",
+      "cloudflare_loop_forbidden": true
+    }
   },
   "authority_boundaries": {
     "librechat": "NONE_MATERIAL",
