@@ -1,6 +1,6 @@
 {
   "schema": "libre-chat-vx.operating-gaps.v1",
-  "snapshot_id": "source-design-2026-10-06-librechat-router-capabilities-consolidated",
+  "snapshot_id": "source-completion-2026-10-07-core-bridges-resource-tree",
   "gaps": [
     {
       "gap_id": "LC-OPERATING-CANON",
@@ -16,14 +16,16 @@
     },
     {
       "gap_id": "LC-CURRENT-HEAD-TESTS",
-      "summary": "Revalidate current source after Nostromo Hybrid consolidation",
+      "summary": "Run exact-head build/test after LibreChat VX source completion",
       "state": "STALE_PROOF",
       "priority": 10,
       "scope": "source_tests",
       "requires_live": true,
       "dependencies": [
         "LC-NOSTROMO-HYBRID",
-        "LC-M3-GPT-SEMANTIC-BRIDGE"
+        "LC-M3-GPT-SEMANTIC-BRIDGE",
+        "LC-PROVIDER-HUD-BRIDGE",
+        "LC-TARGET-GATEWAY-FACADE"
       ],
       "preferred_route": "host_test_when_local_allowed"
     },
@@ -127,26 +129,72 @@
     {
       "gap_id": "LC-PROVIDER-HUD-BRIDGE",
       "summary": "Wire ProviderStatusView into Tentaculo HUD while preserving separate inference and target truth lanes",
-      "state": "OPEN",
+      "state": "PASS_SOURCE",
       "priority": 63,
       "scope": "provider_status_hud_bridge",
       "requires_live": false,
       "dependencies": [
         "LC-NOSTROMO-HYBRID"
       ],
-      "preferred_route": "librechat_source_projection_bridge"
+      "evidence_refs": [
+        "commit:aed4a617d8c19a9761a687da24715cce0ff8c2a9"
+      ]
     },
     {
       "gap_id": "LC-TARGET-GATEWAY-FACADE",
       "summary": "Implement NostromoTargetGateway as an in-process authority=false facade with MANOJOS3 and future VX13 adapters",
-      "state": "OPEN",
+      "state": "PASS_SOURCE",
       "priority": 64,
       "scope": "target_gateway_source",
       "requires_live": false,
       "dependencies": [
         "LC-NOSTROMO-HYBRID"
       ],
-      "preferred_route": "in_process_target_adapter_facade"
+      "evidence_refs": [
+        "commit:aed4a617d8c19a9761a687da24715cce0ff8c2a9"
+      ]
+    },
+    {
+      "gap_id": "LC-ADAPTER-COMPAT-SOURCE",
+      "summary": "Fail-closed AdapterCompatibilityReport source contract",
+      "state": "PASS_SOURCE",
+      "priority": 64.3,
+      "scope": "adapter_compatibility_source",
+      "requires_live": false,
+      "dependencies": [
+        "LC-NATIVE-SURFACE-BINDING"
+      ],
+      "evidence_refs": [
+        "commit:aed4a617d8c19a9761a687da24715cce0ff8c2a9"
+      ]
+    },
+    {
+      "gap_id": "LC-RESOURCE-TREE",
+      "summary": "Generic lazy Resource Tree for cloud resources, LibreChat resources and future target hierarchies",
+      "state": "PASS_SOURCE",
+      "priority": 64.2,
+      "scope": "resource_tree_source",
+      "requires_live": false,
+      "dependencies": [
+        "LC-NATIVE-SURFACE-BINDING"
+      ],
+      "evidence_refs": [
+        "commit:aed4a617d8c19a9761a687da24715cce0ff8c2a9"
+      ]
+    },
+    {
+      "gap_id": "LC-M3-ADAPTER-SOURCE",
+      "summary": "MANOJOS3 MCP TargetAdapter source implementation; transport injected and material path fail-closed until live binding",
+      "state": "PASS_SOURCE",
+      "priority": 64.1,
+      "scope": "manojos3_target_adapter_source",
+      "requires_live": false,
+      "dependencies": [
+        "LC-TARGET-GATEWAY-FACADE"
+      ],
+      "evidence_refs": [
+        "commit:aed4a617d8c19a9761a687da24715cce0ff8c2a9"
+      ]
     },
     {
       "gap_id": "LC-CF-AIG-BINDING",
@@ -181,7 +229,8 @@
       "scope": "manojos3_binding",
       "requires_live": true,
       "dependencies": [
-        "LC-CURRENT-HEAD-TESTS"
+        "LC-CURRENT-HEAD-TESTS",
+        "LC-M3-ADAPTER-SOURCE"
       ],
       "preferred_route": "manojos3_inbound_mcp"
     },
@@ -217,7 +266,8 @@
       "requires_live": true,
       "dependencies": [
         "LC-CURRENT-HEAD-TESTS",
-        "LC-TARGET-GATEWAY-FACADE"
+        "LC-TARGET-GATEWAY-FACADE",
+        "VX13_CANONICAL_FRONTDOOR"
       ]
     },
     {

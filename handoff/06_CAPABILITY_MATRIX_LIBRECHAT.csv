@@ -8,10 +8,10 @@ provider_admission_zero_cost,LibreChat,IMPLEMENTED_SOURCE,NO_VERIFICADO,GREEN,NO
 cloudflare_ai_gateway,Cloudflare_AI_Gateway,IMPLEMENTED_SOURCE,NO_VERIFICADO,GREEN,NONE,Primary remote inference gateway only
 structured_output_guard,LibreChat,IMPLEMENTED_SOURCE,NO_VERIFICADO,GREEN,NONE,Model output cannot mint material authority fields
 provider_status_projection,LibreChat,IMPLEMENTED_SOURCE,NO_VERIFICADO,GREEN,NONE,Provider/model/caps/health/latency/quota/freshness
-provider_status_hud_bridge,LibreChat,PARTIAL_SOURCE,NO_VERIFICADO,GREEN,NONE,Projection exists but live cockpit bridge is not connected
+provider_status_hud_bridge,LibreChat,IMPLEMENTED_SOURCE,NO_VERIFICADO,GREEN,NONE,Separate inference lane wired to HUD; target truth remains separate
 deep_reasoning,Cloudflare_AI_Gateway,IMPLEMENTED_SOURCE,NO_VERIFICADO,GREEN,NONE,Semantic profiles route through admitted providers
-nostromo_target_gateway,LibreChat,DESIGNED_CURRENT,NOT_IMPLEMENTED,GREEN,NONE,In-process facade only; not a server/proxy/authority
-manojos3_target_adapter,LibreChat+MANOJOS3_MCP,SOURCE_ENTRYPOINTS_PREPARED,UNCONFIGURED,VARIES,M3_GOVERNOR_POLICY_KERNEL,Uses real MANOJOS3 MCP under target gateway
+nostromo_target_gateway,LibreChat,IMPLEMENTED_SOURCE,NO_VERIFICADO,GREEN,NONE,In-process facade; AUTO unresolved fails closed; no material retry
+manojos3_target_adapter,LibreChat+MANOJOS3_MCP,IMPLEMENTED_SOURCE,UNCONFIGURED,VARIES,M3_GOVERNOR_POLICY_KERNEL,Injected MCP transport; read path implemented; material binding fail-closed
 vx13_target_adapter,LibreChat+VX13,DESIGNED_CURRENT,UNCONFIGURED,VARIES,VX13,Future Tentaculo Link binding
 governed_objective,MANOJOS3_MCP,PREPARED_SOURCE,PREPARED_UNCONFIGURED,VARIES,M3_GOVERNOR_POLICY_KERNEL,Natural objective
 manojos_status,MANOJOS3_MCP,AVAILABLE_SOURCE,NO_VERIFICADO,GREEN,NONE,Read only
@@ -47,3 +47,6 @@ legacy_action_proxy,MANOJOS3_COMPAT,SOURCE_CURRENT,NO_VERIFICADO,YELLOW,NONE,GPT
 openai_secure_mcp_tunnel,OpenAI_Transport,SOURCE_CURRENT,NO_VERIFICADO,GREEN,NONE,ChatGPT-specific optional transport
 tailscale_recovery_transport,Tailscale,SOURCE_CURRENT,NO_VERIFICADO,GREEN,NONE,Private/recovery/diagnostic
 transport_doc_reconciliation,MANOJOS3_DOCS,SOURCE_CONFLICT,REQUIRES_LIVE_READBACK,GREEN,NONE,Current transport docs need readback reconciliation
+
+resource_tree,LibreChat,IMPLEMENTED_SOURCE,NO_VERIFICADO,GREEN,NONE,Generic lazy tree with source adapters; cloud/target contents are loaded only on demand
+adapter_compatibility_report,LibreChat,IMPLEMENTED_SOURCE,NO_VERIFICADO,GREEN,NONE,Fail-closed upstream revision/blob/cleanliness/overlay report contract

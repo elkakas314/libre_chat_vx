@@ -80,7 +80,7 @@ class MockReadAdapter extends ReadOnlyTargetAdapter {
     return Promise.resolve({
       endpointId: this.targetId,
       status: 'OK',
-      value: this.targetId as T,
+      value: this.targetId as unknown as T,
       truth: {
         targetId: this.targetId,
         truthClass: 'LIVE',

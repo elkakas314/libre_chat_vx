@@ -1,6 +1,6 @@
 # Nostromo / Tentáculo feature matrix — CURRENT
 
-Status: `SOURCE_IMPLEMENTED_PARTIAL / UPSTREAM_BINDING_PARTIAL / TARGET_RUNTIME_PENDING`
+Status: `SOURCE_CORE_IMPLEMENTED / UPSTREAM_BINDING_PARTIAL / TARGET_RUNTIME_PENDING`
 
 ## Core feature map
 
@@ -18,6 +18,8 @@ Status: `SOURCE_IMPLEMENTED_PARTIAL / UPSTREAM_BINDING_PARTIAL / TARGET_RUNTIME_
 | PlanGraph | IMPLEMENTED_SOURCE | NO_VERIFICADO | plan != material completion |
 | TargetRun | IMPLEMENTED_SOURCE | NO_VERIFICADO | same shell, distinct target authorities |
 | Files panel | IMPLEMENTED_SOURCE + NATIVE_REUSE | NO_VERIFICADO | ExternalResourceRef + governed mutations |
+| Resource Tree | IMPLEMENTED_SOURCE | NO_VERIFICADO | generic lazy hierarchy for Drive/OneDrive/LibreChat/VX13/MANOJOS3 resource nodes |
+| Adapter compatibility report | IMPLEMENTED_SOURCE | NO_VERIFICADO | fail-closed upstream commit/blob/cleanliness/overlay compatibility contract |
 | SHUB/REAPER panel | IMPLEMENTED_SOURCE | NO_VERIFICADO | project/track/plugin/parameter/readback/A-B projection |
 | Browser panel | IMPLEMENTED_SOURCE | NO_VERIFICADO | remote DOM untrusted; UNKNOWN_OUTCOME on ambiguous effect |
 | Build panel | IMPLEMENTED_SOURCE | NO_VERIFICADO | plan/package/test/material stages separated |
@@ -32,10 +34,10 @@ Status: `SOURCE_IMPLEMENTED_PARTIAL / UPSTREAM_BINDING_PARTIAL / TARGET_RUNTIME_
 | NOSTROMO identity | IMPLEMENTED_SOURCE | NO_VERIFICADO | versioned provider-independent identity |
 | Structured output guard | IMPLEMENTED_SOURCE | NO_VERIFICADO | rejects model-authored material authority fields |
 | Provider status projection | IMPLEMENTED_SOURCE | NO_VERIFICADO | provider/model/caps/health/latency/quota/freshness |
-| Provider status → HUD bridge | PARTIAL_SOURCE | NO_VERIFICADO | projection exists; live cockpit bridge not connected |
-| NostromoTargetGateway facade | DESIGNED_CURRENT | NOT_IMPLEMENTED | in-process target abstraction; authority=false |
-| MANOJOS3 TargetAdapter | SOURCE_ENTRYPOINTS_PREPARED | UNCONFIGURED | adapter must use real MANOJOS3 MCP |
-| VX13 TargetAdapter | DESIGNED_CURRENT | UNCONFIGURED | future Tentáculo Link binding |
+| Provider status → HUD bridge | IMPLEMENTED_SOURCE | NO_VERIFICADO | separate inference lane projected into Tentáculo HUD; target truth remains separate |
+| NostromoTargetGateway facade | IMPLEMENTED_SOURCE | NO_VERIFICADO | in-process facade; authority=false; AUTO unresolved fails closed; no material retry |
+| MANOJOS3 TargetAdapter | IMPLEMENTED_SOURCE | UNCONFIGURED | injectable MANOJOS3 MCP transport; R0 reads supported; material path fail-closed until binding |
+| VX13 TargetAdapter | DESIGNED_CURRENT | GATE_EXTERNAL | future Tentáculo Link/canonical frontdoor binding; intentionally not fabricated |
 | ORÁCULO advisory | DOCUMENTED_CURRENT | NO_VERIFICADO | advisory/provider only; authority=false |
 
 ## Native LibreChat reuse
@@ -69,4 +71,4 @@ For MANOJOS3 the TargetAdapter uses MCP. For VX13 the future adapter uses Tentá
 
 Source implementation does not prove target binding or LIVE provider routing.
 
-Current-head full tests, upstream overlay revalidation, Cloudflare live binding, HUD provider bridge and target bindings remain separate gates.
+Current-head full tests, upstream overlay revalidation, Cloudflare live binding and real target bindings remain separate gates. SOURCE implementation alone does not prove LIVE.

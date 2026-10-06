@@ -1,6 +1,6 @@
 # Resource Tree — CURRENT
 
-Status: `DESIGNED_CURRENT / SOURCE_UI_NOT_IMPLEMENTED / LIVE_NO_VERIFICADO`
+Status: `IMPLEMENTED_SOURCE / LIVE_NO_VERIFICADO`
 
 ## Purpose
 
@@ -65,3 +65,15 @@ Edit/move/delete/apply/cancel/execute must return to the owning provider or targ
 ## Visual evolution
 
 Tree, breadcrumb, split pane, cards or graph views may be changed later without changing adapters if they consume the same resource-node contract.
+
+
+## SOURCE implementation
+
+Implemented in commit `aed4a617d8c19a9761a687da24715cce0ff8c2a9`:
+
+- `src/resources/resourceTree.ts`: generic node/source/controller contract;
+- `src/ui/ResourceTreeView.tsx`: reusable visual tree;
+- `src/cockpit/windowRouter.ts`: contextual RESOURCE_TREE window;
+- `src/ui/NostromoCockpit.tsx`: cockpit composition.
+
+The controller performs no recursive prefetch. Child loading occurs only through explicit `expand(sourceId,parentId)`.
