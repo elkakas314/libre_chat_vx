@@ -16,7 +16,7 @@ export function DecisionInboxView({ decisions, onOpen }: DecisionInboxViewProps)
           {pending.map((decision) => (
             <li key={decision.decisionRef}>
               <button type="button" onClick={() => onOpen?.(decision)}>
-                {decision.targetRef} · {decision.ownerRef}
+                {decision.targetId} · {decision.authorizationAuthorityRef}
               </button>
             </li>
           ))}
