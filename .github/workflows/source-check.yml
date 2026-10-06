@@ -26,3 +26,48 @@ jobs:
         run: npm install --no-audit --no-fund
       - name: Build and test
         run: npm test
+
+  overlay-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout LibreChat VX
+        uses: actions/checkout@v4
+        with:
+          path: vx
+      - name: Checkout pinned LibreChat upstream
+        uses: actions/checkout@v4
+        with:
+          repository: LibreChat-AI/LibreChat
+          ref: f10b1d91f1eee3a2c82d5247bf620351486b7c1b
+          path: upstream
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install VX dependencies
+        working-directory: vx
+        run: npm install --no-audit --no-fund
+      - name: Verify pinned upstream
+        working-directory: vx
+        run: npm run verify:upstream -- ../upstream
+      - name: Install reversible overlay
+        working-directory: vx
+        run: npm run overlay:install -- ../upstream
+      - name: Install upstream workspace dependencies
+        working-directory: upstream
+        run: npm install --package-lock=false --no-audit --no-fund
+      - name: Build copied LibreChat VX workspace
+        working-directory: upstream
+        run: npm --workspace @librechat/vx run build
+      - name: Build LibreChat frontend with VX overlay
+        working-directory: upstream
+        run: npm run frontend:ci
+      - name: Uninstall overlay
+        if: always()
+        working-directory: vx
+        run: npm run overlay:uninstall -- ../upstream
+      - name: Verify upstream clean after uninstall
+        if: always()
+        working-directory: vx
+        run: npm run verify:upstream -- ../upstream
