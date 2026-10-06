@@ -18,6 +18,7 @@ export * from './NostromoHybridView';
 export * from './TargetRunView';
 export * from './InteractiveArtifactView';
 export * from './FilesPanelView';
+export * from './ResourceTreeView';
 export * from './AudioPanelView';
 export * from './BrowserPanelView';
 export * from './BuildPanelView';

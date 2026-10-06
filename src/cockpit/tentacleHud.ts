@@ -2,6 +2,7 @@ import type { ConcreteTargetId, TargetScope } from './systemTarget';
 import type { TruthLanes } from './truthLanes';
 import type { TentaclePresentationState } from './tentaclePresentation';
 import type { CockpitWindow } from './windowRouter';
+import type { ProviderHudProjection } from './providerStatusHud';
 
 export interface TentacleHudModel {
   scope: TargetScope;
@@ -10,6 +11,7 @@ export interface TentacleHudModel {
   focusLabel: string;
   windows: CockpitWindow[];
   evidenceFresh: boolean;
+  inference?: ProviderHudProjection;
   authority: false;
 }
 

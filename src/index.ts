@@ -46,6 +46,8 @@ export type {
 
 export { MANOJOS3_FLOW, manojos3Parity } from './adapters/manojos3Contract';
 export { VX13_ADAPTER_STATE, VX13_AUTHORITY_CHAIN, vx13Parity } from './adapters/vx13Contract';
+export * from './adapters/manojos3McpAdapter';
+export * from './targets/targetGateway';
 
 export * from './manojos3/interflowProjection';
 export * from './manojos3/entrypoints';
@@ -81,10 +83,13 @@ export type { CockpitEvent } from './runtime/eventReducer';
 
 export * from './cockpit/windowRouter';
 export * from './cockpit/tentacleHud';
+export * from './cockpit/providerStatusHud';
 export * from './cockpit/controlDeck';
 export * from './cockpit/capabilityLens';
 export * from './cockpit/targetRun';
 export * from './cockpit/shortMemory';
+export * from './resources/resourceTree';
+export * from './compatibility/adapterCompatibility';
 export * from './artifacts/interactiveArtifact';
 
 export * from './operating/types';
