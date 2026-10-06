@@ -137,3 +137,24 @@ Negative tests:
 - fallback de Cloudflare a provider pagado => reject.
 - retirar LiteLLM M3 antes de probar consumidores internos => reject.
 - Cloudflare Worker emite authorization/receipt => reject.
+
+
+## Gates transport topology
+
+| Gate | Prueba | Readback esperado |
+|---|---|---|
+| G50 M3_TRANSPORT_SOURCE | comparar docs/current source | topología exacta identificada |
+| G51 M3_TRANSPORT_LIVE | R0 Cloudflare/Tailscale/OpenAI tunnel status | estado real sin secretos |
+| G52 LC_MCP_DIRECT | same-host `:8790` | initialize/tools/status PASS |
+| G53 LC_MCP_PRIVATE | Tailnet profile | MCP auth + private reachability |
+| G54 LC_MCP_CF_EDGE | canary VPC Worker | 401 unauth + MCP PASS auth |
+| G55 LC_NO_ACTION_PROXY | trazar LibreChat action path | 0 dependencia Action Proxy |
+| G56 LC_NO_HOSTCONTROL_BYPASS | acción LibreChat | 0 ruta host-control |
+| G57 CF_PLANE_SEPARATION | trazar inference/actions | AI Gateway no entra túnel M3 |
+| G58 TUNNEL_DOC_CONFLICT | README vs CURRENT docs | conflicto marcado stale/no-promote por texto |
+
+Negative tests:
+- publicar `:8790` directamente por Funnel sin MCP auth => reject.
+- usar Action Proxy HTTP como backend MCP LibreChat => reject.
+- usar OpenAI Secure MCP Tunnel como endpoint genérico sin soporte explícito => reject.
+- Cloudflare AI Gateway recibe autorización/material receipt duties => reject.
