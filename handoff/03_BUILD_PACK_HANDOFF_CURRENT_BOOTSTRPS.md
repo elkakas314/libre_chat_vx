@@ -188,3 +188,22 @@ Antes de añadirlo:
 8. mostrar provider/model sólo en detalle avanzado del HUD.
 
 La identidad Nostromo se configura en LibreChat/Model Specs, no mediante prompt global compartido en LiteLLM.
+
+
+## Fase G3 — Cloudflare AI Gateway
+
+Objetivo: desacoplar la conversación de LibreChat del LiteLLM interno de MANOJOS3.
+
+Pasos:
+1. crear/configurar gateway autenticado;
+2. definir rutas semánticas versionadas;
+3. usar BYOK/SecretRef, nunca secretos en repo;
+4. habilitar sólo providers/models zero-cost verificados para perfiles por defecto;
+5. no habilitar Unified Billing como requisito;
+6. probar streaming LibreChat -> Cloudflare;
+7. probar rate/budget fail-closed;
+8. probar fallback sólo entre rutas zero-cost admitidas;
+9. confirmar identidad Nostromo estable entre providers;
+10. mantener LiteLLM M3 sin cambios hasta canary de desacoplamiento;
+11. verificar no loops ni doble routing;
+12. rollback = volver LibreChat a la ruta de inferencia anterior sin tocar la autoridad M3.
