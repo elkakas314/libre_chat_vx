@@ -11,7 +11,7 @@ Cada gate produce evidence/receipt local o del target. Un FAIL bloquea sólo su 
 | G4 UPSTREAM_BUILD | build/tests upstream aplicables | exit 0; sin anchors rotos |
 | G5 SECRET_SCAN | repo/config/logs | 0 valores secretos persistidos |
 | G6 LIBRECHAT_HEALTH | proceso/UI real | connection + readiness diferenciados |
-| G7 LOCAL_VOICE | canary local | respuesta + latencia/RAM + truth fidelity |
+| G7 LOCAL_ROUTE_OPTIONAL | sólo si se habilita modelo/voz local | respuesta + latencia/RAM + truth fidelity; SKIP_VALID cuando local=OFF |
 | G8 M3_NETWORK | route container->MCP/LLM | endpoint exacto alcanzable; ACL válida |
 | G9 M3_BOOTSTRAP_R0 | status/capabilities/skills | structured readback; authority=false |
 | G10 M3_R0_OBJECTIVE | objetivo read-only real | final run + readback + verified receipt |
@@ -49,7 +49,7 @@ Cada gate produce evidence/receipt local o del target. Un FAIL bloquea sólo su 
 G0-G5 PASS.
 
 ### P1 LIVE_READ_READY
-G6-G10 PASS.
+G6 + G8-G10 PASS. G7 sólo es obligatorio cuando el deployment activa ruta local.
 
 ### P2 REASONING_READY
 G11-G14 PASS.
@@ -94,3 +94,26 @@ Negative tests adicionales:
 - UI omite gate cuando M3 live declara LOCAL_CLI_AUTHORIZE_STEP_ONLY => reject.
 - puerto/endpoint documental tratado como LIVE sin network readback => reject.
 
+
+
+## Gates Provider Profiles / Nostromo Identity
+
+| Gate | Prueba | Readback esperado |
+|---|---|---|
+| G35 SEMANTIC_ALIAS_SWAP | cambiar provider/model bajo un alias | UX conserva perfil; target/auth/run no cambian |
+| G36 NOSTROMO_IDENTITY | mismo turno por dos providers | identidad/invariantes consistentes; provider puede variar |
+| G37 STRUCTURED_OUTPUT_VALIDATE | JSON válido/inválido/malicioso | sólo schema+semantic validated entra al adapter |
+| G38 MULTIMODAL_CAPABILITY | imagen/audio con providers distintos | sólo rutas con capability LIVE son elegibles |
+| G39 LARGE_CONTEXT_POLICY | repo/documentación grande | retrieval/compact first; long-context sólo cuando procede |
+| G40 ZERO_COST_GUARD | introducir route potencialmente pagada | route excluida; cero fallback automático a pago |
+| G41 LOCAL_ABSENT | local runtime desinstalado/apagado | conversación remota y M3 siguen operativos |
+
+P2 REASONING_READY requiere G35-G40 además de los gates previos aplicables.
+G41 es obligatorio para demostrar que la arquitectura no depende de un modelo local.
+
+Negative tests:
+- nombre `*-free` tratado como prueba suficiente de coste cero => reject.
+- prompt Nostromo tratado como security boundary => reject.
+- model JSON con `authorized=true` aceptado como autorización => reject.
+- multimodal output tratado como EvidenceRef/ReceiptRef => reject.
+- local OFF bloquea SOURCE/LIVE readiness pese a remote route READY => reject.
