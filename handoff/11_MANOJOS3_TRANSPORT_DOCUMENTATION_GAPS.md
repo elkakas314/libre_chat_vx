@@ -32,22 +32,24 @@ Repair rule:
 
 ## Probable source/live drift requiring readback
 
-### M3-DOC-002 — plugin/MCP migration status may be stale
+### M3-DOC-002 — connector/plugin registration metadata may be stale
 
 Current source in `src/manojos3/mcp_gateway.py` hardcodes:
 - `registration_status=NOT_MIGRATED`
 - `public_endpoint=None`
-- recommended connection = OpenAI Secure MCP Tunnel.
+- recommended remote/private connection = OpenAI Secure MCP Tunnel.
+
+But ChatGPT Desktop plugins/connectors may include local MCP apps running on the computer. Therefore Secure MCP Tunnel is not the canonical desktop-local hop.
 
 `CURRENT.json` also carries a NOT_MIGRATED registration status.
 
-Recent external/plugin observations may be newer than this source snapshot. Therefore this is NOT automatically repaired from chat evidence.
-
 Required:
-- read actual installed ChatGPT plugin/app identity and current Secure MCP Tunnel/profile state;
-- compare registered App ID/release/tool count with source package manifest;
-- if migrated LIVE, make migration status derived/readback-backed rather than stale hardcoded metadata;
-- if not migrated LIVE, keep NOT_MIGRATED and reconcile external package claims.
+- inspect the actually installed MANOJOS3 connector/plugin in ChatGPT Desktop;
+- verify whether it contains/launches or binds to the local MCP app/server;
+- verify the local MCP path to `127.0.0.1:8790/mcp`;
+- compare plugin ID/release/tool/skill count with source package manifest;
+- inspect Secure MCP Tunnel only if that optional remote/private path is configured;
+- if registration metadata is stale, make it derived/readback-backed rather than a hardcoded historical value.
 
 ### M3-DOC-003 — `cloudflare.public_origin` semantics are ambiguous
 
@@ -81,7 +83,7 @@ New design:
 
 PASS requires:
 1. exact branch/HEAD and clean/dirty state recorded;
-2. governed R0 readback for Cloudflare/Tailscale/Secure MCP state;
+2. governed R0 readback for Cloudflare/Tailscale plus the actual ChatGPT Desktop connector/local MCP state; Secure MCP Tunnel only if configured;
 3. source/docs/runtime topology table with one CURRENT row per plane;
 4. contradiction M3-DOC-001 removed;
 5. M3-DOC-002 classified from LIVE evidence;
