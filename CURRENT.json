@@ -32,7 +32,9 @@
       "remote_private": "TAILSCALE_SERVE_PRIVATE_AUTHENTICATED_MCP",
       "remote_public": "DEDICATED_CLOUDFLARE_MCP_EDGE_TO_MANOJOS3_VPC_TO_TUNNEL_TO_8790"
     },
-    "legacy_action_proxy_for_librechat": false
+    "legacy_action_proxy_for_librechat": false,
+    "chatgpt_desktop_connector": "LOCAL_PLUGIN_MCP_PATH_EXPECTED_REQUIRES_LIVE_READBACK",
+    "openai_secure_mcp_tunnel": "OPTIONAL_IF_CONFIGURED_NOT_CANONICAL_DESKTOP_LOCAL_HOP"
   },
   "manojos3_semantic_bridge": "IMPLEMENTED_SOURCE_AND_DRIVE_SYNCED",
   "tentacle_hud": {
