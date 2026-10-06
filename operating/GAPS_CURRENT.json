@@ -1,6 +1,6 @@
 {
   "schema": "libre-chat-vx.operating-gaps.v1",
-  "snapshot_id": "source-2026-10-03-a54b1f66",
+  "snapshot_id": "source-design-2026-10-06-cloudflare-transport-reconciled",
   "gaps": [
     {
       "gap_id": "LC-OPERATING-CANON",
@@ -43,7 +43,7 @@
     },
     {
       "gap_id": "LC-NOSTROMO-HYBRID",
-      "summary": "Single local-voice + free-reasoning + MANOJOS3-MCP architecture",
+      "summary": "Single Nostromo identity + Cloudflare remote inference + optional local model + MANOJOS3 MCP architecture",
       "state": "PASS",
       "priority": 21,
       "scope": "hybrid_llm",
@@ -74,7 +74,7 @@
     },
     {
       "gap_id": "LC-M3-ENTRYPOINT-CONTRACTS",
-      "summary": "MANOJOS3 MCP action and managed-LiteLLM supporting entrypoints",
+      "summary": "MANOJOS3 MCP action contract + internal LiteLLM advisory/compatibility contract",
       "state": "PASS",
       "priority": 23,
       "scope": "manojos3_entrypoints",
@@ -128,15 +128,15 @@
     },
     {
       "gap_id": "LC-M3-LLM-LIVE-READBACK",
-      "summary": "Resolve MANOJOS3 free-model source conflict and verify exact served aliases",
+      "summary": "Verify MANOJOS3 internal LiteLLM consumers/aliases after LibreChat inference decoupling",
       "state": "BLOCKED_DEPENDENCY",
       "priority": 71,
-      "scope": "manojos3_llm_live",
+      "scope": "manojos3_internal_llm_live",
       "requires_live": true,
       "dependencies": [
         "LC-CURRENT-HEAD-TESTS"
       ],
-      "preferred_route": "llm_router_status_litellm_status_exact_model_canary"
+      "preferred_route": "m3_internal_litellm_status_and_consumer_canary"
     },
     {
       "gap_id": "LC-UPSTREAM-OVERLAY-REVALIDATE",
@@ -174,7 +174,7 @@
     },
     {
       "gap_id": "LC-LOW-POWER-MEASURE",
-      "summary": "Measure idle/active/local-model/reasoner/MCP resource use",
+      "summary": "Measure LibreChat/HUD/MCP resource use; local-model measurement only if local route enabled",
       "state": "GATE_HUMAN",
       "priority": 100,
       "scope": "host_measurement",
@@ -182,6 +182,40 @@
       "dependencies": [
         "LC-CURRENT-HEAD-TESTS"
       ]
+    },
+    {
+      "gap_id": "LC-CF-AIG-BINDING",
+      "summary": "Bind LibreChat semantic profiles to authenticated Cloudflare AI Gateway with zero-cost fail-closed routes",
+      "state": "BLOCKED_DEPENDENCY",
+      "priority": 65,
+      "scope": "remote_inference_gateway",
+      "requires_live": true,
+      "dependencies": [
+        "LC-CURRENT-HEAD-TESTS"
+      ],
+      "preferred_route": "librechat_to_cloudflare_ai_gateway"
+    },
+    {
+      "gap_id": "LC-M3-TRANSPORT-LIVE",
+      "summary": "Read back current Cloudflare/Tailscale/OpenAI Secure MCP transport state and select LibreChat action binding profile A/B/C",
+      "state": "BLOCKED_DEPENDENCY",
+      "priority": 66,
+      "scope": "manojos3_transport",
+      "requires_live": true,
+      "dependencies": [
+        "LC-CURRENT-HEAD-TESTS"
+      ],
+      "preferred_route": "governed_m3_edge_cli_r0"
+    },
+    {
+      "gap_id": "LC-M3-TRANSPORT-DOC-DRIFT",
+      "summary": "Resolve Action Proxy origin documentation contradiction and classify plugin/public_origin drift from LIVE evidence",
+      "state": "SOURCE_CONFLICT_REQUIRES_LIVE_READBACK",
+      "priority": 24,
+      "scope": "manojos3_transport_documentation",
+      "requires_live": true,
+      "dependencies": [],
+      "preferred_route": "handoff_11_m3_transport_documentation_gaps"
     }
   ]
 }
