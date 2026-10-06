@@ -1,47 +1,62 @@
-LIBRECHAT VX — PENDIENTES CURRENT — 2026-10-04
+LIBRECHAT VX — PENDIENTES CURRENT — 2026-10-06
 
 RESULTADO ACTUAL
-SOURCE_HANDOFF_READY
+SOURCE_DESIGN_RECONCILED
 LIVE=NO_VERIFICADO
 MATERIAL_VERIFIED=NO
+PRIMARY_INFERENCE=CLOUDFLARE_AI_GATEWAY
+M3_LITELLM=INTERNAL_ADVISORY_COMPATIBILITY
+LOCAL_MODEL_REQUIRED=false
 
-P0 INTERNAL_REPAIRABLE / LIVE REQUIRED
-1. Ejecutar npm install + npm test sobre HEAD exacto de handoff/candidato.
-2. Revalidar el overlay contra upstream f10b1d91... y después compilar/testear upstream.
-3. Confirmar si GAPS_CURRENT snapshot_id antiguo respecto a CURRENT es semántica intencional o drift del read model; no corregir a ciegas.
+P0 SOURCE / TESTS
+1. Ejecutar npm install + npm test sobre HEAD exacto de handoff_current_bootstrps.
+2. Revalidar overlay contra upstream fijado y compilar/testear upstream.
+3. Verificar capacidades nativas LibreChat reclamadas contra el upstream exacto.
+4. Mantener CURRENT/GAPS/PROOFS derivados; no convertir diseño en LIVE.
 
-P1 CONFIG_GAP
-4. Resolver MANOJOS3_MCP_URL real desde el runtime/container de LibreChat.
-5. Resolver MANOJOS3_LLM_BASE_URL real y ACL/secrets por referencia.
-6. Vincular LibreChatAdapter M3; actualmente fail-closed UNCONFIGURED.
-7. Configurar local voice sólo después de benchmark.
+P1 CLOUDFLARE INFERENCE
+5. Crear/bind authenticated Cloudflare AI Gateway para LibreChat.
+6. Configurar perfiles semánticos Rápido/Normal/Pensar/Código/Contexto largo/Visión.
+7. BYOK/SecretRef únicamente; Unified Billing no es requisito.
+8. Probar zero-cost fail-closed y ausencia de fallback automático a pago.
+9. Probar provider failover, identidad Nostromo y structured output validation.
+10. Probar LOCAL_ABSENT: local OFF/UNINSTALLED no bloquea conversación.
 
-P2 LIVE / VERIFIED
-8. Bootstrap M3 R0: status/self/capabilities/skills.
-9. R0 objective real con readback + receipt.
-10. Verificar aliases LiteLLM servidos y paid_fallback=false.
-11. Verificar conversación Nostromo + HUD + native surfaces.
-12. Verificar desktop/móvil/reconnect sin replay.
-13. Primer R2 mínimo reversible por MANOJOS3 con receipt.
+P2 MANOJOS3 TRANSPORT
+11. Ejecutar R0 gobernado: edge.cli.status, cloudflare tunnel metrics/error1016, tailscale status/netcheck/serve/funnel y estado Secure MCP Tunnel.
+12. Resolver conflicto documental M3-DOC-001: Action Proxy README dice Funnel; CURRENT posterior dice MANOJOS3_VPC + Cloudflare Tunnel.
+13. Verificar M3-DOC-002: registration_status NOT_MIGRATED frente al estado real instalado/registrado.
+14. Clasificar M3-DOC-003: cloudflare.public_origin Tailscale como primary/fallback/legacy.
+15. Elegir action binding LibreChat según deployment:
+    A same-host -> 8790 directo;
+    B remote-private -> Tailscale Serve/private authenticated MCP;
+    C remote-public -> dedicated Cloudflare MCP Edge -> MANOJOS3_VPC -> tunnel -> 8790.
+16. No usar Action Proxy como contrato LibreChat.
+17. No usar host-control como ruta normal.
 
-P3 EXTERNAL_BOUNDARY
-14. VX13 binding R0/paridad futura; no tocar su repo durante build M3-first.
-15. ORÁCULO advisory live path si se desea; authority=false.
-16. Hugging Face connector: herramienta anunciada pero no operativa en esta sesión (Tool not found); benchmark/model discovery queda sin prueba de ese conector.
+P3 LIVE / VERIFIED
+18. Bootstrap M3 MCP: status/capabilities/skills.
+19. R0 objective real + readback + receipt.
+20. Verificar LiteLLM M3 sólo como consumidor interno/advisory y ausencia de loops con Cloudflare.
+21. Verificar Tentáculo HUD: connection/readiness/work/evidence separados.
+22. Desktop/móvil/reconnect sin replay.
+23. Primer R2 mínimo reversible según grant_interface LIVE.
+24. Chaos timeout -> UNKNOWN_OUTCOME -> readback/reconcile -> decisión.
 
-P4 HUMAN/HOST GATE
-17. Medir consumo real idle/active/local voice/reasoner/MCP y seleccionar modelo.
-18. Confirmar experiencia móvil/red remota en deployment real.
+P4 EXTERNAL
+25. VX13 R0/paridad futura con authority separada.
+26. ORÁCULO advisory live si se habilita.
 
 NO HACER
-- no duplicar Kernel/Governor/Policy/executor/MCP/router;
-- no segundo frontend;
+- no segundo Governor/Kernel/Policy/executor;
+- no segundo LiteLLM para LibreChat;
+- no reutilizar Action Proxy como MCP;
+- no publicar 8790 por Funnel sin MCP auth;
+- no tratar Cloudflare AI Gateway como authority;
 - no paid fallback;
-- no force-push;
-- no mezclar repos M3/VX13/ORACULO;
 - no secretos;
-- no declarar PASS por HTTP 200;
-- no blind retry después de posible efecto.
+- no blind retry material;
+- no declarar PASS por documentación coherente o HTTP 200.
 
 NEXT_ACTION
-Ejecutar P0 en host gobernado y, si PASS, continuar automáticamente P1->P2 por MANOJOS3.
+SOURCE tests -> Cloudflare AI Gateway canary -> R0 transport audit -> choose MCP binding A/B/C -> M3 R0 -> HUD/recovery -> first controlled material canary.
