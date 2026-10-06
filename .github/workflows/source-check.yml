@@ -44,22 +44,25 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
-      - name: Install VX dependencies
-        working-directory: vx
-        run: npm install --no-audit --no-fund
+          node-version: '24'
+      - name: Install pinned upstream dependencies
+        working-directory: upstream
+        run: npm ci --no-audit --no-fund
       - name: Verify pinned upstream
         working-directory: vx
         run: npm run verify:upstream -- ../upstream
       - name: Install reversible overlay
         working-directory: vx
         run: npm run overlay:install -- ../upstream
-      - name: Install upstream workspace dependencies
-        working-directory: upstream
-        run: npm install --package-lock=false --no-audit --no-fund
+      - name: Link VX workspace without changing upstream lock
+        run: |
+          mkdir -p upstream/node_modules/@librechat
+          ln -sfn ../../packages/librechat-vx upstream/node_modules/@librechat/vx
       - name: Build copied LibreChat VX workspace
-        working-directory: upstream
-        run: npm --workspace @librechat/vx run build
+        working-directory: upstream/packages/librechat-vx
+        run: |
+          rm -rf dist
+          ../../node_modules/.bin/tsc -p tsconfig.json
       - name: Build LibreChat frontend with VX overlay
         working-directory: upstream
         run: npm run frontend:ci
