@@ -19,11 +19,33 @@
     "owner": "LIBRECHAT_NOSTROMO_VIA_CLOUDFLARE_AI_GATEWAY",
     "primary_gateway": "CLOUDFLARE_AI_GATEWAY",
     "gateway_authority": false,
+    "semantic_profiles": ["RAPIDO", "NORMAL", "PENSAR", "CODIGO", "CONTEXTO_LARGO", "VISION"],
     "manojos3_litellm_role": "INTERNAL_ADVISORY_COMPATIBILITY",
     "paid_fallback_allowed": false,
     "live_status": "SOURCE_ROUTER_IMPLEMENTED_LIVE_NOT_VERIFIED"
   },
+  "target_gateway": {
+    "name": "NOSTROMO_TARGET_GATEWAY",
+    "kind": "IN_PROCESS_FACADE",
+    "authority": false,
+    "source_state": "DESIGNED_CURRENT_NOT_IMPLEMENTED",
+    "purpose": "DECOUPLE_LIBRECHAT_UI_FROM_TARGET_TRANSPORT",
+    "adapters": {
+      "MANOJOS3": "MANOJOS3_MCP",
+      "VX13": "TENTACULO_LINK_FUTURE"
+    },
+    "forbidden_roles": [
+      "POLICY",
+      "AUTHORIZATION_AUTHORITY",
+      "KERNEL",
+      "EXECUTOR",
+      "VERIFIER",
+      "RECEIPT_AUTHORITY",
+      "LEDGER"
+    ]
+  },
   "action_plane": {
+    "current_target": "MANOJOS3",
     "owner": "MANOJOS3_MCP",
     "deployment_env": "MANOJOS3_MCP_URL",
     "live_status": "PREPARED_UNCONFIGURED_TRANSPORT_PROFILE_NOT_SELECTED",
@@ -41,7 +63,8 @@
     "local_voice_required": false,
     "free_reasoner_required": false,
     "source_of_truth": "STRUCTURED_TARGET_READBACK",
-    "inference_source": "CLOUDFLARE_AI_GATEWAY_PROJECTION"
+    "inference_source": "CLOUDFLARE_AI_GATEWAY_PROJECTION",
+    "provider_status_live_bridge": "PARTIAL_SOURCE_NOT_CONNECTED"
   },
   "operating_reconciler": {
     "target_to_current_direction": "ONE_WAY",
@@ -59,7 +82,7 @@
   "material_verified": false,
   "authority": false,
   "local_touched_by_current_work": false,
-  "next_action": "SOURCE_TESTS_THEN_CLOUDFLARE_AI_GATEWAY_LIVE_AND_OVERLAY_REVALIDATION",
+  "next_action": "SOURCE_TESTS_THEN_UPSTREAM_OVERLAY_THEN_CLOUDFLARE_LIVE_THEN_TARGET_GATEWAY_R0",
   "source_design_reconciled_at": "2026-10-06",
   "transport_documentation_gap": "M3-DOC-001_CONFIRMED_M3-DOC-002_003_REQUIRE_LIVE_READBACK"
 }
