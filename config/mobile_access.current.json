@@ -1,0 +1,51 @@
+{
+  "schema": "libre-chat-vx.mobile-remote-access.v1",
+  "status": "SOURCE_COMPLETE_LIVE_CANARY_PENDING",
+  "authority": false,
+  "same_backend_history": true,
+  "routes": [
+    {
+      "mode": "LOCAL",
+      "priority": 1,
+      "requires": "LOCAL_BACKEND_REACHABLE",
+      "endpoint": "http://127.0.0.1:3080"
+    },
+    {
+      "mode": "TAILSCALE_PRIVATE",
+      "priority": 2,
+      "requires": "TAILNET_AUTHORIZED_AND_SERVE_REACHABLE",
+      "endpoint": "DISCOVER_LIVE_MAGICDNS"
+    },
+    {
+      "mode": "CLOUDFLARE_ACCESS_PUBLIC",
+      "priority": 3,
+      "requires": "PUBLIC_EDGE_ENABLED_AND_ACCESS_AUTHENTICATED",
+      "endpoint": "${LIBRECHAT_VX_PUBLIC_HOSTNAME}"
+    }
+  ],
+  "offline": {
+    "read_cached_if_available": true,
+    "local_text_draft": true,
+    "queue_target_mutation": false,
+    "queue_authorization": false
+  },
+  "reconnect": {
+    "refresh_session": true,
+    "refresh_acl": true,
+    "refresh_target_truth": true,
+    "resume_cognitive_stream_if_supported": true,
+    "replay_material_mutation": false,
+    "possible_effect": "UNKNOWN_OUTCOME_READBACK_REQUIRED"
+  },
+  "notifications": {
+    "opaque_payload": true,
+    "fresh_fetch_on_open": true,
+    "authorizes": false,
+    "proves_completion": false
+  },
+  "recovery": {
+    "librechat_self_only": false,
+    "tailscale_ssh_planned": true,
+    "host_service_planned": true
+  }
+}
