@@ -1,0 +1,57 @@
+{
+  "schema": "libre-chat-vx.extension-registry.v1",
+  "authority": false,
+  "decision_order": [
+    "NATIVE",
+    "CONFIG",
+    "SKILL",
+    "MCP_OR_ACTION",
+    "AGENT_PLUGIN",
+    "THIN_WRAPPER",
+    "CUSTOM_SOURCE"
+  ],
+  "source_tree": {
+    "canonical_skills": "skills/<skill-name>/SKILL.md",
+    "optional_agent_plugin": "plugins/vx-nostromo/plugin.json",
+    "config": "config/*.current.json + config/librechat-vx.example.yaml"
+  },
+  "deployment_tree": {
+    "github_skill_sync": "Database-backed mirrored read-only Skills; no filesystem copy required",
+    "deployment_skills": "./skill/<skill-name>/SKILL.md (DEPLOYMENT_SKILLS_DIR)",
+    "plugins": "./plugin/<plugin-name>/plugin.json (DEPLOYMENT_PLUGINS_DIR)",
+    "plugin_data": "./data/plugins/<plugin-name>/ (DEPLOYMENT_PLUGIN_DATA_DIR)",
+    "plugin_hooks": "./plugin/<plugin-name>/ai.librechat/hooks/hooks.json; disabled unless DEPLOYMENT_PLUGIN_HOOKS=true"
+  },
+  "restart_rules": {
+    "deployment_skills": true,
+    "agent_plugins": true,
+    "github_skill_sync": false
+  },
+  "downloads_and_sources": [
+    {
+      "name": "LibreChat",
+      "source": "https://github.com/LibreChat-AI/LibreChat",
+      "role": "main application"
+    },
+    {
+      "name": "RAG API",
+      "source": "https://github.com/LibreChat-AI/rag-api",
+      "role": "optional document RAG backend"
+    },
+    {
+      "name": "Code Interpreter",
+      "source": "https://github.com/LibreChat-AI/code-interpreter",
+      "role": "optional sandboxed code execution; not target authority"
+    },
+    {
+      "name": "Admin Panel",
+      "source": "https://github.com/LibreChat-AI/admin-panel",
+      "role": "optional administration surface"
+    },
+    {
+      "name": "Config examples",
+      "source": "https://github.com/LibreChat-AI/librechat-config-yaml",
+      "role": "reference configuration"
+    }
+  ]
+}
