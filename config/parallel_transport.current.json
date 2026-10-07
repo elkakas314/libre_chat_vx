@@ -1,91 +1,119 @@
 {
-  "schema": "libre-chat-vx.parallel-transport.v1",
-  "status": "SOURCE_PREPARED_LIVE_NOT_DEPLOYED",
+  "schema": "libre-chat-vx.parallel-transport.v2",
+  "status": "SOURCE_CANON_COMPLETE_LIVE_NOT_DEPLOYED",
   "authority": false,
-  "purpose": "Isolated LibreChat VX transport stack for development, canary and pre-production validation before any MANOJOS3 cutover.",
+  "purpose": "Dedicated LibreChat VX access/inference/event transport architecture, isolated from MANOJOS3 until an explicit future cutover.",
+  "canonical_counts": {
+    "cloudflare_ai_gateways": 1,
+    "dynamic_routes": 7,
+    "cloudflare_tunnels_required": 0,
+    "cloudflare_tunnels_optional_public_web": 1,
+    "cloudflare_workers_required": 0,
+    "cloudflare_workers_optional_max_without_architecture_review": 1,
+    "tailscale_serve_private_routes": 1,
+    "tailscale_services_required": 0,
+    "tailscale_funnel": 0,
+    "openai_secure_mcp_tunnels_for_librechat": 0
+  },
   "invariants": {
     "reuse_manojos3_tunnels": false,
     "reuse_manojos3_workers": false,
     "reuse_manojos3_hostnames": false,
     "reuse_manojos3_ports": false,
     "modify_manojos3": false,
-    "tailscale_funnel_default": false,
     "public_access_requires_identity_gate": true,
     "ai_gateway_is_not_tunnel": true,
-    "transport_is_not_authority": true
-  },
-  "reserved_manojos3": {
-    "ports": [
-      8787,
-      8790,
-      8791,
-      4000,
-      8931,
-      9223
-    ],
-    "resource_name_fragments": [
-      "manojos3",
-      "manojos2-action-proxy",
-      "host-control"
-    ],
-    "note": "Guard only. These resources are not read, modified, proxied or reused by the LibreChat VX parallel stack."
+    "transport_is_not_authority": true,
+    "no_public_admin_endpoint": true,
+    "no_material_retry_on_reconnect": true
   },
   "librechat_service": {
     "bind_host": "127.0.0.1",
     "port": 3080,
-    "health_path": "/health",
-    "owner": "LIBRECHAT_VX"
+    "owner": "LIBRECHAT_VX",
+    "deployment_shape": "SINGLE_INSTANCE_BASELINE",
+    "resumable_streams": "NATIVE_IN_MEMORY_BASELINE"
   },
-  "private_web": {
+  "private_remote": {
     "kind": "TAILSCALE_SERVE",
-    "enabled_by_default": false,
+    "baseline": true,
     "public_internet": false,
     "target": "http://127.0.0.1:3080",
     "funnel": false,
     "acl_required": true,
-    "resource_alias": "librechat-vx-private"
+    "resource_alias": "librechat-vx-private",
+    "services_upgrade": "OPTIONAL_WHEN_MULTI_HOST_OR_HA"
   },
-  "public_web": {
+  "public_remote_optional": {
     "kind": "CLOUDFLARE_TUNNEL_ACCESS",
-    "enabled_by_default": false,
+    "baseline": false,
+    "tunnel_count": 1,
     "tunnel_name": "librechat-vx-web",
-    "hostname_env": "LIBRECHAT_VX_PUBLIC_HOSTNAME",
     "origin": "http://127.0.0.1:3080",
     "access_required": true,
-    "tunnel_token_env": "LIBRECHAT_VX_CF_TUNNEL_TOKEN",
+    "browser_hostname_env": "LIBRECHAT_VX_PUBLIC_HOSTNAME",
+    "events_hostname_env": "LIBRECHAT_VX_EVENTS_HOSTNAME",
+    "machine_api_extra_gate": "ACCESS_SERVICE_TOKEN_OR_EQUIVALENT_IF_PUBLIC",
     "credentials_persisted_in_repo": false
   },
   "inference": {
     "kind": "CLOUDFLARE_AI_GATEWAY",
-    "gateway_id_env": "CLOUDFLARE_AI_GATEWAY_ID",
+    "gateway_count": 1,
     "gateway_resource_hint": "librechat-vx-nostromo",
-    "traverses_cloudflare_tunnel": false,
     "semantic_routes": [
       "dynamic/nostromo-rapido",
       "dynamic/nostromo-normal",
       "dynamic/nostromo-pensar",
-      "dynamic/nostromo-codigo",
+      "dynamic/nostromo-investigar",
+      "dynamic/nostromo-visualizar",
       "dynamic/nostromo-contexto-largo",
       "dynamic/nostromo-vision"
     ],
+    "provider_bootstrap": [
+      "CLOUDFLARE_WORKERS_AI",
+      "GROQ",
+      "GOOGLE_AI_STUDIO_GEMINI"
+    ],
+    "provider_reserve": [
+      "MISTRAL",
+      "OPENROUTER_FREE"
+    ],
+    "exact_models": "DISCOVER_AND_ADMIT_LIVE",
     "paid_fallback_allowed": false,
-    "authentication_required": true
+    "traverses_cloudflare_tunnel": false
   },
-  "target_plane": {
-    "mode": "ISOLATED_CANARY_ONLY",
-    "production_target_binding": false,
-    "manojos3_binding": false,
-    "note": "TargetGateway is tested with source fixtures/mocks until a deliberate later MANOJOS3 migration."
+  "workers": {
+    "required": [],
+    "optional": [
+      {
+        "id": "librechat-vx-event-normalizer",
+        "status": "NOT_PROVISIONED",
+        "create_only_if": "AN_EXTERNAL_EVENT_SOURCE_CANNOT_SEND_LIBRECHAT_AGENT_EVENTS_DIRECTLY",
+        "purpose": "Validate and normalize a narrow webhook payload into the Agent Events shape.",
+        "forbidden": [
+          "CLOUDFLARE_ACCOUNT_ADMIN_TOKEN",
+          "AI_GATEWAY_ADMINISTRATION",
+          "TARGET_MATERIAL_EXECUTION",
+          "REPO_WRITE",
+          "AUTHORIZATION_MINTING"
+        ],
+        "fail_mode": "FAIL_CLOSED"
+      }
+    ]
   },
-  "promotion_gates": [
-    "PARALLEL_CONFIG_VALIDATE",
-    "LIBRECHAT_LOCAL_HEALTH",
-    "TAILSCALE_SERVE_PRIVATE_CANARY_IF_USED",
-    "CLOUDFLARE_TUNNEL_ACCESS_CANARY_IF_USED",
-    "CLOUDFLARE_AI_GATEWAY_CANARY",
-    "MOBILE_RECONNECT_CANARY",
-    "ROLLBACK_CANARY",
-    "NO_MANOJOS3_RESOURCE_COLLISION"
-  ],
+  "application_routes": {
+    "agent_events": "/api/agents/v1/events",
+    "skill_sync": "OUTBOUND_HTTPS_GITHUB",
+    "target_gateway": "IN_PROCESS_NO_PUBLIC_HTTP_ROUTER"
+  },
+  "recovery": {
+    "host_service": "FUTURE_LIVE_BINDING",
+    "tailscale_ssh": "PLANNED_OUT_OF_BAND",
+    "librechat_self_recovery_only": false
+  },
+  "manojos3_transport_convergence": {
+    "status": "DEFERRED_DO_NOT_TOUCH_NOW",
+    "blocks_librechat": false
+  },
   "live": "NO_VERIFICADO"
 }
