@@ -4,7 +4,7 @@ Status: `SOURCE_CORE_COMPLETE / EXACT_HEAD_TESTS_PASS / UPSTREAM_OVERLAY_BUILD_P
 
 Source implementation: `aed4a617d8c19a9761a687da24715cce0ff8c2a9`.
 
-Exact-head CI evidence: `24b971a2bcabf828d2c99afa1f3fede2151178c1`, GitHub Actions `source-check` run `37542785302`: `build-test=SUCCESS`, `overlay-smoke=SUCCESS`.
+Latest exact-head CI evidence for the interpreter-first refactor: GitHub Actions `source-check` run `37562733264`: `build-test=SUCCESS`, `overlay-smoke=SUCCESS`.
 
 ## Source gaps closed
 
@@ -51,7 +51,7 @@ SOURCE completion is not LIVE completion.
 
 ## Pinned upstream overlay CI
 
-GitHub Actions run `37542785302` validated against `LibreChat-AI/LibreChat@f10b1d91f1eee3a2c82d5247bf620351486b7c1b`:
+GitHub Actions run `37562733264` validated the current refactor lineage against `LibreChat-AI/LibreChat@f10b1d91f1eee3a2c82d5247bf620351486b7c1b`:
 
 - pinned upstream dependency install via its committed lockfile: PASS;
 - upstream blob/revision verification: PASS;
@@ -62,3 +62,22 @@ GitHub Actions run `37542785302` validated against `LibreChat-AI/LibreChat@f10b1
 - clean upstream verification after uninstall: PASS.
 
 This proves source compatibility/build/reversibility for the pinned upstream. It does not prove a deployed host, authenticated Cloudflare routes or target LIVE bindings.
+
+
+## Purpose refactor — 2026-10-07
+
+Additional SOURCE now implemented and CI-validated:
+- dedicated CODIGO inference profile removed;
+- INVESTIGAR and VISUALIZAR semantic profiles added;
+- Intent Interpreter;
+- Presentation Planner;
+- Model Registry with active+reserve zero-cost pool;
+- Tentaculo Companion cognitive boundary;
+- public research policy;
+- Agent Events notification envelope;
+- Skills for intent translation, visualization, research and event triage;
+- configuration hides provider/model operator selection by default.
+
+The existing BuildPanel is retained only as an adaptable external-work/evidence viewer. Programmatic Tool Calling and Code Interpreter remain optional upstream capabilities and are not part of the default NOSTROMO core.
+
+These SOURCE changes do not imply LIVE Cloudflare routes, Skill Sync, Web Search or Agent Events have been canary-tested.
