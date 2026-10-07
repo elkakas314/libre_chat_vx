@@ -27,6 +27,22 @@
     "no_public_admin_endpoint": true,
     "no_material_retry_on_reconnect": true
   },
+  "reserved_manojos3": {
+    "ports": [
+      8787,
+      8790,
+      8791,
+      4000,
+      8931,
+      9223
+    ],
+    "resource_name_fragments": [
+      "manojos3",
+      "manojos2-action-proxy",
+      "host-control"
+    ],
+    "note": "Isolation guard only. LibreChat VX must not read, modify, proxy or reuse these MANOJOS3 resources during parallel validation."
+  },
   "librechat_service": {
     "bind_host": "127.0.0.1",
     "port": 3080,
