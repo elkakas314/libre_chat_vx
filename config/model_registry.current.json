@@ -1,0 +1,44 @@
+{
+  "schema": "libre-chat-vx.model-registry.v1",
+  "status": "SOURCE_READY_LIVE_DISCOVERY_PENDING",
+  "authority": false,
+  "goal": "Maintain a broad catalog of zero-cost-capable LLM candidates while activating only a bounded, healthy subset per semantic profile.",
+  "profiles": [
+    "RAPIDO",
+    "NORMAL",
+    "PENSAR",
+    "INVESTIGAR",
+    "VISUALIZAR",
+    "CONTEXTO_LARGO",
+    "VISION"
+  ],
+  "admission": {
+    "health": "READY",
+    "quota": "AVAILABLE",
+    "zero_cost": "VERIFIED_ZERO_COST",
+    "privacy_allowed": true,
+    "live_readback_required": true,
+    "freshness_ms": 300000,
+    "paid_fallback_allowed": false
+  },
+  "pool": {
+    "active_target_per_profile": 6,
+    "reserve_policy": "KEEP_ALL_OTHER_ADMITTED_CANDIDATES",
+    "selection_order": [
+      "FRESH_ZERO_COST",
+      "QUOTA_REMAINING",
+      "CAPABILITY_FIT",
+      "LATENCY"
+    ],
+    "hard_model_count_limit": "DO_NOT_INVENT_PLATFORM_LIMIT; READ_LIVE_PROVIDER_AND_CLOUDFLARE_LIMITS"
+  },
+  "mutation_policy": {
+    "create_new_route_version": true,
+    "canary_before_deploy": true,
+    "deploy_is_separate_step": true,
+    "rollback_to_prior_version": true,
+    "librechat_may_propose": true,
+    "librechat_may_hold_cloudflare_admin_token": false
+  },
+  "live": "NO_VERIFICADO"
+}
