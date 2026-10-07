@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "libre-chat-vx.transport-resource.schema.json",
+  "type": "object",
+  "required": [
+    "id",
+    "kind",
+    "owner",
+    "purpose",
+    "status"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "kind": {
+      "enum": [
+        "LOCAL_WEB",
+        "TAILSCALE_SERVE",
+        "TAILSCALE_SERVICE",
+        "TAILSCALE_SSH",
+        "CLOUDFLARE_TUNNEL",
+        "CLOUDFLARE_ACCESS_APP",
+        "CLOUDFLARE_AI_GATEWAY",
+        "CLOUDFLARE_WORKER",
+        "GITHUB_SKILL_SYNC",
+        "LIBRECHAT_AGENT_EVENTS",
+        "EXTERNAL_PROJECT_CUTOVER"
+      ]
+    },
+    "owner": {
+      "type": "string",
+      "minLength": 1
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 1
+    },
+    "exposure": {
+      "type": "string"
+    },
+    "target": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "minLength": 1
+    },
+    "authority": {
+      "const": false
+    },
+    "rollback": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}
