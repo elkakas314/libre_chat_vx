@@ -10,6 +10,12 @@ export function TentacleHud({ model }: { model: TentacleHudModel }) {
       <p>state:{model.presentation}</p>
       <p>focus:{model.focusLabel}</p>
       <p>evidenceFresh:{String(model.evidenceFresh)}</p>
+      {model.companion ? (
+        <div aria-label="Tentáculo companion" data-testid="vx-tentacle-companion">
+          <p>companion:{model.companion.role}</p>
+          <p>companionAuthority:false</p>
+        </div>
+      ) : null}
       {model.inference ? (
         <div aria-label="Inference status" data-testid="vx-inference-status">
           <p>inference:{model.inference.label}</p>
