@@ -1,7 +1,7 @@
 # CLOUDFLARE INFERENCE GATEWAY CURRENT
 
-Date: 2026-10-06
-Status: SOURCE_DESIGN / LIVE_NO_VERIFICADO
+Date: 2026-10-07
+Status: SOURCE_IMPLEMENTED / LIVE_NO_VERIFICADO
 Authority: false
 
 ## Decision
@@ -60,17 +60,20 @@ Changing provider/model never changes target, grants, run id, or authority.
 
 ## Provider profiles
 
-User-facing profiles stay semantic:
+Profiles stay semantic and internal:
 - Rápido
 - Normal
 - Pensar
-- Código
+- Investigar
+- Visualizar
 - Contexto largo
 - Visión
 
+There is no dedicated coding profile. NOSTROMO interprets coding-related intent and routes it to the appropriate specialist target.
+
 Concrete provider/model names remain advanced diagnostic detail in Tentáculo HUD.
 
-Cloudflare dynamic routes may map semantic profiles to provider/model routes and fallbacks.
+Cloudflare dynamic routes map semantic profiles to a bounded active pool of admitted provider/models while a broader Model Registry keeps additional zero-cost candidates in reserve.
 The route name is configuration, not authority.
 
 ## Cloudflare transport and cost rules
@@ -135,6 +138,8 @@ Cloudflare unavailable:
 - existing MANOJOS3 LiteLLM may be used only if explicitly configured as an inference fallback and proven reachable.
 
 Upstream provider quota exhausted:
+- the exhausted candidate leaves the active pool;
+- another admitted zero-cost reserve candidate may be promoted through a versioned route update/canary;
 - dynamic route may move only to another admitted zero-cost route;
 - otherwise mark provider DEGRADED/UNAVAILABLE.
 
@@ -164,4 +169,20 @@ Lenovo offline:
 Cloudflare design in SOURCE does not mean LIVE.
 LibreChat remains LIVE_NO_VERIFICADO until all Cloudflare binding gates and existing M3 read/material gates pass.
 
-NEXT_IMPLEMENTATION_ACTION=Bind LibreChat semantic profiles to an authenticated Cloudflare AI Gateway dynamic route, prove zero-cost fail-closed behavior, and keep MANOJOS3 LiteLLM unchanged until the decoupling canary passes.
+NEXT_IMPLEMENTATION_ACTION=Discover and verify zero-cost model candidates, build versioned INVESTIGAR/VISUALIZAR and other semantic routes, canary the active+reserve pool, and keep MANOJOS3 LiteLLM unchanged until later target integration.
+
+
+## Model Registry CURRENT
+
+SOURCE implements a provider/model registry separate from route deployment.
+
+Default source policy:
+- broad candidate catalog;
+- target 6 active admitted candidates per semantic profile;
+- all other admitted candidates remain reserve;
+- reject billable, exhausted, stale or unevidenced candidates;
+- create a new Dynamic Route version before any route change;
+- canary before deployment;
+- keep rollback to the previous version.
+
+LibreChat may propose route changes but does not store a broad Cloudflare administration credential.
