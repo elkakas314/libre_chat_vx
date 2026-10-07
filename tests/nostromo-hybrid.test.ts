@@ -25,32 +25,37 @@ test('Nostromo inference is Cloudflare-first and MANOJOS3 LiteLLM stays internal
   assert.equal(NOSTROMO_HYBRID.id,'NOSTROMO_HYBRID');
   assert.equal(NOSTROMO_HYBRID.primaryInferenceGateway.owner,'CLOUDFLARE_AI_GATEWAY');
   assert.equal(NOSTROMO_HYBRID.primaryInferenceGateway.paidFallbackAllowed,false);
+  assert.equal(NOSTROMO_HYBRID.primaryInferenceGateway.semanticProfiles.includes('INVESTIGAR'),true);
+  assert.equal(NOSTROMO_HYBRID.primaryInferenceGateway.semanticProfiles.includes('VISUALIZAR'),true);
   assert.equal(NOSTROMO_HYBRID.manojos3LiteLlm.role,'INTERNAL_ADVISORY_COMPATIBILITY');
   assert.equal(NOSTROMO_HYBRID.manojos3LiteLlm.primaryForLibreChat,false);
 });
 
-test('actions bypass cognitive routing and go to MANOJOS3 objective plane', () => {
+test('target actions bypass cognitive routing and go to TargetGateway objective plane', () => {
   assert.equal(chooseHybridLane({
     conversationalOnly:false,
     needsDeepReasoning:true,
-    needsCoding:true,
+    needsResearch:false,
+    needsVisualization:false,
     needsLongContext:false,
     targetActionRequested:true,
-  }), 'MANOJOS3_OBJECTIVE');
+  }), 'TARGET_OBJECTIVE');
 });
 
-test('conversation uses remote inference by default and local voice only when explicitly preferred', () => {
+test('conversation research and visualization use remote inference by default', () => {
   assert.equal(chooseHybridLane({
     conversationalOnly:true,
     needsDeepReasoning:false,
-    needsCoding:false,
+    needsResearch:true,
+    needsVisualization:true,
     needsLongContext:false,
     targetActionRequested:false,
   }), 'REMOTE_INFERENCE');
   assert.equal(chooseHybridLane({
     conversationalOnly:true,
     needsDeepReasoning:false,
-    needsCoding:false,
+    needsResearch:false,
+    needsVisualization:false,
     needsLongContext:false,
     targetActionRequested:false,
     preferLocalVoice:true,
