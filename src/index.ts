@@ -82,6 +82,7 @@ export * from './mobile/mobileRecovery';
 export * from './mobile/offlineDraft';
 export * from './mobile/pushRefresh';
 export * from './mobile/resumeSource';
+export * from './mobile/remoteAccess';
 
 export { emptyCockpitState } from './runtime/cockpitState';
 export type { CockpitState, TargetRuntimeState } from './runtime/cockpitState';
