@@ -18,7 +18,8 @@ export const CLOUDFLARE_SEMANTIC_ROUTES: Readonly<Record<SemanticProfileId,strin
   RAPIDO:'dynamic/nostromo-rapido',
   NORMAL:'dynamic/nostromo-normal',
   PENSAR:'dynamic/nostromo-pensar',
-  CODIGO:'dynamic/nostromo-codigo',
+  INVESTIGAR:'dynamic/nostromo-investigar',
+  VISUALIZAR:'dynamic/nostromo-visualizar',
   CONTEXTO_LARGO:'dynamic/nostromo-contexto-largo',
   VISION:'dynamic/nostromo-vision',
 };
@@ -94,7 +95,6 @@ export function buildCloudflareNonSecretHeaders(binding: CloudflareGatewayBindin
     'cf-aig-no-wholesale':'true',
   };
 }
-
 
 export interface CloudflareSecretResolver {
   get(name: 'CLOUDFLARE_API_TOKEN'): string | undefined;
