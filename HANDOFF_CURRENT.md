@@ -1,9 +1,18 @@
 # LIBRECHAT HANDOFF CURRENT
 
-Mode: `SOURCE_ONLY`.
+Mode: `SOURCE_COMPLETE_LIVE_BINDINGS_PENDING`.
 Live: `NO_VERIFICADO`.
 Material verified: `false`.
 Authority: `false`.
+
+## Exact source proof
+
+- SOURCE-bearing head: `ffd31f79abc1f56433d05d33e5bdbe65b2dd5690`.
+- GitHub Actions: `source-check` run `37667119803` — **SUCCESS**.
+- build-test: **SUCCESS**.
+- parallel transport isolation v2: **SUCCESS**.
+- pinned upstream verify/install/build/uninstall/clean: **SUCCESS**.
+- upstream pin: `LibreChat-AI/LibreChat@f10b1d91f1eee3a2c82d5247bf620351486b7c1b`.
 
 ## Canonical architecture
 
@@ -11,173 +20,118 @@ Authority: `false`.
 User
   ↓
 LibreChat / NOSTROMO
-  ├─ Conversation + Context + Files/RAG + native LibreChat surfaces
-  ├─ Tentaculo HUD / Cockpit
+  ├─ conversation + context + Files/RAG + native surfaces
+  ├─ Tentáculo HUD / Companion
+  ├─ Intent Interpreter + Research Policy + Presentation Planner
   ├─ NostromoInferenceGateway
   │    ↓
-  │  Cloudflare AI Gateway
+  │  Cloudflare AI Gateway (1)
   │    ↓
-  │  admitted provider/model
+  │  7 dynamic/nostromo-* routes
+  │    ↓
+  │  admitted zero-cost provider/model pool
   └─ NostromoTargetGateway (in-process, authority=false)
-       ├─ MANOJOS3 adapter -> MANOJOS3 MCP -> Governor/Policy/Kernel -> Verifier/Receipt
-       └─ VX13 adapter -> Tentaculo Link/canonical VX13 frontdoor (future)
+       ├─ MANOJOS3 adapter -> MANOJOS3 MCP (future LIVE binding)
+       ├─ VX13 adapter -> Tentáculo Link/frontdoor (future)
+       └─ ORÁCULO advisory
 ```
 
-Cloudflare AI Gateway and NostromoTargetGateway are different things:
-- Cloudflare routes cognitive inference.
-- NostromoTargetGateway decouples the LibreChat UI from target-specific transports.
-- Neither owns material authority.
+## Transport canon
 
-## Inference
+- Required Cloudflare Workers: **0**.
+- Optional narrow event-normalizer Worker: **max 1**, only if Agent Events cannot be emitted directly.
+- Required Cloudflare Tunnels: **0**.
+- Optional public web/API tunnel: **1**, always behind Access.
+- Tailscale Serve private route: **1**, baseline for mobile/remote.
+- Tailscale Services: **0 baseline**; optional for multi-host/HA.
+- Funnel: **0**.
+- Secure MCP Tunnel for LibreChat: **0**.
+- No MANOJOS3 tunnel/Worker/hostname/port is reused.
 
-Primary LibreChat inference: `CLOUDFLARE_AI_GATEWAY`.
+## LLM bootstrap
 
-Semantic profiles:
-- RAPIDO;
-- NORMAL;
-- PENSAR;
-- INVESTIGAR;
-- VISUALIZAR;
-- CONTEXTO_LARGO;
-- VISION.
+First providers to probe:
+1. Cloudflare Workers AI.
+2. Groq.
+3. Google AI Studio/Gemini.
 
-Provider capabilities:
-- TEXT;
-- VISION;
-- AUDIO;
-- STRUCTURED_OUTPUT;
-- TOOLS;
-- LONG_CONTEXT.
+Reserve:
+4. Mistral.
+5. OpenRouter Free.
 
-Admission is fail-closed on health, quota, capability, context fit, privacy, freshness and verified zero-cost route. Paid automatic fallback is forbidden.
+Exact model IDs are LIVE discovery data.
+No automatic paid fallback.
+A profile may run with fewer than six active models; never fill the target pool with paid/unverified candidates.
 
-NOSTROMO identity belongs to LibreChat and must remain stable across provider/model/profile changes.
+## Mobile/remote
 
-MANOJOS3 LiteLLM remains internal/advisory/OpenCode/compatibility infrastructure and is not the primary LibreChat router.
+- One backend/history across PC and mobile.
+- Route priority: LOCAL -> TAILSCALE_PRIVATE -> CLOUDFLARE_ACCESS_PUBLIC optional.
+- Offline = cached read + text draft only.
+- Reconnect refreshes session/ACL/target truth.
+- Cognitive streams may resume.
+- Material target requests never replay.
+- Possible prior effect = UNKNOWN_OUTCOME + target readback.
+- Push/events are opaque hints; opening triggers fresh authenticated fetch.
+- Recovery is outside LibreChat: host service + Tailscale SSH when deployed.
 
-## LibreChat capabilities
+## Skills/plugins
 
-### Implemented in SOURCE
-- conversation/Nostromo cockpit;
-- Tentaculo HUD model and StatusRail/truth lanes;
-- CurrentFocus and referential continuity;
-- contextual window routing;
-- ArtifactDock and evidence/receipt projection;
-- Interactive Artifact -> UiIntent;
-- PlanGraph, ActiveFlow and TargetRun projections;
-- Files/Audio/Browser/external-work/Background panels;
-- mobile/recovery semantics;
-- resumable UI/conversation streams without material replay;
-- semantic inference profiles;
-- strict zero-cost provider admission;
-- Cloudflare AI Gateway client contract;
-- versioned NOSTROMO identity;
-- structured cognitive-output validation;
-- provider status projection;
-- MANOJOS3 entrypoint descriptors and semantic projection.
+Source Skills: `skills/<name>/SKILL.md` — 11 canonical Skills.
 
-### Native LibreChat surfaces to reuse
-- Agents;
-- Artifacts;
-- MCP/MCP UI;
-- ToolApproval;
-- Skills;
-- Subagents;
-- background tool calls;
-- Files/RAG;
-- Speech;
-- resumable streams;
-- ACL;
-- SidePanel.
+Preferred distribution: GitHub Skill Sync.
 
-### SOURCE additions CURRENT
-- Intent Interpreter;
-- Presentation Planner;
-- Tentaculo Companion (cognitive, authority=false);
-- public-research policy using Web Search/read before browser interaction;
-- Agent Events delivery envelope for MANOJOS3/VX13/ORACULO notifications;
-- Model Registry with broad zero-cost candidate catalog, active pool and reserve pool;
-- GitHub Skill Sync catalog for intent/visualization/research/event triage;
-- provider status -> Tentaculo HUD bridge;
-- NostromoTargetGateway implementation;
-- exact-head source and pinned-upstream overlay revalidation: PASS.
+Filesystem fallback:
+`DEPLOYMENT_SKILLS_DIR=./skill`.
 
-### Live/external gates
-- real Cloudflare AI Gateway binding;
-- zero-cost/readiness/capability canaries;
-- MANOJOS3 R0 binding/readback/receipt from LibreChat;
-- mobile/backend live verification;
-- VX13 runtime/frontdoor binding;
-- ORACULO live advisory path;
-- first governed R2 material canary.
+Agent Plugin:
+`plugins/vx-nostromo` source;
+runtime `DEPLOYMENT_PLUGINS_DIR=./plugin`;
+persistent data `DEPLOYMENT_PLUGIN_DATA_DIR=./data/plugins`;
+command hooks disabled unless explicitly enabled.
 
-## Target boundary
+Extension order:
+`NATIVE -> CONFIG -> SKILL -> MCP/ACTION -> AGENT_PLUGIN -> THIN_WRAPPER -> CUSTOM_SOURCE`.
 
-MANOJOS3 current path:
-`LibreChat -> NostromoTargetGateway -> MANOJOS3 adapter -> MANOJOS3 MCP -> target governance/readback/receipt`.
+## Installation decision
 
-VX13 future path:
-`LibreChat -> NostromoTargetGateway -> VX13 adapter -> Tentaculo Link/canonical VX13 frontdoor -> VX13 authority chain`.
+Documented candidates:
+- Docker Compose — official default/reproducible candidate.
+- npm — single-host low-overhead candidate, only if Lenovo measurement wins.
+- Helm — not baseline for single Lenovo.
+- remote hosting — not baseline.
 
-MCP therefore stays below the target gateway as a MANOJOS3-specific transport. LibreChat UX does not depend on every future target speaking MCP.
+Single LibreChat instance uses in-memory resumable streams.
+Redis is not needed solely for PC/mobile continuity until multi-instance/horizontal scaling.
 
-## Safety and truth invariants
+## Live/external gaps in order
+
+1. Cloudflare AI Gateway LIVE provider/account probes + seven route canaries + rollback.
+2. GitHub Skill Sync LIVE.
+3. Tailscale Serve mobile/reconnect/revoke/rollback.
+4. Web Research canary.
+5. Agent Events canary and mobile notifications.
+6. Out-of-band recovery.
+7. MANOJOS3 R0, ORÁCULO advisory, VX13 when canonical.
+8. First governed material canary.
+
+## Truth invariants
 
 - connection != readiness != work != evidence;
 - provider READY != target READY;
-- work finished != material verified;
+- event != authorization != receipt;
 - ToolApproval != target authorization;
-- model output never mints authorization, PASS, receipt or evidence;
-- provider failover/reconnect/device handoff never replays a material request;
-- UNKNOWN_OUTCOME requires target readback before retry;
+- model output never mints authorization/PASS/receipt/evidence;
 - AUTO/BOTH never mutate;
-- no secrets in repo/Drive/HUD/receipts;
-- local model is optional;
-- no automatic paid fallback.
+- reconnect/failover/device handoff never replays material work;
+- no secrets in repo/Drive/HUD/Skills;
+- UI/Tentáculo/Artifact/tunnel/Worker are authority=false.
 
-## Current gaps in order
+## Living documentation
 
-1. Cloudflare AI Gateway LIVE binding + Model Registry discovery + semantic-route canaries;
-2. native Web Search/research canary;
-3. GitHub Skill Sync canary;
-4. Agent Events notification canary;
-5. private/mobile transport canary and reconnect/rollback proof;
-6. MANOJOS3 R0 only after the parallel LibreChat stack is frozen;
-7. VX13 adapter remains feature-gated until VX13 runtime/frontdoor is canonical;
-8. first governed material canary only after the previous gates.
+Drive package:
+00 Entry/CURRENT/Bootstrap -> 10 Design -> 20 Operations -> 30 Closeout/Handoff -> 40 Map/Coverage.
 
-## Proof boundary
+The matrix remains the detailed capability/IDEA decision register.
 
-Latest SOURCE-bearing full suite: `PASS` — GitHub Actions run `37563556215`.
-Latest SOURCE-bearing pinned-upstream overlay build/install/uninstall: `PASS` — GitHub Actions run `37563556215`.
-Cloudflare live: `NO_VERIFICADO`.
-MANOJOS3 touched by this LibreChat consolidation: `NO`.
-VX13 touched by this LibreChat consolidation: `NO`.
-
-
-## Purpose consolidation — 2026-10-07
-
-LibreChat VX / NOSTROMO is now explicitly optimized for conversation, intent interpretation, referential understanding, unified visualization, public research and event/notification coordination.
-
-Dedicated coding specialization was removed from the inference identity. NOSTROMO can understand coding-related requests but translates them to the appropriate specialist target instead of acting as a coding worker.
-
-Internal semantic profiles are now:
-`RAPIDO / NORMAL / PENSAR / INVESTIGAR / VISUALIZAR / CONTEXTO_LARGO / VISION`.
-
-Tentaculo Companion is a lightweight cognitive helper for read-only observation, research, resource navigation, visual composition and event triage. It remains authority=false.
-
-Canonical Skills are distributed directly from GitHub Skill Sync. Inbound external notifications use LibreChat Agent Events. Public research uses native Web Search/read before browser interaction.
-
-Cloudflare AI Gateway uses a broad zero-cost candidate registry with an active target of 6 admitted models per profile and additional admitted reserve candidates. Route changes are versioned, canaried and rollback-capable.
-
-Parallel transport remains isolated from MANOJOS3 until LibreChat LIVE canaries pass.
-
-## Living-document and execution order
-
-The canonical Drive living package is:
-00 Entry/CURRENT/Bootstrap → 10 Design → 20 Operations → 30 Closeout/Handoff → 40 Map/Coverage.
-
-Current implementation order is:
-AI Gateway LIVE → Skill Sync → Tailscale/mobile → Web Research → Agent Events → Recovery → target R0 → first governed material canary.
-
-MANOJOS3 transport convergence remains a separate deferred item and is not part of the current LibreChat deployment.
+MANOJOS3 transport convergence remains a separate `DEFERRED / DO_NOT_TOUCH_NOW` item.
