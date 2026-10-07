@@ -1,0 +1,81 @@
+{
+  "schema": "libre-chat-vx.llm-bootstrap.v1",
+  "status": "SOURCE_CANON_LIVE_DISCOVERY_PENDING",
+  "gateway": "librechat-vx-nostromo",
+  "profiles": {
+    "RAPIDO": {
+      "provider_preference": [
+        "GROQ",
+        "CLOUDFLARE_WORKERS_AI",
+        "GOOGLE_AI_STUDIO_GEMINI"
+      ],
+      "model_selection": "LIVE_CAPABILITY_AND_QUOTA_DISCOVERY"
+    },
+    "NORMAL": {
+      "provider_preference": [
+        "GOOGLE_AI_STUDIO_GEMINI",
+        "GROQ",
+        "CLOUDFLARE_WORKERS_AI"
+      ],
+      "model_selection": "LIVE_CAPABILITY_AND_QUOTA_DISCOVERY"
+    },
+    "PENSAR": {
+      "provider_preference": [
+        "GOOGLE_AI_STUDIO_GEMINI",
+        "MISTRAL",
+        "OPENROUTER_FREE"
+      ],
+      "model_selection": "LIVE_REASONING_CAPABILITY_DISCOVERY"
+    },
+    "INVESTIGAR": {
+      "provider_preference": [
+        "GOOGLE_AI_STUDIO_GEMINI",
+        "CLOUDFLARE_WORKERS_AI",
+        "MISTRAL"
+      ],
+      "model_selection": "LIVE_TOOLS_CONTEXT_DISCOVERY"
+    },
+    "VISUALIZAR": {
+      "provider_preference": [
+        "GOOGLE_AI_STUDIO_GEMINI",
+        "CLOUDFLARE_WORKERS_AI",
+        "OPENROUTER_FREE"
+      ],
+      "model_selection": "LIVE_STRUCTURED_VISUAL_CAPABILITY_DISCOVERY"
+    },
+    "CONTEXTO_LARGO": {
+      "provider_preference": [
+        "GOOGLE_AI_STUDIO_GEMINI",
+        "MISTRAL",
+        "OPENROUTER_FREE"
+      ],
+      "model_selection": "LIVE_CONTEXT_WINDOW_DISCOVERY"
+    },
+    "VISION": {
+      "provider_preference": [
+        "GOOGLE_AI_STUDIO_GEMINI",
+        "CLOUDFLARE_WORKERS_AI",
+        "OPENROUTER_FREE"
+      ],
+      "model_selection": "LIVE_VISION_CAPABILITY_DISCOVERY"
+    }
+  },
+  "active_target_per_profile": 6,
+  "bootstrap_rule": "A profile may start with fewer than six admitted models; never fill slots with paid or unverified candidates merely to reach the target.",
+  "admission": [
+    "ZERO_COST_FRESH",
+    "QUOTA_AVAILABLE",
+    "HEALTH_READY",
+    "CAPABILITY_FIT",
+    "PRIVACY_ALLOWED",
+    "CONTEXT_FIT"
+  ],
+  "mutation": [
+    "CREATE_ROUTE_VERSION",
+    "CANARY",
+    "DEPLOY",
+    "READBACK",
+    "ROLLBACK_IF_NEEDED"
+  ],
+  "admin_token_in_librechat": false
+}
