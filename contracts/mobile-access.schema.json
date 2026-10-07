@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "libre-chat-vx.mobile-access.schema.json",
+  "type": "object",
+  "required": [
+    "mode",
+    "backendReachable",
+    "authenticated"
+  ],
+  "properties": {
+    "mode": {
+      "enum": [
+        "LOCAL",
+        "TAILSCALE_PRIVATE",
+        "CLOUDFLARE_ACCESS_PUBLIC"
+      ]
+    },
+    "backendReachable": {
+      "type": "boolean"
+    },
+    "authenticated": {
+      "type": "boolean"
+    },
+    "accessIdentityVerified": {
+      "type": "boolean"
+    },
+    "tailnetAuthorized": {
+      "type": "boolean"
+    },
+    "publicEdgeEnabled": {
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": false
+}
