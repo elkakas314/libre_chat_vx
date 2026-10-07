@@ -3,6 +3,7 @@ import type { TruthLanes } from './truthLanes';
 import type { TentaclePresentationState } from './tentaclePresentation';
 import type { CockpitWindow } from './windowRouter';
 import type { ProviderHudProjection } from './providerStatusHud';
+import type { TentacleCompanionDescriptor } from '../tentacle/companion';
 
 export interface TentacleHudModel {
   scope: TargetScope;
@@ -12,6 +13,7 @@ export interface TentacleHudModel {
   windows: CockpitWindow[];
   evidenceFresh: boolean;
   inference?: ProviderHudProjection;
+  companion?: TentacleCompanionDescriptor;
   authority: false;
 }
 
@@ -40,5 +42,4 @@ export function moveTentacleHudScope(
   };
 }
 
-/** Compatibility alias: this changes visual/read scope, not target authority. */
 export const moveTentacleHud = moveTentacleHudScope;
