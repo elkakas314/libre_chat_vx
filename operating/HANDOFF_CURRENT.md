@@ -36,7 +36,8 @@ Semantic profiles:
 - RAPIDO;
 - NORMAL;
 - PENSAR;
-- CODIGO;
+- INVESTIGAR;
+- VISUALIZAR;
 - CONTEXTO_LARGO;
 - VISION.
 
@@ -64,7 +65,7 @@ MANOJOS3 LiteLLM remains internal/advisory/OpenCode/compatibility infrastructure
 - ArtifactDock and evidence/receipt projection;
 - Interactive Artifact -> UiIntent;
 - PlanGraph, ActiveFlow and TargetRun projections;
-- Files/Audio/Browser/Build/Background panels;
+- Files/Audio/Browser/external-work/Background panels;
 - mobile/recovery semantics;
 - resumable UI/conversation streams without material replay;
 - semantic inference profiles;
@@ -89,13 +90,17 @@ MANOJOS3 LiteLLM remains internal/advisory/OpenCode/compatibility infrastructure
 - ACL;
 - SidePanel.
 
-### Partial / open source work
-- provider status -> live Tentaculo HUD bridge;
+### SOURCE additions CURRENT
+- Intent Interpreter;
+- Presentation Planner;
+- Tentaculo Companion (cognitive, authority=false);
+- public-research policy using Web Search/read before browser interaction;
+- Agent Events delivery envelope for MANOJOS3/VX13/ORACULO notifications;
+- Model Registry with broad zero-cost candidate catalog, active pool and reserve pool;
+- GitHub Skill Sync catalog for intent/visualization/research/event triage;
+- provider status -> Tentaculo HUD bridge;
 - NostromoTargetGateway implementation;
-- semantic Model Specs -> Cloudflare dynamic-route wiring;
-- AUDIO route/canary;
-- exact-head source revalidation;
-- pinned upstream overlay revalidation.
+- exact-head source and pinned-upstream overlay revalidation: PASS.
 
 ### Live/external gates
 - real Cloudflare AI Gateway binding;
@@ -132,19 +137,37 @@ MCP therefore stays below the target gateway as a MANOJOS3-specific transport. L
 
 ## Current gaps in order
 
-1. exact-HEAD source tests;
-2. provider-status -> HUD source bridge;
-3. NostromoTargetGateway source facade;
-4. pinned upstream overlay/build revalidation;
-5. Cloudflare live binding + semantic routes + zero-cost proof;
-6. MANOJOS3 R0 through target adapter;
+1. Cloudflare AI Gateway LIVE binding + Model Registry discovery + semantic-route canaries;
+2. native Web Search/research canary;
+3. GitHub Skill Sync canary;
+4. Agent Events notification canary;
+5. private/mobile transport canary and reconnect/rollback proof;
+6. MANOJOS3 R0 only after the parallel LibreChat stack is frozen;
 7. VX13 adapter remains feature-gated until VX13 runtime/frontdoor is canonical;
 8. first governed material canary only after the previous gates.
 
 ## Proof boundary
 
-Current-head full test suite: `NOT_RUN`.
-Overlay live/build: `NOT_RUN`.
+Current-head full test suite: `PASS` — GitHub Actions run `37562733264`.
+Pinned-upstream overlay build/install/uninstall: `PASS` — GitHub Actions run `37562733264`.
 Cloudflare live: `NO_VERIFICADO`.
 MANOJOS3 touched by this LibreChat consolidation: `NO`.
 VX13 touched by this LibreChat consolidation: `NO`.
+
+
+## Purpose consolidation — 2026-10-07
+
+LibreChat VX / NOSTROMO is now explicitly optimized for conversation, intent interpretation, referential understanding, unified visualization, public research and event/notification coordination.
+
+Dedicated coding specialization was removed from the inference identity. NOSTROMO can understand coding-related requests but translates them to the appropriate specialist target instead of acting as a coding worker.
+
+Internal semantic profiles are now:
+`RAPIDO / NORMAL / PENSAR / INVESTIGAR / VISUALIZAR / CONTEXTO_LARGO / VISION`.
+
+Tentaculo Companion is a lightweight cognitive helper for read-only observation, research, resource navigation, visual composition and event triage. It remains authority=false.
+
+Canonical Skills are distributed directly from GitHub Skill Sync. Inbound external notifications use LibreChat Agent Events. Public research uses native Web Search/read before browser interaction.
+
+Cloudflare AI Gateway uses a broad zero-cost candidate registry with an active target of 6 admitted models per profile and additional admitted reserve candidates. Route changes are versioned, canaried and rollback-capable.
+
+Parallel transport remains isolated from MANOJOS3 until LibreChat LIVE canaries pass.
