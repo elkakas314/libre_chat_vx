@@ -1,12 +1,12 @@
 {
   "schema": "libre-chat-vx.current.v2",
-  "status": "SOURCE_CORE_COMPLETE_LIVE_BINDINGS_PENDING",
+  "status": "SOURCE_CORE_AND_TRANSPORT_CANON_COMPLETE_LIVE_BINDINGS_PENDING",
   "repository": "elkakas314/libre_chat_vx",
   "branch": "handoff_current_bootstrps",
-  "source_evidence_cutoff_head": "db9919f73be80184385b3084b7ac0865feebabc5",
+  "source_evidence_cutoff_head": "ffd31f79abc1f56433d05d33e5bdbe65b2dd5690",
   "source_ci": {
     "workflow": "source-check",
-    "run_id": 37563556215,
+    "run_id": 37667119803,
     "conclusion": "SUCCESS"
   },
   "upstream": {
@@ -22,6 +22,7 @@
   },
   "inference": {
     "gateway": "CLOUDFLARE_AI_GATEWAY",
+    "gateway_count": 1,
     "semantic_profiles": [
       "RAPIDO",
       "NORMAL",
@@ -31,7 +32,17 @@
       "CONTEXTO_LARGO",
       "VISION"
     ],
+    "semantic_route_count": 7,
     "model_registry": "IMPLEMENTED_SOURCE",
+    "provider_bootstrap": [
+      "CLOUDFLARE_WORKERS_AI",
+      "GROQ",
+      "GOOGLE_AI_STUDIO_GEMINI"
+    ],
+    "provider_reserve": [
+      "MISTRAL",
+      "OPENROUTER_FREE"
+    ],
     "paid_fallback_allowed": false,
     "live_status": "NO_VERIFICADO"
   },
@@ -65,10 +76,23 @@
     "github_skill_catalog": "IMPLEMENTED_SOURCE",
     "canonical_skills": 11,
     "agent_plugin": "EXPERIMENTAL_OPTIONAL",
-    "parallel_transport": "SOURCE_PREPARED"
+    "parallel_transport": "SOURCE_CANON_COMPLETE",
+    "transport_registry": "IMPLEMENTED_SOURCE",
+    "mobile_remote_access": "IMPLEMENTED_SOURCE",
+    "extension_registry": "IMPLEMENTED_SOURCE",
+    "llm_bootstrap": "IMPLEMENTED_SOURCE"
   },
   "transport": {
     "local_web": "127.0.0.1:3080",
+    "cloudflare_ai_gateways": 1,
+    "dynamic_routes": 7,
+    "cloudflare_workers_required": 0,
+    "cloudflare_workers_optional_max_without_review": 1,
+    "cloudflare_tunnels_required": 0,
+    "cloudflare_tunnel_optional_public": 1,
+    "tailscale_serve_private_routes": 1,
+    "tailscale_services_required": 0,
+    "tailscale_funnel": 0,
     "private_remote": "TAILSCALE_SERVE_NOT_DEPLOYED",
     "public_remote_optional": "CLOUDFLARE_TUNNEL_ACCESS_NOT_DEPLOYED",
     "skill_sync": "SOURCE_CONFIG_READY_LIVE_NOT_VERIFIED",
