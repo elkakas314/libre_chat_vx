@@ -59,9 +59,16 @@ export * from './llm/nostromoHybrid';
 export * from './llm/responseContract';
 export * from './llm/inferenceGateway';
 export * from './llm/cloudflareAiGateway';
+export * from './llm/modelRegistry';
 export * from './llm/nostromoIdentity';
 export * from './llm/structuredOutput';
 export * from './llm/providerStatus';
+
+export * from './intent/intentInterpreter';
+export * from './presentation/presentationPlanner';
+export * from './research/researchPolicy';
+export * from './events/agentEvents';
+export * from './tentacle/companion';
 
 export * from './librechat/nativeSurfaces';
 export * from './librechat/nativeSurfaceBinding';
