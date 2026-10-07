@@ -6,104 +6,96 @@ Authority: false
 
 ## Decision
 
-LibreChat VX will be validated on a completely parallel transport stack before any MANOJOS3 transport is changed.
+LibreChat VX is validated on a completely parallel transport stack before any MANOJOS3 transport is changed.
 
 No existing MANOJOS3 tunnel, Worker, hostname, port, Action route, MCP listener, Tailscale Serve/Funnel entry or host-control route is reused during this phase.
 
-## Architecture
+## Planes
 
 ```text
                          LIBRECHAT VX PARALLEL STACK
 
-Local:
-Browser / app
-   -> LibreChat VX :3080
+Local web:
+Browser/app -> LibreChat VX :3080
 
 Private remote:
-Tailnet client
-   -> Tailscale Serve [LibreChat-owned]
-   -> 127.0.0.1:3080
+Tailnet client -> Tailscale Serve [LibreChat-owned] -> :3080
 
 Optional public remote:
-Browser
-   -> Cloudflare Access [LibreChat-owned app/policy]
-   -> Cloudflare Tunnel: librechat-vx-web
-   -> 127.0.0.1:3080
+Browser -> Cloudflare Access -> dedicated CF Tunnel librechat-vx-web -> :3080
 
 Inference:
-LibreChat VX
-   -> Cloudflare AI Gateway: LibreChat-owned gateway
-   -> dynamic/nostromo-*
-   -> admitted model/provider
+LibreChat VX -> Cloudflare AI Gateway -> dynamic/nostromo-* -> admitted LLM pool
 
-Target plane during parallel validation:
-LibreChat VX TargetGateway
-   -> fixtures/mocks only
-   -> NO MANOJOS3 production binding
+Skills:
+LibreChat VX -> outbound HTTPS -> GitHub Skill Sync -> elkakas314/libre_chat_vx/skills
+
+Public research:
+LibreChat VX -> native Web Search/scrape providers
+
+Inbound notifications:
+MANOJOS3/VX13/ORACULO adapter
+  -> Agent Events endpoint on the same LibreChat web plane
+  -> Tentáculo event triage
+
+Target actions during parallel validation:
+fixtures/mocks only -> NO MANOJOS3 production binding
 ```
 
-## Why this is safer
+## Important separations
 
-- no blast radius on the current MANOJOS3 Action/plugin/MCP transport;
-- DNS, tunnel tokens and policies can be changed without affecting MANOJOS3;
-- LibreChat can be installed, upgraded, rolled back and mobile-tested independently;
-- Cloudflare AI Gateway remains a separate inference plane;
-- Tailscale Serve remains private and ACL-controlled;
-- a future MANOJOS3 migration becomes a single deliberate adapter/binding change instead of a transport rebuild.
+- AI Gateway is inference routing, not a tunnel.
+- GitHub Skill Sync is outbound HTTPS and needs no dedicated tunnel.
+- Agent Events use the LibreChat application surface; do not create a tunnel per source.
+- Tailscale Serve is the baseline private path; Funnel remains off.
+- Cloudflare Tunnel + Access is optional public web exposure.
+- Target actions remain separate from inference and event notification.
 
-## Cloudflare design
+## LLM router
 
-Cloudflare Tunnel is outbound-only from the LibreChat host and should use a dedicated tunnel identity and hostname. The public path is not promoted until Cloudflare Access protects it.
+The model catalog may contain many zero-cost candidates.
 
-Do not use the existing MANOJOS3 Cloudflare tunnel or Action Worker.
+Each semantic profile activates a bounded healthy subset (target 6 in source config) and keeps other admitted candidates in reserve.
 
-AI Gateway is a distinct resource. Dynamic route versions can be changed/rolled back without changing the web tunnel.
+Route updates use versioned Cloudflare Dynamic Routes:
+1. create/update candidate registry;
+2. build a new route version;
+3. canary;
+4. deploy;
+5. readback;
+6. rollback to an earlier version if needed.
 
-## Tailscale design
+LibreChat may propose a route change but should not hold a broad Cloudflare administration credential.
 
-Tailscale Serve is the preferred private path. Funnel is intentionally disabled for the baseline because Funnel publishes to the broader Internet.
+## Skills
 
-The LibreChat Serve configuration must be captured separately so it can be removed without resetting unrelated services.
+Canonical Skills live in GitHub and are mirrored by LibreChat GitHub Skill Sync.
 
-## Isolation contract
+A Worker is not required to keep Skills updated.
 
-Reserved MANOJOS3 ports:
-- 8787
-- 8790
-- 8791
-- 4000
-- 8931
-- 9223
+Repository mutation, if later automated, remains a separate governed path with CI/readback.
 
-LibreChat VX baseline:
-- 3080 web/backend.
+## Recovery
 
-No production target binding exists in this phase.
+LibreChat cannot be its own only recovery path.
 
-## Canary sequence
+Out-of-band recovery should remain available through host service management and private administrative access.
 
-1. validate repository isolation contract;
+The existing ChatGPT/MANOJOS3 Action can later remain as compatibility/recovery, but is not changed or depended on during the parallel LibreChat phase.
+
+## Promotion order
+
+1. repository isolation validation;
 2. build/test LibreChat VX;
-3. run LibreChat locally and prove health/login/chat shell;
-4. enable a LibreChat-owned Tailscale Serve route and prove private access;
-5. optionally create a dedicated Cloudflare Tunnel + Access app and prove authenticated web access;
-6. connect Cloudflare AI Gateway and prove semantic routes, zero-cost guard and rollback;
-7. verify mobile/reconnect and no material replay;
-8. freeze topology/readback;
-9. only then prepare the MANOJOS3 adapter migration.
+3. local LibreChat health/login/chat;
+4. private Tailscale Serve canary;
+5. optional Cloudflare Tunnel + Access canary;
+6. AI Gateway model-pool canary;
+7. Web Search/research canary;
+8. Skill Sync canary;
+9. Agent Events notification canary;
+10. mobile/reconnect/rollback;
+11. freeze evidence;
+12. only then design MANOJOS3 cutover.
 
-## Rollback
-
-Each plane is independently removable:
-- disable/remove the LibreChat Tailscale Serve route;
-- stop the LibreChat cloudflared process/tunnel;
-- disable the LibreChat Access app/hostname;
-- revert AI Gateway route version;
-- stop LibreChat VX.
-
-No rollback step touches MANOJOS3.
-
-## LIVE truth
-
-Nothing in this document means a tunnel has been created or enabled.
-The stack remains LIVE_NOT_DEPLOYED until host/account readback proves otherwise.
+Nothing in this document means a tunnel or LIVE binding has been created.
