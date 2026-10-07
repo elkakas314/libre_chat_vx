@@ -1,0 +1,91 @@
+{
+  "schema": "libre-chat-vx.parallel-transport.v1",
+  "status": "SOURCE_PREPARED_LIVE_NOT_DEPLOYED",
+  "authority": false,
+  "purpose": "Isolated LibreChat VX transport stack for development, canary and pre-production validation before any MANOJOS3 cutover.",
+  "invariants": {
+    "reuse_manojos3_tunnels": false,
+    "reuse_manojos3_workers": false,
+    "reuse_manojos3_hostnames": false,
+    "reuse_manojos3_ports": false,
+    "modify_manojos3": false,
+    "tailscale_funnel_default": false,
+    "public_access_requires_identity_gate": true,
+    "ai_gateway_is_not_tunnel": true,
+    "transport_is_not_authority": true
+  },
+  "reserved_manojos3": {
+    "ports": [
+      8787,
+      8790,
+      8791,
+      4000,
+      8931,
+      9223
+    ],
+    "resource_name_fragments": [
+      "manojos3",
+      "manojos2-action-proxy",
+      "host-control"
+    ],
+    "note": "Guard only. These resources are not read, modified, proxied or reused by the LibreChat VX parallel stack."
+  },
+  "librechat_service": {
+    "bind_host": "127.0.0.1",
+    "port": 3080,
+    "health_path": "/health",
+    "owner": "LIBRECHAT_VX"
+  },
+  "private_web": {
+    "kind": "TAILSCALE_SERVE",
+    "enabled_by_default": false,
+    "public_internet": false,
+    "target": "http://127.0.0.1:3080",
+    "funnel": false,
+    "acl_required": true,
+    "resource_alias": "librechat-vx-private"
+  },
+  "public_web": {
+    "kind": "CLOUDFLARE_TUNNEL_ACCESS",
+    "enabled_by_default": false,
+    "tunnel_name": "librechat-vx-web",
+    "hostname_env": "LIBRECHAT_VX_PUBLIC_HOSTNAME",
+    "origin": "http://127.0.0.1:3080",
+    "access_required": true,
+    "tunnel_token_env": "LIBRECHAT_VX_CF_TUNNEL_TOKEN",
+    "credentials_persisted_in_repo": false
+  },
+  "inference": {
+    "kind": "CLOUDFLARE_AI_GATEWAY",
+    "gateway_id_env": "CLOUDFLARE_AI_GATEWAY_ID",
+    "gateway_resource_hint": "librechat-vx-nostromo",
+    "traverses_cloudflare_tunnel": false,
+    "semantic_routes": [
+      "dynamic/nostromo-rapido",
+      "dynamic/nostromo-normal",
+      "dynamic/nostromo-pensar",
+      "dynamic/nostromo-codigo",
+      "dynamic/nostromo-contexto-largo",
+      "dynamic/nostromo-vision"
+    ],
+    "paid_fallback_allowed": false,
+    "authentication_required": true
+  },
+  "target_plane": {
+    "mode": "ISOLATED_CANARY_ONLY",
+    "production_target_binding": false,
+    "manojos3_binding": false,
+    "note": "TargetGateway is tested with source fixtures/mocks until a deliberate later MANOJOS3 migration."
+  },
+  "promotion_gates": [
+    "PARALLEL_CONFIG_VALIDATE",
+    "LIBRECHAT_LOCAL_HEALTH",
+    "TAILSCALE_SERVE_PRIVATE_CANARY_IF_USED",
+    "CLOUDFLARE_TUNNEL_ACCESS_CANARY_IF_USED",
+    "CLOUDFLARE_AI_GATEWAY_CANARY",
+    "MOBILE_RECONNECT_CANARY",
+    "ROLLBACK_CANARY",
+    "NO_MANOJOS3_RESOURCE_COLLISION"
+  ],
+  "live": "NO_VERIFICADO"
+}

@@ -1,0 +1,15 @@
+# LibreChat VX dedicated Cloudflare Tunnel template.
+# SOURCE TEMPLATE ONLY. Do not reuse MANOJOS3 tunnel IDs, tokens, hostnames or routes.
+#
+# Recommended runtime mode for a remotely managed tunnel:
+#   cloudflared tunnel run --token "$LIBRECHAT_VX_CF_TUNNEL_TOKEN"
+#
+# If using a locally managed tunnel, replace the placeholders below outside Git.
+
+tunnel: ${LIBRECHAT_VX_TUNNEL_ID}
+credentials-file: ${LIBRECHAT_VX_TUNNEL_CREDENTIALS_FILE}
+
+ingress:
+  - hostname: ${LIBRECHAT_VX_PUBLIC_HOSTNAME}
+    service: http://127.0.0.1:3080
+  - service: http_status:404
