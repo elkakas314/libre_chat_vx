@@ -42,8 +42,9 @@ function route(overrides:Partial<ProviderRoute>={}):ProviderRoute {
   };
 }
 
-test('semantic profile selection is provider agnostic', () => {
-  assert.equal(selectSemanticProfile({needsCoding:true}),'CODIGO');
+test('semantic profile selection follows LibreChat comprehension and visualization purpose', () => {
+  assert.equal(selectSemanticProfile({needsResearch:true}),'INVESTIGAR');
+  assert.equal(selectSemanticProfile({needsVisualization:true}),'VISUALIZAR');
   assert.equal(selectSemanticProfile({needsVision:true}),'VISION');
   assert.equal(selectSemanticProfile({preferFast:true}),'RAPIDO');
   assert.equal(selectSemanticProfile({}),'NORMAL');
@@ -88,7 +89,7 @@ test('Cloudflare binding never returns the token value and requires BYOK-only de
   assert.equal(binding.state,'CONFIGURED_SOURCE_ONLY');
   assert.equal(binding.unifiedBillingRequired,false);
   assert.equal(JSON.stringify(binding).includes('super-secret-token'),false);
-  assert.equal(buildCloudflareChatRequest('VISION',[]).model,'dynamic/nostromo-vision');
+  assert.equal(buildCloudflareChatRequest('VISUALIZAR',[]).model,'dynamic/nostromo-visualizar');
 });
 
 test('provider status exposes inference truth only and never authority', () => {
@@ -98,7 +99,6 @@ test('provider status exposes inference truth only and never authority', () => {
   assert.equal(view.authority,false);
   assert.equal(view.identityProfileVersion,'1.0.0');
 });
-
 
 test('InferenceGateway contract selects semantic profile and resolves an admitted route', () => {
   const gateway=new NostromoInferenceGateway();
