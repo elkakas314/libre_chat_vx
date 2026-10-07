@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "libre-chat-vx.extension-package.schema.json",
+  "type": "object",
+  "required": [
+    "id",
+    "mechanism",
+    "authority",
+    "sourcePath"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "mechanism": {
+      "enum": [
+        "NATIVE",
+        "CONFIG",
+        "SKILL",
+        "MCP",
+        "ACTION",
+        "AGENT_PLUGIN",
+        "THIN_WRAPPER",
+        "CUSTOM_SOURCE"
+      ]
+    },
+    "authority": {
+      "const": false
+    },
+    "sourcePath": {
+      "type": "string"
+    },
+    "deploymentPath": {
+      "type": "string"
+    },
+    "restartRequired": {
+      "type": "boolean"
+    },
+    "featureGated": {
+      "type": "boolean"
+    },
+    "rollback": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}
