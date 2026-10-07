@@ -1,6 +1,6 @@
 {
-  "schema": "libre-chat-vx.skill-catalog.v1",
-  "observed_at": "2026-10-06",
+  "schema": "libre-chat-vx.skill-catalog.v2",
+  "observed_at": "2026-10-07",
   "canonical_path": "skills",
   "authority": false,
   "distribution": {
@@ -9,7 +9,11 @@
     "optional_bundle": "AGENT_PLUGINS_EXPERIMENTAL"
   },
   "catalog": [
-    {"name":"nostromo-core","scope":"GLOBAL","role":"COCKPIT_BEHAVIOR","authority":false},
+    {"name":"nostromo-core","scope":"GLOBAL","role":"CONVERSATIONAL_COCKPIT","authority":false},
+    {"name":"nostromo-intent-translation","scope":"GLOBAL","role":"INTENT_INTERPRETATION","authority":false},
+    {"name":"nostromo-visualization","scope":"GLOBAL","role":"VISUAL_PRESENTATION","authority":false},
+    {"name":"nostromo-research","scope":"GLOBAL","role":"PUBLIC_RESEARCH","authority":false},
+    {"name":"nostromo-event-triage","scope":"GLOBAL","role":"EVENT_TRIAGE","authority":false},
     {"name":"nostromo-evidence-first","scope":"GLOBAL","role":"TRUTH_DISCIPLINE","authority":false},
     {"name":"nostromo-resource-navigation","scope":"GLOBAL","role":"RESOURCE_NAVIGATION","authority":false},
     {"name":"nostromo-tool-budget","scope":"GLOBAL","role":"LOW_POWER_TOOL_SELECTION","authority":false},
@@ -22,6 +26,8 @@
     "NO_SECRETS_IN_REPO",
     "NATIVE_OR_CONFIG_BEFORE_CUSTOM_CODE",
     "MCP_OR_ACTION_BEFORE_CORE_PATCH",
-    "LAZY_AND_DEFERRED_BY_DEFAULT"
+    "LAZY_AND_DEFERRED_BY_DEFAULT",
+    "LIBRECHAT_INTERPRETS_AND_PRESENTS; TARGETS_EXECUTE",
+    "GITHUB_SKILL_SYNC_DIRECT; NO_WORKER_REQUIRED"
   ]
 }
