@@ -1,88 +1,99 @@
 {
-  "schema": "libre-chat-vx.current.v1",
-  "status": "SOURCE_ONLY_OPERATING_CANON_RECONCILER_PENDING_LIVE_REVALIDATION",
+  "schema": "libre-chat-vx.current.v2",
+  "status": "SOURCE_CORE_COMPLETE_LIVE_BINDINGS_PENDING",
   "repository": "elkakas314/libre_chat_vx",
-  "operating_canon": "LIBRECHAT_OPERATING_CANON_V1",
-  "operating_mode": "SOURCE_ONLY",
-  "operating_snapshot": "source-2026-10-03-2c29d4a1",
-  "source_evidence_cutoff_head": "2c29d4a109aab72ec04b9792a30409da933180bb",
-  "active_llm_architecture": "NOSTROMO_HYBRID",
-  "active_llm_architecture_count": 1,
-  "local_voice": {
-    "alias": "nostromo-voice-local",
-    "size_target": "1-2GB",
-    "lifecycle": "OPTIONAL_ON_DEMAND",
-    "model_selection": "OPTIONAL_DEPLOYMENT_BENCHMARK_REQUIRED_ONLY_IF_ENABLED",
-    "required": false
+  "branch": "handoff_current_bootstrps",
+  "source_evidence_cutoff_head": "db9919f73be80184385b3084b7ac0865feebabc5",
+  "source_ci": {
+    "workflow": "source-check",
+    "run_id": 37563556215,
+    "conclusion": "SUCCESS"
   },
-  "reasoning": {
-    "owner": "LIBRECHAT_NOSTROMO_VIA_CLOUDFLARE_AI_GATEWAY",
-    "primary_gateway": "CLOUDFLARE_AI_GATEWAY",
-    "gateway_authority": false,
-    "semantic_profiles": ["RAPIDO", "NORMAL", "PENSAR", "CODIGO", "CONTEXTO_LARGO", "VISION"],
-    "manojos3_litellm_role": "INTERNAL_ADVISORY_COMPATIBILITY",
+  "upstream": {
+    "repository": "LibreChat-AI/LibreChat",
+    "commit": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
+    "overlay_validation": "PASS"
+  },
+  "product_role": {
+    "identity": "NOSTROMO",
+    "purpose": "CONVERSATION_INTENT_INTERPRETATION_VISUALIZATION_RESEARCH_COORDINATION",
+    "coding_specialist": false,
+    "authority": false
+  },
+  "inference": {
+    "gateway": "CLOUDFLARE_AI_GATEWAY",
+    "semantic_profiles": [
+      "RAPIDO",
+      "NORMAL",
+      "PENSAR",
+      "INVESTIGAR",
+      "VISUALIZAR",
+      "CONTEXTO_LARGO",
+      "VISION"
+    ],
+    "model_registry": "IMPLEMENTED_SOURCE",
     "paid_fallback_allowed": false,
-    "live_status": "SOURCE_ROUTER_IMPLEMENTED_LIVE_NOT_VERIFIED"
+    "live_status": "NO_VERIFICADO"
   },
   "target_gateway": {
     "name": "NOSTROMO_TARGET_GATEWAY",
     "kind": "IN_PROCESS_FACADE",
     "authority": false,
-    "source_state": "DESIGNED_CURRENT_NOT_IMPLEMENTED",
-    "purpose": "DECOUPLE_LIBRECHAT_UI_FROM_TARGET_TRANSPORT",
+    "source_state": "IMPLEMENTED_SOURCE",
+    "production_binding": false,
     "adapters": {
-      "MANOJOS3": "MANOJOS3_MCP",
-      "VX13": "TENTACULO_LINK_FUTURE"
-    },
-    "forbidden_roles": [
-      "POLICY",
-      "AUTHORIZATION_AUTHORITY",
-      "KERNEL",
-      "EXECUTOR",
-      "VERIFIER",
-      "RECEIPT_AUTHORITY",
-      "LEDGER"
-    ]
+      "MANOJOS3": "IMPLEMENTED_SOURCE_UNCONFIGURED",
+      "VX13": "DESIGNED_GATED",
+      "ORACULO": "ADVISORY"
+    }
   },
-  "action_plane": {
-    "current_target": "MANOJOS3",
-    "owner": "MANOJOS3_MCP",
-    "deployment_env": "MANOJOS3_MCP_URL",
-    "live_status": "PREPARED_UNCONFIGURED_TRANSPORT_PROFILE_NOT_SELECTED",
-    "transport_profiles": {
-      "same_host": "DIRECT_127.0.0.1_8790_MCP",
-      "remote_private": "TAILSCALE_SERVE_PRIVATE_AUTHENTICATED_MCP",
-      "remote_public": "DEDICATED_CLOUDFLARE_MCP_EDGE_TO_MANOJOS3_VPC_TO_TUNNEL_TO_8790"
-    },
-    "legacy_action_proxy_for_librechat": false,
-    "chatgpt_desktop_connector": "LOCAL_PLUGIN_MCP_PATH_EXPECTED_REQUIRES_LIVE_READBACK",
-    "openai_secure_mcp_tunnel": "OPTIONAL_IF_CONFIGURED_NOT_CANONICAL_DESKTOP_LOCAL_HOP"
+  "capabilities": {
+    "matrix_total": 119,
+    "idea_lc_traced": 112,
+    "idea_lc_unmapped": 0,
+    "developed_source": 69,
+    "reuse_upstream": 39,
+    "deferred": 11,
+    "missing_development": 0
   },
-  "manojos3_semantic_bridge": "IMPLEMENTED_SOURCE_AND_DRIVE_SYNCED",
-  "tentacle_hud": {
-    "local_voice_required": false,
-    "free_reasoner_required": false,
-    "source_of_truth": "STRUCTURED_TARGET_READBACK",
-    "inference_source": "CLOUDFLARE_AI_GATEWAY_PROJECTION",
-    "provider_status_live_bridge": "PARTIAL_SOURCE_NOT_CONNECTED"
+  "source_features": {
+    "intent_interpreter": "IMPLEMENTED_SOURCE",
+    "presentation_planner": "IMPLEMENTED_SOURCE",
+    "tentaculo_companion": "IMPLEMENTED_SOURCE",
+    "resource_tree": "IMPLEMENTED_SOURCE",
+    "agent_events_envelope": "IMPLEMENTED_SOURCE",
+    "github_skill_catalog": "IMPLEMENTED_SOURCE",
+    "canonical_skills": 11,
+    "agent_plugin": "EXPERIMENTAL_OPTIONAL",
+    "parallel_transport": "SOURCE_PREPARED"
   },
-  "operating_reconciler": {
-    "target_to_current_direction": "ONE_WAY",
-    "delta": "DERIVED",
-    "ownership": "DERIVED_FROM_LIVE_CLAIM_LEASE_RUN_SCOPE",
-    "proofs": "DERIVED_INDEX_WITH_DEPENDENCY_FINGERPRINT",
-    "living_plan": "DERIVED",
-    "closeout": "PURE_R0"
+  "transport": {
+    "local_web": "127.0.0.1:3080",
+    "private_remote": "TAILSCALE_SERVE_NOT_DEPLOYED",
+    "public_remote_optional": "CLOUDFLARE_TUNNEL_ACCESS_NOT_DEPLOYED",
+    "skill_sync": "SOURCE_CONFIG_READY_LIVE_NOT_VERIFIED",
+    "agent_events": "SOURCE_READY_LIVE_NOT_VERIFIED",
+    "manojos3_transport_migration": "DEFERRED_DO_NOT_TOUCH_NOW"
   },
-  "previous_llm_topology_matrix": "SUPERSEDED",
-  "last_material_tested_commit": "94c632762f7afee7d9fa9d0f0c23c80d7494d2d2",
-  "last_material_test_result": "26_PASS",
-  "current_commit_tests": "NOT_RUN_FEATURE_BRANCH",
-  "live": "NO_VERIFICADO",
+  "live": {
+    "overall": "NO_VERIFICADO",
+    "cloudflare_ai_gateway": "NO_VERIFICADO",
+    "tailscale_serve": "NOT_DEPLOYED",
+    "cloudflare_tunnel_access": "NOT_DEPLOYED",
+    "web_research": "NO_VERIFICADO",
+    "agent_events": "NO_VERIFICADO",
+    "target_bindings": "GATED"
+  },
   "material_verified": false,
   "authority": false,
-  "local_touched_by_current_work": false,
-  "next_action": "SOURCE_TESTS_THEN_UPSTREAM_OVERLAY_THEN_CLOUDFLARE_LIVE_THEN_TARGET_GATEWAY_R0",
-  "source_design_reconciled_at": "2026-10-06",
-  "transport_documentation_gap": "M3-DOC-001_CONFIRMED_M3-DOC-002_003_REQUIRE_LIVE_READBACK"
+  "next_order": [
+    "CLOUDFLARE_AI_GATEWAY_PROVIDER_PROBES_DYNAMIC_ROUTES_CANARY_ROLLBACK",
+    "GITHUB_SKILL_SYNC_LIVE",
+    "TAILSCALE_SERVE_MOBILE_RECONNECT",
+    "WEB_RESEARCH_CANARY",
+    "AGENT_EVENTS_CANARY",
+    "RECOVERY_OUT_OF_BAND",
+    "TARGET_R0_BINDINGS",
+    "FIRST_GOVERNED_MATERIAL_CANARY"
+  ]
 }

@@ -148,8 +148,8 @@ MCP therefore stays below the target gateway as a MANOJOS3-specific transport. L
 
 ## Proof boundary
 
-Latest SOURCE-bearing refactor full suite: `PASS` — GitHub Actions run `37562733264`.
-Latest SOURCE-bearing refactor pinned-upstream overlay build/install/uninstall: `PASS` — GitHub Actions run `37562733264`.
+Latest SOURCE-bearing full suite: `PASS` — GitHub Actions run `37563556215`.
+Latest SOURCE-bearing pinned-upstream overlay build/install/uninstall: `PASS` — GitHub Actions run `37563556215`.
 Cloudflare live: `NO_VERIFICADO`.
 MANOJOS3 touched by this LibreChat consolidation: `NO`.
 VX13 touched by this LibreChat consolidation: `NO`.
@@ -171,3 +171,13 @@ Canonical Skills are distributed directly from GitHub Skill Sync. Inbound extern
 Cloudflare AI Gateway uses a broad zero-cost candidate registry with an active target of 6 admitted models per profile and additional admitted reserve candidates. Route changes are versioned, canaried and rollback-capable.
 
 Parallel transport remains isolated from MANOJOS3 until LibreChat LIVE canaries pass.
+
+## Living-document and execution order
+
+The canonical Drive living package is:
+00 Entry/CURRENT/Bootstrap → 10 Design → 20 Operations → 30 Closeout/Handoff → 40 Map/Coverage.
+
+Current implementation order is:
+AI Gateway LIVE → Skill Sync → Tailscale/mobile → Web Research → Agent Events → Recovery → target R0 → first governed material canary.
+
+MANOJOS3 transport convergence remains a separate deferred item and is not part of the current LibreChat deployment.
