@@ -2,7 +2,8 @@ export type SemanticProfileId =
   | 'RAPIDO'
   | 'NORMAL'
   | 'PENSAR'
-  | 'CODIGO'
+  | 'INVESTIGAR'
+  | 'VISUALIZAR'
   | 'CONTEXTO_LARGO'
   | 'VISION';
 
@@ -31,7 +32,16 @@ export const SEMANTIC_PROFILES: Readonly<Record<SemanticProfileId, SemanticProfi
   RAPIDO: { id:'RAPIDO', label:'Rápido', requiredCapabilities:['TEXT'] },
   NORMAL: { id:'NORMAL', label:'Normal', requiredCapabilities:['TEXT'] },
   PENSAR: { id:'PENSAR', label:'Pensar', requiredCapabilities:['TEXT','STRUCTURED_OUTPUT'] },
-  CODIGO: { id:'CODIGO', label:'Código', requiredCapabilities:['TEXT','STRUCTURED_OUTPUT','TOOLS'] },
+  INVESTIGAR: {
+    id:'INVESTIGAR',
+    label:'Investigar',
+    requiredCapabilities:['TEXT','STRUCTURED_OUTPUT','TOOLS'],
+  },
+  VISUALIZAR: {
+    id:'VISUALIZAR',
+    label:'Visualizar',
+    requiredCapabilities:['TEXT','STRUCTURED_OUTPUT'],
+  },
   CONTEXTO_LARGO: {
     id:'CONTEXTO_LARGO',
     label:'Contexto largo',
@@ -42,7 +52,8 @@ export const SEMANTIC_PROFILES: Readonly<Record<SemanticProfileId, SemanticProfi
 };
 
 export interface InferenceIntentSignals {
-  needsCoding?: boolean;
+  needsResearch?: boolean;
+  needsVisualization?: boolean;
   needsDeepReasoning?: boolean;
   needsLongContext?: boolean;
   needsVision?: boolean;
@@ -51,7 +62,8 @@ export interface InferenceIntentSignals {
 
 export function selectSemanticProfile(signals: InferenceIntentSignals): SemanticProfileId {
   if (signals.needsVision) return 'VISION';
-  if (signals.needsCoding) return 'CODIGO';
+  if (signals.needsResearch) return 'INVESTIGAR';
+  if (signals.needsVisualization) return 'VISUALIZAR';
   if (signals.needsLongContext) return 'CONTEXTO_LARGO';
   if (signals.needsDeepReasoning) return 'PENSAR';
   if (signals.preferFast) return 'RAPIDO';
@@ -147,7 +159,6 @@ export class StrictZeroCostRouteResolver implements ProviderRouteResolver {
     return { profile:request.profile, selected:allowed[0], admissions };
   }
 }
-
 
 export interface InferenceGateway {
   readonly owner: 'CLOUDFLARE_AI_GATEWAY';
