@@ -3,7 +3,7 @@ import type { SemanticProfileId } from './inferenceGateway';
 export type HybridLane =
   | 'LOCAL_VOICE'
   | 'REMOTE_INFERENCE'
-  | 'MANOJOS3_OBJECTIVE';
+  | 'TARGET_OBJECTIVE';
 
 export type HybridRuntimeMode =
   | 'FULL'
@@ -25,7 +25,8 @@ export interface HybridRuntimeSignals {
 export interface HybridTurnSignals {
   conversationalOnly: boolean;
   needsDeepReasoning: boolean;
-  needsCoding: boolean;
+  needsResearch?: boolean;
+  needsVisualization?: boolean;
   needsLongContext: boolean;
   targetActionRequested: boolean;
   preferLocalVoice?: boolean;
@@ -60,8 +61,8 @@ export interface NostromoHybridArchitecture {
     authority: false;
   };
   actionPlane: {
-    owner: 'MANOJOS3_MCP';
-    deploymentEnv: 'MANOJOS3_MCP_URL';
+    owner: 'TARGET_GATEWAY';
+    deploymentEnv: 'DEPLOYMENT_SPECIFIC';
     authority: false;
   };
   authority: false;
@@ -77,7 +78,7 @@ export const NOSTROMO_HYBRID: NostromoHybridArchitecture = {
     responsibilities:[
       'optional low-cost/local conversational route when explicitly enabled',
       'short conversational continuity and referential resolution',
-      'lightweight classification and response composition when capable',
+      'lightweight intent classification and response composition when capable',
       'render structured target evidence without changing facts',
     ],
     forbidden:[
@@ -91,7 +92,7 @@ export const NOSTROMO_HYBRID: NostromoHybridArchitecture = {
   },
   primaryInferenceGateway:{
     owner:'CLOUDFLARE_AI_GATEWAY',
-    semanticProfiles:['RAPIDO','NORMAL','PENSAR','CODIGO','CONTEXTO_LARGO','VISION'],
+    semanticProfiles:['RAPIDO','NORMAL','PENSAR','INVESTIGAR','VISUALIZAR','CONTEXTO_LARGO','VISION'],
     localModelRequired:false,
     paidFallbackAllowed:false,
     authority:false,
@@ -102,7 +103,8 @@ export const NOSTROMO_HYBRID: NostromoHybridArchitecture = {
       'dynamic/nostromo-rapido',
       'dynamic/nostromo-normal',
       'dynamic/nostromo-pensar',
-      'dynamic/nostromo-codigo',
+      'dynamic/nostromo-investigar',
+      'dynamic/nostromo-visualizar',
       'dynamic/nostromo-contexto-largo',
       'dynamic/nostromo-vision',
     ],
@@ -115,8 +117,8 @@ export const NOSTROMO_HYBRID: NostromoHybridArchitecture = {
     authority:false,
   },
   actionPlane:{
-    owner:'MANOJOS3_MCP',
-    deploymentEnv:'MANOJOS3_MCP_URL',
+    owner:'TARGET_GATEWAY',
+    deploymentEnv:'DEPLOYMENT_SPECIFIC',
     authority:false,
   },
   authority:false,
@@ -134,7 +136,7 @@ export function deriveHybridRuntimeMode(s: HybridRuntimeSignals): HybridRuntimeM
 }
 
 export function chooseHybridLane(s: HybridTurnSignals): HybridLane {
-  if (s.targetActionRequested) return 'MANOJOS3_OBJECTIVE';
+  if (s.targetActionRequested) return 'TARGET_OBJECTIVE';
   if (s.preferLocalVoice) return 'LOCAL_VOICE';
   return 'REMOTE_INFERENCE';
 }
