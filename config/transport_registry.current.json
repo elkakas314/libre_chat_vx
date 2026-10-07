@@ -1,0 +1,93 @@
+{
+  "schema": "libre-chat-vx.transport-registry.v1",
+  "authority": false,
+  "resources": [
+    {
+      "id": "lc-local-web",
+      "kind": "LOCAL_WEB",
+      "owner": "LIBRECHAT_VX",
+      "purpose": "Local browser/app access",
+      "exposure": "LOCAL",
+      "target": "http://127.0.0.1:3080",
+      "status": "SOURCE_DEFINED",
+      "rollback": "N/A"
+    },
+    {
+      "id": "lc-tailserve",
+      "kind": "TAILSCALE_SERVE",
+      "owner": "LIBRECHAT_VX",
+      "purpose": "Private mobile/PC remote access",
+      "exposure": "TAILNET",
+      "target": "http://127.0.0.1:3080",
+      "status": "NOT_DEPLOYED",
+      "rollback": "tailscale serve off/reset"
+    },
+    {
+      "id": "lc-cf-web",
+      "kind": "CLOUDFLARE_TUNNEL",
+      "owner": "LIBRECHAT_VX",
+      "purpose": "Optional browser/API public edge",
+      "exposure": "PUBLIC_BEHIND_ACCESS",
+      "target": "http://127.0.0.1:3080",
+      "status": "NOT_DEPLOYED",
+      "rollback": "disable route/tunnel"
+    },
+    {
+      "id": "lc-cf-access",
+      "kind": "CLOUDFLARE_ACCESS_APP",
+      "owner": "LIBRECHAT_VX",
+      "purpose": "Identity gate for optional public edge",
+      "exposure": "PUBLIC_IDENTITY_GATE",
+      "status": "NOT_DEPLOYED",
+      "rollback": "disable app/policy"
+    },
+    {
+      "id": "lc-aig",
+      "kind": "CLOUDFLARE_AI_GATEWAY",
+      "owner": "LIBRECHAT_VX",
+      "purpose": "LLM inference routing",
+      "exposure": "OUTBOUND_API",
+      "status": "LIVE_NOT_VERIFIED",
+      "rollback": "deploy prior route version"
+    },
+    {
+      "id": "lc-skill-sync",
+      "kind": "GITHUB_SKILL_SYNC",
+      "owner": "LIBRECHAT_VX",
+      "purpose": "Read-only Skills distribution",
+      "exposure": "OUTBOUND_HTTPS",
+      "status": "LIVE_NOT_VERIFIED",
+      "rollback": "disable skillSync"
+    },
+    {
+      "id": "lc-agent-events",
+      "kind": "LIBRECHAT_AGENT_EVENTS",
+      "owner": "LIBRECHAT_VX",
+      "purpose": "Authenticated inbound notifications",
+      "exposure": "APP_API",
+      "status": "LIVE_NOT_VERIFIED",
+      "rollback": "disable remoteAgents/events"
+    },
+    {
+      "id": "lc-recovery-ssh",
+      "kind": "TAILSCALE_SSH",
+      "owner": "HOST",
+      "purpose": "Out-of-band recovery",
+      "exposure": "TAILNET_ADMIN",
+      "status": "NOT_DEPLOYED",
+      "rollback": "disable SSH policy"
+    }
+  ],
+  "deferred": [
+    {
+      "id": "lc-ts-services",
+      "kind": "TAILSCALE_SERVICE",
+      "reason": "Only when multi-host or HA provides measurable value"
+    },
+    {
+      "id": "m3-transport-migration",
+      "kind": "EXTERNAL_PROJECT_CUTOVER",
+      "reason": "Audit only after LibreChat transport stack passes live canaries"
+    }
+  ]
+}
