@@ -148,8 +148,8 @@ MCP therefore stays below the target gateway as a MANOJOS3-specific transport. L
 
 ## Proof boundary
 
-Current-head full test suite: `PASS` — GitHub Actions run `37562733264`.
-Pinned-upstream overlay build/install/uninstall: `PASS` — GitHub Actions run `37562733264`.
+Latest SOURCE-bearing refactor full suite: `PASS` — GitHub Actions run `37562733264`.
+Latest SOURCE-bearing refactor pinned-upstream overlay build/install/uninstall: `PASS` — GitHub Actions run `37562733264`.
 Cloudflare live: `NO_VERIFICADO`.
 MANOJOS3 touched by this LibreChat consolidation: `NO`.
 VX13 touched by this LibreChat consolidation: `NO`.
