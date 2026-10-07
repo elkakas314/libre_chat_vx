@@ -1,0 +1,81 @@
+{
+  "schema": "libre-chat-vx.provider-candidates.v1",
+  "observed_at": "2026-10-07",
+  "status": "RESEARCH_CURRENT_LIVE_ACCOUNT_PROBES_PENDING",
+  "authority": false,
+  "rule": "Never treat a provider as permanently free. Admit only after fresh account/provider readback confirms zero cost, usable quota, capability and privacy fit.",
+  "candidates": [
+    {
+      "provider": "CLOUDFLARE_WORKERS_AI",
+      "decision": "INTEGRAR_CANDIDATO",
+      "zero_cost_truth": "10,000 Neurons/day free allocation; some models require paid Workers or prepaid credits",
+      "durable_free": "PARTIAL_MODEL_DEPENDENT",
+      "quota_probe": "Workers AI dashboard/API",
+      "source": "https://developers.cloudflare.com/workers-ai/platform/pricing/"
+    },
+    {
+      "provider": "GROQ",
+      "decision": "INTEGRAR_CANDIDATO",
+      "zero_cost_truth": "Free plan exists; limits are model-specific and exact account limits must be read live",
+      "durable_free": "YES_WITH_RATE_LIMITS",
+      "quota_probe": "response rate-limit headers + account Limits page",
+      "source": "https://console.groq.com/docs/rate-limits"
+    },
+    {
+      "provider": "GOOGLE_AI_STUDIO_GEMINI",
+      "decision": "INTEGRAR_CANDIDATO",
+      "zero_cost_truth": "Free tier exists for eligible models; limits vary by model/project and active values are shown in AI Studio",
+      "durable_free": "MODEL_DEPENDENT",
+      "quota_probe": "AI Studio active rate limits",
+      "source": "https://ai.google.dev/gemini-api/docs/rate-limits"
+    },
+    {
+      "provider": "MISTRAL",
+      "decision": "INTEGRAR_RESERVA",
+      "zero_cost_truth": "Free mode exists with no credit card required; exact included usage/rate limits are account/model specific",
+      "durable_free": "LIMITED",
+      "quota_probe": "Mistral Admin API Limits/Usage",
+      "source": "https://docs.mistral.ai/getting-started/quickstarts/studio/activate-and-generate-api-key"
+    },
+    {
+      "provider": "OPENROUTER_FREE",
+      "decision": "INTEGRAR_RESERVA",
+      "zero_cost_truth": "Free plan currently exposes 25+ free models and 50 requests/day; free-model policy can vary with credits/account",
+      "durable_free": "LIMITED",
+      "quota_probe": "OpenRouter key/limits endpoint",
+      "source": "https://openrouter.ai/pricing/"
+    },
+    {
+      "provider": "CEREBRAS",
+      "decision": "NO_BASELINE_TRIAL_ONLY",
+      "zero_cost_truth": "Current self-serve offer is promotional $5 credit requiring payment method; expires after 30 days",
+      "durable_free": "NO",
+      "quota_probe": "Cerebras account",
+      "source": "https://www.cerebras.ai/pricing"
+    },
+    {
+      "provider": "SAMBANOVA",
+      "decision": "NO_ADMITIR_SIN_PRUEBA_ZERO_COST",
+      "zero_cost_truth": "Current Free plan page asks for payment method and purchased credits before requests",
+      "durable_free": "NOT_PROVEN",
+      "quota_probe": "SambaNova account",
+      "source": "https://cloud.sambanova.ai/plans"
+    },
+    {
+      "provider": "POLLINATIONS",
+      "decision": "CANDIDATO_EXPERIMENTAL",
+      "zero_cost_truth": "Generation requires an API key/Pollen model; legacy raw publishable keys are rate-limited and current economics must be verified",
+      "durable_free": "NOT_PROVEN",
+      "quota_probe": "Pollinations account/model endpoints",
+      "source": "https://gen.pollinations.ai/docs"
+    },
+    {
+      "provider": "GITHUB_MODELS",
+      "decision": "RETIRADO_NO_USAR",
+      "zero_cost_truth": "GitHub Models was fully retired on 2026-07-30",
+      "durable_free": "NO",
+      "quota_probe": "NOT_APPLICABLE",
+      "source": "https://github.blog/changelog/2026-07-01-github-models-is-being-fully-retired-on-july-30-2026/"
+    }
+  ]
+}

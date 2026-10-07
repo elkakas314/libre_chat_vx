@@ -22,7 +22,23 @@ interface:
   modelSelect: false
   parameters: false
   presets: false
-  agents: true
+  agents:
+    use: true
+    create: true
+    share: false
+    public: false
+  remoteAgents:
+    use: true
+    create: true
+    share: false
+    public: false
+  skills:
+    use: true
+    create: true
+    share: false
+    public: false
+    defaultActiveOnShare: false
+  replyNotifications: true
   endpointsMenu: false
 
 webSearch:

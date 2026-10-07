@@ -81,3 +81,18 @@ Additional SOURCE now implemented and CI-validated:
 The existing BuildPanel is retained only as an adaptable external-work/evidence viewer. Programmatic Tool Calling and Code Interpreter remain optional upstream capabilities and are not part of the default NOSTROMO core.
 
 These SOURCE changes do not imply LIVE Cloudflare routes, Skill Sync, Web Search or Agent Events have been canary-tested.
+
+
+## Proposal reconciliation — 2026-10-07
+
+Architecture proposals were reconciled into source and decision records:
+- provider candidate truth lives in `config/provider_candidates.current.json`;
+- supplied free-provider claims are not treated as permanent facts;
+- Remote Agents permissions are represented in the LibreChat source example;
+- Keenable remains the zero-daemon web-search baseline;
+- SearXNG/Firecrawl remain optional;
+- GitHub Models is excluded because it is retired;
+- Agent Events baseline uses `fire`; `continue/steer` remain canary candidates;
+- Cloudflare Access-protected AI Gateway is an additional LIVE option to evaluate.
+
+See `docs/PROPOSAL_DECISION_AUDIT_CURRENT.md`.
