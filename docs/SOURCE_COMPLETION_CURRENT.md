@@ -4,7 +4,7 @@ Status: `SOURCE_CORE_COMPLETE / EXACT_HEAD_TESTS_PASS / UPSTREAM_OVERLAY_BUILD_P
 
 Source implementation: `aed4a617d8c19a9761a687da24715cce0ff8c2a9`.
 
-Latest exact-head CI evidence for the interpreter-first refactor: GitHub Actions `source-check` run `37562733264`: `build-test=SUCCESS`, `overlay-smoke=SUCCESS`.
+Latest SOURCE-bearing refactor CI evidence: GitHub Actions `source-check` run `37562733264`: `build-test=SUCCESS`, `overlay-smoke=SUCCESS`.
 
 ## Source gaps closed
 
