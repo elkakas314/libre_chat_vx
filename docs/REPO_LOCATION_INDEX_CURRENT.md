@@ -1,113 +1,116 @@
 # REPO LOCATION INDEX — CURRENT
 
-Base inspeccionada: `db9919f73be80184385b3084b7ac0865feebabc5`
-Árbol base: `91211e87f6ccbc38afeb1d6f7f2927d42c546d58`
+Source-bearing base inspected: `ffd31f79abc1f56433d05d33e5bdbe65b2dd5690`
+Tree: `74dadcb525a80f7c7bd967378ccb4fb5aaf32b0e`
 
-Este índice responde “dónde vive cada cosa” en el estado SOURCE actual.
-SOURCE no equivale a LIVE.
+SOURCE does not imply LIVE.
 
 ## Root
 
-- `CURRENT.json` — snapshot SOURCE/LIVE y siguiente orden.
-- `HANDOFF_CURRENT.md` — continuidad.
-- `SOURCE_MANIFEST.json` — procedencia/prioridad.
-- `UPSTREAM.json` — pin exacto de LibreChat upstream.
-- `package.json` — build/test/scripts del paquete.
+- `CURRENT.json` — current source/live snapshot.
+- `HANDOFF_CURRENT.md` — continuation.
+- `SOURCE_MANIFEST.json` — provenance/truth order.
+- `UPSTREAM.json` — exact LibreChat upstream pin.
+- `package.json` — build/test/overlay commands.
 
 ## Config
 
-- `config/cloudflare_ai_gateway.current.json` — AI Gateway SOURCE.
-- `config/model_registry.current.json` — admisión/pool.
-- `config/provider_candidates.current.json` — candidate truth.
-- `config/agent_events.current.json` — eventos entrantes.
-- `config/librechat-vx.example.yaml` — Skills, Remote Agents, Web Search y Model Specs.
-- `config/parallel_transport.current.json` — aislamiento Tailscale/Cloudflare/targets.
-- `config/mobile_recovery.current.json` — móvil/recovery.
-- `config/skills.current.json` — catálogo de Skills.
-- `config/targets.example.yaml` — targets de ejemplo.
+- `config/cloudflare_ai_gateway.current.json` — AI Gateway client/config.
+- `config/model_registry.current.json` — model admission/pool.
+- `config/provider_candidates.current.json` — provider candidate truth.
+- `config/llm_bootstrap.current.json` — provider/profile bootstrap cohort.
+- `config/agent_events.current.json` — Agent Events.
+- `config/librechat-vx.example.yaml` — Skills, Remote Agents, Web Search, Model Specs.
+- `config/parallel_transport.current.json` — transport canon v2 and M3 isolation guards.
+- `config/transport_registry.current.json` — resource registry.
+- `config/mobile_access.current.json` — mobile route/reconnect policy.
+- `config/mobile_recovery.current.json` — mobile/recovery compatibility.
+- `config/extension_registry.current.json` — Native→Custom extension order/runtime paths.
+- `config/skills.current.json` — Skill catalog.
+- `config/targets.example.yaml` — target example config.
+
+## Contracts
+
+- `contracts/transport-resource.schema.json`.
+- `contracts/mobile-access.schema.json`.
+- `contracts/extension-package.schema.json`.
+- plus UiAction, target capability, cross-target truth, background mutation fence and other existing contracts.
 
 ## Skills
 
-Ruta canónica: `skills/`.
+Canonical path: `skills/<skill-name>/SKILL.md`.
 
 11 Skills:
-- nostromo-core;
-- nostromo-intent-translation;
-- nostromo-visualization;
-- nostromo-research;
-- nostromo-event-triage;
-- nostromo-evidence-first;
-- nostromo-resource-navigation;
-- nostromo-tool-budget;
-- manojos3-nostromo;
-- vx13-nostromo;
-- cross-target-read.
+nostromo-core; nostromo-intent-translation; nostromo-visualization; nostromo-research;
+nostromo-event-triage; nostromo-evidence-first; nostromo-resource-navigation;
+nostromo-tool-budget; manojos3-nostromo; vx13-nostromo; cross-target-read.
 
 ## Plugin
 
-`plugins/vx-nostromo/` — Agent Plugin experimental/opcional, authority=false.
+`plugins/vx-nostromo/` — optional experimental Agent Plugin, authority=false.
 
 ## Source domains
 
 - `src/intent/` — Intent Interpreter.
 - `src/presentation/` — Presentation Planner.
 - `src/research/` — Research Policy.
-- `src/events/` — Agent Events.
+- `src/events/` — Agent Events envelope.
 - `src/tentacle/` — Tentáculo Companion.
-- `src/llm/` — inference gateway, Cloudflare client, Model Registry, identity/status.
-- `src/targets/` — NostromoTargetGateway.
+- `src/llm/` — gateway/Cloudflare client/registry/status/identity/output validation.
+- `src/targets/` — in-process NostromoTargetGateway.
 - `src/adapters/` — target boundaries.
 - `src/resources/` — Resource Tree/resource budget.
-- `src/cockpit/` — truth/focus/lifecycle/views.
-- `src/ui/` — React projections.
-- `src/mobile/`, `src/recovery/`, `src/security/`, `src/session/`, `src/notifications/` — continuity/security/recovery.
-- `src/librechat/` — native surface binding/reuse.
+- `src/cockpit/` and `src/ui/` — cockpit/read models/renderers.
+- `src/mobile/` — continuity, recovery, offline draft, push refresh, remoteAccess policy.
+- `src/recovery/`, `src/security/`, `src/session/`, `src/notifications/` — safety/recovery.
+- `src/librechat/` — upstream/native surface composition.
+
+## Mobile source
+
+- `src/mobile/mobileContinuity.ts`.
+- `src/mobile/mobileRecovery.ts`.
+- `src/mobile/offlineDraft.ts`.
+- `src/mobile/pushRefresh.ts`.
+- `src/mobile/remoteAccess.ts`.
 
 ## Scripts
 
 - `scripts/verify-upstream.mjs`.
 - `scripts/install-as-workspace.mjs`.
 - `scripts/uninstall-overlay.mjs`.
-- `scripts/validate-parallel-transport.mjs`.
+- `scripts/validate-parallel-transport.mjs` — v2 canon + MANOJOS3 collision guards.
 
 ## Tests
 
-Source tests:
-- core;
-- inference gateway;
-- model registry;
-- intent/presentation/events;
-- Nostromo/hybrid;
-- MANOJOS3 entrypoints/interflow;
-- native surfaces;
-- mobile recovery;
-- target parity/semantics;
-- operating canon;
-- UI;
-- integration completion.
+- `tests/mobile-remote-access.test.ts`.
+- `tests/transport-canon.test.ts`.
+- existing core/inference/model-registry/intent-events/mobile/target/native/UI/integration tests.
+- `tests/REQUIREMENT_TEST_MATRIX.md` — LC-R001…R120.
+- `tests/UI_ALL_GATES_CURRENT.md` — UI-ALL-01…11.
 
-Gate documents:
-- `tests/REQUIREMENT_TEST_MATRIX.md` — LC-R001…R120;
-- `tests/UI_ALL_GATES_CURRENT.md` — UI-ALL-01…11;
-- `tests/README.md` — global gate inventory.
+## Docs added for the closed design
 
-## Overlay
+- `docs/TRANSPORT_CANON_CURRENT.md`.
+- `docs/LIBRECHAT_INSTALLATION_OPTIONS_CURRENT.md`.
+- `docs/SKILLS_PLUGINS_RUNTIME_LAYOUT_CURRENT.md`.
+- `docs/MOBILE_REMOTE_ACCESS_CURRENT.md`.
 
-`overlay/` — bridge reversible sobre upstream fijado.
+## Routes
 
-## Network/application routes
+- local web: `:3080`;
+- Tailscale Serve -> `:3080`;
+- optional Cloudflare Access -> dedicated Tunnel -> `:3080`;
+- Agent Events: `/api/agents/v1/events`;
+- inference: seven `dynamic/nostromo-*` routes;
+- Skills: outbound HTTPS GitHub Skill Sync;
+- targets: in-process TargetGateway -> adapters.
 
-- LibreChat local: `:3080`.
-- Private remote: Tailscale Serve → `:3080`.
-- Public optional: Cloudflare Access → dedicated Tunnel → `:3080`.
-- Agent Events: `/api/agents/v1/events`.
-- LLM: `dynamic/nostromo-*`.
-- Skills: outbound HTTPS → GitHub Skill Sync.
-- Targets: in-process NostromoTargetGateway → adapters.
+## Boundaries
 
-## Boundary
-
-- No target authority in LibreChat.
-- No secrets in repo.
-- MANOJOS3 transport migration remains DEFERRED.
-- SOURCE tests/overlay PASS do not imply LIVE bindings.
+- required Workers=0;
+- required Cloudflare Tunnels=0;
+- Tailscale Serve=1 baseline;
+- no MANOJOS3 resource reuse;
+- no target authority in LibreChat;
+- no secrets in repo;
+- SOURCE PASS does not imply LIVE binding.
