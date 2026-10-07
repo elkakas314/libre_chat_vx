@@ -1,8 +1,8 @@
 version: 1.3.17
 
 # SOURCE EXAMPLE ONLY.
-# GitHub Skill Sync is disabled by default so a deployment remains inert until
-# the operator explicitly enables it and provides a read-only repository token.
+# NOSTROMO is one visible conversational identity. Provider/model selection is
+# internal routing detail and should not become an operator selector.
 skillSync:
   github:
     enabled: false
@@ -19,17 +19,22 @@ skillSync:
         token: '${GITHUB_SKILLS_TOKEN}'
 
 interface:
-  modelSelect: true
-  parameters: true
-  presets: true
+  modelSelect: false
+  parameters: false
+  presets: false
   agents: true
-  endpointsMenu: true
+  endpointsMenu: false
+
+webSearch:
+  searchProvider: "keenable"
+  scraperProvider: "keenable"
+  rerankerType: "none"
+  safeSearch: 1
 
 endpoints:
   agents:
     skills:
-      # Prevent an oversized model-visible Skill catalog.
-      maxCatalogSkills: 20
+      maxCatalogSkills: 24
     capabilities:
       - deferred_tools
       - file_search
@@ -42,76 +47,74 @@ endpoints:
       - memory
       - ask_user_question
       - tools
-      - chain
       - ocr
-      # execute_code / programmatic_tools intentionally omitted until
-      # Code Interpreter is separately admitted and governed.
 
-# Deployment must bind the OpenAI-compatible endpoint to the authenticated
-# Cloudflare AI Gateway configured for LibreChat/NOSTROMO.
-#
-# The user-facing model list is semantic. Concrete provider/model selection
-# happens behind Cloudflare dynamic routes and remains diagnostic detail.
+# Internal semantic profiles. They are not intended as user-facing personalities.
+# CODIGO was deliberately removed: coding/execution belongs to MANOJOS3/VX13/
+# ORACULO specialist paths when those targets are bound.
 modelSpecs:
   enforce: false
   prioritize: true
   list:
     - name: nostromo-normal
-      label: NOSTROMO · Normal
+      label: NOSTROMO
       artifacts: custom
       preset:
         endpoint: openAI
         model: dynamic/nostromo-normal
-        greeting: "NOSTROMO. Conversación primero; evidencia antes de afirmar."
+        greeting: "NOSTROMO. Te entiendo, te lo ordeno y te lo muestro; la autoridad material sigue en tus sistemas."
         promptPrefix: &nostromo_identity |
           Eres NOSTROMO, la identidad conversacional estable de LibreChat VX.
-          Tu identidad no depende del proveedor ni del modelo.
-          La UI y el modelo no conceden autoridad material.
+          Tu trabajo principal es comprender al usuario, resolver intención y referencias,
+          investigar cuando corresponda, y elegir la mejor representación visual.
+          No eres el programador ni el ejecutor material de los sistemas.
+          La UI, Tentáculo y el modelo no conceden autoridad material.
           Nunca inventes autorización, PASS, readback, evidence ni receipt.
-          Los efectos materiales pertenecen al target y a su cadena gobernada.
+          Para cambios externos prepara una intención precisa para el target correcto.
     - name: nostromo-rapido
-      label: NOSTROMO · Rápido
+      label: NOSTROMO · interno rápido
       artifacts: custom
       preset:
         endpoint: openAI
         model: dynamic/nostromo-rapido
         promptPrefix: *nostromo_identity
     - name: nostromo-pensar
-      label: NOSTROMO · Pensar
+      label: NOSTROMO · interno pensar
       artifacts: custom
       preset:
         endpoint: openAI
         model: dynamic/nostromo-pensar
         promptPrefix: *nostromo_identity
-    - name: nostromo-codigo
-      label: NOSTROMO · Código
+    - name: nostromo-investigar
+      label: NOSTROMO · interno investigar
       artifacts: custom
       preset:
         endpoint: openAI
-        model: dynamic/nostromo-codigo
+        model: dynamic/nostromo-investigar
+        promptPrefix: *nostromo_identity
+    - name: nostromo-visualizar
+      label: NOSTROMO · interno visualizar
+      artifacts: custom
+      preset:
+        endpoint: openAI
+        model: dynamic/nostromo-visualizar
         promptPrefix: *nostromo_identity
     - name: nostromo-contexto-largo
-      label: NOSTROMO · Contexto largo
+      label: NOSTROMO · interno contexto largo
       artifacts: custom
       preset:
         endpoint: openAI
         model: dynamic/nostromo-contexto-largo
         promptPrefix: *nostromo_identity
     - name: nostromo-vision
-      label: NOSTROMO · Visión
+      label: NOSTROMO · interno visión
       artifacts: custom
       preset:
         endpoint: openAI
         model: dynamic/nostromo-vision
         promptPrefix: *nostromo_identity
 
-# AUDIO is capability-routed by voice/ASR/TTS integration when enabled.
-# It is not a separate operator mode.
-
-# Target selection is independent from model/profile selection.
-# LibreChat should call an in-process NostromoTargetGateway facade:
-#   MANOJOS3 adapter -> MANOJOS3 MCP
-#   VX13 adapter -> Tentáculo Link (future)
-#
-# mcpServers remain deployment-specific implementation detail of the
-# MANOJOS3 target adapter and are intentionally omitted here.
+# GitHub Skill Sync is direct outbound HTTPS from LibreChat to GitHub.
+# It does not require MANOJOS3 or a dedicated tunnel.
+# Agent Events use the LibreChat application surface; see config/agent_events.current.json.
+# Target selection remains independent from model/profile selection.
