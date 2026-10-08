@@ -845,6 +845,24 @@
       "id": "ADR-08",
       "motivo": "Lenovo de bajo consumo y menor mantenimiento",
       "resultado": "DEFERIDA"
+    },
+    {
+      "id": "ADR-09",
+      "estado": "PROPUESTA",
+      "decision": "Adaptar src/adapters/manojos3McpAdapter.ts para normalizar las respuestas MCP de MANOJOS3 (envoltorio ok/http_status/data y capability-index agrupado por IDs) a TargetCapabilityProjection de LibreChat, preservando procedencia, evidenceRefs, observacion y verified sin inferir disponibilidad LIVE ni authority material.",
+      "motivo": "manojos_capabilities expone el indice manojos3.capability-index.v1 en data con groups/planning_candidates/inventory_only, no una lista directa de objetos TargetCapabilityProjection. La proyeccion exige risk, effectClass, availability, policyAuthorityRef, sourceRevision, observedAt y evidenceRefs; un indice agrupado por IDs no aporta por si solo todos esos campos. El adaptador VX hoy requiere un array y devuelve [] cuando recibe el indice.",
+      "alternativa": "Cambiar los contratos y respuestas del servidor MANOJOS3 para que emita TargetCapabilityProjection; descartada porque MANOJOS3 es un target externo, su canon y autoridad son independientes y este hilo es READ-ONLY respecto a MANOJOS3.",
+      "resultado": "PROPUESTA",
+      "evidencia_source": {
+        "librechat_git_commit_sha": "20c3fe2f1a127a6673234c09d2c0a47e338f4450",
+        "librechat_adapter_git_blob_sha": "fb08050d12562fb909f255e0d5dbb803aac67848",
+        "librechat_type_git_blob_sha": "b8036c4f35fcae157d60a3ff4e898ae998e27829",
+        "manojos3_git_commit_sha": "87444678ad4de2f197039ae989f058f87a02cc0e",
+        "manojos3_mcp_git_blob_sha": "ac1950197d647a9f2191da5a68417cfe6d83f79b",
+        "manojos3_registry_git_blob_sha": "de367c8e4b3fb8fce1d67e4f7c77804cca9398a9"
+      },
+      "alcance": "SOURCE: definicion de adaptador y tests fixture sin invocar MANOJOS3, sin nuevos endpoints ni token, sin cambios en el canon del target. LC-M3-R0-BINDING sigue BLOCKED_DEPENDENCY. No inicia control material.",
+      "criterio_verificacion": "Fixture MCP con ok/http_status/data.schema=manojos3.capability-index.v1 y groups/planning_candidates/inventory_only; aserciones de normalizacion de IDs, risk/effect/availability/autoridades/evidencias solo cuando haya respaldo verificable; fail-closed si faltan campos; no producir LIVE_VERIFIED ni verified a partir de SOURCE."
     }
   ],
   "despliegue": {
