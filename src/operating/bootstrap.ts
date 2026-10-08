@@ -107,8 +107,8 @@ export function buildBootstrap(snapshot: OperatingSnapshot): BootstrapResult {
     runtime:
       snapshot.runtime ??
       (snapshot.mode === 'LIVE_BOUND'
-        ? { status: 'LIVE_BOUND' }
-        : { status: 'NO_VERIFICADO', reason: 'SOURCE_ONLY' }),
+        ? { status: 'NO_DEPLOYMENT_EVIDENCE', reason: 'LIVE_BOUND_NO_READBACK' }
+        : { status: 'NO_DEPLOYMENT_EVIDENCE', reason: 'SOURCE_ONLY' }),
     proofs: proofSummary(snapshot),
     ownership: ownershipSummary(snapshot),
     delta: {

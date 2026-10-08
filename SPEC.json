@@ -1077,6 +1077,29 @@
         "contracts/nostromo-hybrid.schema.json#/required",
         "config/nostromo_hybrid.current.json"
       ]
+    },
+    {
+      "estado": "ABIERTA",
+      "bloqueante": true,
+      "evidencia_source": {
+        "comprobacion": "contraste recursivo de JSON Schema vs instancia: conformidad estructural; contraste semantico de runtime.status con SPEC.meta.estado_runtime_enum y fallback TypeScript: deriva detectada",
+        "git_commit_sha": "9874553bacb6389ba009c874c5e67433f8ca516e",
+        "repositorio": "elkakas314/libre_chat_vx",
+        "schema_git_blob_sha": "da01b36e7d02e767b146f1e9a81377cd88e24f3f",
+        "instancia_git_blob_sha": "c4c6237bd4b95063ad173d4038fda451804aa50b",
+        "generador_git_blob_sha": "a38694bd4a7dd418d96215b830989f963a7b06dd",
+        "test_git_blob_sha": "cf364d386c380c660853cfd5c86eb7959363a505"
+      },
+      "hecho": "El esquema operating-bootstrap admitia cualquier objeto runtime y el snapshot CURRENT era conforme estructuralmente, pero runtime.status, librechat, cloudflare_gateway, skill_sync y events usaban NO_VERIFICADO, fuera del enum runtime de SPEC. El fallback SOURCE_ONLY de src/operating/bootstrap.ts emitia NO_VERIFICADO y el fallback LIVE_BOUND emitia LIVE_BOUND como status runtime (modo, no prueba). runtime.tailscale_serve=NOT_DEPLOYED si pertenece al enum de transporte: no es infraccion de tipo, aunque sin readback no esta acreditada la afirmacion de ausencia. runtime.targets=GATED corresponde al espacio de estados de gate, no al de despliegue.",
+      "id": "LC-DISC-BOOTSTRAP-001",
+      "tratamiento": "Esta PR en borrador propone la correccion: contrato operating-bootstrap con enums especificos por campo, snapshot de despliegue NO_DEPLOYMENT_EVIDENCE, fallback sin inferencia LIVE y test de regresion. El validador CI tests/validate-bootstrap-runtime.jq añadido al branch base ya falla ante NO_VERIFICADO; se exige PASS tras merge aprobado por el usuario y CI del HEAD exacto. Hasta entonces discrepancia ABIERTA, sin cambiar gates LIVE ni tocar host.",
+      "ubicacion": [
+        "contracts/operating-bootstrap.schema.json#/properties/runtime",
+        "operating/BOOTSTRAP_CURRENT.json#/runtime",
+        "src/operating/bootstrap.ts#buildBootstrap",
+        "SPEC.json#/meta/estado_runtime_enum",
+        "tests/operating-current-data.test.ts"
+      ]
     }
   ],
   "frontend": {

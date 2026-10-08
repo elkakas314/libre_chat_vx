@@ -96,7 +96,7 @@ test('operating bootstrap CURRENT fields are declared by its versioned JSON Sche
   for (const key of Object.keys(bootstrap)) {
     assert.ok(Object.hasOwn(schema.properties,key),'undeclared bootstrap field '+key);
   }
-  assert.equal(bootstrap.runtime.status,'NO_VERIFICADO');
+  assert.equal(bootstrap.runtime.status,'NO_DEPLOYMENT_EVIDENCE');
   assert.equal(bootstrap.closeout,'INCOMPLETE');
 });
 
@@ -183,4 +183,34 @@ test('operating gap scalar constraints follow declared schema and reject invalid
     {...valid,unrecognized:true},
   ];
   for (const row of invalid) assert.ok(errors(row).length>0,'invalid operating gap accepted');
+});
+
+test('bootstrap runtime field enums match SPEC, and missing LIVE readback never claims a deployment', () => {
+  const schema=readJson('contracts/operating-bootstrap.schema.json');
+  const spec=readJson('SPEC.json');
+  const gap=readJson('contracts/operating-gap.schema.json');
+  const runtimeSchema=schema.properties.runtime;
+  const runtimeFields=['status','librechat','cloudflare_gateway','skill_sync','events','tailscale_serve'];
+  for(const field of runtimeFields){
+    const allowed=field==='status'
+      ? spec.meta.estado_runtime_enum.filter((state:string)=>state!=='NOT_DEPLOYED')
+      : spec.meta.estado_runtime_enum;
+    assert.deepEqual(runtimeSchema.properties[field].enum,allowed,'enum drift '+field);
+  }
+  assert.deepEqual(runtimeSchema.properties.targets.enum,['GATED',...gap.properties.state.enum]);
+  assert.equal(runtimeSchema.additionalProperties,false);
+  const valid=readJson('operating/BOOTSTRAP_CURRENT.json');
+  for(const [field,value] of Object.entries(valid.runtime)) {
+    const property=runtimeSchema.properties[field];
+    assert.ok(property,'undeclared runtime field '+field);
+    if(property.enum) assert.ok(property.enum.includes(value),'invalid runtime field '+field);
+  }
+  for(const mode of ['SOURCE_ONLY','LIVE_BOUND'] as const){
+    const snapshot:OperatingSnapshot={
+      snapshotId:'bootstrap-no-host-fixture',mode,evidenceCutoffHead:'test-source',
+      gaps:[],proofs:[],ownership:[],doNotTouch:['MANOJOS3','VX13'],
+    };
+    const projection=buildBootstrap(snapshot);
+    assert.equal(projection.runtime.status,'NO_DEPLOYMENT_EVIDENCE');
+  }
 });

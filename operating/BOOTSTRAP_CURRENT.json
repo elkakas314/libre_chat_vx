@@ -15,12 +15,12 @@
     "origin_main": "NOT_READ_LIVE"
   },
   "runtime": {
-    "status": "NO_VERIFICADO",
-    "librechat": "NO_VERIFICADO",
-    "cloudflare_gateway": "NO_VERIFICADO",
-    "tailscale_serve": "NOT_DEPLOYED",
-    "skill_sync": "NO_VERIFICADO",
-    "events": "NO_VERIFICADO",
+    "status": "NO_DEPLOYMENT_EVIDENCE",
+    "librechat": "NO_DEPLOYMENT_EVIDENCE",
+    "cloudflare_gateway": "NO_DEPLOYMENT_EVIDENCE",
+    "tailscale_serve": "NO_DEPLOYMENT_EVIDENCE",
+    "skill_sync": "NO_DEPLOYMENT_EVIDENCE",
+    "events": "NO_DEPLOYMENT_EVIDENCE",
     "targets": "GATED"
   },
   "proofs": {
