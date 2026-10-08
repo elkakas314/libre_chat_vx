@@ -1,7 +1,7 @@
 # SKILL REDUNDANCY AUDIT — CURRENT
 
-Status: REVIEW_COMPLETE / NO_SKILL_DELETION_YET
-Catalog inspected: 11 Skills under skills/.
+Status: SOURCE_CONSOLIDATED / LEGACY_ALIASES_RETAINED_PENDING_LIVE_SYNC
+Originally inspected: 11 Skills. Current SOURCE: 10 active catalog entries + 2 compatibility aliases on disk (12 folders).
 
 ## Keep as distinct Skills
 
@@ -32,9 +32,9 @@ Target-specific cockpit semantics. Keep while VX13 remains a supported future ta
 ### cross-target-read
 Distinct multi-target READ-only comparison behavior. Keep.
 
-## Absorb candidates
+## Absorbed into nostromo-core in SOURCE; compatibility aliases remain
 
-### nostromo-intent-translation -> absorb into nostromo-core
+### nostromo-intent-translation -> absorbed into nostromo-core
 Reason:
 - every ordinary NOSTROMO turn already needs intent/referent resolution;
 - nostromo-core already repeats most of the same decision logic;
@@ -45,7 +45,7 @@ Retirement gate:
 - GitHub Skill Sync compatibility canary;
 - then mark old Skill SUPERSEDED before deleting.
 
-### nostromo-tool-budget -> absorb into nostromo-core
+### nostromo-tool-budget -> absorbed into nostromo-core
 Reason:
 - the core already says prefer native/lightweight paths;
 - tool-budget is a global operating heuristic, not a separate user-facing capability;
@@ -56,9 +56,9 @@ Retirement gate:
 - run Skill Sync canary;
 - then mark old Skill SUPERSEDED before deleting.
 
-## One useful new Skill candidate
+## New on-demand Skill implemented in SOURCE
 
-### nostromo-extension-review
+### nostromo-extension-review — implemented
 Purpose: run the anti-monolith/backlog criba whenever a new feature, plugin, Worker, tunnel, adapter or custom module is proposed.
 
 It should:
@@ -70,11 +70,7 @@ It should:
 
 This is a good Skill because it is a repeatable reasoning/review procedure, not runtime authority.
 
-Net target after consolidation:
-11 current Skills
-- 2 absorbed
-+ 1 extension-review candidate
-= 10 canonical Skills.
+Result: 10 active canonical Skills in `config/skills.current.json`. Two deprecated aliases remain in the filesystem until real GitHub Skill Sync canary validates compatibility; the sync path may still discover 12 physical folders. This is explicitly **not** a 10-Skill LIVE proof.
 
 ## Do not turn into Skills
 
@@ -94,3 +90,7 @@ Keep as hard contracts/code, not instruction-only Skills:
 Do not create separate LibreChat Skills for Xubuntu cleanup or LAN administration yet.
 Use MANOJOS3/external-target cockpit semantics first.
 Only add a host-ops Skill if repeated conversational interpretation proves that manojos3-nostromo cannot express the host lens cleanly.
+
+## Added semantic review
+
+`LC-NOSTROMO-SEMANTIC-BRIDGE` is HIGH-priority design review, not a new Skill yet. Compare existing Intent Interpreter/native capabilities, a thin TargetGateway semantic crosswalk, and a read-only vocabulary registry. Avoid a second semantic runtime or duplicate MANOJOS3 flows.
