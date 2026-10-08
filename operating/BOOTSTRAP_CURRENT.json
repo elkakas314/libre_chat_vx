@@ -1,33 +1,41 @@
 {
-  "schema": "libre-chat-vx.operating-bootstrap.v1",
+  "schema": "libre-chat-vx.operating-bootstrap.v2",
   "canon": "LIBRECHAT_OPERATING_CANON",
-  "target_version": 1,
-  "snapshot_id": "source-2026-10-03-5f6d0c10",
+  "target_version": 8,
+  "snapshot_id": "source-2026-10-08-criba",
   "mode": "SOURCE_ONLY",
-  "evidence_cutoff_head": "5f6d0c1099ae9cb64f602a4cbbfadd1713e625ad",
+  "evidence_cutoff_head": "77ceb1a9fe72dd70db9f968b28b0370c831115ff",
+  "baseline_ci": {
+    "github_actions_run": 37706857454,
+    "conclusion": "SUCCESS"
+  },
   "git": {
-    "head": "5f6d0c1099ae9cb64f602a4cbbfadd1713e625ad",
-    "origin_main": "ebbd17573d9f3f0e8599728a3540a3ce05ee72ca",
-    "status": "FEATURE_BRANCH_AHEAD_PENDING_VALIDATION"
+    "head": "77ceb1a9fe72dd70db9f968b28b0370c831115ff",
+    "status": "EVIDENCE_CUTOFF_ONLY_CURRENT_BRANCH_CHANGES_PENDING_CI",
+    "origin_main": "NOT_READ_LIVE"
   },
   "runtime": {
     "status": "NO_VERIFICADO",
     "librechat": "NO_VERIFICADO",
-    "local_voice": "UNCONFIGURED",
-    "manojos3_mcp": "PREPARED_UNCONFIGURED",
-    "manojos3_free_reasoner": "SOURCE_CONFLICT_REQUIRES_LIVE_READBACK",
-    "vx13_binding": "UNCONFIGURED"
+    "cloudflare_gateway": "NO_VERIFICADO",
+    "tailscale_serve": "NOT_DEPLOYED",
+    "skill_sync": "NO_VERIFICADO",
+    "events": "NO_VERIFICADO",
+    "targets": "GATED"
   },
   "proofs": {
     "valid": [
       "nostromo-hybrid-source-drive",
       "m3-gpt-semantic-bridge-source-drive",
-      "tentacle-hud-model-independence"
+      "tentacle-hud-model-independence",
+      "transport-and-source-ci-20261008"
     ],
     "stale": [
       "nostromo-material-test"
     ],
-    "missing": [],
+    "missing": [
+      "skill-criba-exact-head-ci"
+    ],
     "unavailable": [
       "m3-live-binding",
       "m3-free-reasoner-live"
@@ -38,67 +46,76 @@
     "stale_claims": [],
     "free": [],
     "unobserved": [
-      "source_tests",
-      "manojos3_binding",
-      "manojos3_llm_live",
-      "upstream_overlay",
-      "vx13_binding",
-      "material_mutation",
-      "host_measurement"
+      "INFERENCE_LIVE",
+      "SKILLS_LIVE",
+      "MOBILE_LIVE",
+      "RESEARCH_LIVE",
+      "EVENTS_LIVE",
+      "RECOVERY_LIVE",
+      "HOST_MEASUREMENT",
+      "TARGET_BINDINGS"
     ]
   },
   "delta": {
-    "pass": [
-      "LC-OPERATING-CANON",
-      "LC-M3-INTERFLOW-PROJECTION",
-      "LC-NOSTROMO-HYBRID",
-      "LC-M3-GPT-SEMANTIC-BRIDGE",
-      "LC-M3-ENTRYPOINT-CONTRACTS",
-      "LC-NATIVE-SURFACE-BINDING",
-      "LC-MOBILE-RECOVERY"
+    "pass": [],
+    "open": [
+      "LC-CF-AIG-BINDING",
+      "LC-SKILL-SYNC-LIVE",
+      "LC-TAILSCALE-MOBILE-LIVE",
+      "LC-WEB-RESEARCH-LIVE",
+      "LC-AGENT-EVENTS-LIVE",
+      "LC-RECOVERY-LIVE"
     ],
-    "open": [],
-    "stale_proof": [
-      "LC-CURRENT-HEAD-TESTS"
-    ],
+    "stale_proof": [],
     "reconcile_required": [],
     "not_tested": [],
     "owned": [],
-    "blocked_dependency": [
-      "LC-M3-R0-BINDING",
-      "LC-M3-LLM-LIVE-READBACK",
-      "LC-UPSTREAM-OVERLAY-REVALIDATE",
-      "LC-FIRST-R2"
-    ],
-    "external_gates": [
-      "LC-VX13-BINDING"
-    ],
+    "blocked_dependency": [],
+    "external_gates": [],
     "human_gates": [
       "LC-LOW-POWER-MEASURE"
     ],
     "blocked_live": [
-      "LC-CURRENT-HEAD-TESTS"
+      "LC-CF-AIG-BINDING",
+      "LC-SKILL-SYNC-LIVE",
+      "LC-TAILSCALE-MOBILE-LIVE",
+      "LC-WEB-RESEARCH-LIVE",
+      "LC-AGENT-EVENTS-LIVE",
+      "LC-RECOVERY-LIVE"
     ]
   },
   "living_plan": {
     "eligible": [],
     "blocked_live": [
-      "LC-CURRENT-HEAD-TESTS"
+      "LC-CF-AIG-BINDING",
+      "LC-SKILL-SYNC-LIVE",
+      "LC-TAILSCALE-MOBILE-LIVE",
+      "LC-WEB-RESEARCH-LIVE",
+      "LC-AGENT-EVENTS-LIVE",
+      "LC-RECOVERY-LIVE"
     ],
     "owned_ready": [],
     "waiting_internal": false
   },
+  "design_review_queue": [
+    "LC-NOSTROMO-SEMANTIC-BRIDGE"
+  ],
   "eligible_source_only": [],
   "blocked_live": [
-    "LC-CURRENT-HEAD-TESTS"
+    "LC-CF-AIG-BINDING",
+    "LC-SKILL-SYNC-LIVE",
+    "LC-TAILSCALE-MOBILE-LIVE",
+    "LC-WEB-RESEARCH-LIVE",
+    "LC-AGENT-EVENTS-LIVE",
+    "LC-RECOVERY-LIVE"
   ],
   "do_not_touch": [
-    "local host without an explicit live/local boundary",
-    "MANOJOS3 repository",
-    "VX13 repository",
-    "secrets",
-    "target authority internals"
+    "MANOJOS3 repository/runtime/tunnels",
+    "VX13 repository/runtime",
+    "host material state without explicit approved target authority",
+    "secrets"
   ],
   "closeout": "INCOMPLETE",
-  "next_action": "BIND_LIVE_AND_REVALIDATE"
+  "next_action": "BIND_LIVE_AND_REVALIDATE",
+  "semantic_note": "INTENT_INTERPRETER_SOURCE_EXISTS; NEW_VOCABULARY_CROSSWALK_DESIGN_REVIEW_QUEUED_NOT_IMPLEMENTED"
 }
