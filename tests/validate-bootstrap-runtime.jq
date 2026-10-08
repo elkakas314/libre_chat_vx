@@ -2,7 +2,7 @@
 # values for gate/integration state are not deployment states.
 def field_allowed($runtime_enum; $gate_enum):
   {
-    "status": $runtime_enum,
+    "status": ($runtime_enum | map(select(. != "NOT_DEPLOYED"))),
     "librechat": $runtime_enum,
     "cloudflare_gateway": $runtime_enum,
     "skill_sync": $runtime_enum,
