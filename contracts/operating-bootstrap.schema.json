@@ -60,7 +60,84 @@
       "additionalProperties": false
     },
     "runtime": {
-      "type": "object"
+      "type": "object",
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "NO_DEPLOYMENT_EVIDENCE",
+            "DEPLOYED_UNVERIFIED",
+            "LIVE_VERIFIED",
+            "MATERIAL_VERIFIED"
+          ]
+        },
+        "librechat": {
+          "enum": [
+            "NO_DEPLOYMENT_EVIDENCE",
+            "NOT_DEPLOYED",
+            "DEPLOYED_UNVERIFIED",
+            "LIVE_VERIFIED",
+            "MATERIAL_VERIFIED"
+          ]
+        },
+        "cloudflare_gateway": {
+          "enum": [
+            "NO_DEPLOYMENT_EVIDENCE",
+            "NOT_DEPLOYED",
+            "DEPLOYED_UNVERIFIED",
+            "LIVE_VERIFIED",
+            "MATERIAL_VERIFIED"
+          ]
+        },
+        "skill_sync": {
+          "enum": [
+            "NO_DEPLOYMENT_EVIDENCE",
+            "NOT_DEPLOYED",
+            "DEPLOYED_UNVERIFIED",
+            "LIVE_VERIFIED",
+            "MATERIAL_VERIFIED"
+          ]
+        },
+        "events": {
+          "enum": [
+            "NO_DEPLOYMENT_EVIDENCE",
+            "NOT_DEPLOYED",
+            "DEPLOYED_UNVERIFIED",
+            "LIVE_VERIFIED",
+            "MATERIAL_VERIFIED"
+          ]
+        },
+        "tailscale_serve": {
+          "enum": [
+            "NO_DEPLOYMENT_EVIDENCE",
+            "NOT_DEPLOYED",
+            "DEPLOYED_UNVERIFIED",
+            "LIVE_VERIFIED",
+            "MATERIAL_VERIFIED"
+          ]
+        },
+        "targets": {
+          "enum": [
+            "GATED",
+            "PASS",
+            "OPEN",
+            "STALE_PROOF",
+            "OWNED",
+            "WAITING_INTERNAL",
+            "RECONCILE_REQUIRED",
+            "GATE_EXTERNAL",
+            "GATE_HUMAN",
+            "BLOCKED_DEPENDENCY",
+            "NOT_TESTED"
+          ]
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
     },
     "proofs": {
       "type": "object",
