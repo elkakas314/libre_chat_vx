@@ -27,6 +27,13 @@ jobs:
           test "$(jq -r '.topologia_tuneles_y_transportes["$ref"]' SPEC.json)" = "./TOPOLOGY.json"
           test "$(jq -r '.variables_entorno["$ref"]' TOPOLOGY.json)" = "./SPEC.json#/configuracion/env"
           test "$(jq -r '.variables_entorno.total' TOPOLOGY.json)" = "$(jq -r '.configuracion.env | length' SPEC.json)"
+      - name: Validate typed bootstrap runtime state
+        run: |
+          jq -e -n \
+            --slurpfile spec SPEC.json \
+            --slurpfile gaps contracts/operating-gap.schema.json \
+            --slurpfile bootstrap operating/BOOTSTRAP_CURRENT.json \
+            -f tests/validate-bootstrap-runtime.jq > /dev/null
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
