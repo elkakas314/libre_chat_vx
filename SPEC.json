@@ -1220,6 +1220,30 @@
         "metodo": "Contraste de propiedades required/enum del JSON Schema frente a CrossTargetTruthEnvelope y objeto truth emitido en Manojos3McpTargetAdapter.toReadResult; sin conversión snake_case en productor.",
         "runtime": "NO_DEPLOYMENT_EVIDENCE"
       }
+    },
+    {
+      "id": "LC-DISC-MOBILE-ACCESS-001",
+      "estado": "ABIERTA",
+      "bloqueante": true,
+      "ubicacion": [
+        "contracts/mobile-access.schema.json#/properties/mode/enum",
+        "contracts/mobile-access.schema.json#/required",
+        "src/mobile/remoteAccess.ts#RemoteAccessDecision",
+        "src/mobile/remoteAccess.ts#chooseRemoteAccess",
+        "config/mobile_access.current.json"
+      ],
+      "hecho": "El contrato mobile-access ya usa camelCase, por lo que NO manifiesta la discrepancia snake_case/camelCase del ADR-10. Sin embargo, sólo admite mode LOCAL/TAILSCALE_PRIVATE/CLOUDFLARE_ACCESS_PUBLIC y omite UNAVAILABLE, que chooseRemoteAccess() devuelve para ausencia de ruta autorizada. El esquema exige backendReachable y authenticated, que no figuran en RemoteAccessDecision; las señales de autenticación usadas por chooseRemoteAccess son específicas de la ruta. config/mobile_access.current.json documenta routes/offline/reconnect, no es instancia del esquema y no satisface sus required ni additionalProperties=false. No se identifica instancia serializada común ni binding explícito entre esquema y decisión de ruta. El enum/shape no representa el estado negativo del consumidor real.",
+      "tratamiento": "Determinar la función concreta del esquema (proyección de decisión runtime frente a entrada de comprobación de acceso) y vincular una instancia/consumidor validable. Si modela RemoteAccessDecision, contemplar UNAVAILABLE y los campos relevantes sin reducir los gates de Tailscale/Cloudflare; si modela otra entrada, tiparla y probarla explícitamente. Sin cambios de acceso, autoridad ni fallback público en esta auditoría.",
+      "evidencia_source": {
+        "repositorio": "elkakas314/libre_chat_vx",
+        "git_commit_sha": "7aba0e153b8bc1a0321afee2dd217239a6e06937",
+        "schema_git_blob_sha": "30da9fec03dddac0980df6572b173bbe0c62a551",
+        "consumer_git_blob_sha": "78ec5f868ea3d8f768d08c72ba47430dee0c6a5b",
+        "config_git_blob_sha": "57ccff9ce6187ab35bad1396c04d6e722dd270be",
+        "tests_git_blob_sha": "7854300cbbb8f8bd04b4ecbc199af56ef0a96cfc",
+        "metodo": "Contraste de required y enum en JSON Schema con campos y ramas retornadas por chooseRemoteAccess(), inspección de config CURRENT y tests de acceso. No existe equivalencia 1:1 demostrada.",
+        "runtime": "NO_DEPLOYMENT_EVIDENCE"
+      }
     }
   ],
   "frontend": {
