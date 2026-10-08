@@ -21,7 +21,11 @@ Seven internal inference profiles:
 RAPIDO, NORMAL, PENSAR, INVESTIGAR, VISUALIZAR, CONTEXTO_LARGO, VISION.
 No CODIGO profile; coding-related work is delegated to specialist targets when connected.
 
-## Latest continuation evidence
+## Latest verified SOURCE ownership fence
+
+SOURCE `73d4da310c980d78104c3aebc8ef90c92b38d233` with GitHub Actions `37725106400` SUCCESS (114 tests PASS, overlay-smoke PASS). A previously OWNED scope without fresh FREE becomes RECONCILE_REQUIRED: reconcile existing claim/run/receipt before any material retry. Keep independent next_eligible work progressing. No LIVE proof.
+
+## Historical continuation evidence
 
 `LC-CONTINUITY-NO-STOP`: source `32e304584788e16a59c3a65248d9f513b81d1140`, CI run `37724764673` SUCCESS (112 PASS; overlay PASS); Drive 00/10/20/30/40 verified. Bootstrap/readback → NEXT_ELIGIBLE → work → verify → checkpoint → refresh; follow unrelated eligible scopes rather than halt at first blocker. Does not create an ongoing background service.
 

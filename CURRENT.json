@@ -3,10 +3,10 @@
   "status": "SOURCE_CORE_AND_TRANSPORT_CANON_COMPLETE_LIVE_BINDINGS_PENDING",
   "repository": "elkakas314/libre_chat_vx",
   "branch": "handoff_current_bootstrps",
-  "source_evidence_cutoff_head": "32e304584788e16a59c3a65248d9f513b81d1140",
+  "source_evidence_cutoff_head": "73d4da310c980d78104c3aebc8ef90c92b38d233",
   "source_ci": {
     "workflow": "source-check",
-    "run_id": 37724764673,
+    "run_id": 37725106400,
     "conclusion": "SUCCESS"
   },
   "upstream": {
@@ -142,7 +142,7 @@
     "map": "40",
     "refs": "operating/DRIVE_REFS_CURRENT.json"
   },
-  "post_proof_changes": "CONTINUITY_DOC_AND_DRIVE_READBACK_ONLY",
+  "post_proof_changes": "DOC_ONLY_CONTINUITY_READBACK_AFTER_VERIFIED_SOURCE",
   "design_review_queue": [
     "LC-NOSTROMO-SEMANTIC-BRIDGE"
   ],
@@ -157,11 +157,17 @@
       "github_actions_run": 37724142946,
       "build_test": "SUCCESS_110_PASS_0_FAIL",
       "overlay_smoke": "SUCCESS"
+    },
+    "last_verified_source": {
+      "head": "73d4da310c980d78104c3aebc8ef90c92b38d233",
+      "run_id": 37725106400,
+      "build_test": "SUCCESS_114_PASS_0_FAIL",
+      "overlay_smoke": "SUCCESS"
     }
   },
   "last_confirmed_ci": {
-    "head": "32e304584788e16a59c3a65248d9f513b81d1140",
-    "workflow_run": 37724764673,
+    "head": "73d4da310c980d78104c3aebc8ef90c92b38d233",
+    "workflow_run": 37725106400,
     "conclusion": "SUCCESS",
     "applicability": "PROVEN_SOURCE_HEAD"
   },
@@ -173,6 +179,9 @@
     "partial_blocker_stops_only_affected_scope": true,
     "no_blind_retry": true,
     "background_service_claim": false,
-    "source_provenance": "elkakas314/manojos3@ff7e2792ab91f5d0883a5a8fc90603687cc10de3"
+    "source_provenance": "elkakas314/manojos3@ff7e2792ab91f5d0883a5a8fc90603687cc10de3",
+    "source_guard": "OWNED_WITHOUT_FREE_IS_RECONCILE_REQUIRED",
+    "source_ci_run": 37725106400,
+    "source_test_count": 114
   }
 }

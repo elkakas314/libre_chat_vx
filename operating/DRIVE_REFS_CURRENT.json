@@ -34,7 +34,7 @@
     },
     "legacy_start_here_reference": "11e70lpwe5U3k9FMZWd7h-N0eNaidgaINJP9Pwz1bGx8"
   },
-  "readback": "CONTINUITY_POLICY_READBACK_VERIFIED_IN_ALL_FIVE_LIVING_DOCS_SOURCE_CI_112_PASS",
+  "readback": "FIVE_DOCS_CONTINUITY_READBACK_VERIFIED_DRIVE30_SOURCE_CI_114_PASS",
   "local_touched": false,
   "living_package": {
     "10": {
@@ -49,7 +49,7 @@
     },
     "30": {
       "document_id": "19_Bm72_3aaxT6gggEAmfkZG0y0N1hXK6tMQrYLR4sDI",
-      "revision_id": "AHj4eMRXihz9sr2FUKbcR7WpBomubTCgFNYAqgVdUezsyv-A_qXJfS0IG6WsfY-hWQYjwlpVQCNiG9KmO5sLh8CD0_CYVcu4rO1G-GvExnA",
+      "revision_id": "AHj4eMRa9PZ5Vssm8XQixO5ttVmCUWZ5Q385qnM8SJ-L4p_8HdSM2c-ZF_h72hndSDOQltiMK1ccGaRDf2ea4jIRSYpcJ7Oy8djQQpJo0Vk",
       "title": "30 — LIBRECHAT VX — Cierre, Continuidad y Handoff vivo"
     },
     "40": {
@@ -63,7 +63,7 @@
       "title": "00 — LIBRECHAT VX — Entrada, CURRENT, Bootstrap y Continuidad"
     }
   },
-  "updated_for": "LC-CONTINUITY-NO-STOP",
+  "updated_for": "LC-CONTINUITY-NO-STOP_RECONCILIATION_VERIFIED",
   "living_docs": {
     "design": {
       "document_id": "1fndkYM-UBmSfacQcbu_oewcDe4JzEClw-qd7K7J9pGg",

@@ -5,7 +5,13 @@ Live: `NO_VERIFICADO`.
 Material verified: `false`.
 Authority: `false`.
 
-## Latest source proof — continuity transplanted
+## Latest source evidence: scoped ownership continuity
+
+- Exact SOURCE `73d4da310c980d78104c3aebc8ef90c92b38d233` validated with `source-check` run `37725106400`: 114 tests PASS (0 fail), overlay-smoke SUCCESS.
+- A previously OWNED scope does not reopen without explicit FREE; unknown/stale ownership requires reconciliation (not material retry). Independent scopes remain eligible. Readback documented in Drive 30.
+- LIVE/target effects remain NO_VERIFICADO; NOSTROMO authority=false, material_verified=false.
+
+## Historical source proof — continuity transplanted
 
 - `LC-CONTINUITY-NO-STOP` exact source head `32e304584788e16a59c3a65248d9f513b81d1140`: GitHub Actions `source-check` run `37724764673` SUCCESS, 112 tests PASS/0 FAIL including nonblocking independent gap selection, overlay-smoke SUCCESS.
 - Five living Drive documents 00/10/20/30/40 updated and read back. No LIVE endpoint/target effect was exercised. MANOJOS3/VX13 unchanged.

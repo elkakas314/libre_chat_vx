@@ -195,7 +195,26 @@
         "drive:19_Bm72_3aaxT6gggEAmfkZG0y0N1hXK6tMQrYLR4sDI",
         "drive:1UD9LnU0eaKdEHrLUkMJyPp-II_6rZPtlD7uzn_sqWCc"
       ]
+    },
+    {
+      "proofId": "ownership-claim-reconcile-source-ci-20261008",
+      "subject": "OWNED/WAITING_INTERNAL cannot become OPEN without explicit FREE; stale ownership requires reconciliation and independent scopes keep progressing",
+      "proofClass": "TEST",
+      "state": "VALID",
+      "verified_at_source_head": "73d4da310c980d78104c3aebc8ef90c92b38d233",
+      "dependencies": [
+        "src/operating/reconcile.ts",
+        "tests/operating-canon.test.ts"
+      ],
+      "history_classification": "SOURCE_VERIFIED",
+      "dependencyFingerprint": "head:73d4da31|ci:37725106400",
+      "evidenceRefs": [
+        "commit:73d4da310c980d78104c3aebc8ef90c92b38d233",
+        "github_actions_run:37725106400",
+        "job:build-test:114_PASS_0_FAIL",
+        "job:overlay-smoke:SUCCESS"
+      ]
     }
   ],
-  "source_evidence_cutoff_head": "32e304584788e16a59c3a65248d9f513b81d1140"
+  "source_evidence_cutoff_head": "73d4da310c980d78104c3aebc8ef90c92b38d233"
 }

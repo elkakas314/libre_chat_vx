@@ -2,12 +2,12 @@
   "schema": "libre-chat-vx.operating-current.v2",
   "snapshot_id": "source-2026-10-08-criba",
   "mode": "SOURCE_ONLY",
-  "evidence_cutoff_head": "32e304584788e16a59c3a65248d9f513b81d1140",
+  "evidence_cutoff_head": "73d4da310c980d78104c3aebc8ef90c92b38d233",
   "evidence_cutoff_ci": {
-    "github_actions_run": 37724764673,
+    "github_actions_run": 37725106400,
     "conclusion": "SUCCESS"
   },
-  "source_changes_after_cutoff": "CONTINUITY_ONLY_DOC_PROJECTIONS_FOLLOW",
+  "source_changes_after_cutoff": "CONTINUITY_DOCUMENTS_ONLY",
   "upstream_pin": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
   "active_llm_architecture": "NOSTROMO_INTERPRETER_CF_AI_GATEWAY",
   "source_state": {
@@ -22,7 +22,8 @@
     "parallel_transport": "CANON_SOURCE_PASS",
     "operating_canon": "RECONCILED_SOURCE_PASS",
     "skills": "10_ACTIVE_CATALOG_2_PHYSICAL_LEGACY_ALIASES_SYNC_NOT_VERIFIED",
-    "continuity_no_stop": "SOURCE_CANON_AND_TEST_VERIFIED_DRIVE_READBACK"
+    "continuity_no_stop": "SOURCE_CANON_AND_TEST_VERIFIED_DRIVE_READBACK",
+    "continuity_ownership_guard": "IMPLEMENTED_SOURCE_TESTED"
   },
   "inference": {
     "primary": "CLOUDFLARE_AI_GATEWAY",
@@ -50,11 +51,12 @@
     "material_verified": false
   },
   "tests": {
-    "baseline_run_id": 37724764673,
+    "baseline_run_id": 37725106400,
     "baseline_result": "SUCCESS",
     "current_skill_refactor": "PASS_BUILD_TEST_AND_OVERLAY",
     "operating_contracts": "CAMELCASE_GAP_PROOF_AND_BOOTSTRAP_SCHEMAS_TESTED",
-    "continuity_nonblocking": "SOURCE_CI_112_TESTS_PASS"
+    "continuity_nonblocking": "SOURCE_CI_112_TESTS_PASS",
+    "ownership_reconciliation": "SOURCE_CI_114_TESTS_PASS"
   },
   "ownership": {
     "state": "UNOBSERVED",

@@ -4,14 +4,14 @@
   "target_version": 8,
   "snapshot_id": "source-2026-10-08-criba",
   "mode": "SOURCE_ONLY",
-  "evidence_cutoff_head": "32e304584788e16a59c3a65248d9f513b81d1140",
+  "evidence_cutoff_head": "73d4da310c980d78104c3aebc8ef90c92b38d233",
   "baseline_ci": {
-    "github_actions_run": 37724764673,
+    "github_actions_run": 37725106400,
     "conclusion": "SUCCESS"
   },
   "git": {
-    "head": "32e304584788e16a59c3a65248d9f513b81d1140",
-    "status": "SOURCE_PROOF_CUTOFF_CONTINUITY_DOCS_FOLLOW",
+    "head": "73d4da310c980d78104c3aebc8ef90c92b38d233",
+    "status": "EVIDENCE_SOURCE_CI_CUTOFF_DOCS_FOLLOW",
     "origin_main": "NOT_READ_LIVE"
   },
   "runtime": {
@@ -32,7 +32,8 @@
       "skill-criba-exact-head-ci",
       "operating-contracts-source-ci-20261008",
       "continuity-no-stop-exact-head-ci",
-      "continuity-no-stop-living-drive"
+      "continuity-no-stop-living-drive",
+      "ownership-claim-reconcile-source-ci-20261008"
     ],
     "stale": [
       "nostromo-material-test"
