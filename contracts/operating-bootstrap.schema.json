@@ -68,7 +68,6 @@
         "status": {
           "enum": [
             "NO_DEPLOYMENT_EVIDENCE",
-            "NOT_DEPLOYED",
             "DEPLOYED_UNVERIFIED",
             "LIVE_VERIFIED",
             "MATERIAL_VERIFIED"

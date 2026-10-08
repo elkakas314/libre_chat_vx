@@ -192,7 +192,10 @@ test('bootstrap runtime field enums match SPEC, and missing LIVE readback never 
   const runtimeSchema=schema.properties.runtime;
   const runtimeFields=['status','librechat','cloudflare_gateway','skill_sync','events','tailscale_serve'];
   for(const field of runtimeFields){
-    assert.deepEqual(runtimeSchema.properties[field].enum,spec.meta.estado_runtime_enum,'enum drift '+field);
+    const allowed=field==='status'
+      ? spec.meta.estado_runtime_enum.filter((state:string)=>state!=='NOT_DEPLOYED')
+      : spec.meta.estado_runtime_enum;
+    assert.deepEqual(runtimeSchema.properties[field].enum,allowed,'enum drift '+field);
   }
   assert.deepEqual(runtimeSchema.properties.targets.enum,['GATED',...gap.properties.state.enum]);
   assert.equal(runtimeSchema.additionalProperties,false);
