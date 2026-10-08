@@ -155,7 +155,47 @@
         "job:build-test:110_PASS_0_FAIL",
         "job:overlay-smoke:SUCCESS"
       ]
+    },
+    {
+      "proofId": "continuity-no-stop-exact-head-ci",
+      "subject": "Scoped nonblocking continuity inherited from MANOJOS3 source discipline",
+      "proofClass": "TEST",
+      "state": "VALID",
+      "verified_at_source_head": "32e304584788e16a59c3a65248d9f513b81d1140",
+      "dependencies": [
+        "src/operating/reconcile.ts",
+        "tests/operating-canon.test.ts",
+        "operating/LIBRECHAT_OPERATING_CANON.md",
+        "operating/START_HERE_GPT.md"
+      ],
+      "history_classification": "SOURCE_VERIFIED",
+      "dependencyFingerprint": "head:32e30458|ci:37724764673",
+      "evidenceRefs": [
+        "commit:32e304584788e16a59c3a65248d9f513b81d1140",
+        "github_actions_run:37724764673",
+        "job:build-test:112_PASS_0_FAIL",
+        "job:overlay-smoke:SUCCESS"
+      ]
+    },
+    {
+      "proofId": "continuity-no-stop-living-drive",
+      "subject": "Continuity rule added to 00/10/20/30/40 and read back from all five live Google Docs",
+      "proofClass": "DRIVE_READBACK",
+      "state": "VALID",
+      "dependencies": [
+        "operating/DRIVE_REFS_CURRENT.json",
+        "operating/LIBRECHAT_OPERATING_CANON.md"
+      ],
+      "history_classification": "DRIVE_REVISION_READBACK",
+      "dependencyFingerprint": "drive:00/10/20/30/40:continuity:20261008",
+      "evidenceRefs": [
+        "drive:11e70lpwe5U3k9FMZWd7h-N0eNaidgaINJP9Pwz1bGx8",
+        "drive:1fndkYM-UBmSfacQcbu_oewcDe4JzEClw-qd7K7J9pGg",
+        "drive:1py0BlozuMOjmo4lUEqxuqCmLaN2O3_6wYwXrTwfVcuY",
+        "drive:19_Bm72_3aaxT6gggEAmfkZG0y0N1hXK6tMQrYLR4sDI",
+        "drive:1UD9LnU0eaKdEHrLUkMJyPp-II_6rZPtlD7uzn_sqWCc"
+      ]
     }
   ],
-  "source_evidence_cutoff_head": "874d7e0a49def329973a30416160f076dcf2fc05"
+  "source_evidence_cutoff_head": "32e304584788e16a59c3a65248d9f513b81d1140"
 }

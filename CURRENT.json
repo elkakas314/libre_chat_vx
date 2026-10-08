@@ -3,10 +3,10 @@
   "status": "SOURCE_CORE_AND_TRANSPORT_CANON_COMPLETE_LIVE_BINDINGS_PENDING",
   "repository": "elkakas314/libre_chat_vx",
   "branch": "handoff_current_bootstrps",
-  "source_evidence_cutoff_head": "874d7e0a49def329973a30416160f076dcf2fc05",
+  "source_evidence_cutoff_head": "32e304584788e16a59c3a65248d9f513b81d1140",
   "source_ci": {
     "workflow": "source-check",
-    "run_id": 37724142946,
+    "run_id": 37724764673,
     "conclusion": "SUCCESS"
   },
   "upstream": {
@@ -142,7 +142,7 @@
     "map": "40",
     "refs": "operating/DRIVE_REFS_CURRENT.json"
   },
-  "post_proof_changes": "CONTINUITY_ONLY_AFTER_VERIFIED_SOURCE_HEAD",
+  "post_proof_changes": "CONTINUITY_DOC_AND_DRIVE_READBACK_ONLY",
   "design_review_queue": [
     "LC-NOSTROMO-SEMANTIC-BRIDGE"
   ],
@@ -160,9 +160,19 @@
     }
   },
   "last_confirmed_ci": {
-    "head": "874d7e0a49def329973a30416160f076dcf2fc05",
-    "workflow_run": 37724142946,
+    "head": "32e304584788e16a59c3a65248d9f513b81d1140",
+    "workflow_run": 37724764673,
     "conclusion": "SUCCESS",
     "applicability": "PROVEN_SOURCE_HEAD"
+  },
+  "continuity": {
+    "policy_id": "LC-CONTINUITY-NO-STOP",
+    "state": "SOURCE_VERIFIED",
+    "procedure": "operating/LIBRECHAT_OPERATING_CANON.md",
+    "sequence": "BOOTSTRAP_CURRENT_DELTA_NEXT_ELIGIBLE_VERIFY_READBACK_CHECKPOINT_REPEAT",
+    "partial_blocker_stops_only_affected_scope": true,
+    "no_blind_retry": true,
+    "background_service_claim": false,
+    "source_provenance": "elkakas314/manojos3@ff7e2792ab91f5d0883a5a8fc90603687cc10de3"
   }
 }

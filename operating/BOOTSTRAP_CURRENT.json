@@ -4,14 +4,14 @@
   "target_version": 8,
   "snapshot_id": "source-2026-10-08-criba",
   "mode": "SOURCE_ONLY",
-  "evidence_cutoff_head": "874d7e0a49def329973a30416160f076dcf2fc05",
+  "evidence_cutoff_head": "32e304584788e16a59c3a65248d9f513b81d1140",
   "baseline_ci": {
-    "github_actions_run": 37724142946,
+    "github_actions_run": 37724764673,
     "conclusion": "SUCCESS"
   },
   "git": {
-    "head": "874d7e0a49def329973a30416160f076dcf2fc05",
-    "status": "SOURCE_CI_EVIDENCE_CUTOFF_CONTINUITY_DOCS_FOLLOW",
+    "head": "32e304584788e16a59c3a65248d9f513b81d1140",
+    "status": "SOURCE_PROOF_CUTOFF_CONTINUITY_DOCS_FOLLOW",
     "origin_main": "NOT_READ_LIVE"
   },
   "runtime": {
@@ -30,7 +30,9 @@
       "tentacle-hud-model-independence",
       "transport-and-source-ci-20261008",
       "skill-criba-exact-head-ci",
-      "operating-contracts-source-ci-20261008"
+      "operating-contracts-source-ci-20261008",
+      "continuity-no-stop-exact-head-ci",
+      "continuity-no-stop-living-drive"
     ],
     "stale": [
       "nostromo-material-test"

@@ -9,8 +9,8 @@
     "CLOSED_SOURCE"
   ],
   "source_proof_basis": {
-    "head": "874d7e0a49def329973a30416160f076dcf2fc05",
-    "github_actions_run": 37724142946,
+    "head": "32e304584788e16a59c3a65248d9f513b81d1140",
+    "github_actions_run": 37724764673,
     "conclusion": "SUCCESS"
   },
   "gaps": [

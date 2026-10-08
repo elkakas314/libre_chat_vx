@@ -21,7 +21,11 @@ Seven internal inference profiles:
 RAPIDO, NORMAL, PENSAR, INVESTIGAR, VISUALIZAR, CONTEXTO_LARGO, VISION.
 No CODIGO profile; coding-related work is delegated to specialist targets when connected.
 
-## Successor verified SOURCE evidence (2026-10-08)
+## Latest continuation evidence
+
+`LC-CONTINUITY-NO-STOP`: source `32e304584788e16a59c3a65248d9f513b81d1140`, CI run `37724764673` SUCCESS (112 PASS; overlay PASS); Drive 00/10/20/30/40 verified. Bootstrap/readback → NEXT_ELIGIBLE → work → verify → checkpoint → refresh; follow unrelated eligible scopes rather than halt at first blocker. Does not create an ongoing background service.
+
+## Historical successor verified SOURCE evidence (2026-10-08)
 
 Head `874d7e0a49def329973a30416160f076dcf2fc05`, source-check run `37724142946` SUCCESS (110 tests, overlay-smoke PASS). No Cloudflare account/host LIVE readback in this thread. First ACTIVE_LIVE gate is AI Gateway, not MANOJOS3 transport. Runtime/mutation status remains NO_VERIFICADO.
 
