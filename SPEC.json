@@ -264,7 +264,36 @@
     "deferred_external": [
       "MANOJOS3 transport migration",
       "MANOJOS3 LiteLLM live readback",
-      "MANOJOS3 transport-doc drift"
+      "MANOJOS3 transport-doc drift",
+      {
+        "id": "LC-M3-GAP-001",
+        "estado": "BLOQUEADO",
+        "ubicacion": [
+          "SPEC.json#/requisitos/funcionales/7",
+          "SPEC.json#/backend/eventos/0",
+          "SPEC.json#/backlog/active_live/4"
+        ],
+        "hecho": "El target MANOJOS3 persiste eventos internos en State, pero el Control Plane HTTP y el MCP examinados no exponen una ruta publica GET /v1/events, un stream o una herramienta de suscripcion equivalentes. Esta ausencia de interfaz SOURCE de entrega no prueba inexistencia de otras integraciones ni ausencia de despliegue.",
+        "impacto_fr08": "La recepcion automatica de eventos de MANOJOS3, con idempotencia/severidad/provenance, no tiene fuente externa autenticada demostrada. R0 self/capabilities/run/receipt no queda bloqueado. No concede ni afecta autoridad material.",
+        "dependencia": "MANOJOS3 debe exponer /v1/events o un mecanismo equivalente, o confirmar una fuente externa gobernada que LibreChat pueda consumir en lectura. No se solicita modificar MANOJOS3 desde este hilo.",
+        "bloquea": [
+          "LC-AGENT-EVENTS-LIVE"
+        ],
+        "responsable": [
+          "MANOJOS3: confirmar mecanismo externo o equivalente",
+          "LibreChat VX: adaptar entrega, autenticar y verificar readback"
+        ],
+        "entra_en_block1": false,
+        "entra_en_block_binding": true,
+        "evidencia_source": {
+          "manojos3_git_commit_sha": "87444678ad4de2f197039ae989f058f87a02cc0e",
+          "state_git_blob_sha": "704a2ecb918c6c416fcdd2af43a480f72e86e9fe",
+          "runtime_git_blob_sha": "24690c6e855837fa81134c7594681ac06c92445c",
+          "http_git_blob_sha": "e3ffa9ae2eef4b1914c45db84de52c7654b5b18e",
+          "mcp_git_blob_sha": "ac1950197d647a9f2191da5a68417cfe6d83f79b",
+          "external_observations": "docs/observaciones-externas/OBSERVACIONES_MANOJOS3.md"
+        }
+      }
     ],
     "design_review_queue": [
       {
