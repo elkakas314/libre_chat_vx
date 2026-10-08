@@ -131,3 +131,16 @@ Assess whether LibreChat/NOSTROMO needs an explicit domain vocabulary/semantic r
 **Acceptance:** inventory existing semantics; spot actual gaps; propose canonical Intent/Capability mappings; test colloquial/referential phrases and ambiguous target selection; prove never converts read -> material submit and never treats a semantic match as authorization; route to existing Skills/native config where possible. Only develop missing SOURCE after design/reuse audit.
 
 **Boundaries:** This is a LibreChat backlog idea only; do not edit MANOJOS3. Review early, but do not derail the already-active Operating Canon + Skill consolidation.
+
+### Feasibility alternatives and choice gate — LC-NOSTROMO-SEMANTIC-BRIDGE
+
+Compare these options **before authorizing implementation**:
+
+1. **Reuse native LibreChat Agent/Skill/Model Specs + existing Intent Interpreter**: add a lightweight, versioned NOSTROMO capability vocabulary and decision tests only if the existing configuration lacks explicit coverage.
+2. **Typed semantic crosswalk at TargetGateway/adapters (preferred hypothesis)**: translate a user-facing NOSTROMO Intent into a target-neutral, authority=false intent envelope and then a target-owned intent-flow/capability reference. Read MANOJOS3 descriptors through R0 when LIVE, never clone or independently execute its flows.
+3. **A read-only declarative intent/capability registry**: allow controlled additions for LibreChat surfaces, with provenance, owner, allowed presentation/READ semantics and test fixtures; use the current semantic model and provenance matrix rather than a new semantic engine or database.
+4. **Separate semantic engine / LLM-first self-routing**: reject by default; would duplicate MANOJOS3, risk drift and confuse semantic selection with authorization.
+
+**Decision rule:** choose the smallest of (1)–(3) that passes coverage tests. Investigate natural language, implicit referents, colloquial ambiguity, own LibreChat features, multi-target requests, negative cases (read != submit; semantic match != grant), versioning and rollback. Prefer a focused Skill for conversation/application guidance; keep wire contract, ACL, target selection and material fences in typed code. Any M3 mapping is advisory/R0 until actual target readback validates it.
+
+**Acceptance evidence:** comparison matrix, gaps against existing `src/intent`, `src/manojos3`, `config/skills.current.json` and canonical target contracts; proposed semantic IDs/flows; tests showing how phrases map to intents without authority; explicit source vs LIVE separation. **Status remains queued and not yet developed.**
