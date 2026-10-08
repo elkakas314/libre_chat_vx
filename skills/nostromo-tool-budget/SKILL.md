@@ -1,19 +1,10 @@
 ---
 name: nostromo-tool-budget
-description: Use before tool-heavy, research, file, browser, multimodal, or agent work to choose the least expensive suitable LibreChat capability and avoid waking unnecessary tools or services.
+description: Legacy compatibility name, superseded by nostromo-core for lightest-capability selection. Do not load as a separate global policy.
 ---
 
-# Nostromo Tool Budget
+# Compatibility alias: tool budget
 
-Use the lightest adequate path.
+This Skill is retained temporarily until a GitHub Skill Sync LIVE canary proves compatibility. The active policy is `nostromo-core`: targeted read; File Search before long context; Web Search before browser; deferred tools; lazy views; no unnecessary local services or material work.
 
-1. Conversation/reasoning before tools when no external state is needed.
-2. Targeted read before broad scan.
-3. File Search / File Context before long-context ingestion.
-4. Web Search/read adapter before Playwright/browser automation when no interaction is required.
-5. Deferred Tool Search before loading large tool catalogs.
-6. One focused subagent before a large agent chain.
-7. Lazy views and bounded subscriptions; release them when hidden.
-8. Do not wake audio, browser, build, local model or target workers for presentation-only effects.
-9. LocalAI, llama.cpp, Whisper, SearXNG and similar components remain optional until measurement proves value.
-10. Background cognitive work never becomes permission for background material mutation.
+Status: LEGACY_COMPAT / SUPERSEDED_PENDING_SYNC_CANARY.
