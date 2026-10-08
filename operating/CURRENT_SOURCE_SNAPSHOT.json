@@ -2,12 +2,12 @@
   "schema": "libre-chat-vx.operating-current.v2",
   "snapshot_id": "source-2026-10-08-criba",
   "mode": "SOURCE_ONLY",
-  "evidence_cutoff_head": "77ceb1a9fe72dd70db9f968b28b0370c831115ff",
+  "evidence_cutoff_head": "409d3f47bf196f4a2eee469d6a1abe29851c0387",
   "evidence_cutoff_ci": {
-    "github_actions_run": 37706857454,
+    "github_actions_run": 37708437853,
     "conclusion": "SUCCESS"
   },
-  "source_changes_after_cutoff": "SKILL_CONSOLIDATION_OPERATING_RECONCILIATION_AWAIT_EXACT_HEAD_CI",
+  "source_changes_after_cutoff": "DOC_ONLY_SOURCE_PROOF_UNCHANGED",
   "upstream_pin": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
   "active_llm_architecture": "NOSTROMO_INTERPRETER_CF_AI_GATEWAY",
   "source_state": {
@@ -20,7 +20,7 @@
     "native_surface_binding": "IMPLEMENTED_SOURCE",
     "mobile_remote_access": "IMPLEMENTED_SOURCE_NOT_DEPLOYED",
     "parallel_transport": "CANON_SOURCE_PASS",
-    "operating_canon": "RECONCILED_SOURCE_CHANGES_CI_PENDING",
+    "operating_canon": "RECONCILED_SOURCE_PASS",
     "skills": "10_ACTIVE_CATALOG_2_PHYSICAL_LEGACY_ALIASES_SYNC_NOT_VERIFIED"
   },
   "inference": {
@@ -49,9 +49,9 @@
     "material_verified": false
   },
   "tests": {
-    "baseline_run_id": 37706857454,
+    "baseline_run_id": 37708437853,
     "baseline_result": "SUCCESS",
-    "current_skill_refactor": "PENDING_EXACT_HEAD_CI"
+    "current_skill_refactor": "PASS_BUILD_TEST_AND_OVERLAY"
   },
   "ownership": {
     "state": "UNOBSERVED",
