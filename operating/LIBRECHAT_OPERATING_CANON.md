@@ -174,3 +174,17 @@ Revisar alternativas: native/Skills + Intent Interpreter existente; crosswalk ti
 `config/skills.current.json`: 10 Skills activas + 2 legacy aliases en disco hasta canary LIVE de Sync. Una Skill no sustituye contratos ni validaciones de runtime.
 
 El estado actual es SOURCE_ONLY hasta readback LIVE. El bootstrapping no hace mutaciones ni interpreta ausencia de owner como FREE.
+
+## Continuidad autónoma sin paradas artificiales — LC-CONTINUITY-NO-STOP
+
+Origen contrastado: `elkakas314/manojos3@ff7e2792`, `docs/MANOJOS3_OPERATING_CANON.md`, `docs/templates/MANOJOS3_THREAD_ENTRY_TEMPLATE.md` y `plugins/manojos3/skills/manojos3-director-autonomous/SKILL.md`. Se adopta el contrato de CONTINUIDAD, no su Kernel ni su autoridad.
+
+Invariante de operador: **no detener la misión por un bloqueo parcial ni concluir después de un solo hito si queda un gap seguro independiente**. Ciclo: `BOOTSTRAP → evidence/readback → CURRENT → TARGET/DELTA → ownership/claims → eligible gap → work through existing surfaces → test/readback → checkpoint → refresh bootstrap → next eligible`. Repetir el ciclo dentro de la sesión disponible, sin pedir permiso para cada paso seguro. Nunca usar un HTTP 200, una Skill, un commit o un CI como prueba LIVE/material.
+
+- `OWNED`, `WAITING_INTERNAL`, `RUNNING/VERIFYING/RECONCILING`: inspeccionar el mismo identificador, no competir, no crear segundo run y continuar por otro scope independiente. `WAITING_INTERNAL` sólo cuando no existe otro trabajo interno listo.
+- `GATE_EXTERNAL`, `GATE_HUMAN`, `CONFIG_GAP`, `SECURITY_BOUNDARY`, `UNAVAILABLE_TOOL`: bloquear únicamente el scope afectado y avanzar otros gaps elegibles sin inventar acceso o permiso. Clasificar también `INTERNAL_REPAIRABLE` para reparar primero.
+- `UNKNOWN` o `PARTIAL`: readback del mismo target/run/receipt/effect y reconciliación antes de retry. Timeout no demuestra NOT_APPLIED. Mismo fingerprint y estrategia: `STOP_BLIND_RETRY` para ese efecto, no para el resto de la misión.
+- `STALE_PROOF`: revalidar sólo dependencias afectadas; HEAD nuevo no invalida automáticamente todas las evidencias. `PASS` requiere prueba de la clase correspondiente.
+- Tras cada hito material verificable y antes de relevo: registrar `SNAPSHOT_ID`, `EVIDENCE_CUTOFF_HEAD`, CI/recibos, `CURRENT_WORKING_BLOCK`, `ACTIVE_RUNS/CLAIMS/LEASES` si existen, `UNKNOWN_EFFECTS`, `DO_NOT_TOUCH`, `BLOCKERS_BY_SCOPE`, `NEXT_ELIGIBLE` y `NEXT_ACTION`. CURRENT/HANDOFF son proyecciones derivadas, no autoridad.
+
+Cierre: sólo cuando los criterios del alcance tengan prueba suficiente y no exista otro gap interno seguro elegible. Si todos los restantes dependen de un gate externo/humano/no disponible, emitir checkpoint preciso y siguiente acción; **no simular un proceso de fondo**. Un hilo nuevo revalida HEAD/CI/LIVE y reanuda, no reconstruye meses de conversación. LibreChat/NOSTROMO siempre `authority=false` y jamás aplica operaciones materiales de MANOJOS3/VX13 por sí mismo.

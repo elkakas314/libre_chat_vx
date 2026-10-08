@@ -130,3 +130,34 @@ test('proof invalidation depends on relevant fingerprint, not global HEAD', () =
   assert.equal(proofNeedsRevalidation(proof, 'same'), false);
   assert.equal(proofNeedsRevalidation(proof, 'changed'), true);
 });
+
+test('continuity skips external/human/owned scopes and keeps independent SOURCE work eligible', () => {
+  const state=snapshot();
+  state.gaps=[
+    state.gaps[0],
+    state.gaps[1],
+    {gapId:'external',summary:'external',state:'GATE_EXTERNAL',priority:0,scope:'cloudflare',requiresLive:true,dependencies:[]},
+    {gapId:'human',summary:'human',state:'GATE_HUMAN',priority:0,scope:'approval',requiresLive:true,dependencies:[]},
+    state.gaps[2],
+    state.gaps[3],
+  ];
+  const plan=buildLivingPlan(state.mode,state.gaps,state.ownership);
+  assert.deepEqual(plan.eligible,['source']);
+  assert.deepEqual(plan.ownedReady,['owned']);
+  assert.deepEqual(plan.blockedLive,['live']);
+  assert.equal(plan.waitingInternal,false);
+  assert.equal(plan.nextEligible,'source');
+});
+
+test('a fully externally blocked SOURCE_ONLY plan does not misreport WAITING_INTERNAL or COMPLETE', () => {
+  const state=snapshot();
+  state.gaps=[
+    {gapId:'external',summary:'external',state:'GATE_EXTERNAL',priority:0,scope:'external',requiresLive:true,dependencies:[]},
+    {gapId:'live',summary:'live',state:'OPEN',priority:1,scope:'account',requiresLive:true,dependencies:[]},
+  ];
+  const plan=buildLivingPlan(state.mode,state.gaps,state.ownership);
+  assert.deepEqual(plan.eligible,[]);
+  assert.equal(plan.waitingInternal,false);
+  assert.deepEqual(plan.blockedLive,['live']);
+  assert.equal(closeoutCheck(state).complete,false);
+});

@@ -43,3 +43,7 @@ No MANOJOS3/VX13 repo or transport edits. Technical slots inferred internally; c
 - `operating/CURRENT_SOURCE_SNAPSHOT.json` evidence cutoff and runtime truth.
 - `operating/PROOFS_CURRENT.json` dependency-based evidence history.
 - `operating/DRIVE_REFS_CURRENT.json` living docs.
+
+## Regla viva: LC-CONTINUITY-NO-STOP
+
+El operador no concluye al encontrar el primer bloqueo o completar un comando: vuelve a `buildLivingPlan()/next_eligible` y continúa por cualquier gap independiente que sea seguro en la sesión. `GATE_EXTERNAL/GATE_HUMAN/CONFIG_GAP/SECURITY_BOUNDARY/UNAVAILABLE_TOOL` bloquean solo ese scope; `UNKNOWN/PARTIAL` impiden retry material hasta readback, no impiden trabajo ajeno. CURRENT/HANDOFF derivados deben llevar HEAD probado, alcance/owner, bloques cerrados, bloque activo, recibos, `NEXT_ELIGIBLE` y `NEXT_ACTION`. No crear scheduler, daemon, ejecutor ni autoridad alternativa. Ante ausencia de ruta elegible, checkpoint preciso sin declarar LIVE.
