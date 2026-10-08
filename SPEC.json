@@ -1358,6 +1358,29 @@
         "method": "Contraste de required/properties y enum kind contra 8 recursos activos; comparación por id de status de registry con estado_runtime y evidencia_runtime de TOPOLOGY; revisión de SPEC.meta.estado_runtime_enum.",
         "runtime": "NO_DEPLOYMENT_EVIDENCE"
       }
+    },
+    {
+      "id": "LC-DISC-EXTENSION-PACKAGE-001",
+      "estado": "ABIERTA",
+      "bloqueante": true,
+      "ubicacion": [
+        "contracts/extension-package.schema.json",
+        "config/extension_registry.current.json",
+        "plugins/vx-nostromo/plugin.json",
+        "docs/EXTENSION_STRATEGY_CURRENT.md"
+      ],
+      "hecho": "El JSON Schema extension-package exige id, mechanism, authority=false y sourcePath como instancia de un paquete, pero no hay consumidor/instancia de ese shape en la fuente inspeccionada. config/extension_registry.current.json expresa una política decision_order/source_tree/deployment_tree (sin id, mechanism, sourcePath); plugins/vx-nostromo/plugin.json declara $schema agent-plugins.org y name/version/description, no es instancia del contrato extension-package. Adicionalmente decision_order usa MCP_OR_ACTION, mientras el enum de mechanism sólo admite MCP o ACTION como valores distintos. No es HUÉRFANO documental porque EXTENSION_STRATEGY_CURRENT.md sí establece la finalidad; es un contrato de instancia sin binding demostrado.",
+      "tratamiento": "Fijar qué representación concreta consume extension-package (descriptor de paquete vs política registry vs plugin externo) y conectar instancias tipadas/validación del shape existente sin alterar el estándar externo del Agent Plugin. Si el contrato sólo es prospectivo, declarar explícitamente su estado no instanciado en el canon y evitar atribuir conformidad o despliegue. Corrección separada tras aprobación de alcance.",
+      "evidencia_source": {
+        "repositorio": "elkakas314/libre_chat_vx",
+        "git_commit_sha": "38c384c180086854bae2c777a5eaee7f3a5b20c8",
+        "schema_git_blob_sha": "6601cb241f4beb7aa29729d3e3c43d88aca5658f",
+        "registry_git_blob_sha": "4f1e1fb51b552860b08eb4039a0c62d12146d7e8",
+        "plugin_git_blob_sha": "925b07ebda5360dba32542dc2cd58ae8070c22a2",
+        "plan_doc_git_blob_sha": "c6e26afa74d731c1d306e96422821fa594b639c7",
+        "method": "Comparación required/enums/additionalProperties con registry actual y plugin externo; búsqueda SOURCE de sourcePath/ExtensionPackage y pruebas; no se halló un consumidor o instancia dedicada.",
+        "runtime": "NO_DEPLOYMENT_EVIDENCE"
+      }
     }
   ],
   "frontend": {
