@@ -1,32 +1,35 @@
-# LibreChat VX Skills
+# LibreChat VX Skills — CURRENT
 
-This directory is the canonical source for LibreChat VX deployment/mirrored Skills.
+Canonical source: `skills/<name>/SKILL.md`. Distribution: GitHub Skill Sync (preferred) or filesystem deployment Skills.
+
+## Active catalog: 10
+
+- `nostromo-core`: conversation, intent/referents, tool budget and lightest native path.
+- `nostromo-visualization`: information-shape presentation.
+- `nostromo-research`: public research.
+- `nostromo-event-triage`: incoming events and notices.
+- `nostromo-evidence-first`: fresh readback/verification.
+- `nostromo-resource-navigation`: lazy files/resources.
+- `manojos3-nostromo`: MANOJOS3 read-only cockpit projection.
+- `vx13-nostromo`: VX13 cockpit projection.
+- `cross-target-read`: read-only cross-target comparisons.
+- `nostromo-extension-review`: anti-monolith/backlog criba on demand.
+
+## Legacy compatibility aliases (not active catalog)
+
+- `nostromo-intent-translation` → absorbed by `nostromo-core`.
+- `nostromo-tool-budget` → absorbed by `nostromo-core`.
+
+Both files remain physically present until GitHub Skill Sync LIVE readback and no-regression canary. This means GitHub path scanning may discover **12 physical Skill folders**, despite 10 active names in `config/skills.current.json`. Do not claim 10 LIVE skills or delete the aliases prematurely.
 
 ## Rules
 
-1. Prefer native LibreChat capability or configuration before adding code.
-2. Use a Skill for reusable instructions, procedures, tool-selection rules and read-only operating discipline.
-3. Use MCP/Actions for external tools and services instead of patching LibreChat core.
-4. Agent Plugins are optional packaging; they are not a second runtime or authority layer.
-5. A Skill never creates target authority, grants, receipts, evidence or material completion.
-6. Keep Skills small, target-specific only when necessary, and free of secrets.
+1. Native/config before Skill; MCP/Action before custom source.
+2. Instructions are never material authority.
+3. Keep secrets out of Skills/plugins and commits.
+4. No second Kernel/Policy/Governor/executor/ledger/routing authority.
+5. The extension review is a review Skill, not a new service.
+6. No automatic material retry or authorization from an LLM.
+7. `LC-NOSTROMO-SEMANTIC-BRIDGE` is queued for design review; do not create a second semantic engine.
 
-## Canonical Skills
-
-- `nostromo-core` — one-voice cockpit behavior and focus discipline.
-- `nostromo-evidence-first` — truth/readback/receipt discipline.
-- `nostromo-resource-navigation` — files, cloud resources and generic hierarchical resource browsing.
-- `nostromo-tool-budget` — least-cost native-tool selection and deferred-tool discipline.
-- `manojos3-nostromo` — MANOJOS3 cockpit behavior.
-- `vx13-nostromo` — VX13 cockpit behavior.
-- `cross-target-read` — read-only cross-target comparison.
-
-## Distribution
-
-Preferred order:
-
-1. GitHub Skill Sync from this `skills/` directory.
-2. Standalone deployment Skills via `DEPLOYMENT_SKILLS_DIR`.
-3. Experimental Agent Plugin bundle only when Skills + MCP + hooks genuinely belong together.
-
-See `config/librechat-vx.example.yaml`, `config/skills.current.json` and `docs/EXTENSION_STRATEGY_CURRENT.md`.
+See `config/skills.current.json`, `docs/SKILL_REDUNDANCY_AUDIT_CURRENT.md`, and `docs/BACKLOG_CRIBA_CURRENT.md`.
