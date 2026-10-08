@@ -1292,6 +1292,52 @@
         "metodo": "Contraste de propiedades required/enum del JSON Schema frente a CrossTargetTruthEnvelope y objeto truth emitido en Manojos3McpTargetAdapter.toReadResult; sin conversión snake_case en productor.",
         "runtime": "NO_DEPLOYMENT_EVIDENCE"
       }
+    },
+    {
+      "id": "LC-DISC-MOBILE-ACCESS-001",
+      "estado": "ABIERTA",
+      "bloqueante": true,
+      "ubicacion": [
+        "contracts/mobile-access.schema.json#/properties/mode/enum",
+        "contracts/mobile-access.schema.json#/required",
+        "src/mobile/remoteAccess.ts#RemoteAccessDecision",
+        "src/mobile/remoteAccess.ts#chooseRemoteAccess",
+        "config/mobile_access.current.json"
+      ],
+      "hecho": "El contrato mobile-access ya usa camelCase, por lo que NO manifiesta la discrepancia snake_case/camelCase del ADR-10. Sin embargo, sólo admite mode LOCAL/TAILSCALE_PRIVATE/CLOUDFLARE_ACCESS_PUBLIC y omite UNAVAILABLE, que chooseRemoteAccess() devuelve para ausencia de ruta autorizada. El esquema exige backendReachable y authenticated, que no figuran en RemoteAccessDecision; las señales de autenticación usadas por chooseRemoteAccess son específicas de la ruta. config/mobile_access.current.json documenta routes/offline/reconnect, no es instancia del esquema y no satisface sus required ni additionalProperties=false. No se identifica instancia serializada común ni binding explícito entre esquema y decisión de ruta. El enum/shape no representa el estado negativo del consumidor real.",
+      "tratamiento": "Determinar la función concreta del esquema (proyección de decisión runtime frente a entrada de comprobación de acceso) y vincular una instancia/consumidor validable. Si modela RemoteAccessDecision, contemplar UNAVAILABLE y los campos relevantes sin reducir los gates de Tailscale/Cloudflare; si modela otra entrada, tiparla y probarla explícitamente. Sin cambios de acceso, autoridad ni fallback público en esta auditoría.",
+      "evidencia_source": {
+        "repositorio": "elkakas314/libre_chat_vx",
+        "git_commit_sha": "7aba0e153b8bc1a0321afee2dd217239a6e06937",
+        "schema_git_blob_sha": "30da9fec03dddac0980df6572b173bbe0c62a551",
+        "consumer_git_blob_sha": "78ec5f868ea3d8f768d08c72ba47430dee0c6a5b",
+        "config_git_blob_sha": "57ccff9ce6187ab35bad1396c04d6e722dd270be",
+        "tests_git_blob_sha": "7854300cbbb8f8bd04b4ecbc199af56ef0a96cfc",
+        "metodo": "Contraste de required y enum en JSON Schema con campos y ramas retornadas por chooseRemoteAccess(), inspección de config CURRENT y tests de acceso. No existe equivalencia 1:1 demostrada.",
+        "runtime": "NO_DEPLOYMENT_EVIDENCE"
+      }
+    },
+    {
+      "id": "LC-DISC-TRANSPORT-RESOURCE-001",
+      "estado": "ABIERTA",
+      "bloqueante": true,
+      "ubicacion": [
+        "contracts/transport-resource.schema.json#/properties/status",
+        "config/transport_registry.current.json#/resources",
+        "TOPOLOGY.json#/recursos",
+        "SPEC.json#/meta/estado_runtime_enum"
+      ],
+      "hecho": "El esquema transport-resource utiliza claves de forma ya alineada (id/kind/owner/purpose/status): los ocho registros activos config/transport_registry.current.json#/resources son estructuralmente válidos. Pero status sólo exige cadena no vacía y no distingue estado SOURCE de estado runtime. El registro SOURCE usa NOT_DEPLOYED para lc-tailserve y lc-cf-web y LIVE_NOT_VERIFIED para lc-aig y lc-agent-events; TOPOLOGY.json#/recursos documenta para los mismos recursos estado_runtime=NO_DEPLOYMENT_EVIDENCE y evidencia_runtime=[]; LIVE_NOT_VERIFIED no pertenece a SPEC.json#/meta/estado_runtime_enum. La validación estructural admite afirmaciones no respaldadas y mezcla espacios de estados. Las entradas deferred carecen de campos obligatorios pero no son instancias del esquema de resource activo.",
+      "tratamiento": "Separar explícitamente estado SOURCE declarado de estado runtime con procedencia/verificación sin promover ausencia o despliegue por documentación; reconciliar registry con TOPOLOGY y enum runtime, manteniendo valores no observados en NO_DEPLOYMENT_EVIDENCE. Acotar status o definir su espacio de nombres sin reescribir transportes ni inferir LIVE; corrección en PR dedicada posterior.",
+      "evidencia_source": {
+        "repositorio": "elkakas314/libre_chat_vx",
+        "git_commit_sha": "180ab7f7ef5bc18dcca207fa3aadf2453fe8e6ab",
+        "schema_git_blob_sha": "18403664bc48036f10e2f8edf9e677aa130b01a9",
+        "registry_git_blob_sha": "42a44df41af4752d42c3a3d7819b2a3f648620c9",
+        "topology_git_blob_sha": "201b4c81e0870b69329309d6a7a155d9f2bfbfa2",
+        "method": "Contraste de required/properties y enum kind contra 8 recursos activos; comparación por id de status de registry con estado_runtime y evidencia_runtime de TOPOLOGY; revisión de SPEC.meta.estado_runtime_enum.",
+        "runtime": "NO_DEPLOYMENT_EVIDENCE"
+      }
     }
   ],
   "frontend": {
