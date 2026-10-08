@@ -1126,6 +1126,24 @@
         "tipo": "SOURCE_CI",
         "runtime": "NO_DEPLOYMENT_EVIDENCE"
       }
+    },
+    {
+      "id": "LC-DISC-UI-ACTION-001",
+      "estado": "ABIERTA",
+      "bloqueante": true,
+      "ubicacion": [
+        "contracts/ui-action.schema.json#/allOf/0/then/required",
+        "contracts/ui-action.schema.json#/properties/target_scope"
+      ],
+      "hecho": "RED con capability_ref=null es aceptado: entonces exige propiedad presente, pero la definicion base admite null. RED con target_scope=AUTO/BOTH es aceptado aunque exista resolved_target_id concreto: no hay restriccion condicional de target_scope para RED.",
+      "tratamiento": "En RED exigir capability_ref no nula (string no vacia) y target_scope concreto VX13 o MANOJOS3; conservar resolved_target_id concreto y autoridad material target-owned. Implementacion propuesta en rama vx-block1-ui-action con pruebas negativas para ambos casos. Sin autoridad material para LibreChat y sin afirmaciones LIVE.",
+      "evidencia_source": {
+        "repositorio": "elkakas314/libre_chat_vx",
+        "git_commit_sha": "f4608cff948223d5ee0e7b9879590b1abd61b452",
+        "schema_git_blob_sha": "15e5818ff2290f9ce2791bd50583ad54547439ba",
+        "test_git_blob_sha": null,
+        "test_estado": "tests/ui-action.test.ts aun no existe en SOURCE de este commit; sera creado en PR de correccion"
+      }
     }
   ],
   "frontend": {
