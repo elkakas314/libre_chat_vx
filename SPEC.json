@@ -1,0 +1,2066 @@
+{
+  "alcance": {
+    "excluye": [
+      "Escribir otro frontend completo",
+      "Cambiar MANOJOS3 o VX13 para acelerar despliegue",
+      "Crear otro Policy/Kernel/Governor/receipt issuer/ledger",
+      "Actuar materialmente desde UI, modelo, Skill o transporte",
+      "Poner datos personales o secretos en repositorio/Drive",
+      "Contratar APIs de pago de forma automática",
+      "Funnel público como baseline",
+      "Modelo local obligatorio",
+      "Autonomía de segundo plano persistente sin servicio instalado"
+    ],
+    "incluye": [
+      "Shell NOSTROMO y HUD Tentáculo",
+      "CurrentFocus, continuidad referencial, memoria acotada",
+      "Interpretación a partir de señales tipadas, política de investigación y presentación",
+      "Estado separado CONNECTION/READINESS/WORK/EVIDENCE",
+      "TargetGateway in-process, lecturas/manifiestos/capability projections",
+      "Cloudflare AI Gateway y catálogo gratuito condicionado a evidencia LIVE",
+      "Skills, Agent Plugin experimental, Agent Events y acceso remoto privado",
+      "Overlay LibreChat reversible, pruebas, documentación y Operating Canon",
+      "Continuidad operativa LC-CONTINUITY-NO-STOP durante sesión activa"
+    ],
+    "restricciones": [
+      "Cliente preferente: PC + móvil con mismo backend",
+      "Cuenta ChatGPT Plus no garantiza cuotas gratuitas de proveedores API externos",
+      "No reutilizar túneles, puertos ni secretos de MANOJOS3",
+      "Sin cambios materiales en targets antes de binding, autorización y pruebas",
+      "No Remote Desktop como dependencia de la arquitectura",
+      "Continuidad no implica ejecución infinita fuera de este hilo"
+    ],
+    "supuestos": [
+      {
+        "requiere_confirmacion": true,
+        "texto": "El uso inicial será personal o de pequeña escala en una única instancia de LibreChat",
+        "tipo": "SUPUESTO"
+      },
+      {
+        "requiere_confirmacion": true,
+        "texto": "El Lenovo será un posible host, pero CPU/RAM y ruta de instalación final se deciden con benchmark",
+        "tipo": "SUPUESTO"
+      }
+    ]
+  },
+  "arquitectura": {
+    "capas": [
+      "LibreChat nativo conversación/ACL/agents/UI",
+      "NOSTROMO interpretación, foco, investigación, presentación y HUD",
+      "NostromoInferenceGateway hacia Cloudflare AI Gateway",
+      "NostromoTargetGateway sin autoridad material",
+      "Adapters MANOJOS3, VX13, ORACULO",
+      "Recibos y verdad propiedad de los targets"
+    ],
+    "componentes": [
+      {
+        "estado_declarado_source": "SOURCE_IMPLEMENTADO_O_DOCUMENTADO",
+        "nombre": "NostromoCockpit",
+        "responsabilidad": "Composición de cabina React",
+        "source": "src/ui/NostromoCockpit.tsx"
+      },
+      {
+        "nombre": "IntentInterpreter",
+        "responsabilidad": "Clasificar señales tipadas y marcar aclaraciones",
+        "source": "src/intent/intentInterpreter.ts"
+      },
+      {
+        "nombre": "ReferentialContinuity",
+        "responsabilidad": "Referentes acotados y foco",
+        "source": "src/cockpit/referentialContinuity.ts"
+      },
+      {
+        "nombre": "ResearchPolicy",
+        "responsabilidad": "Elegir lectura target, archivos, web o navegador",
+        "source": "src/research/researchPolicy.ts"
+      },
+      {
+        "nombre": "PresentationPlanner",
+        "responsabilidad": "Dar estructura a respuestas y visualizaciones",
+        "source": "src/presentation/presentationPlanner.ts"
+      },
+      {
+        "nombre": "TentacleHud",
+        "responsabilidad": "Proyectar contexto y evidencia, sin control material",
+        "source": "src/ui/TentacleHud.tsx"
+      },
+      {
+        "nombre": "NostromoInferenceGateway",
+        "responsabilidad": "Perfil y admisión de rutas, no ejecutar",
+        "source": "src/llm/inferenceGateway.ts"
+      },
+      {
+        "nombre": "CloudflareAiGatewayClient",
+        "responsabilidad": "OpenAI-compatible chat completion, autenticación por secreto runtime",
+        "source": "src/llm/cloudflareAiGateway.ts"
+      },
+      {
+        "nombre": "NostromoTargetGateway",
+        "responsabilidad": "Adaptadores in-process, lectura y delegación única sin retry material",
+        "source": "src/targets/targetGateway.ts"
+      },
+      {
+        "nombre": "AgentEvents",
+        "responsabilidad": "Construir envoltura sanitizada de eventos con idempotencia",
+        "source": "src/events/agentEvents.ts"
+      },
+      {
+        "nombre": "MobileContinuity",
+        "responsabilidad": "Acceso remoto, draft offline, reconnect, readback",
+        "source": "src/mobile/"
+      },
+      {
+        "nombre": "OperatingCanon",
+        "responsabilidad": "Bootstrap, proofs/ownership/nextEligible y reconciliación sin autoridad",
+        "source": "src/operating/"
+      }
+    ],
+    "diagrama_mermaid": "flowchart TD\nU[Usuario PC o móvil] --> LC[LibreChat nativo: conversación/ACL]\nLC --> N[NOSTROMO: intención, foco, investigación, presentación]\nN --> HUD[Tentáculo HUD - authority=false]\nN --> INF[NostromoInferenceGateway]\nINF --> CF[Cloudflare AI Gateway 7 rutas]\nCF --> M[Proveedores gratuitos admitidos]\nN --> TG[NostromoTargetGateway - in-process]\nTG -. binding R0 futuro .-> M3[MANOJOS3 Governor/Policy/Kernel/Verifier]\nTG -. frontdoor futuro .-> VX[VX13 Tentáculo Link/Madre/Spawner]\nN -. advisory .-> O[ORÁCULO]\nM3 --> R[Readback y Receipt]\nVX --> R\nR --> HUD",
+    "estilo": "Overlay/composición de LibreChat upstream + fachadas in-process de lectura/delegación + authority boundaries externos, event-driven lazy read-models",
+    "principio": "Conexión, readiness, trabajo y evidencia se muestran como verdades distintas; un transport/tool/LLM no puede fabricar autorización.",
+    "secuencia_mermaid": "sequenceDiagram\nactor U as Usuario\nparticipant N as NOSTROMO\nparticipant T as TargetGateway\nparticipant M as MANOJOS3 (futuro LIVE)\nU->>N: Objetivo natural\nN->>N: Interpretar y resolver target\nalt lectura R0 y binding configurado\nN->>T: read(MANOJOS3)\nT->>M: Solicitud read-only\nM-->>T: Readback y evidencia\nT-->>N: Vista authority=false\nN-->>U: Explicación y pruebas\nelse cambio solicitado\nN->>N: Preparar intención y aclarar si target no concreto\nNote over N,M: NO submit material sin frontera target-owned\nend"
+  },
+  "backend": {
+    "base": "Servidor/backend LibreChat nativo fijado; VX aporta contratos y adaptadores, no segundo API público",
+    "endpoints": [
+      {
+        "estado_declarado_source": "DECLARADO_SOURCE_LIVE_NO_VERIFICADO",
+        "finalidad": "Eventos Agent API, mode fire, idempotencyKey y orderingKey",
+        "metodo": "POST",
+        "ruta": "/api/agents/v1/events"
+      },
+      {
+        "estado_declarado_source": "DOCUMENTADO_EN_PROCEDIMIENTO_LIVE_NO_VERIFICADO",
+        "finalidad": "Leer estado del mirror Skill Sync",
+        "metodo": "GET",
+        "ruta": "/api/admin/skills/sync/status"
+      },
+      {
+        "estado_declarado_source": "DOCUMENTADO_EN_PROCEDIMIENTO_LIVE_NO_VERIFICADO",
+        "finalidad": "Ejecutar sincronización autorizada",
+        "metodo": "POST",
+        "ruta": "/api/admin/skills/sync/run"
+      },
+      {
+        "estado_declarado_source": "CLIENT_SOURCE_TESTED_NO_LIVE",
+        "finalidad": "Inferencia por AI Gateway OpenAI-compatible",
+        "metodo": "POST",
+        "ruta": "https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/ai/v1/chat/completions"
+      },
+      {
+        "estado_declarado_source": "NO_CONFIGURADO_EN_LIBRECHAT",
+        "finalidad": "Conector MCP externo gobernado",
+        "metodo": "PENDIENTE",
+        "ruta": "MANOJOS3_MCP_URL"
+      },
+      {
+        "estado_declarado_source": "DESIGN_ONLY_GATED",
+        "finalidad": "Frontdoor futuro",
+        "metodo": "PENDIENTE",
+        "ruta": "VX13_LINK_URL"
+      }
+    ],
+    "eventos": [
+      {
+        "delivery": "fire",
+        "fuentes": [
+          "MANOJOS3",
+          "VX13",
+          "ORACULO",
+          "LIBRECHAT_INTERNAL"
+        ],
+        "idempotencyKey": "source:eventId",
+        "orderingKey": "source:resourceRef opcional",
+        "payload": "source/resourceRef/summary/severity/evidenceRefs",
+        "seguridad": "Sin credenciales, authority=false, exige readback auténtico"
+      }
+    ],
+    "middlewares": [
+      "ACL/autenticación nativas de LibreChat: detalles de instancia PENDIENTE",
+      "CSP/provenance/schema/anti-clickjacking en TrustedSurfaceHost",
+      "Sanitización e idempotencia de evento"
+    ],
+    "reintentos": "No reintentar automáticamente un efecto material; readback del mismo run/receipt primero",
+    "servicios": [
+      "LibreChat native Agents/ACL/conversation",
+      "CloudflareAiGatewayClient",
+      "NostromoInferenceGateway",
+      "NostromoTargetGateway in-process",
+      "TargetAdapter",
+      "AgentEvents builder",
+      "Operating bootstrap/reconcile"
+    ]
+  },
+  "backlog": {
+    "active_live": [
+      {
+        "descripcion": "Comprobar cuenta Cloudflare, 7 rutas dinámicas, proveedores gratuitos efectivos, cuotas, autenticación, no-wholesale, canary y rollback",
+        "estado_gate": "OPEN",
+        "id": "LC-CF-AIG-BINDING",
+        "prioridad": 10,
+        "requiresLive": true
+      },
+      {
+        "descripcion": "Sincronización autenticada de 12 carpetas físicas y transición controlada a 10 activas, permisos, visibilidad y rollback",
+        "estado_gate": "OPEN",
+        "id": "LC-SKILL-SYNC-LIVE",
+        "prioridad": 20,
+        "requiresLive": true
+      },
+      {
+        "descripcion": "Comprobar Serve privado, ACL, móvil, reconexión, revocación y rollback",
+        "estado_gate": "OPEN",
+        "id": "LC-TAILSCALE-MOBILE-LIVE",
+        "prioridad": 30,
+        "requiresLive": true
+      },
+      {
+        "descripcion": "Comprobar Web Search/fetch nativo, proveedor de búsqueda y tratamiento de contenido",
+        "estado_gate": "OPEN",
+        "id": "LC-WEB-RESEARCH-LIVE",
+        "prioridad": 40,
+        "requiresLive": true
+      },
+      {
+        "descripcion": "Probar Agent Events autenticados, idempotencia, triage y notificaciones",
+        "estado_gate": "OPEN",
+        "id": "LC-AGENT-EVENTS-LIVE",
+        "prioridad": 50,
+        "requiresLive": true
+      },
+      {
+        "descripcion": "Probar recuperación fuera de banda con servicio host y Tailscale SSH",
+        "estado_gate": "OPEN",
+        "id": "LC-RECOVERY-LIVE",
+        "prioridad": 60,
+        "requiresLive": true
+      },
+      {
+        "descripcion": "Medir CPU/RAM/disco/latencia del Lenovo en reposo y carga",
+        "estado_gate": "GATE_HUMAN",
+        "id": "LC-LOW-POWER-MEASURE",
+        "prioridad": 70,
+        "requiresLive": true
+      }
+    ],
+    "continuidad": {
+      "ciclo": [
+        "BOOTSTRAP",
+        "EVIDENCE/READBACK",
+        "CURRENT/TARGET/DELTA",
+        "OWNERSHIP/GAPS",
+        "NEXT_ELIGIBLE",
+        "CHANGE",
+        "TEST",
+        "VERIFY",
+        "CHECKPOINT",
+        "REPEAT"
+      ],
+      "efecto_ambiguo": "RECONCILE_REQUIRED antes de repetir",
+      "ejecucion_asincrona_persistente": false,
+      "id": "LC-CONTINUITY-NO-STOP",
+      "sin_owner_libre": "UNOBSERVED no equivale a FREE"
+    },
+    "deferred_external": [
+      "MANOJOS3 transport migration",
+      "MANOJOS3 LiteLLM live readback",
+      "MANOJOS3 transport-doc drift"
+    ],
+    "design_review_queue": [
+      {
+        "estado_declarado_source": "DESIGN_REVIEW_PENDING",
+        "id": "LC-NOSTROMO-SEMANTIC-BRIDGE",
+        "prioridad": "HIGH",
+        "regla": "Reusar Intent Interpreter y crosswalk target-owned; no motor semántico duplicado"
+      }
+    ],
+    "optional_reentry": [
+      "Cloudflare Tunnel+Access público",
+      "Tailscale Services",
+      "Router Steward",
+      "SearXNG",
+      "Firecrawl",
+      "LocalAI",
+      "Whisper",
+      "llama.cpp",
+      "reranker"
+    ],
+    "target_later": [
+      {
+        "estado_gate": "BLOCKED_DEPENDENCY",
+        "id": "LC-M3-R0-BINDING"
+      },
+      {
+        "estado_gate": "GATE_EXTERNAL",
+        "id": "LC-VX13-BINDING"
+      },
+      {
+        "estado_gate": "BLOCKED_DEPENDENCY",
+        "id": "LC-FIRST-R2"
+      }
+    ]
+  },
+  "configuracion": {
+    "endpoints_nativos_reutilizados": [
+      "agents",
+      "files",
+      "artifacts",
+      "subagents",
+      "background_tool_calls",
+      "resumable_streams",
+      "tool_approval"
+    ],
+    "env": [
+      {
+        "capa": "inference",
+        "condicion_obligatoria": "AL_ACTIVAR_GATEWAY_LIVE",
+        "nombre": "CLOUDFLARE_ACCOUNT_ID",
+        "obligatoria": true,
+        "origen_validacion": "SOURCE_REFERENCIADO; HOST_LIVE_NO_LEIDO",
+        "requerido_para": "GATEWAY_LIVE",
+        "sensible": false,
+        "tipo": "string",
+        "uso": "Cuenta Cloudflare",
+        "valor": null,
+        "valor_verificado": false
+      },
+      {
+        "capa": "inference",
+        "condicion_obligatoria": "AL_ACTIVAR_GATEWAY_LIVE",
+        "nombre": "CLOUDFLARE_AIG_BYOK_ONLY_REQUIRED",
+        "obligatoria": true,
+        "origen_validacion": "SOURCE_REFERENCIADO; HOST_LIVE_NO_LEIDO",
+        "requerido_para": "GATEWAY_LIVE",
+        "sensible": false,
+        "tipo": "boolean",
+        "uso": "Declaración true para exigir BYOK",
+        "valor": null,
+        "valor_requerido": "true",
+        "valor_verificado": false
+      },
+      {
+        "capa": "inference",
+        "condicion_obligatoria": "AL_ACTIVAR_GATEWAY_LIVE",
+        "nombre": "CLOUDFLARE_AI_GATEWAY_ID",
+        "obligatoria": true,
+        "origen_validacion": "SOURCE_REFERENCIADO; HOST_LIVE_NO_LEIDO",
+        "requerido_para": "GATEWAY_LIVE",
+        "sensible": false,
+        "tipo": "string",
+        "uso": "Identidad del gateway",
+        "valor": null,
+        "valor_verificado": false
+      },
+      {
+        "capa": "inference",
+        "condicion_obligatoria": "AL_ACTIVAR_GATEWAY_LIVE",
+        "nombre": "CLOUDFLARE_API_TOKEN",
+        "obligatoria": true,
+        "origen_validacion": "SOURCE_REFERENCIADO; HOST_LIVE_NO_LEIDO",
+        "requerido_para": "GATEWAY_LIVE",
+        "sensible": true,
+        "tipo": "secret",
+        "uso": "Token de inferencia o secreto referenciado, nunca imprimir",
+        "valor": null,
+        "valor_verificado": false
+      },
+      {
+        "capa": "optional",
+        "condicion_obligatoria": "SOLO_AL_ACTIVAR_EL_RECURSO",
+        "nombre": "DEPLOYMENT_PLUGINS_DIR",
+        "obligatoria": false,
+        "origen_validacion": "SOURCE_REFERENCIADO; HOST_LIVE_NO_LEIDO",
+        "requerido_para": "OPCIONAL",
+        "sensible": false,
+        "tipo": "string",
+        "uso": "Directorio de Agent Plugins",
+        "valor": null,
+        "valor_verificado": false
+      },
+      {
+        "capa": "optional",
+        "condicion_obligatoria": "SOLO_AL_ACTIVAR_EL_RECURSO",
+        "nombre": "DEPLOYMENT_PLUGIN_DATA_DIR",
+        "obligatoria": false,
+        "origen_validacion": "SOURCE_REFERENCIADO; HOST_LIVE_NO_LEIDO",
+        "requerido_para": "OPCIONAL",
+        "sensible": false,
+        "tipo": "string",
+        "uso": "Datos persistidos de plugins",
+        "valor": null,
+        "valor_verificado": false
+      },
+      {
+        "capa": "optional",
+        "condicion_obligatoria": "SOLO_AL_ACTIVAR_EL_RECURSO",
+        "nombre": "DEPLOYMENT_PLUGIN_HOOKS",
+        "obligatoria": false,
+        "origen_validacion": "SOURCE_REFERENCIADO; HOST_LIVE_NO_LEIDO",
+        "requerido_para": "OPCIONAL",
+        "sensible": false,
+        "tipo": "boolean",
+        "uso": "Habilitación explícita de hooks; baseline apagado",
+        "valor": null,
+        "valor_verificado": false
+      },
+      {
+        "capa": "optional",
+        "condicion_obligatoria": "SOLO_AL_ACTIVAR_EL_RECURSO",
+        "nombre": "DEPLOYMENT_SKILLS_DIR",
+        "obligatoria": false,
+        "origen_validacion": "SOURCE_REFERENCIADO; HOST_LIVE_NO_LEIDO",
+        "requerido_para": "OPCIONAL",
+        "sensible": false,
+        "tipo": "string",
+        "uso": "Directorio de Skills filesystem",
+        "valor": null,
+        "valor_verificado": false
+      },
+      {
+        "capa": "optional",
+        "condicion_obligatoria": "SOLO_AL_ACTIVAR_EL_RECURSO",
+        "justificacion": "UPSTREAM_PINNED_O_DOCUMENTACION_OFICIAL_2026",
+        "nombre": "KEENABLE_API_KEY",
+        "obligatoria": false,
+        "origen_validacion": "SOURCE_REFERENCIADO; HOST_LIVE_NO_LEIDO",
+        "requerido_para": "OPCIONAL",
+        "sensible": false,
+        "tipo": "string",
+        "uso": "Clave opcional para elevar limites de busqueda/fetch; el baseline es keyless",
+        "valor": null,
+        "valor_verificado": false
+      },
+      {
+        "capa": "optional",
+        "condicion_obligatoria": "SOLO_AL_ACTIVAR_EL_RECURSO",
+        "justificacion": "UPSTREAM_PINNED_O_DOCUMENTACION_OFICIAL_2026",
+        "nombre": "KEENABLE_API_URL",
+        "obligatoria": false,
+        "origen_validacion": "SOURCE_REFERENCIADO; HOST_LIVE_NO_LEIDO",
+        "requerido_para": "OPCIONAL",
+        "sensible": false,
+        "tipo": "string",
+        "uso": "Override opcional del endpoint de busqueda Keenable",
+        "valor": null,
+        "valor_verificado": false
+      },
+      {
+        "capa": "optional",
+        "condicion_obligatoria": "SOLO_AL_ACTIVAR_EL_RECURSO",
+        "justificacion": "UPSTREAM_PINNED_O_DOCUMENTACION_OFICIAL_2026",
+        "nombre": "KEENABLE_FETCH_URL",
+        "obligatoria": false,
+        "origen_validacion": "SOURCE_REFERENCIADO; HOST_LIVE_NO_LEIDO",
+        "requerido_para": "OPCIONAL",
+        "sensible": false,
+        "tipo": "string",
+        "uso": "Override opcional del endpoint de recuperacion Keenable",
+        "valor": null,
+        "valor_verificado": false
+      },
+      {
+        "capa": "optional",
+        "condicion_obligatoria": "SOLO_AL_ACTIVAR_EL_RECURSO",
+        "nombre": "NOSTROMO_LOCAL_MODEL",
+        "obligatoria": false,
+        "origen_validacion": "SOURCE_REFERENCIADO; HOST_LIVE_NO_LEIDO",
+        "requerido_para": "OPCIONAL",
+        "sensible": false,
+        "tipo": "string",
+        "uso": "Nombre de modelo local opcional",
+        "valor": null,
+        "valor_verificado": false
+      },
+      {
+        "capa": "optional",
+        "condicion_obligatoria": "SOLO_AL_ACTIVAR_EL_RECURSO",
+        "nombre": "NOSTROMO_LOCAL_MODEL_BASE_URL",
+        "obligatoria": false,
+        "origen_validacion": "SOURCE_REFERENCIADO; HOST_LIVE_NO_LEIDO",
+        "requerido_para": "OPCIONAL",
+        "sensible": false,
+        "tipo": "string",
+        "uso": "Servicio local opcional",
+        "valor": null,
+        "valor_verificado": false
+      },
+      {
+        "capa": "target",
+        "condicion_obligatoria": "SOLO_AL_ACTIVAR_EL_RECURSO",
+        "nombre": "MANOJOS3_MCP_URL",
+        "obligatoria": false,
+        "origen_validacion": "SOURCE_REFERENCIADO; HOST_LIVE_NO_LEIDO",
+        "requerido_para": "TARGET_LATER",
+        "sensible": true,
+        "tipo": "string",
+        "uso": "URL del MCP externo gobernado",
+        "valor": null,
+        "valor_verificado": false
+      },
+      {
+        "capa": "target",
+        "condicion_obligatoria": "SOLO_AL_ACTIVAR_EL_RECURSO",
+        "nombre": "VX13_LINK_URL",
+        "obligatoria": false,
+        "origen_validacion": "SOURCE_REFERENCIADO; HOST_LIVE_NO_LEIDO",
+        "requerido_para": "TARGET_LATER",
+        "sensible": true,
+        "tipo": "string",
+        "uso": "URL futura del frontdoor de VX13",
+        "valor": null,
+        "valor_verificado": false
+      },
+      {
+        "capa": "transport",
+        "condicion_obligatoria": "AL_ACTIVAR_GATEWAY_LIVE",
+        "nombre": "GITHUB_SKILLS_TOKEN",
+        "obligatoria": false,
+        "origen_validacion": "SOURCE_REQUIRED_FOR_PRIVATE_GITHUB_SYNC; HOST_LIVE_NO_LEIDO",
+        "requerido_para": "SKILL_SYNC_LIVE",
+        "sensible": true,
+        "tipo": "secret",
+        "uso": "Token read-only privado para Skill Sync",
+        "valor": null,
+        "valor_verificado": false
+      },
+      {
+        "capa": "transport",
+        "condicion_obligatoria": "SOLO_AL_ACTIVAR_EL_RECURSO",
+        "despliegue": "MODO_TUNEL_REMOTO_TOKEN_O_MODO_LOCAL_ID_Y_CREDENTIALS; NO_AMBOS",
+        "nombre": "LIBRECHAT_VX_CF_TUNNEL_TOKEN",
+        "obligatoria": false,
+        "origen_validacion": "SOURCE_REFERENCIADO; HOST_LIVE_NO_LEIDO",
+        "requerido_para": "OPCIONAL",
+        "sensible": true,
+        "tipo": "secret",
+        "uso": "Cloudflare Tunnel gestionado remotamente, solo si se activa web publica",
+        "valor": null,
+        "valor_verificado": false
+      },
+      {
+        "capa": "transport",
+        "condicion_obligatoria": "SOLO_AL_ACTIVAR_EL_RECURSO",
+        "nombre": "LIBRECHAT_VX_EVENTS_HOSTNAME",
+        "obligatoria": false,
+        "origen_validacion": "SOURCE_REFERENCIADO; HOST_LIVE_NO_LEIDO",
+        "requerido_para": "OPCIONAL",
+        "sensible": false,
+        "tipo": "string",
+        "uso": "Hostname de eventos opcional",
+        "valor": null,
+        "valor_verificado": false
+      },
+      {
+        "capa": "transport",
+        "condicion_obligatoria": "SOLO_AL_ACTIVAR_EL_RECURSO",
+        "nombre": "LIBRECHAT_VX_PUBLIC_HOSTNAME",
+        "obligatoria": false,
+        "origen_validacion": "SOURCE_REFERENCIADO; HOST_LIVE_NO_LEIDO",
+        "requerido_para": "OPCIONAL",
+        "sensible": false,
+        "tipo": "string",
+        "uso": "Web pública detrás de Access, opcional",
+        "valor": null,
+        "valor_verificado": false
+      },
+      {
+        "capa": "transport",
+        "condicion_obligatoria": "SOLO_AL_ACTIVAR_EL_RECURSO",
+        "despliegue": "MODO_TUNEL_REMOTO_TOKEN_O_MODO_LOCAL_ID_Y_CREDENTIALS; NO_AMBOS",
+        "nombre": "LIBRECHAT_VX_TUNNEL_CREDENTIALS_FILE",
+        "obligatoria": false,
+        "origen_validacion": "SOURCE_REFERENCIADO; HOST_LIVE_NO_LEIDO",
+        "requerido_para": "OPCIONAL",
+        "sensible": true,
+        "tipo": "path_host_only",
+        "uso": "Ruta al archivo de credenciales local gestionado fuera de Git",
+        "valor": null,
+        "valor_verificado": false
+      },
+      {
+        "capa": "transport",
+        "condicion_obligatoria": "SOLO_AL_ACTIVAR_EL_RECURSO",
+        "despliegue": "MODO_TUNEL_REMOTO_TOKEN_O_MODO_LOCAL_ID_Y_CREDENTIALS; NO_AMBOS",
+        "nombre": "LIBRECHAT_VX_TUNNEL_ID",
+        "obligatoria": false,
+        "origen_validacion": "SOURCE_REFERENCIADO; HOST_LIVE_NO_LEIDO",
+        "requerido_para": "OPCIONAL",
+        "sensible": false,
+        "tipo": "string",
+        "uso": "Identificador de Tunnel gestionado localmente; excluyente del token remoto en la configuracion de origen",
+        "valor": null,
+        "valor_verificado": false
+      }
+    ],
+    "feature_flags": [
+      {
+        "alcance": "DESARROLLO_NO_AUTORIDAD",
+        "fuente": "localStorage",
+        "nombre": "librechat-vx-cockpit",
+        "produccion": "PENDIENTE"
+      },
+      {
+        "default": "false/deshabilitado",
+        "nombre": "DEPLOYMENT_PLUGIN_HOOKS",
+        "riesgo": "No activar sin revisión de seguridad"
+      }
+    ],
+    "librechat_yaml": {
+      "aviso": "No fusionar configuraciones contradictorias sin determinar cuál rige en el host",
+      "ejemplo": "config/librechat-vx.example.yaml",
+      "interface": {
+        "agents_use": true,
+        "modelSelect": false,
+        "parameters": false,
+        "presets": false,
+        "share_public_default": false,
+        "skills_use": true
+      },
+      "modelSpecs": {
+        "$ref": "./TOPOLOGY.json#/rutas_inferencia",
+        "tipo": "referencia_logica"
+      },
+      "skill_sync_id_canonicalizacion": {
+        "antiguo_ejemplo_source_id": "librechat-vx-skills",
+        "no_sobrescribir_al_desplegar": true,
+        "resolucion": "PENDIENTE_READBACK_DEL_SERVIDOR_ADMIN; conservar ID existente si un mirror real lo utiliza",
+        "staged_source_id": "nostromo-vx-skills"
+      },
+      "skills_config_ejemplo_antiguo": {
+        "enabled": false,
+        "paths": [
+          "skills"
+        ],
+        "runOnStartup": true,
+        "skillDiscoveryDepth": 2,
+        "source_id": "librechat-vx-skills"
+      },
+      "skills_staged_recomendado_fuente": {
+        "estado_declarado_source": "FRAGMENTOS_SOURCE_SIN_APLICAR",
+        "source_id": "nostromo-vx-skills",
+        "stage1": {
+          "paths": [
+            "skills"
+          ],
+          "runOnStartup": false,
+          "skillDiscoveryDepth": 1
+        },
+        "stage2": {
+          "paths": [
+            "skills/nostromo-core",
+            "skills/nostromo-visualization",
+            "skills/nostromo-research",
+            "skills/nostromo-event-triage",
+            "skills/nostromo-evidence-first",
+            "skills/nostromo-resource-navigation",
+            "skills/manojos3-nostromo",
+            "skills/vx13-nostromo",
+            "skills/cross-target-read",
+            "skills/nostromo-extension-review"
+          ],
+          "runOnStartup": false,
+          "skillDiscoveryDepth": 0
+        }
+      },
+      "version_ejemplo": "1.3.17",
+      "webSearch": {
+        "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+        "nota": "Keenable existe y funciona sin API key en diseño, pero el endpoint real no ha sido probado desde LibreChat del host.",
+        "referencia": "https://www.librechat.ai/docs/features/web_search",
+        "rerankerType": "none",
+        "safeSearch": 1,
+        "scraperProvider": "keenable",
+        "searchProvider": "keenable",
+        "validacion_proveedor": "SOPORTADO_EN_LIBRECHAT_UPSTREAM_PIN_F10B1D91_Y_DOCUMENTACION_OFICIAL"
+      }
+    },
+    "perfil_route_to_model": {
+      "$ref": "./TOPOLOGY.json#/rutas_inferencia",
+      "tipo": "referencia_logica"
+    },
+    "puertos": {
+      "librechat_loopback": 3080,
+      "reservados_manojos3": [
+        8787,
+        8790,
+        8791,
+        4000,
+        8931,
+        9223
+      ]
+    },
+    "topologia": {
+      "$ref": "./TOPOLOGY.json#/cuentas_canónicas_source",
+      "nota": "Las cantidades se leen en TOPOLOGY; no se duplican aqui",
+      "tipo": "referencia_logica"
+    }
+  },
+  "datos": {
+    "cache": "Lecturas acotadas/event cursor/dedupe; cache cliente revocable; resumable streams en memoria para una instancia; Redis solo para múltiples réplicas según diseño.",
+    "migraciones": [
+      "PENDIENTE: esquema y migraciones de la instalación real de LibreChat",
+      "No migración de estados materiales MANOJOS3/VX13 desde VX"
+    ],
+    "modelos": [
+      {
+        "campos": [
+          "intentClass",
+          "targetHint",
+          "targetScope",
+          "needsResearch",
+          "needsVisualization",
+          "needsClarification",
+          "materialRequested",
+          "authority"
+        ],
+        "fuente": "src/intent/intentInterpreter.ts",
+        "nombre": "NostromoIntentDraft"
+      },
+      {
+        "campos": [
+          "profile",
+          "provider",
+          "model",
+          "health",
+          "quotaState",
+          "zeroCost",
+          "capabilities",
+          "privacyAllowed",
+          "observedAtMs",
+          "evidence"
+        ],
+        "fuente": "src/llm/inferenceGateway.ts",
+        "nombre": "ProviderRoute"
+      },
+      {
+        "campos": [
+          "candidateId",
+          "profiles",
+          "capabilities",
+          "health",
+          "quotaState",
+          "zeroCost",
+          "observedAtMs",
+          "evidenceRefs"
+        ],
+        "fuente": "src/llm/modelRegistry.ts",
+        "nombre": "ModelCandidate"
+      },
+      {
+        "campos": [
+          "snapshotId",
+          "mode",
+          "gaps",
+          "proofs",
+          "ownership",
+          "evidenceCutoffHead"
+        ],
+        "fuente": "src/operating/types.ts",
+        "nombre": "OperatingSnapshot/OperatingGap/OperatingProof"
+      },
+      {
+        "campos": [
+          "mode",
+          "idempotencyKey",
+          "orderingKey",
+          "event",
+          "input",
+          "authority"
+        ],
+        "fuente": "src/events/agentEvents.ts",
+        "nombre": "LibreChatAgentEventDelivery"
+      },
+      {
+        "campos": [
+          "scope",
+          "status",
+          "results",
+          "authority"
+        ],
+        "fuente": "src/targets/targetGateway.ts",
+        "nombre": "TargetScopeReadResult"
+      }
+    ],
+    "persistencia": "Nativa de LibreChat: la instancia, su base de datos y esquema concreto están PENDIENTES de inspección LIVE; VX no añade base HUD/ledger/receipt propia.",
+    "privacidad": [
+      "No secretos en vistas, documentos, receipts o logs",
+      "Notificaciones opacas y nueva lectura autenticada al abrir",
+      "Offline conserva borradores de texto; no autorizaciones ni mutaciones pendientes"
+    ],
+    "retencion": "PENDIENTE: políticas de conservación de conversaciones, archivos, logs, eventos y backups"
+  },
+  "decisiones": [
+    {
+      "alternativa": "Nuevo frontend paralelo",
+      "decision": "Overlay reversible sobre upstream fijado, no fork/copia del frontend",
+      "id": "ADR-01",
+      "motivo": "Menos drift y deuda",
+      "resultado": "DESCARTADA"
+    },
+    {
+      "alternativa": "Kernel dentro de LibreChat",
+      "decision": "NOSTROMO interpretación/presentación, targets ejecutan",
+      "id": "ADR-02",
+      "motivo": "Evita duplicidad y confused deputy",
+      "resultado": "DESCARTADA"
+    },
+    {
+      "alternativa": "Selector manual de modelos/servicios y fallback pagado",
+      "decision": "AI Gateway Cloudflare con BYOK y 7 perfiles internos; CODIGO no existe",
+      "id": "ADR-03",
+      "motivo": "Identidad estable y selección por necesidad",
+      "resultado": "DESCARTADA"
+    },
+    {
+      "alternativa": "Funnel/publicar backend por defecto",
+      "decision": "Tailscale Serve privado; Cloudflare público sólo opcional",
+      "id": "ADR-04",
+      "motivo": "Aislamiento personal y menos costes",
+      "resultado": "DESCARTADA"
+    },
+    {
+      "alternativa": "Borrar antes de canary",
+      "decision": "10 Skills canónicas y dos alias de compatibilidad",
+      "id": "ADR-05",
+      "motivo": "Reducir redundancia sin rotura LIVE",
+      "resultado": "DESCARTADA"
+    },
+    {
+      "alternativa": "Cola de mutación offline",
+      "decision": "Mismo backend/historia PC y móvil, no replay offline",
+      "id": "ADR-06",
+      "motivo": "Continuidad sin efectos duplicados",
+      "resultado": "DESCARTADA"
+    },
+    {
+      "alternativa": "Reiniciar investigación/cerrar con cada gate",
+      "decision": "Continuidad nextEligible por scope y propiedad",
+      "id": "ADR-07",
+      "motivo": "No detener trabajo independiente por un solo bloqueo",
+      "resultado": "DESCARTADA"
+    },
+    {
+      "alternativa": "SearXNG/Firecrawl/LocalAI/Worker por defecto",
+      "decision": "No servicios extra hasta necesidad medida",
+      "id": "ADR-08",
+      "motivo": "Lenovo de bajo consumo y menor mantenimiento",
+      "resultado": "DEFERIDA"
+    }
+  ],
+  "despliegue": {
+    "ci_cd": {
+      "gatillos": [
+        "push main",
+        "push handoff_current_bootstrps",
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "head": "94954512312ce2b1b478c1bc19c3d01c5b52b2d2",
+      "jobs": [
+        "build-test",
+        "overlay-smoke"
+      ],
+      "run": 37726226657,
+      "ruta": ".github/workflows/source-check.yml"
+    },
+    "docker": "Docker Compose candidato reproducible; instalación npm candidato de bajo consumo sólo si benchmark confirma. No afirmar docker-compose aplicado o presente en repo VX.",
+    "entornos": [
+      {
+        "estado_runtime": null,
+        "head": "94954512312ce2b1b478c1bc19c3d01c5b52b2d2",
+        "no_es_despliegue_app": true,
+        "nombre": "GITHUB_SOURCE_CI",
+        "resultado_source": "VERIFICADO",
+        "tipo_entorno": "CI_SOURCE"
+      },
+      {
+        "declaracion_documental_previa": "NO_VERIFICADO",
+        "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+        "evidencia_runtime": [],
+        "nombre": "HOST_LOCAL_LIBRECHAT",
+        "tipo_entorno": "APP_O_DEPENDENCIA_RUNTIME",
+        "url_prevista": "http://127.0.0.1:3080"
+      },
+      {
+        "declaracion_documental_previa": "NOT_DEPLOYED",
+        "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+        "evidencia_runtime": [],
+        "nombre": "TAILSCALE_PRIVATE",
+        "tipo_entorno": "APP_O_DEPENDENCIA_RUNTIME"
+      },
+      {
+        "declaracion_documental_previa": "LIVE_NO_VERIFICADO",
+        "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+        "evidencia_runtime": [],
+        "nombre": "CLOUDFLARE_AI_GATEWAY",
+        "tipo_entorno": "APP_O_DEPENDENCIA_RUNTIME"
+      },
+      {
+        "declaracion_documental_previa": "OPCIONAL_NOT_DEPLOYED",
+        "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+        "evidencia_runtime": [],
+        "nombre": "CLOUDFLARE_ACCESS_PUBLIC",
+        "tipo_entorno": "APP_O_DEPENDENCIA_RUNTIME"
+      }
+    ],
+    "observabilidad": [
+      "Health/readiness nativo LibreChat pendiente LIVE",
+      "ProviderStatusView y HUD truth lanes",
+      "ClientTelemetry privativa y limitada",
+      "Eventos con origen/id y evidencia",
+      "Monitoreo CPU/RAM Lenovo pendiente"
+    ],
+    "procedimientos": [
+      "Preflight host/puertos/procesos/servicios en instalación autorizada",
+      "Sincronizar Skills controladamente sin permisos genéricos",
+      "Bootstrap autenticado de Cloudflare con 7 rutas/versiones/rollback",
+      "Arrancar LibreChat loopback aislado",
+      "Comprobar Tailscale Serve sin tocar MANOJOS3",
+      "Canaries móvil, web, eventos y recovery",
+      "Freeze con proofs y readbacks"
+    ],
+    "rollback": [
+      "Overlay uninstaller y verificación upstream",
+      "Volver al snapshot Skill Sync anterior",
+      "Versionar Dynamic Route y revertir proveedor",
+      "Revertir Tailscale Serve VX sólo tras inspeccionar estado actual",
+      "No rollback de target ajeno por LibreChat"
+    ]
+  },
+  "discrepancias_abiertas": [
+    {
+      "estado": "ABIERTA",
+      "evidencia_source": {
+        "comprobacion": "comparacion de required de schema con claves raiz de config",
+        "config_sha256": "fe5801735c8c10891c489f3e2d2fa2febd4eebd92728f8cfaf52c22e648448c3",
+        "head": "94954512312ce2b1b478c1bc19c3d01c5b52b2d2",
+        "repositorio": "elkakas314/libre_chat_vx",
+        "schema_sha256": "5b9d5b05b71ed8ce4441c46ad70007a42e00ea647a68d73288be59158b45c036"
+      },
+      "hecho": "El esquema nostromo-hybrid exige en la raiz architecture, local_voice, free_reasoning, actions y authority. La configuracion CURRENT incluye architecture=NOSTROMO_HYBRID, local_voice y actions, pero carece de free_reasoning y authority en la raiz. La vinculacion entre el esquema y este archivo como instancia validable aun debe confirmarse.",
+      "id": "LC-DISC-HYBRID-001",
+      "tratamiento": "No modificar campos del esquema ni rellenar la configuracion por suposicion. En Bloque 1 determinar el consumidor/instancia pretendidos y si se trata de deriva de version o de dos modelos distintos; despues corregir solo con contrato explicito y prueba de conformidad. No cambia ningun gate LIVE.",
+      "ubicacion": [
+        "contracts/nostromo-hybrid.schema.json#/required",
+        "config/nostromo_hybrid.current.json"
+      ]
+    }
+  ],
+  "frontend": {
+    "accesibilidad": [
+      "Contratos en src/cockpit/accessibility.ts",
+      "Comprobar foco, teclado, ARIA, contraste y reduccion de movimiento en interfaz LIVE"
+    ],
+    "componentes": [
+      {
+        "descripcion": "Componentes React TSX para cockpit, paneles y lentes",
+        "path": "src/ui/"
+      },
+      {
+        "descripcion": "Contratos de foco, ventanas, status, autorización, presupuesto de recursos y visualización",
+        "path": "src/cockpit/"
+      },
+      {
+        "descripcion": "Puente a frontend LibreChat upstream",
+        "path": "overlay/upstream/VXCockpitBridge.tsx"
+      }
+    ],
+    "estado_global": [
+      "CurrentFocus",
+      "TargetScope AUTO/BOTH/MANOJOS3/VX13",
+      "ShortMemory/ReferentialContinuity",
+      "TruthLanes",
+      "EventReducer",
+      "CockpitState",
+      "ViewInterest y proyección perezosa"
+    ],
+    "estilos": "Integración visual sobre CSS/tema nativo; tokens/paleta definitivos PENDIENTE",
+    "feature_flag": {
+      "alcance": "toggle SOURCE de desarrollo, nunca autorización de producción",
+      "fuente": "localStorage[librechat-vx-cockpit]",
+      "produccion": "PENDIENTE_CONFIG_SERVER_OWNED"
+    },
+    "framework": "React 18 / TypeScript; overlay reversible sobre interfaz LibreChat upstream",
+    "hooks": [
+      {
+        "estado_declarado_source": "UPSTREAM_PIN_REFERENCIADO",
+        "nombre": "useResumeOnLoad",
+        "ubicacion": "upstream/client/src/hooks/SSE/useResumeOnLoad.ts"
+      },
+      {
+        "estado_declarado_source": "UPSTREAM_PIN_REFERENCIADO",
+        "nombre": "useResumableSSE",
+        "ubicacion": "upstream/client/src/hooks/SSE/useResumableSSE.ts"
+      }
+    ],
+    "observaciones": [
+      "El HUD es visualización, no Tentáculo Link",
+      "No se inventan URLs frontend inexistentes",
+      "BuildPanel enseña evidencia externa, no ejecuta código"
+    ],
+    "prioridad_panel_compartido": [
+      "Artifact",
+      "Subagent",
+      "Nostromo",
+      "None"
+    ],
+    "rutas": [
+      {
+        "motivo": "No se verificaron URLs React Router de la instancia; VX compone en Presentation/SidePanel, no declara router paralelo",
+        "ruta": "PENDIENTE"
+      }
+    ],
+    "vistas": [
+      "NostromoCockpit",
+      "CockpitShell",
+      "StatusRailView",
+      "TargetNavigator",
+      "TargetRunView",
+      "TentacleHud",
+      "DecisionInboxView",
+      "ArtifactDockView",
+      "ActiveFlowView",
+      "PlanGraphView",
+      "ResourceTreeView",
+      "FilesPanelView",
+      "BrowserPanelView",
+      "AudioPanelView",
+      "BuildPanelView",
+      "InterflowLensView",
+      "NativeSurfaceStatusView",
+      "SourceOnlyCockpit",
+      "MinimalTruthView"
+    ]
+  },
+  "glosario": {
+    "CURRENT": "Read-model derivado de evidencia, no autoridad",
+    "Cloudflare AI Gateway": "Ruta de inferencia, no túnel HTTP de LibreChat",
+    "ConcreteTargetId": "MANOJOS3 o VX13, exigido para cambios",
+    "DELTA": "Diferencia TARGET vs CURRENT",
+    "Dynamic Routes": "Perfiles de enrutamiento entre proveedores/modelos",
+    "LC-CONTINUITY-NO-STOP": "Política de continuar por scopes independientes y checkpoint de evidencias",
+    "LIVE": "Instancia o cuenta real con readback fresco",
+    "MANOJOS3": "Target de automatización gobernada, Policy/Kernel/Verifier/Receipt",
+    "MATERIAL_VERIFIED": "Efecto target autorizado con readback/Verifier/Receipt",
+    "NEXT_ELIGIBLE": "Primer gap independiente cuya dependencia/ownership/permiso permiten trabajo",
+    "NOSTROMO": "Identidad/cabina conversacional de LibreChat VX; no ejecutor",
+    "ORÁCULO": "Proveedor/asesor cognitivo authority=false",
+    "Overlay": "Inserción reversible del cockpit en frontend LibreChat fijado",
+    "Receipt": "Prueba emitida/verificada por target de efecto y resultado",
+    "SOURCE": "Código/configuración probados en GitHub, no despliegue",
+    "Skill Sync": "Mirror de Skills de GitHub a LibreChat, no autorización de tools",
+    "TARGET_CANON": "Estado deseado, versionado",
+    "TargetScope": "AUTO/BOTH/MANOJOS3/VX13; scope de vista y lectura",
+    "Tentáculo HUD": "Mascota/proxy visual de información, authority=false",
+    "Tentáculo Link": "Frontdoor de VX13, diferente de Tentáculo HUD",
+    "UNKNOWN_OUTCOME": "Posible efecto sin conclusión clara, se reconcilia antes de retry",
+    "VX13": "Sistema autónomo externo cuya autoridad reside en Madre y Spawner/hijas"
+  },
+  "inconsistencias_documentales_y_limites": [
+    {
+      "estado_declarado_source": "REQUIERE_RECONCILIACION",
+      "hecho": "Ejemplo general usa source id librechat-vx-skills, runOnStartup:true, depth:2 mientras canary staged usa nostromo-vx-skills, runOnStartup:false, depth 1/0",
+      "id": "INC-01",
+      "tratamiento": "No mezclar; elegir fuente única al preparar despliegue LIVE",
+      "ubicacion": "config/librechat-vx.example.yaml vs deployment/skill-sync/*"
+    },
+    {
+      "estado_declarado_source": "HISTORICO_STALE",
+      "hecho": "Documento histórico enumera CODIGO, retirado en TARGET_CANON/CURRENT/config actuales",
+      "id": "INC-02",
+      "tratamiento": "Usar 7 rutas sin CODIGO; reparar documento sólo con cambio documental separado",
+      "ubicacion": "docs/NOSTROMO_HYBRID_CURRENT.md"
+    },
+    {
+      "estado_declarado_source": "HISTORICO_STALE",
+      "hecho": "Orden P3 MANOJOS3 R0 no coincide con GAPS_CURRENT v8, que prioriza la pila LibreChat paralela",
+      "id": "INC-03",
+      "tratamiento": "Prioridad operacional de GAPS_CURRENT, no histórico ROADMAP",
+      "ubicacion": "docs/ROADMAP.md"
+    },
+    {
+      "estado_declarado_source": "NO_ES_CONTRADICCION_SINO_DISTINCION_DE_PRUEBA",
+      "hecho": "Vistas/contratos implementados en SOURCE no demuestran integration E2E en runtime",
+      "id": "INC-04",
+      "tratamiento": "Usar evidencia CI sólo para SOURCE; LIVE exige canary real",
+      "ubicacion": "docs/NOSTROMO_FEATURE_MATRIX_CURRENT.md y CURRENT"
+    },
+    {
+      "estado_declarado_source": "COHERENTE",
+      "hecho": "Target transports actualmente deshabilitados; no interpretar presencia de adapter como binding",
+      "id": "INC-05",
+      "tratamiento": "Mantener gated",
+      "ubicacion": "config/targets.example.yaml"
+    },
+    {
+      "estado_cierre": "RESUELTO_LOCAL_ARTIFACTS; PROYECTO_FUENTE_NO_MODIFICADO",
+      "id": "REVISION-20261008-REDUNDANCIA",
+      "resolucion": "Tres artefactos canónicos SPEC.json + TOPOLOGY.json + EXPLICACION.md, referencias por JSON Pointer; históricos fuera de la entrega activa",
+      "tema": "Redundancia entre 8 entregables anteriores"
+    },
+    {
+      "estado_cierre": "RESUELTO_LOCAL_ARTIFACTS; HOST_LIVE_NO_VERIFICADO",
+      "id": "REVISION-20261008-ESTADOS",
+      "resolucion": "Estado runtime normalizado y separado de declaración SOURCE y de estado de gate; sin pruebas host se usa NO_DEPLOYMENT_EVIDENCE",
+      "tema": "Confundir ausencia de evidencia con ausencia probada de despliegue"
+    },
+    {
+      "estado_cierre": "SOURCE_PROVEEDOR_CONFIRMADO; LIVE_NO_VERIFICADO",
+      "id": "REVISION-20261008-KEENABLE",
+      "resolucion": "Proveedor soportado en upstream fijado f10b1d91 y documentación LibreChat. Mantenerlo como baseline SOURCE con límites públicos, prueba real aún pendiente.",
+      "tema": "Duda sobre keenable"
+    }
+  ],
+  "integraciones": [
+    {
+      "contrato": "UI, Agents, Files, Approvals, Streams, Skills y ACL nativos",
+      "estado_declarado_source": "SOURCE_OVERLAY_CI_SUCCESS",
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "estado_runtime_evidencia": [],
+      "nombre": "LibreChat upstream",
+      "tipo": "PLATAFORMA_BASE",
+      "version": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b"
+    },
+    {
+      "credenciales": "BYOK en secret store runtime, no admin token en VX",
+      "estado_declarado_source": "LIVE_NO_VERIFICADO",
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "estado_runtime_evidencia": [],
+      "gateway_count": 1,
+      "nombre": "Cloudflare AI Gateway",
+      "reserva_de_pago": false,
+      "rutas": {
+        "CONTEXTO_LARGO": "dynamic/nostromo-contexto-largo",
+        "INVESTIGAR": "dynamic/nostromo-investigar",
+        "NORMAL": "dynamic/nostromo-normal",
+        "PENSAR": "dynamic/nostromo-pensar",
+        "RAPIDO": "dynamic/nostromo-rapido",
+        "VISION": "dynamic/nostromo-vision",
+        "VISUALIZAR": "dynamic/nostromo-visualizar"
+      },
+      "tipo": "INFERENCIA_REMOTA"
+    },
+    {
+      "estado_declarado_source": "LIVE_COSTE_Y_CUOTA_PENDIENTES",
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "estado_runtime_evidencia": [],
+      "nombre": "Cloudflare Workers AI",
+      "tipo": "CANDIDATO_MODELO"
+    },
+    {
+      "estado_declarado_source": "LIVE_COSTE_Y_CUOTA_PENDIENTES",
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "estado_runtime_evidencia": [],
+      "nombre": "Groq",
+      "tipo": "CANDIDATO_MODELO"
+    },
+    {
+      "estado_declarado_source": "LIVE_COSTE_Y_CUOTA_PENDIENTES",
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "estado_runtime_evidencia": [],
+      "nombre": "Google AI Studio/Gemini",
+      "tipo": "CANDIDATO_MODELO"
+    },
+    {
+      "estado_declarado_source": "LIVE_COSTE_Y_CUOTA_PENDIENTES",
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "estado_runtime_evidencia": [],
+      "nombre": "Mistral",
+      "tipo": "PROVEEDOR_RESERVA"
+    },
+    {
+      "estado_declarado_source": "LIVE_COSTE_Y_CUOTA_PENDIENTES",
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "estado_runtime_evidencia": [],
+      "nombre": "OpenRouter Free",
+      "tipo": "PROVEEDOR_RESERVA"
+    },
+    {
+      "estado_declarado_source": "LIVE_NO_VERIFICADO",
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "estado_runtime_evidencia": [],
+      "nombre": "GitHub Skill Sync",
+      "stage_1": "12 físicas",
+      "stage_2": "10 activas, solo tras canary y rollback",
+      "tipo": "DISTRIBUCION_SKILLS"
+    },
+    {
+      "estado_declarado_source": "NOT_DEPLOYED",
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "estado_runtime_evidencia": [],
+      "funnel": false,
+      "nombre": "Tailscale Serve",
+      "origen": "http://127.0.0.1:3080",
+      "tipo": "ACCESO_PRIVADO_MOVIL"
+    },
+    {
+      "estado_declarado_source": "NOT_DEPLOYED",
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "estado_runtime_evidencia": [],
+      "nombre": "Cloudflare Tunnel + Access",
+      "requisito": "Identidad previa, no ruta crítica",
+      "tipo": "ACCESO_PUBLICO_OPCIONAL"
+    },
+    {
+      "autoridad": "Governor/Policy/Kernel/Verifier/Receipt",
+      "estado_declarado_source": "ADAPTER_SOURCE_UNCONFIGURED",
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "estado_runtime_evidencia": [],
+      "nombre": "MANOJOS3",
+      "siguiente": "R0 cuando LibreChat paralelo esté validado",
+      "tipo": "TARGET_EJECUTOR_GOBERNADO"
+    },
+    {
+      "autoridad": "Madre/Spawner/hija",
+      "estado_gate": "GATE_EXTERNAL",
+      "frontdoor": "Tentáculo Link",
+      "nombre": "VX13",
+      "tipo": "TARGET_EXTERNO"
+    },
+    {
+      "autoridad": false,
+      "estado_gate": "TARGET_LATER",
+      "nombre": "ORÁCULO",
+      "tipo": "COGNITIVO_ADVISORY"
+    },
+    {
+      "estado_declarado_source": "DEFERRED_OPTIONAL_ON_MEASURED_NEED",
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "estado_runtime_evidencia": [],
+      "nombre": "SearXNG/Firecrawl/LocalAI/Whisper/llama.cpp",
+      "tipo": "SERVICIOS_OPCIONALES"
+    }
+  ],
+  "meta": {
+    "estado_declarado_source": "SOURCE_VALIDADO_LIVE_BINDINGS_PENDING",
+    "estado_runtime_enum": [
+      "NO_DEPLOYMENT_EVIDENCE",
+      "NOT_DEPLOYED",
+      "DEPLOYED_UNVERIFIED",
+      "LIVE_VERIFIED",
+      "MATERIAL_VERIFIED"
+    ],
+    "fecha": "2026-10-08",
+    "fuentes_analizadas": [
+      {
+        "ref": "94954512312ce2b1b478c1bc19c3d01c5b52b2d2",
+        "rutas": [
+          "CURRENT.json",
+          "operating/TARGET_CANON.json",
+          "operating/GAPS_CURRENT.json",
+          "operating/BOOTSTRAP_CURRENT.json",
+          "operating/PROOFS_CURRENT.json",
+          "config/*.current.json",
+          "config/librechat-vx.example.yaml",
+          "src/",
+          "tests/",
+          ".github/workflows/source-check.yml",
+          "overlay/"
+        ],
+        "tipo": "GITHUB",
+        "url": "https://github.com/elkakas314/libre_chat_vx/tree/handoff_current_bootstrps"
+      },
+      {
+        "ref": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
+        "rutas": [
+          "packages/api/src/skills/sync/github.ts",
+          "packages/data-provider/src/config.ts"
+        ],
+        "tipo": "GITHUB_UPSTREAM",
+        "url": "https://github.com/LibreChat-AI/LibreChat/tree/f10b1d91f1eee3a2c82d5247bf620351486b7c1b"
+      },
+      {
+        "id": "11e70lpwe5U3k9FMZWd7h-N0eNaidgaINJP9Pwz1bGx8",
+        "rol": "Entrada/CURRENT/Bootstrap/Continuidad",
+        "tipo": "GOOGLE_DRIVE",
+        "url": "https://docs.google.com/document/d/11e70lpwe5U3k9FMZWd7h-N0eNaidgaINJP9Pwz1bGx8"
+      },
+      {
+        "id": "1fndkYM-UBmSfacQcbu_oewcDe4JzEClw-qd7K7J9pGg",
+        "rol": "Diseño canónico",
+        "tipo": "GOOGLE_DRIVE",
+        "url": "https://docs.google.com/document/d/1fndkYM-UBmSfacQcbu_oewcDe4JzEClw-qd7K7J9pGg"
+      },
+      {
+        "id": "1py0BlozuMOjmo4lUEqxuqCmLaN2O3_6wYwXrTwfVcuY",
+        "rol": "Uso operativo",
+        "tipo": "GOOGLE_DRIVE",
+        "url": "https://docs.google.com/document/d/1py0BlozuMOjmo4lUEqxuqCmLaN2O3_6wYwXrTwfVcuY"
+      },
+      {
+        "id": "19_Bm72_3aaxT6gggEAmfkZG0y0N1hXK6tMQrYLR4sDI",
+        "rol": "Cierre/Backlog/Continuidad",
+        "tipo": "GOOGLE_DRIVE",
+        "url": "https://docs.google.com/document/d/19_Bm72_3aaxT6gggEAmfkZG0y0N1hXK6tMQrYLR4sDI"
+      },
+      {
+        "id": "1UD9LnU0eaKdEHrLUkMJyPp-II_6rZPtlD7uzn_sqWCc",
+        "rol": "Mapa/Cableado/Cobertura",
+        "tipo": "GOOGLE_DRIVE",
+        "url": "https://docs.google.com/document/d/1UD9LnU0eaKdEHrLUkMJyPp-II_6rZPtlD7uzn_sqWCc"
+      },
+      {
+        "ruta": "Acceso a hilos proyecto.txt",
+        "tipo": "ARCHIVO_ADJUNTO",
+        "uso": "Referencia de visión de cabina orgánica procedente de VX11; NO prueba implementación de VX13 ni LIVE"
+      },
+      {
+        "ruta": "Texto pegado.txt",
+        "tipo": "ARCHIVO_ADJUNTO",
+        "uso": "Handoff histórico; el HEAD y CI antiguos se sustituyen por readback actual cuando hay contradicción"
+      }
+    ],
+    "fuentes_externas_contrastadas": [
+      {
+        "live": "NO_DEPLOYMENT_EVIDENCE",
+        "resultado": "SOPORTADO_UPSTREAM_PIN",
+        "tema": "keenable",
+        "url": "https://github.com/LibreChat-AI/LibreChat/blob/f10b1d91f1eee3a2c82d5247bf620351486b7c1b/librechat.example.yaml"
+      },
+      {
+        "live": "NO_DEPLOYMENT_EVIDENCE",
+        "resultado": "PROVEEDOR_OFICIAL_KEYLESS_OPCION_KEY",
+        "tema": "keenable",
+        "url": "https://www.librechat.ai/docs/features/web_search"
+      }
+    ],
+    "gate_estado_no_equivale_a_estado_runtime": true,
+    "idioma": "es",
+    "niveles_de_evidencia": {
+      "FUENTE_CONFIRMADA": "Leído en GitHub/Drive del proyecto",
+      "LIVE_VERIFICADO": "Estado/servicio real autenticado, sólo si existe comprobante",
+      "MATERIAL_VERIFICADO": "Readback + Verifier + Receipt emitidos por target",
+      "PENDIENTE": "Dato que no permite inferir el contexto",
+      "SOURCE_VERIFICADO": "Código y CI asociados a commit exacto",
+      "SUPUESTO": "Inferencia para diseño, no obligación del proyecto"
+    },
+    "norma_de_precedencia": [
+      "LIVE_TARGET_READBACK_RECEIPT",
+      "GITHUB_HEAD_Y_CI_EXACTOS",
+      "DRIVE_REVISION_READBACK",
+      "CURRENT_DERIVADO",
+      "HANDOFF",
+      "DOCUMENTACION_HISTORICA",
+      "CONVERSACION",
+      "INFERENCIA"
+    ],
+    "paquete_canonico": {
+      "anteriores": "HISTORICOS_NO_CANONICOS; se mantienen solo para no romper enlaces previos",
+      "artefactos": [
+        "SPEC.json",
+        "TOPOLOGY.json",
+        "EXPLICACION.md"
+      ],
+      "documento_derivado": "EXPLICACION.md",
+      "fuente_unica_especificacion": "SPEC.json",
+      "fuente_unica_inventario_conexiones": "TOPOLOGY.json"
+    },
+    "proyecto": "LibreChat VX / NOSTROMO",
+    "regla_estado_runtime": "Solo prueba LIVE autenticada permite NOT_DEPLOYED, DEPLOYED_UNVERIFIED, LIVE_VERIFIED o MATERIAL_VERIFIED. Ausencia de pruebas -> NO_DEPLOYMENT_EVIDENCE. SOURCE y estados de gates son independientes.",
+    "repositorio": {
+      "head_verificado": "94954512312ce2b1b478c1bc19c3d01c5b52b2d2",
+      "paquete_vx": {
+        "frontend": "React 18",
+        "lenguaje": "TypeScript",
+        "node_ci_build": 22,
+        "node_ci_overlay": 24,
+        "nombre": "@librechat/vx",
+        "version": "0.1.0"
+      },
+      "privacidad": "Repositorio personal conectado; accesibilidad pública PENDIENTE",
+      "rama": "handoff_current_bootstrps",
+      "upstream_fijado": {
+        "commit": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
+        "repo": "LibreChat-AI/LibreChat"
+      },
+      "url": "https://github.com/elkakas314/libre_chat_vx"
+    },
+    "secreto_en_archivo": false,
+    "tipo": "especificacion_tecnico_funcional_derivada_de_fuentes",
+    "validacion": {
+      "build_test": "SUCCESS",
+      "commit": "94954512312ce2b1b478c1bc19c3d01c5b52b2d2",
+      "estado_declarado_source": "SUCCESS",
+      "overlay_smoke": "SUCCESS",
+      "proveedor": "GitHub Actions",
+      "run_id": 37726226657,
+      "significado": "CI SOURCE del commit indicado, no prueba runtime LIVE",
+      "tests": 117,
+      "tests_fail": 0,
+      "tests_pass": 117,
+      "url": "https://github.com/elkakas314/libre_chat_vx/actions/runs/37726226657",
+      "workflow": "source-check"
+    },
+    "version_documento": "2.0.0-canon-consolidado"
+  },
+  "objetivos": {
+    "negocio": [
+      "Consolidar interacción con MANOJOS3/VX13 desde una sola experiencia sin reconstruir esos sistemas",
+      "Reducir coste recurrente; bloquear rutas LLM de pago no autorizadas",
+      "Reducir complejidad operativa, context switching, duplicación de servicios y deuda de mantenimiento"
+    ],
+    "producto": [
+      "Conversar en lenguaje natural sin pedir IDs o slots técnicos inferibles",
+      "Mantener contexto/referentes y continuidad entre sesiones y dispositivos",
+      "Visualizar sólo información relevante al objetivo actual",
+      "Investigar web/archivos, explicar y preparar tareas con criterios verificables",
+      "Recibir avisos/eventos y seguir trabajo independiente aunque otro scope esté bloqueado"
+    ],
+    "tecnicos": [
+      "Reutilizar LibreChat upstream con overlay reversible y comprobación de commit",
+      "Usar 1 Cloudflare AI Gateway con 7 perfiles semánticos internos y BYOK sin fallback pagado",
+      "Conservar adapters tipados y autoridad material target-owned",
+      "Evitar replays materiales tras timeout/reconexión",
+      "Mantener coste de RAM/CPU adecuado al Lenovo y arranque perezoso de componentes opcionales",
+      "Probar SOURCE/CI, integración LIVE y ejecución MATERIAL como gates separados"
+    ]
+  },
+  "preguntas_abiertas": [
+    {
+      "bloquea": "LOCAL_LIVE_BOOTSTRAP",
+      "id": "Q-01",
+      "pregunta": "¿Qué instalación host efectiva se usará, con qué versión, procesos y recursos disponibles en el Lenovo?"
+    },
+    {
+      "bloquea": "LC-CF-AIG-BINDING",
+      "id": "Q-02",
+      "pregunta": "¿Existen ya el Cloudflare AI Gateway y sus siete Dynamic Routes en la cuenta? ¿Qué proveedores y modelos son gratuitos allí y con qué cuota real?"
+    },
+    {
+      "bloquea": "CREDENTIAL_BINDING",
+      "id": "Q-03",
+      "pregunta": "¿Cómo se almacenarán y rotarán SecretRefs en el host y cuál es el alcance del token GitHub Skill Sync?"
+    },
+    {
+      "bloquea": "LOCAL_HEALTH_AND_DATA",
+      "id": "Q-04",
+      "pregunta": "¿Se ha instalado LibreChat en http://127.0.0.1:3080 y qué auth/ACL/DB/almacenamiento reales utiliza?"
+    },
+    {
+      "bloquea": "SECURITY_AND_DATA",
+      "id": "Q-05",
+      "pregunta": "¿Cuáles son los roles finales, políticas de compartición, tenant/usuarios y requisitos de retención/borrado?"
+    },
+    {
+      "bloquea": "LC-SKILL-SYNC-LIVE",
+      "id": "Q-06",
+      "pregunta": "¿Se autoriza un canary real de Skill Sync administrado y qué fuente id/configuración se considera canónica frente al YAML general antiguo?"
+    },
+    {
+      "bloquea": "LC-TAILSCALE-MOBILE-LIVE",
+      "id": "Q-07",
+      "pregunta": "¿Cuál será la ruta Tailscale MagicDNS/Serve final y cómo se demostrarán ACL, revocación y no colisión con MANOJOS3?"
+    },
+    {
+      "bloquea": "LC-LOW-POWER-MEASURE",
+      "id": "Q-08",
+      "pregunta": "¿Qué benchmark CPU/RAM/disco del Lenovo permite elegir Compose o npm y habilitar servicios opcionales?"
+    },
+    {
+      "bloquea": "LC-M3-R0-BINDING",
+      "id": "Q-09",
+      "pregunta": "¿Cuándo quedará disponible MANOJOS3 R0 read-only de verdad para el cockpit, sin tocar su transporte?"
+    },
+    {
+      "bloquea": "LC-VX13-BINDING",
+      "id": "Q-10",
+      "pregunta": "¿Cuándo expondrá VX13 un Tentáculo Link estable, con identidad, ACL y contratos de lectura?"
+    },
+    {
+      "bloquea": "UI_ACCEPTANCE",
+      "id": "Q-11",
+      "pregunta": "¿Qué requisitos de accesibilidad, i18n y UI visual son obligatorios en la primera release?"
+    },
+    {
+      "bloquea": "DOC_CANON_CLEANUP",
+      "id": "Q-12",
+      "pregunta": "¿Cómo se reconciliarán los documentos históricos que mantienen CODIGO y un orden de roadmap diferente?"
+    },
+    {
+      "bloquea": "PRODUCT_KPI_DEFINITION",
+      "id": "Q-13",
+      "pregunta": "¿Qué criterios miden éxito de producto además de calidad técnica: frecuencia, latencia, incidencias, ahorro de tiempo?"
+    },
+    {
+      "blocker": "NO_SE_DISPONE_DE_CONECTOR_CLOUDFLARE_NI_SECRETREF_AUTORIZADO_EN_ESTE_HILO",
+      "estado_respuesta": "PENDIENTE",
+      "id": "GATE-CF-AIG-AUTH",
+      "pregunta": "¿Existe superficie autenticada Cloudflare y evidencia LIVE de las siete rutas, cuotas y rollback?"
+    },
+    {
+      "blocker": "ADMIN_LIVE_READBACK_NO_DISPONIBLE",
+      "estado_respuesta": "PENDIENTE",
+      "id": "SKILL-SYNC-ID-CONFLICT",
+      "pregunta": "¿Qué source_id real está sincronizado en el admin LibreChat: librechat-vx-skills, nostromo-vx-skills u otro?"
+    }
+  ],
+  "rendimiento": {
+    "cuellos_botella": [
+      "Lenovo Z50-70 con presupuesto CPU/RAM limitado (métricas reales pendientes)",
+      "Instalar servicios opcionales innecesarios",
+      "Activar modelos locales/audio/navegador por defecto",
+      "Paneles y subscriptions sin interés visible",
+      "Repeticiones de readback no acotadas",
+      "Herramientas/contenidos cargados masivamente en contexto"
+    ],
+    "metricas": [
+      {
+        "estado_gate": "GATE_HUMAN",
+        "nombre": "CPU_idle_y_activo",
+        "valor": null
+      },
+      {
+        "estado_gate": "GATE_HUMAN",
+        "nombre": "RAM_idle_y_activo",
+        "valor": null
+      },
+      {
+        "estado_declarado_source": "LIVE_NO_VERIFICADO",
+        "nombre": "TTFT_y_latencia_proveedor",
+        "valor": null
+      },
+      {
+        "estado_declarado_source": "LIVE_NO_VERIFICADO",
+        "nombre": "latencia_reconnect_movil",
+        "valor": null
+      },
+      {
+        "estado_declarado_source": "NO_MEDIDO_EN_HOST",
+        "nombre": "tiempo_build_overlay",
+        "valor": null
+      },
+      {
+        "estado_declarado_source": "LIVE_NO_VERIFICADO",
+        "nombre": "consumo_stream/contexto",
+        "valor": null
+      }
+    ],
+    "optimizaciones": [
+      "Modelo local y speech OFF si no se necesitan",
+      "Priorizar targeted reads → RAG → compacción → contexto largo",
+      "Event-driven + lazy/bounded polling/resync",
+      "Una instancia y stream en memoria; no Redis sólo por uso móvil",
+      "Una sola ventana contextual compartida",
+      "No servidores Router Steward/LocalAI/Firecrawl/SearXNG sin prueba de beneficio"
+    ]
+  },
+  "requisitos": {
+    "funcionales": [
+      {
+        "detalle": "Ocultar complejidad del selector técnico y mantener personalidad continua",
+        "estado_declarado_source": "SOURCE_IMPLEMENTADO_O_DOCUMENTADO",
+        "id": "FR-01",
+        "nombre": "Una identidad NOSTROMO"
+      },
+      {
+        "detalle": "CONVERSATION, RESEARCH, VISUALIZE, EXPLAIN, TARGET_READ, TARGET_COMMAND y CLARIFY. Interpretador actual usa IntentSignals precalculadas, no NLU crudo completo",
+        "estado_declarado_source": "SOURCE_IMPLEMENTADO_O_DOCUMENTADO",
+        "id": "FR-02",
+        "nombre": "Interpretación de intención"
+      },
+      {
+        "detalle": "AUTO/BOTH son ámbitos de vista; un cambio material necesita MANOJOS3 o VX13 concreto",
+        "estado_declarado_source": "SOURCE_IMPLEMENTADO_O_DOCUMENTADO",
+        "id": "FR-03",
+        "nombre": "Selección de target segura"
+      },
+      {
+        "detalle": "StatusRail, DecisionInbox, ArtifactDock, PlanGraph, TargetNavigator y paneles de dominio bajo prioridad nativa",
+        "estado_declarado_source": "SOURCE_IMPLEMENTADO_O_DOCUMENTADO",
+        "id": "FR-04",
+        "nombre": "HUD y ventanas contextuales"
+      },
+      {
+        "detalle": "Recursos internos mediante File Search, web público por Web Search; navegación interactiva sólo cuando corresponda",
+        "estado_declarado_source": "SOURCE_Y_LIVE_PENDIENTE",
+        "id": "FR-05",
+        "nombre": "Búsqueda e investigación"
+      },
+      {
+        "detalle": "7 perfiles, 1 gateway remoto; selectores fail-closed según salud, cuota, privacidad, capacidades, frescura y coste cero",
+        "estado_declarado_source": "SOURCE_IMPLEMENTADO_O_DOCUMENTADO",
+        "id": "FR-06",
+        "nombre": "Gateway cognitivo"
+      },
+      {
+        "detalle": "TargetGateway read/readScope, comparaciones múltiples read-only, sin fusionar permisos",
+        "estado_declarado_source": "SOURCE_BINDING_OFF",
+        "id": "FR-07",
+        "nombre": "Lectura multimódulo"
+      },
+      {
+        "detalle": "Eventos de MANOJOS3/VX13/ORACULO/LibreChat, idempotencia, severidad, fuente y evidencia referenciada",
+        "estado_declarado_source": "SOURCE_NO_LIVE",
+        "id": "FR-08",
+        "nombre": "Notificación y triage"
+      },
+      {
+        "detalle": "Una instancia/historial; PWA/resumable stream cuando aplica; drafts locales sin replay material",
+        "estado_declarado_source": "SOURCE_NO_LIVE",
+        "id": "FR-09",
+        "nombre": "Movilidad y modo offline"
+      },
+      {
+        "detalle": "10 activas + 2 alias; dos fases de GitHub Skill Sync con canary/rollback",
+        "estado_declarado_source": "SOURCE_NO_LIVE",
+        "id": "FR-10",
+        "nombre": "Skills administrables"
+      },
+      {
+        "detalle": "bootstrap, scope ownership, pruebas, readback, checkpoint y siguiente gap sin detenerse por bloqueos parciales",
+        "estado_declarado_source": "SOURCE_TESTED",
+        "id": "FR-11",
+        "nombre": "Continuidad operatoria"
+      },
+      {
+        "detalle": "árboles, timelines, Mermaid, tarjetas y UI intent separada de acción material",
+        "estado_declarado_source": "SOURCE_IMPLEMENTADO_O_DOCUMENTADO",
+        "id": "FR-12",
+        "nombre": "Artifacts y presentación"
+      }
+    ],
+    "no_funcionales": [
+      {
+        "criterio": "Ninguna mutación sin permiso/receipt target; revisión de logs y storage",
+        "detalle": "Autoridad material sólo del target y secretos fuera de source",
+        "id": "NFR-SEC"
+      },
+      {
+        "criterio": "Canary de 7 Dynamic Routes y fallback zero-cost sobre la cuenta REAL",
+        "detalle": "No pagar inferencia no admitida",
+        "id": "NFR-COST"
+      },
+      {
+        "criterio": "Mediciones host idle/activo PENDIENTES",
+        "detalle": "Bajo consumo y lazy UI/servicios",
+        "id": "NFR-PERF"
+      },
+      {
+        "criterio": "UNKNOWN_OUTCOME requiere readback",
+        "detalle": "No duplicar acciones materiales por reconexión/timeout",
+        "id": "NFR-REL"
+      },
+      {
+        "criterio": "canary Wi-Fi/datos/ACL/revoke y lectura de stream",
+        "detalle": "Misma historia PC/móvil",
+        "id": "NFR-MOBILE"
+      },
+      {
+        "criterio": "verify:upstream, overlay install/build/uninstall y upstream limpio",
+        "detalle": "Sin divergir de LibreChat upstream",
+        "id": "NFR-MAINT"
+      },
+      {
+        "criterio": "Revisión UI y dispositivo LIVE pendiente",
+        "detalle": "Accesibilidad teclado/foco/lectores y presentación sensible",
+        "id": "NFR-ACCESS"
+      }
+    ]
+  },
+  "resumen_ejecutivo": {
+    "descripcion": "Capa conversacional y cabina orgánica unificada construida como overlay estrecho sobre LibreChat, con identidad NOSTROMO, asistencia cognitiva, visualización, investigación, observación y coordinación con sistemas externos sin adjudicarse autoridad de ejecución.",
+    "diferenciador": "Una sola conversación y un HUD contextual, con separación verificable entre lectura, acción gobernada, inferencia y evidencia.",
+    "estado_material": false,
+    "no_es": [
+      "nuevo Kernel",
+      "nuevo Governor",
+      "nuevo motor de ejecución material",
+      "segundo LibreChat independiente",
+      "sistema de programación especializado"
+    ],
+    "situacion_actual": "Código, configuración y overlay SOURCE probados en GitHub Actions; Cloudflare Gateway, Skill Sync, Serve móvil, investigación, eventos y recuperación siguen sin canary LIVE autenticado.",
+    "usuarios_objetivo": "Operador principal y usuarios autorizados con rol concreto por determinar en instalación LIVE"
+  },
+  "riesgos": [
+    {
+      "estado_gate": "OPEN",
+      "id": "R-01",
+      "mitigacion": "Readback proveedor/cuenta + configuración BYOK/no-wholesale + rollback; fail-closed",
+      "riesgo": "Rutas gratuitas resultan de pago según cuenta/candidato",
+      "severidad": "CRITICA"
+    },
+    {
+      "estado_declarado_source": "CONTROL_EN_SOURCE",
+      "id": "R-02",
+      "mitigacion": "Separar proof class y material_verified=false",
+      "riesgo": "Promover SOURCE a LIVE sin canary",
+      "severidad": "CRITICA"
+    },
+    {
+      "estado_declarado_source": "CONTROL_EN_SOURCE",
+      "id": "R-03",
+      "mitigacion": "Fences, UNKNOWN_OUTCOME y receipt/readback",
+      "riesgo": "Reintentar acción material tras timeout/reconnect",
+      "severidad": "CRITICA"
+    },
+    {
+      "estado_declarado_source": "CONTROL_EN_SOURCE",
+      "id": "R-04",
+      "mitigacion": "Target auth por contrato y concrete target",
+      "riesgo": "Confundir permiso de ToolApproval con permiso MANOJOS3/VX13",
+      "severidad": "ALTA"
+    },
+    {
+      "estado_declarado_source": "LIMITE_DOCUMENTADO",
+      "id": "R-05",
+      "mitigacion": "SecretRef runtime, scope mínimo, revisión logs",
+      "riesgo": "Filtrar credenciales en repo/UI/Docs",
+      "severidad": "CRITICA"
+    },
+    {
+      "estado_declarado_source": "SOURCE_PREPARADO_LIVE_PENDIENTE",
+      "id": "R-06",
+      "mitigacion": "Stage 12 → 10, rollback y source id constante",
+      "riesgo": "Dos alias Skill se eliminan/ocultan por sincronización sin verificación",
+      "severidad": "ALTA"
+    },
+    {
+      "estado_declarado_source": "LIVE_PENDIENTE",
+      "id": "R-07",
+      "mitigacion": "Inspección previa, aislamiento de puertos/hostname",
+      "riesgo": "Desplegar Tailscale Serve sobre recursos existentes de MANOJOS3",
+      "severidad": "ALTA"
+    },
+    {
+      "estado_gate": "GATE_HUMAN",
+      "id": "R-08",
+      "mitigacion": "Benchmark antes de elegir Compose/npm y servicios opcionales",
+      "riesgo": "Consumo CPU/RAM insuficiente en Lenovo",
+      "severidad": "MEDIA_ALTA"
+    },
+    {
+      "estado_declarado_source": "IDENTIFICADO",
+      "id": "R-09",
+      "mitigacion": "Precedencia por TARGET/GAPS/CURRENT/CI exactos; incidencias explícitas",
+      "riesgo": "Documentación histórica obsoleta contradice canon",
+      "severidad": "MEDIA"
+    },
+    {
+      "estado_declarado_source": "PARCIAL_SOURCE",
+      "id": "R-10",
+      "mitigacion": "Concreto/CLARIFY, no AUTO/BOTH mutation; crosswalk read-only futuro",
+      "riesgo": "Natural language sin resolver produce target erróneo",
+      "severidad": "ALTA"
+    }
+  ],
+  "roadmap": [
+    {
+      "aceptacion": "HEAD remoto y CI exacto PASS, SOURCE canónico y Drive reconciliados",
+      "estado_declarado_source": "SOURCE_VALIDADO",
+      "evidencia": "https://github.com/elkakas314/libre_chat_vx/actions/runs/37726226657",
+      "fase": 0,
+      "nombre": "Fuente y canon"
+    },
+    {
+      "aceptacion": "Cuenta autenticada, BYOK/no-wholesale, 7 rutas zero-cost y rollback probado",
+      "estado_gate": "OPEN",
+      "fase": 1,
+      "nombre": "Cloudflare AI Gateway LIVE"
+    },
+    {
+      "aceptacion": "Fase 1 12 raíces; rollback; fase 2 10 activas sin borrar alias Git; permisos/visibilidad",
+      "estado_gate": "OPEN",
+      "fase": 2,
+      "nombre": "GitHub Skill Sync LIVE"
+    },
+    {
+      "aceptacion": "Health :3080, Serve aislado, móvil Wi-Fi/datos/revoke/reconnect",
+      "estado_gate": "OPEN",
+      "fase": 3,
+      "nombre": "LibreChat localhost + Tailscale móvil"
+    },
+    {
+      "aceptacion": "Búsqueda y lectura auténticas sin rutas pagadas no autorizadas",
+      "estado_gate": "OPEN",
+      "fase": 4,
+      "nombre": "Web Research nativo"
+    },
+    {
+      "aceptacion": "Autenticación, idempotencia, triage y notification/fresh fetch",
+      "estado_gate": "OPEN",
+      "fase": 5,
+      "nombre": "Agent Events"
+    },
+    {
+      "aceptacion": "Host service/Tailscale SSH y benchmarks CPU/RAM",
+      "estado_declarado_source": "OPEN+GATE_HUMAN",
+      "fase": 6,
+      "nombre": "Recovery externo y presupuesto de host"
+    },
+    {
+      "aceptacion": "Adapter MCP real, readback y receipts; cero efectos materiales",
+      "estado_gate": "TARGET_LATER",
+      "fase": 7,
+      "nombre": "MANOJOS3 R0 y ORÁCULO asesor"
+    },
+    {
+      "aceptacion": "Frontdoor canónico y material readback/verifier/receipt, autorización por target",
+      "estado_declarado_source": "TARGET_LATER/GATE_EXTERNAL",
+      "fase": 8,
+      "nombre": "VX13 frontdoor y primera mutación gobernada"
+    }
+  ],
+  "seguridad": {
+    "auditoria": [
+      "HEAD/CI exactos",
+      "evidenceRefs/proofs/readback",
+      "run_id/receipt del target",
+      "idempotencyKey para Agent Events",
+      "registro de bloqueos por scope",
+      "actualización de Drive 30 y CURRENT/HANDOFF"
+    ],
+    "auth": "LibreChat nativo + Tailscale tailnet ACL en acceso privado + Cloudflare Access si se habilita público; configuración real y sesiones PENDIENTES de inspección",
+    "autorizacion": "NOSTROMO authority=false. Material sólo con target concreto, contrato y autorización target-owned; MCP, tool approval, prompt y modelo no otorgan permisos",
+    "controles": [
+      "CSP, DOM/event allowlists y validación de provenance en TrustedSurfaceHost",
+      "Concreto MANOJOS3/VX13 para mutaciones; AUTO/BOTH sólo read",
+      "No efecto material en offline queue",
+      "UNKNOWN/PARTIAL readback antes de retry",
+      "SecretRef runtime para tokens",
+      "No Worker administrativo ni público",
+      "Privacidad visual no reemplaza ACL",
+      "Rutas LLM con quota/health/privacy/zeroCost/observedAtMs fresco"
+    ],
+    "gates_materiales": [
+      "CONCRETE_TARGET",
+      "CAPABILITY_OR_INTENT_ROUTE",
+      "TARGET_AUTHORIZATION",
+      "EXPECTED_PREIMAGE_WHEN_APPLICABLE",
+      "IDEMPOTENCY",
+      "READBACK",
+      "VERIFICATION",
+      "RECEIPT"
+    ],
+    "riesgos": [
+      "Confused deputy en interfaz gráfica",
+      "Prompt injection desde archivos/web",
+      "Fuga de secretos/credenciales",
+      "Replay tras reconectar",
+      "Inyección en Artifact/TrustedSurfaceHost",
+      "Plugin/Skill confundido con autoridad",
+      "Publicación de admin endpoint",
+      "Pago accidental por inference fallback",
+      "Pérdida de identidad/ACL por cambio de ruta"
+    ],
+    "roles": [
+      "Usuario autenticado",
+      "Administrador autorizado LibreChat",
+      "Principal del target MANOJOS3",
+      "Principal del target VX13"
+    ]
+  },
+  "testing": {
+    "criterios_aceptacion": [
+      "No declarar LIVE desde CI SOURCE",
+      "CI source-check sobre HEAD exacto, build-test y overlay-smoke SUCCESS",
+      "No solapamiento de recursos MANOJOS3",
+      "Secretos sólo en entorno autorizado",
+      "Señal de éxito material exige Verifier/Receipt/readback de target",
+      "Pruebas de fallback LLM bloquean pago sin cuenta LIVE"
+    ],
+    "e2e": [
+      "Cloudflare 7 perfiles y costes/rollback autenticados PENDIENTE",
+      "Skill Sync status/run y visibilidad 12 luego 10 PENDIENTE",
+      "Tailscale móvil reconectar/revocar PENDIENTE",
+      "Web Search y fetch nativos PENDIENTE",
+      "Agent Events autenticados/idempotentes PENDIENTE",
+      "M3 read-only/receipt y material canary PENDIENTE"
+    ],
+    "integracion": [
+      "npm run transport:validate",
+      "npm test: TypeScript build + node --test dist/tests/*.test.js",
+      "npm run verify:upstream -- ../upstream",
+      "npm run overlay:install -- ../upstream",
+      "npm run overlay:uninstall -- ../upstream",
+      "upstream limpio después de uninstall"
+    ],
+    "resultado_actual": {
+      "build_test": "SUCCESS",
+      "commit": "94954512312ce2b1b478c1bc19c3d01c5b52b2d2",
+      "estado_declarado_source": "SUCCESS",
+      "overlay_smoke": "SUCCESS",
+      "proveedor": "GitHub Actions",
+      "run_id": 37726226657,
+      "significado": "CI SOURCE del commit indicado, no prueba runtime LIVE",
+      "tests": 117,
+      "tests_fail": 0,
+      "tests_pass": 117,
+      "url": "https://github.com/elkakas314/libre_chat_vx/actions/runs/37726226657",
+      "workflow": "source-check"
+    },
+    "unitario": [
+      "src/intent, targets, inferencia, eventos, operating, mobile, UI con tests bajo tests/",
+      "Validez timestamp route/model: ausente/futuro/caducado => reject",
+      "OWNED sin FREE => RECONCILE_REQUIRED",
+      "No material mutation AUTO/BOTH",
+      "Stage Skill Sync 12/10 selección sin borrar alias"
+    ]
+  },
+  "topologia_tuneles_y_transportes": {
+    "$ref": "./TOPOLOGY.json",
+    "catalogo_env": "SPEC.json#/configuracion/env",
+    "no_embebida": true,
+    "relacion": "REFERENCIA_DOCUMENTAL_RELATIVA",
+    "rutas_canonicas": "TOPOLOGY.json#/rutas_inferencia"
+  },
+  "ui_ux": {
+    "accesibilidad": [
+      "Navegación teclado",
+      "Semántica ARIA",
+      "Contraste y movimiento reducido",
+      "No depender exclusivamente del color",
+      "Validación empírica PENDIENTE"
+    ],
+    "flujos": [
+      {
+        "nombre": "Auditar servicio",
+        "secuencia": [
+          "expresión natural",
+          "intent TARGET_READ",
+          "selección scope",
+          "lectura autorizada o estado sin binding",
+          "tarjeta evidencia",
+          "resumen"
+        ]
+      },
+      {
+        "nombre": "Cambiar sistema",
+        "secuencia": [
+          "intención TARGET_COMMAND",
+          "target concreto",
+          "propuesta objetivo y aceptación",
+          "autorización específica por target cuando aplica",
+          "receipts/readback",
+          "presentación de resultado"
+        ]
+      },
+      {
+        "nombre": "Consulta de documentos",
+        "secuencia": [
+          "detectar archivo/URI",
+          "File Search o lectura autorizada",
+          "resumen con procedencia",
+          "Artifact opcional"
+        ]
+      },
+      {
+        "nombre": "Aclaración",
+        "secuencia": [
+          "referente ambiguo",
+          "una pregunta humana",
+          "sin mutación hasta resolución"
+        ]
+      },
+      {
+        "nombre": "Alerta crítica",
+        "secuencia": [
+          "Agent Event",
+          "dedupe+triage",
+          "notificación segura",
+          "abrir con fresh authenticated fetch"
+        ]
+      }
+    ],
+    "i18n": [
+      "Español primario según requisitos/plantillas",
+      "Otros idiomas PENDIENTE"
+    ],
+    "principios": [
+      "Una sola voz NOSTROMO; sin selector manual de modo operador",
+      "Cabina orgánica: abre el panel pertinente a la conversación",
+      "Menos ruido: sólo foco, riesgo, conexión, readiness, trabajo y evidencia",
+      "Indicadores de incertidumbre explícitos",
+      "No convertir acciones visuales en efectos directos",
+      "Mantener una ventana lateral compartida; Artifact > Subagent > NOSTROMO",
+      "PC+móvil: mismo historial con interfaz adaptativa"
+    ],
+    "wireframes": [
+      "Cabina conversación + mapa vivo + verdad mínima (referencia de Acceso a hilos proyecto.txt, diseño conceptual)",
+      "StatusRail + panel contextual compartido + HUD Tentáculo",
+      "Decisions Inbox y ArtifactDock para evidencia"
+    ]
+  },
+  "usuarios_y_roles": [
+    {
+      "estado_declarado_source": "ROL_DE_PRODUCTO",
+      "flujos": [
+        "consultar estado",
+        "revisar evidencia",
+        "describir objetivo natural",
+        "inspeccionar eventos"
+      ],
+      "limite": "No recibe permiso material por conversar",
+      "permisos": [
+        "conversación",
+        "lectura autorizada",
+        "solicitar objetivos",
+        "ver evidencia de los scopes propios",
+        "aprobar cuando autoridad propia lo exige"
+      ],
+      "rol": "OPERADOR_PRINCIPAL"
+    },
+    {
+      "estado_declarado_source": "ROL_NATIVE_POR_CONFIGURAR",
+      "flujos": [
+        "chat",
+        "investigación",
+        "visualización"
+      ],
+      "limite": "Rutas, visibilidad y compartición dependen de identidad/ACL LIVE",
+      "permisos": [
+        "conversar y usar Skills/herramientas permitidas por ACL"
+      ],
+      "rol": "USUARIO_AUTORIZADO_LIBRECHAT"
+    },
+    {
+      "estado_declarado_source": "NATIVE_DEPENDIENTE_DE_DEPLOYMENT",
+      "flujos": [
+        "preflight",
+        "sincronizar Skills controladamente",
+        "canary y rollback"
+      ],
+      "limite": "No administra automáticamente MANOJOS3/VX13 ni Cloudflare",
+      "permisos": [
+        "administrar configuración y Skill Sync según autorización real",
+        "gestionar identidad/configuración"
+      ],
+      "rol": "ADMIN_LIBRECHAT"
+    },
+    {
+      "estado_declarado_source": "TARGET_EXTERNO",
+      "flujos": [
+        "admisión de intención",
+        "ejecución gobernada",
+        "readback y recibos"
+      ],
+      "limite": "LibreChat sólo prepara/interpreta/proyecta",
+      "permisos": [
+        "Governor/Policy/Kernel/Verifier/Receipt bajo su propia política"
+      ],
+      "rol": "AUTORIDAD_MANOJOS3"
+    },
+    {
+      "estado_declarado_source": "TARGET_EXTERNO_GATED",
+      "flujos": [
+        "solicitud a Tentáculo Link",
+        "verificación delegada"
+      ],
+      "limite": "No es el Tentáculo HUD",
+      "permisos": [
+        "Madre/Spawner-hija según frontdoor canónico futuro"
+      ],
+      "rol": "AUTORIDAD_VX13"
+    },
+    {
+      "estado_declarado_source": "ADVISORY_FUTURO",
+      "flujos": [
+        "asesoramiento contextual"
+      ],
+      "limite": "authority=false",
+      "permisos": [
+        "análisis y propuestas no materiales"
+      ],
+      "rol": "ORACULO_ASESOR"
+    }
+  ]
+}

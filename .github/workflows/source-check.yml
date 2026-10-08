@@ -18,6 +18,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Validate canonical JSON with jq
+        run: |
+          command -v jq
+          jq -e 'type == "object"' SPEC.json > /dev/null
+          jq -e 'type == "object"' TOPOLOGY.json > /dev/null
+          test -f EXPLICACION.md
+          test "$(jq -r '.topologia_tuneles_y_transportes["$ref"]' SPEC.json)" = "./TOPOLOGY.json"
+          test "$(jq -r '.variables_entorno["$ref"]' TOPOLOGY.json)" = "./SPEC.json#/configuracion/env"
+          test "$(jq -r '.variables_entorno.total' TOPOLOGY.json)" = "$(jq -r '.configuracion.env | length' SPEC.json)"
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
