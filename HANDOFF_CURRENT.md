@@ -7,8 +7,8 @@ Authority: `false`.
 
 ## Exact source proof
 
-- SOURCE-bearing head: `ffd31f79abc1f56433d05d33e5bdbe65b2dd5690`.
-- GitHub Actions: `source-check` run `37667119803` — **SUCCESS**.
+- Verified SOURCE baseline head: `60a6bbb974dae26e154d883121f22dd6bca560ce`.
+- GitHub Actions: `source-check` run `37709003357` — **SUCCESS**.
 - build-test: **SUCCESS**.
 - parallel transport isolation v2: **SUCCESS**.
 - pinned upstream verify/install/build/uninstall/clean: **SUCCESS**.
@@ -143,3 +143,13 @@ The authoritative active backlog is `operating/GAPS_CURRENT.json:gaps[]`; target
 `LC-NOSTROMO-SEMANTIC-BRIDGE` is a HIGH-priority design-review idea only. Compare native LibreChat + existing Intent Interpreter, a typed authority=false TargetGateway semantic crosswalk to MANOJOS3 target-owned flows, and (only if proven needed) a read-only declarative vocabulary. Never clone M3 semantic engine or interpret a semantic match as authorization. It is recorded in repo backlog and Drive 30.
 
 Skill consolidation is SOURCE applied: 10 active, two legacy aliases physically present until LIVE Skill Sync canary. A new test validates current OperatingGap/Proof schemas. Proof for post-refactor changes must be read from the source-check run associated with the source-bearing commit, not inferred from earlier CI.
+
+## Semantic review and Operating Canon v8
+
+The Operating Canon v8 now separates actionable `ACTIVE_LIVE` gaps from `TARGET_LATER`, `DEFERRED_EXTERNAL`, `OPTIONAL_REENTRY`, `CLOSED_SOURCE` and `design_review_queue`. Its operational JSON data uses the typed bootstrap field names and is checked by `tests/operating-current-data.test.ts`.
+
+`LC-NOSTROMO-SEMANTIC-BRIDGE` (HIGH / DESIGN_REVIEW_PENDING) records the request for a NOSTROMO-owned semantic vocabulary and an authority=false crosswalk to target-owned MANOJOS3 Intent Flows/Interflows/drivers. Compare native LibreChat + current Intent Interpreter, TargetGateway typed crosswalk and a read-only registry. Never copy MANOJOS3 semantic authority or create a second engine by default.
+
+Skills: 10 active in `config/skills.current.json`; `nostromo-intent-translation` and `nostromo-tool-budget` were absorbed into `nostromo-core` in SOURCE but remain as compatibility aliases until LIVE Skill Sync readback. The new on-demand `nostromo-extension-review` Skill reviews future additions without executing them.
+
+Drive living package: 00 Entry, 10 Design, 20 Operations, 30 Backlog/Closeout, 40 Map. MANOJOS3 transport convergence remains deferred.
