@@ -1381,6 +1381,29 @@
         "method": "Comparación required/enums/additionalProperties con registry actual y plugin externo; búsqueda SOURCE de sourcePath/ExtensionPackage y pruebas; no se halló un consumidor o instancia dedicada.",
         "runtime": "NO_DEPLOYMENT_EVIDENCE"
       }
+    },
+    {
+      "id": "LC-DISC-MANOJOS3-ENTRYPOINT-001",
+      "estado": "ABIERTA",
+      "bloqueante": true,
+      "ubicacion": [
+        "contracts/manojos3-entrypoint.schema.json#/properties/kind/enum",
+        "contracts/manojos3-entrypoint.schema.json#/properties/endpoint_env",
+        "src/manojos3/entrypoints.ts#Manojos3EntrypointKind",
+        "src/manojos3/entrypoints.ts#MANOJOS3_ENTRYPOINTS",
+        "tests/manojos3-entrypoints.test.ts"
+      ],
+      "hecho": "Una de tres instancias declaradas en MANOJOS3_ENTRYPOINTS lleva kind=INTERNAL_ADVISORY_LITELLM, que no pertenece al enum del schema manojos3-entrypoint (ACTION_MCP, INFERENCE_OPENAI_COMPATIBLE, INTERNAL_ADVISORY_INTERFLOW). Por tanto no validaría ese entrypoint real. El schema usa endpoint_env y admite campos adicionales, mientras TypeScript declara deploymentEnv, sourceEndpoint, sourcePins, notes, e id obligatorio en interfaz pero no exigido por schema; el contrato no comprueba la identidad ni la procedencia SOURCE del productor. Los dos valores de state observados sí están permitidos. El test actual sólo comprueba kind INTERNAL_ADVISORY_LITELLM internamente y autoridad false, sin validar el schema.",
+      "tratamiento": "Alinear enum y semántica de la entrada de inferencia interna de MANOJOS3 a la representación SOURCE real en LibreChat VX; mapear o fijar endpoint_env/deploymentEnv sin inventar un endpoint LIVE; mantener authority=false y SOURCE_INTERNAL_ONLY. Validar tres descriptores existentes con el schema tras corrección en PR propia; no alterar MANOJOS3 ni construir infraestructura nueva.",
+      "evidencia_source": {
+        "repositorio": "elkakas314/libre_chat_vx",
+        "git_commit_sha": "4a7d258048d4bd890336be8421df1940c2a7ef67",
+        "schema_git_blob_sha": "55dbf49528159568094a3dbb28a67c4bb030162d",
+        "consumer_git_blob_sha": "a038290ba874d53edc7862988056712039740bf4",
+        "test_git_blob_sha": "52e3c5565c31efbb2bf9880fcf55e38d6114d7f2",
+        "method": "Comparación directa de enum kind/state y nombres de campo del JSON Schema frente a los tres literales de MANOJOS3_ENTRYPOINTS y tests existentes.",
+        "runtime": "NO_DEPLOYMENT_EVIDENCE"
+      }
     }
   ],
   "frontend": {
