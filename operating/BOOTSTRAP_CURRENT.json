@@ -4,14 +4,14 @@
   "target_version": 8,
   "snapshot_id": "source-2026-10-08-criba",
   "mode": "SOURCE_ONLY",
-  "evidence_cutoff_head": "77ceb1a9fe72dd70db9f968b28b0370c831115ff",
+  "evidence_cutoff_head": "409d3f47bf196f4a2eee469d6a1abe29851c0387",
   "baseline_ci": {
-    "github_actions_run": 37706857454,
+    "github_actions_run": 37708437853,
     "conclusion": "SUCCESS"
   },
   "git": {
-    "head": "77ceb1a9fe72dd70db9f968b28b0370c831115ff",
-    "status": "EVIDENCE_CUTOFF_ONLY_CURRENT_BRANCH_CHANGES_PENDING_CI",
+    "head": "409d3f47bf196f4a2eee469d6a1abe29851c0387",
+    "status": "EVIDENCE_CUTOFF_ONLY_DOC_CHANGES_FOLLOWED",
     "origin_main": "NOT_READ_LIVE"
   },
   "runtime": {
@@ -28,14 +28,13 @@
       "nostromo-hybrid-source-drive",
       "m3-gpt-semantic-bridge-source-drive",
       "tentacle-hud-model-independence",
-      "transport-and-source-ci-20261008"
+      "transport-and-source-ci-20261008",
+      "skill-criba-exact-head-ci"
     ],
     "stale": [
       "nostromo-material-test"
     ],
-    "missing": [
-      "skill-criba-exact-head-ci"
-    ],
+    "missing": [],
     "unavailable": [
       "m3-live-binding",
       "m3-free-reasoner-live"
