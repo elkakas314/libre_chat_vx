@@ -99,3 +99,31 @@ test('operating bootstrap CURRENT fields are declared by its versioned JSON Sche
   assert.equal(bootstrap.runtime.status,'NO_VERIFICADO');
   assert.equal(bootstrap.closeout,'INCOMPLETE');
 });
+
+test('Skill Sync two-stage source canary selects physical aliases first and only the 10 active roots after LIVE gate', () => {
+  const catalog=readJson('config/skills.current.json');
+  const active=(catalog.catalog as Array<{name:string}>).map(s=>s.name);
+  const aliases=(catalog.legacy_compatibility as Array<{name:string}>).map(s=>s.name);
+  assert.equal(active.length,10);
+  assert.equal(aliases.length,2);
+  assert.equal(new Set([...active,...aliases]).size,12);
+  for (const name of [...active,...aliases]) {
+    assert.ok(readFileSync('skills/'+name+'/SKILL.md','utf8').includes('name: '+name),'missing skill file '+name);
+  }
+  const readStage=(stage:number)=>readFileSync('deployment/skill-sync/librechat.skill-sync-stage'+stage+'.example.yaml','utf8');
+  const one=readStage(1),two=readStage(2);
+  const paths=(yaml:string)=>yaml.split('\n').map(s=>s.trim()).filter(s=>s.startsWith('- skills')).map(s=>s.replace(/^- /,''));
+  assert.deepEqual(paths(one),['skills']);
+  assert.deepEqual(paths(two),active.map(n=>'skills/'+n));
+  assert.match(one,/skillDiscoveryDepth: 1/);
+  assert.match(two,/skillDiscoveryDepth: 0/);
+  for (const yaml of [one,two]) {
+    assert.match(yaml,/id: nostromo-vx-skills/);
+    assert.match(yaml,/ref: handoff_current_bootstrps/);
+    assert.match(yaml,/runOnStartup: false/);
+    assert.match(yaml,/token: '\$\{GITHUB_SKILLS_TOKEN\}'/);
+    assert.doesNotMatch(yaml,/credentialKey:/);
+    assert.doesNotMatch(yaml,/GITHUB_TOKEN:\s*gh[pousr]_/);
+  }
+  assert.equal(active.some(x=>aliases.includes(x)),false);
+});

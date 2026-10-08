@@ -1,0 +1,18 @@
+# SOURCE EXAMPLE ONLY — do not merge blindly into an existing librechat.yaml.
+# LibreChat GitHub Skill Sync: stage 1; private repo, token injected only at host runtime.
+skillSync:
+  github:
+    enabled: true
+    intervalMinutes: 1440
+    runOnStartup: false
+    sources:
+      - id: nostromo-vx-skills
+        owner: elkakas314
+        repo: libre_chat_vx
+        ref: handoff_current_bootstrps
+        paths:
+          - skills
+        skillDiscoveryDepth: 1
+        token: '${GITHUB_SKILLS_TOKEN}'
+
+# No LIVE deployment or credential is implied by this example.
