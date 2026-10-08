@@ -1157,6 +1157,25 @@
         "tipo": "SOURCE_CI",
         "runtime": "NO_DEPLOYMENT_EVIDENCE"
       }
+    },
+    {
+      "id": "LC-DISC-TARGET-CAPABILITY-PROJECTION-001",
+      "estado": "ABIERTA",
+      "bloqueante": true,
+      "ubicacion": [
+        "contracts/target-capability-projection.schema.json",
+        "src/core/types.ts#TargetCapabilityProjection",
+        "src/adapters/manojos3McpAdapter.ts#discoverCapabilities"
+      ],
+      "hecho": "JSON Schema usa snake_case (target_id, capability_id, effect_class, source_revision, observed_at); TypeScript usa camelCase (targetId, capabilityId, effectClass, sourceRevision, observedAt). required_scopes y evidence_refs son opcionales en schema pero obligatorios en TypeScript. discoverCapabilities() no implementa conversión entre ambas representaciones.",
+      "tratamiento": "Decidir si el schema se alinea a TypeScript (camelCase), o TypeScript se adapta al schema (snake_case), o se crea una capa de normalización explícita en manojos3McpAdapter.ts. Requiere ADR si cambia el schema o si introduce nueva capa.",
+      "evidencia_source": {
+        "repositorio": "elkakas314/libre_chat_vx",
+        "schema_git_blob_sha": "66f677e4d8fdafaf92c7a63d4edac5ed3d936fae",
+        "types_git_blob_sha": "b8036c4f35fcae157d60a3ff4e898ae998e27829",
+        "manojos3_adapter_git_blob_sha": "fb08050d12562fb909f255e0d5dbb803aac67848"
+      },
+      "commit_deteccion": "571844964757bf5a13109fcd8e0ac2686ee526a9"
     }
   ],
   "frontend": {
