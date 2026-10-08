@@ -103,10 +103,14 @@ El estado actual continúa siendo `SOURCE_ONLY` hasta readback local.
 
 ## Primera lectura de un GPT
 
-1. `operating/TARGET_CANON.json`
-2. `operating/BOOTSTRAP_CURRENT.json`
-3. `operating/HANDOFF_CURRENT.md`
-4. `operating/GAPS_CURRENT.json`
-5. sólo después los docs específicos señalados por el gap elegido.
+1. `CURRENT.json` y `HANDOFF_CURRENT.md` del root.
+2. `operating/TARGET_CANON.json` para lo deseado.
+3. `operating/GAPS_CURRENT.json`: únicamente `gaps[]` es backlog activo, las otras categorías no se ejecutan.
+4. `operating/BOOTSTRAP_CURRENT.json` y `operating/PROOFS_CURRENT.json` como read-models derivados.
+5. sólo después los documentos específicos señalados por el gap elegido.
 
 No leer 50 conversaciones antes de empezar.
+
+## Estado de criba
+
+10 Skills activas + 2 alias legacy físicamente presentes. `nostromo-extension-review` hace revisión anti-monolito bajo demanda. La semántica NOSTROMO/MANOJOS3 está en `design_review_queue` hasta comparar opciones y probar gaps. No se convierte automáticamente en otra fase de construcción ni en autoridad.
