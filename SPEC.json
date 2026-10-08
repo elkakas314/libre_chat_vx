@@ -1129,7 +1129,7 @@
     },
     {
       "id": "LC-DISC-UI-ACTION-001",
-      "estado": "ABIERTA",
+      "estado": "CERRADA",
       "bloqueante": true,
       "ubicacion": [
         "contracts/ui-action.schema.json#/allOf/0/then/required",
@@ -1143,6 +1143,19 @@
         "schema_git_blob_sha": "15e5818ff2290f9ce2791bd50583ad54547439ba",
         "test_git_blob_sha": null,
         "test_estado": "tests/ui-action.test.ts aun no existe en SOURCE de este commit; sera creado en PR de correccion"
+      },
+      "resolucion": "473d55cb436acfbdcdb5a0fb0b6db063bcf6a710",
+      "evidencia": "CI integrado 37846914460 — SUCCESS (build-test + overlay-smoke)",
+      "evidencia_cierre": {
+        "git_commit_sha": "473d55cb436acfbdcdb5a0fb0b6db063bcf6a710",
+        "ci_run_id": 37846914460,
+        "ci_conclusion": "success",
+        "ci_jobs": [
+          "build-test",
+          "overlay-smoke"
+        ],
+        "tipo": "SOURCE_CI",
+        "runtime": "NO_DEPLOYMENT_EVIDENCE"
       }
     }
   ],
