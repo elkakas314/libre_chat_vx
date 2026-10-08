@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import { buildBootstrap, closeoutCheck } from '../src/operating/bootstrap';
-import { buildLivingPlan, proofNeedsRevalidation } from '../src/operating/reconcile';
+import { buildLivingPlan, effectiveGapState, proofNeedsRevalidation } from '../src/operating/reconcile';
 import type { OperatingSnapshot } from '../src/operating/types';
 
 function snapshot(): OperatingSnapshot {
@@ -172,12 +172,15 @@ test('a previously OWNED gap does not silently become OPEN without explicit FREE
     [{scope:'risky',state:'STALE_CLAIM' as const}],
   ]) {
     const plan=buildLivingPlan(state.mode,state.gaps,ownership);
-    assert.deepEqual(plan.eligible,['claimed']); // eligible ONLY for RECONCILE_REQUIRED readback
+    assert.equal(effectiveGapState(state.gaps[0],state.gaps,ownership),'RECONCILE_REQUIRED');
+    assert.deepEqual(plan.eligible,['claimed']); // reconciliation investigation only, never a material retry
     assert.equal(plan.waitingInternal,false);
   }
   const active=buildLivingPlan(state.mode,state.gaps,[{scope:'risky',state:'OWNED'}]);
   assert.deepEqual(active.eligible,[]);
   assert.deepEqual(active.ownedReady,['claimed']);
+  assert.equal(effectiveGapState(state.gaps[0],state.gaps,[{scope:'risky',state:'OWNED'}]),'OWNED');
+  assert.equal(effectiveGapState(state.gaps[0],state.gaps,[{scope:'risky',state:'FREE'}]),'OPEN');
   const released=buildLivingPlan(state.mode,state.gaps,[{scope:'risky',state:'FREE'}]);
   assert.deepEqual(released.eligible,['claimed']);
 });
