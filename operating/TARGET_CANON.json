@@ -1,7 +1,7 @@
 {
   "schema": "libre-chat-vx.operating-target.v1",
   "canon": "LIBRECHAT_OPERATING_CANON",
-  "target_version": 7,
+  "target_version": 8,
   "authority": false,
   "product_role": "EXTERNAL_CONVERSATION_UI_COCKPIT",
   "desired": {
@@ -18,7 +18,7 @@
       "MANOJOS3",
       "VX13"
     ],
-    "manojos3_priority": "FIRST",
+    "manojos3_priority": "R0_AFTER_LIBRECHAT_PARALLEL_STACK_FREEZE",
     "vx13_parity": "SAME_EXTERNAL_SLOTS_DISTINCT_AUTHORITY",
     "oraculo": "ADVISORY_PROVIDER",
     "native_librechat_reuse_first": true,
@@ -37,7 +37,8 @@
         "RAPIDO": "dynamic/nostromo-rapido",
         "NORMAL": "dynamic/nostromo-normal",
         "PENSAR": "dynamic/nostromo-pensar",
-        "CODIGO": "dynamic/nostromo-codigo",
+        "INVESTIGAR": "dynamic/nostromo-investigar",
+        "VISUALIZAR": "dynamic/nostromo-visualizar",
         "CONTEXTO_LARGO": "dynamic/nostromo-contexto-largo",
         "VISION": "dynamic/nostromo-vision"
       },
@@ -128,20 +129,21 @@
       "cloudflare_loop_forbidden": true
     },
     "transport_topology": {
-      "inference_plane": "LIBRECHAT_TO_CLOUDFLARE_AI_GATEWAY_NO_LENOVO_TUNNEL",
-      "legacy_actions": "CLOUDFLARE_ACTION_PROXY_TO_MANOJOS3_VPC_TO_CLOUDFLARE_TUNNEL_TO_8787",
-      "tailscale": "PRIVATE_RECOVERY_DIAGNOSTIC_FALLBACK",
-      "host_control": "SEPARATE_RECOVERY_ONLY",
-      "librechat_action_profiles": {
-        "same_host": "DIRECT_8790",
-        "remote_private": "TAILSCALE_SERVE_AUTHENTICATED_MCP",
-        "remote_public": "DEDICATED_CLOUDFLARE_MCP_EDGE_TO_MANOJOS3_VPC_TO_EXISTING_TUNNEL_TO_8790"
-      },
-      "action_proxy_for_librechat": false,
-      "openai_secure_tunnel_for_generic_librechat": false,
-      "public_funnel_baseline": false,
-      "chatgpt_desktop": "LOCAL_CONNECTOR_PLUGIN_TO_LOCAL_MCP_APP_TO_8790",
-      "openai_secure_mcp_tunnel": "OPTIONAL_REMOTE_PRIVATE_TRANSPORT_ONLY_WHEN_LOCAL_DESKTOP_MCP_IS_NOT_USED"
+      "baseline": "PARALLEL_LIBRECHAT_VX_ISOLATED_FROM_MANOJOS3",
+      "local_web": "127.0.0.1:3080",
+      "private_mobile": "TAILSCALE_SERVE_SINGLE_ROUTE_TO_3080",
+      "public_web_optional": "ONE_DEDICATED_CF_TUNNEL_ACCESS_TO_3080",
+      "inference_plane": "ONE_CF_AI_GATEWAY_SEVEN_DYNAMIC_ROUTES_NOT_A_WEB_TUNNEL",
+      "worker_baseline_required": 0,
+      "optional_worker": "EVENT_NORMALIZER_ONLY_WHEN_DIRECT_AGENT_EVENTS_IMPOSSIBLE",
+      "skills": "GITHUB_SKILL_SYNC_DIRECT_HTTPS",
+      "inbound_notifications": "NATIVE_LIBRECHAT_AGENT_EVENTS",
+      "tailscale_funnel": false,
+      "tailscale_services": "OPTIONAL_MULTIHOST_ONLY",
+      "openai_secure_mcp_tunnel_for_librechat": false,
+      "manojos3_resource_reuse": false,
+      "manojos3_transport_convergence": "DEFERRED_DO_NOT_TOUCH_NOW",
+      "target_gateway": "IN_PROCESS_ADAPTER_ONLY_NO_PUBLIC_TARGET_CONTROL_SERVER"
     },
     "target_gateway": {
       "name": "NOSTROMO_TARGET_GATEWAY",
@@ -161,6 +163,33 @@
         "NO_LEDGER",
         "NO_MATERIAL_REPLAY"
       ]
+    },
+    "product_intent": "CONVERSATION_CONTEXT_INTERPRETATION_VISUALIZATION_RESEARCH_COORDINATION_NOT_CODE_EXECUTION",
+    "live_promotion_order": [
+      "CF_AI_GATEWAY_ROUTE_PROVIDER_CANARIES",
+      "GITHUB_SKILL_SYNC",
+      "TAILSCALE_SERVE_MOBILE",
+      "WEB_RESEARCH",
+      "AGENT_EVENTS",
+      "OUT_OF_BAND_RECOVERY",
+      "MANOJOS3_R0_AFTER_LIBRECHAT_FREEZE",
+      "VX13_CANONICAL_FRONTDOOR_WHEN_AVAILABLE",
+      "FIRST_GOVERNED_MATERIAL_CANARY"
+    ],
+    "skills": {
+      "active_target_count": 10,
+      "legacy_compatibility_count": 2,
+      "canonical_catalog": "config/skills.current.json",
+      "policy": "NATIVE_CONFIG_EXISTING_SKILL_MCP_ACTION_PLUGIN_THIN_ADAPTER_BEFORE_NEW_CODE",
+      "sync_live_status": "NO_VERIFICADO"
+    },
+    "anti_monolith": {
+      "no_duplicate_router": true,
+      "no_duplicate_executor": true,
+      "no_duplicate_ledger": true,
+      "no_core_host_network_scanner": true,
+      "external_host_network_work": "TARGET_OWNED",
+      "review_skill": "nostromo-extension-review"
     }
   },
   "authority_boundaries": {
