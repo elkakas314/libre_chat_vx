@@ -40,10 +40,10 @@ SOURCE does not imply LIVE.
 
 Canonical path: `skills/<skill-name>/SKILL.md`.
 
-11 Skills:
-nostromo-core; nostromo-intent-translation; nostromo-visualization; nostromo-research;
+10 active Skills + 2 legacy aliases (12 physical folders):
+nostromo-core; nostromo-visualization; nostromo-research;
 nostromo-event-triage; nostromo-evidence-first; nostromo-resource-navigation;
-nostromo-tool-budget; manojos3-nostromo; vx13-nostromo; cross-target-read.
+manojos3-nostromo; vx13-nostromo; cross-target-read; nostromo-extension-review. Legacy aliases: nostromo-intent-translation and nostromo-tool-budget.
 
 ## Plugin
 
@@ -114,3 +114,10 @@ nostromo-tool-budget; manojos3-nostromo; vx13-nostromo; cross-target-read.
 - no target authority in LibreChat;
 - no secrets in repo;
 - SOURCE PASS does not imply LIVE binding.
+
+## Operating Canon criba files
+
+- `docs/BACKLOG_CRIBA_CURRENT.md` — ACTIVE_LIVE vs deferred/external/source-closed, with semantic review alternatives.
+- `docs/SKILL_REDUNDANCY_AUDIT_CURRENT.md` — 10 active Skills, two legacy aliases.
+- `tests/operating-current-data.test.ts` — enforces current JSON keys and active gap selection.
+- `operating/DRIVE_REFS_CURRENT.json` — live 00/10/20/30/40 references.
