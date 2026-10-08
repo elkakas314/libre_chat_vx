@@ -77,7 +77,7 @@ A profile may run with fewer than six active models; never fill the target pool 
 
 ## Skills/plugins
 
-Source Skills: `skills/<name>/SKILL.md` — 11 canonical Skills.
+Source Skills: `skills/<name>/SKILL.md` — 10 active SOURCE catalog entries; two legacy alias files remain until LIVE GitHub Skill Sync compatibility canary.
 
 Preferred distribution: GitHub Skill Sync.
 
@@ -135,3 +135,11 @@ Drive package:
 The matrix remains the detailed capability/IDEA decision register.
 
 MANOJOS3 transport convergence remains a separate `DEFERRED / DO_NOT_TOUCH_NOW` item.
+
+## Operating Canon and semantic design review
+
+The authoritative active backlog is `operating/GAPS_CURRENT.json:gaps[]`; target-later, external/deferred, optional and closed items are separately classified. The `operating/BOOTSTRAP_CURRENT.json` is derived and is not LIVE truth.
+
+`LC-NOSTROMO-SEMANTIC-BRIDGE` is a HIGH-priority design-review idea only. Compare native LibreChat + existing Intent Interpreter, a typed authority=false TargetGateway semantic crosswalk to MANOJOS3 target-owned flows, and (only if proven needed) a read-only declarative vocabulary. Never clone M3 semantic engine or interpret a semantic match as authorization. It is recorded in repo backlog and Drive 30.
+
+Skill consolidation is SOURCE applied: 10 active, two legacy aliases physically present until LIVE Skill Sync canary. A new test validates current OperatingGap/Proof schemas. Proof for post-refactor changes must be read from the source-check run associated with the source-bearing commit, not inferred from earlier CI.
