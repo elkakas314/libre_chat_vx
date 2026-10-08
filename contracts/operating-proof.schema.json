@@ -2,16 +2,66 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "operating-proof.schema.json",
   "type": "object",
-  "required": ["proof_id", "subject", "proof_class", "state", "dependency_fingerprint", "dependencies", "evidence_refs"],
+  "required": [
+    "proofId",
+    "subject",
+    "proofClass",
+    "state",
+    "dependencyFingerprint",
+    "dependencies",
+    "evidenceRefs"
+  ],
   "properties": {
-    "proof_id": {"type": "string", "minLength": 1},
-    "subject": {"type": "string", "minLength": 1},
-    "proof_class": {"enum": ["SOURCE_READBACK", "TEST", "DRIVE_READBACK", "RUNTIME_READBACK", "MATERIAL"]},
-    "state": {"enum": ["VALID", "STALE", "MISSING", "UNAVAILABLE"]},
-    "verified_at_source_head": {"type": ["string", "null"]},
-    "dependency_fingerprint": {"type": "string", "minLength": 1},
-    "dependencies": {"type": "array", "items": {"type": "string"}},
-    "evidence_refs": {"type": "array", "items": {"type": "string"}}
+    "subject": {
+      "type": "string",
+      "minLength": 1
+    },
+    "state": {
+      "enum": [
+        "VALID",
+        "STALE",
+        "MISSING",
+        "UNAVAILABLE"
+      ]
+    },
+    "verified_at_source_head": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "proofId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "proofClass": {
+      "enum": [
+        "SOURCE_READBACK",
+        "TEST",
+        "DRIVE_READBACK",
+        "RUNTIME_READBACK",
+        "MATERIAL"
+      ]
+    },
+    "dependencyFingerprint": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evidenceRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "history_classification": {
+      "type": "string"
+    }
   },
   "additionalProperties": false
 }

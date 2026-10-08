@@ -65,3 +65,22 @@ test('target canon has only seven non-coding routes and semantic idea remains re
   assert.equal(skills.legacy_compatibility.length,2);
   assert.equal(skills.catalog.some((item:any)=>item.name==='nostromo-extension-review'),true);
 });
+
+test('operating gap/proof JSON Schemas match CURRENT camelCase data and allow historical proof metadata', () => {
+  const pairs = [
+    { schema: 'contracts/operating-gap.schema.json', data: readJson('operating/GAPS_CURRENT.json').gaps },
+    { schema: 'contracts/operating-proof.schema.json', data: readJson('operating/PROOFS_CURRENT.json').proofs },
+  ];
+  for (const pair of pairs) {
+    const schema=readJson(pair.schema);
+    assert.equal(schema.additionalProperties,false);
+    for (const item of pair.data) {
+      for (const required of schema.required as string[]) {
+        assert.ok(Object.hasOwn(item,required),pair.schema+': missing '+required);
+      }
+      for (const key of Object.keys(item)) {
+        assert.ok(Object.hasOwn(schema.properties,key),pair.schema+': undeclared '+key);
+      }
+    }
+  }
+});
