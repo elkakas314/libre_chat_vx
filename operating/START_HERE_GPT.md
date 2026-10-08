@@ -1,51 +1,49 @@
-# START HERE — GPT
+# START HERE — LibreChat VX Operating Canon v8
 
-Active architecture: `NOSTROMO_HYBRID`.
-Canonical architecture: `docs/LIBRECHAT_ARCHITECTURE_CURRENT.md`.
-Authority: `false`.
-Mode: `SOURCE_ONLY` until runtime readback proves otherwise.
+Authority: false. Deployment mode: SOURCE_ONLY. LIVE: NO_VERIFICADO.
 
-Read:
-1. `operating/TARGET_CANON.json`
-2. `operating/BOOTSTRAP_CURRENT.json`
-3. `docs/LIBRECHAT_ARCHITECTURE_CURRENT.md`
-4. `operating/HANDOFF_CURRENT.md`
-5. `docs/NOSTROMO_HYBRID_CURRENT.md`
-6. `docs/MANOJOS3_GPT_SEMANTIC_BRIDGE_CURRENT.md`
+## First reads (in order)
 
-Current routing:
-- inference: LibreChat/NOSTROMO -> Cloudflare AI Gateway -> admitted provider/model;
-- semantic profiles: RAPIDO, NORMAL, PENSAR, CODIGO, CONTEXTO_LARGO, VISION;
-- local model: optional, never a promotion prerequisite;
-- MANOJOS3 LiteLLM: internal/advisory/compatibility, not primary LibreChat inference;
-- actions: LibreChat -> NostromoTargetGateway (in-process, authority=false) -> target adapter;
-- MANOJOS3 adapter: real MANOJOS3 MCP;
-- VX13 adapter: future Tentaculo Link/canonical VX13 frontdoor.
+1. `CURRENT.json` and `HANDOFF_CURRENT.md` at repo root: current proof and ordered work.
+2. `operating/TARGET_CANON.json`: desired v8.
+3. `operating/GAPS_CURRENT.json`: active LIVE gaps **only**, plus separate external/deferred/closed/review queues.
+4. `operating/BOOTSTRAP_CURRENT.json`: derived compact snapshot; check its evidence cutoff, never treat it as runtime authority.
+5. `operating/PROOFS_CURRENT.json`: historical/current evidence index.
+6. Only the corresponding focused design/contract/docs for the chosen gap.
 
-Rules:
-- one NOSTROMO identity across providers and targets;
-- Cloudflare inference never becomes target authority;
-- MCP is a MANOJOS3 adapter transport, not the LibreChat UX contract;
-- target gateway is not a server, MCP, policy engine, executor, verifier or ledger;
-- provider failover never replays material effects;
-- ToolApproval != target authorization;
-- model JSON is untrusted until schema + semantic validation;
-- Tentaculo HUD keeps provider status separate from target truth;
-- no paid automatic fallback;
-- no secrets in source, Drive, HUD or receipts;
-- no direct LibreChat call to private MANOJOS3 control-plane HTTP;
-- AUTO/BOTH never mutate;
-- source/config != LIVE.
+Drive living documents: 00 entry → 10 design → 20 operation → 30 closeout/backlog → 40 map/coverage.
 
-Current source state:
-- router core: IMPLEMENTED_SOURCE;
-- Cloudflare client contract: IMPLEMENTED_SOURCE;
-- provider status projection: IMPLEMENTED_SOURCE;
-- provider -> HUD live bridge: PARTIAL/OPEN;
-- NostromoTargetGateway: DESIGNED_CURRENT/OPEN;
-- upstream overlay revalidation: NOT_TESTED;
-- Cloudflare live binding: NO_VERIFICADO;
-- MANOJOS3 R0 binding from LibreChat: PREPARED/UNCONFIGURED;
-- VX13 live binding: GATE_EXTERNAL.
+## Purpose
 
-Do not touch MANOJOS3 or VX13 repositories while closing LibreChat router/source gaps unless the user explicitly changes scope.
+NOSTROMO is conversation, natural intent interpretation, contextual understanding, research, visualization, read-only orchestration and precise target-intent preparation. It is not a coding worker or a target executor.
+
+Seven internal inference profiles:
+RAPIDO, NORMAL, PENSAR, INVESTIGAR, VISUALIZAR, CONTEXTO_LARGO, VISION.
+No CODIGO profile; coding-related work is delegated to specialist targets when connected.
+
+## Current SOURCE / LIVE distinction
+
+Intent Interpreter, Presentation Planner, TargetGateway, Resource Tree, Skills registry, parallel transport canon, mobile continuity and tests exist in SOURCE.
+Cloudflare AI Gateway routes, GitHub Skill Sync, Tailscale Serve, Web Research, Agent Events and recovery require LIVE canaries.
+No material target binding is enabled. MANOJOS3 and VX13 repositories are out of scope.
+
+## Critical path
+
+AI Gateway zero-cost LIVE → Skill Sync → Tailscale Serve/móvil → native Web Research → Agent Events → recovery → target R0 → material canary.
+
+## Review queue (not a deployment task)
+
+`LC-NOSTROMO-SEMANTIC-BRIDGE`: analyze NOSTROMO-owned capability vocabulary and safe semantic crosswalk to MANOJOS3 Intent Flows/Interflows/drivers/capabilities. Existing Intent Interpreter must be reused; semantic matching does not grant authorization. Do not clone M3 semantic engine.
+
+## Skills
+
+10 active catalog entries; 2 compatibility aliases remain physically present until LIVE Skill Sync canary. `nostromo-extension-review` performs anti-monolith criba.
+
+## Core invariants
+
+User speaks naturally. Infer technical slots internally. Ask only for irreducible semantic ambiguity or risk confirmation.
+Connection != readiness != work != evidence.
+UI, Skill, plugin, Worker and LLM cannot authorize target actions.
+AUTO/BOTH never mutate. Provider failover/offline/reconnect never replay material effects.
+UNKNOWN_OUTCOME needs target readback.
+Use the lightest native/config/Skill/MCP route. No MANOJOS3 transport changes.
