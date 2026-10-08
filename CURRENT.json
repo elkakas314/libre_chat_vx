@@ -3,11 +3,12 @@
   "status": "SOURCE_CORE_AND_TRANSPORT_CANON_COMPLETE_LIVE_BINDINGS_PENDING",
   "repository": "elkakas314/libre_chat_vx",
   "branch": "handoff_current_bootstrps",
-  "source_evidence_cutoff_head": "ffd31f79abc1f56433d05d33e5bdbe65b2dd5690",
+  "source_evidence_cutoff_head": "77ceb1a9fe72dd70db9f968b28b0370c831115ff",
   "source_ci": {
     "workflow": "source-check",
-    "run_id": 37667119803,
-    "conclusion": "SUCCESS"
+    "run_id": 37706857454,
+    "conclusion": "SUCCESS",
+    "basis": "BEFORE_SKILLS_CONSOLIDATION"
   },
   "upstream": {
     "repository": "LibreChat-AI/LibreChat",
@@ -74,13 +75,16 @@
     "resource_tree": "IMPLEMENTED_SOURCE",
     "agent_events_envelope": "IMPLEMENTED_SOURCE",
     "github_skill_catalog": "IMPLEMENTED_SOURCE",
-    "canonical_skills": 11,
+    "canonical_skills": 10,
     "agent_plugin": "EXPERIMENTAL_OPTIONAL",
     "parallel_transport": "SOURCE_CANON_COMPLETE",
     "transport_registry": "IMPLEMENTED_SOURCE",
     "mobile_remote_access": "IMPLEMENTED_SOURCE",
     "extension_registry": "IMPLEMENTED_SOURCE",
-    "llm_bootstrap": "IMPLEMENTED_SOURCE"
+    "llm_bootstrap": "IMPLEMENTED_SOURCE",
+    "legacy_skills_on_disk": 2,
+    "extension_review_skill": "IMPLEMENTED_SOURCE",
+    "operating_canon": "RECONCILED_SOURCE_AWAIT_EXACT_HEAD_CI"
   },
   "transport": {
     "local_web": "127.0.0.1:3080",
@@ -119,5 +123,22 @@
     "RECOVERY_OUT_OF_BAND",
     "TARGET_R0_BINDINGS",
     "FIRST_GOVERNED_MATERIAL_CANARY"
-  ]
+  ],
+  "semantic_review": {
+    "id": "LC-NOSTROMO-SEMANTIC-BRIDGE",
+    "status": "DESIGN_REVIEW_PENDING",
+    "priority": "HIGH",
+    "approach": "NATIVE_INTENT_INTERPRETER_FIRST_THIN_TARGET_CROSSWALK_IF_NEEDED",
+    "second_engine": false,
+    "authority": false
+  },
+  "living_docs": {
+    "entry": "00",
+    "design": "10",
+    "operation": "20",
+    "closeout": "30",
+    "map": "40",
+    "refs": "operating/DRIVE_REFS_CURRENT.json"
+  },
+  "post_proof_changes": "SOURCE_SKILLS_AND_OPERATING_RECONCILIATION_PENDING_EXACT_HEAD_CI"
 }
