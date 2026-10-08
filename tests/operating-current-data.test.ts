@@ -127,3 +127,60 @@ test('Skill Sync two-stage source canary selects physical aliases first and only
   }
   assert.equal(active.some(x=>aliases.includes(x)),false);
 });
+
+test('operating gap scalar constraints follow declared schema and reject invalid SOURCE rows', () => {
+  const schema=readJson('contracts/operating-gap.schema.json');
+  const rows=readJson('operating/GAPS_CURRENT.json').gaps as Array<Record<string,unknown>>;
+  const props=schema.properties as Record<string,{
+    type?:string | string[];
+    enum?:string[];
+    minimum?:number;
+    minLength?:number;
+    items?:{type:string};
+  }>;
+  const errors=(row:Record<string,unknown>):string[] => {
+    const violations:string[]=[];
+    for (const key of schema.required as string[]) {
+      if (!Object.hasOwn(row,key)) violations.push('missing:'+key);
+    }
+    for (const [key,value] of Object.entries(row)) {
+      const property=props[key];
+      if (!property) {
+        if (schema.additionalProperties===false) violations.push('undeclared:'+key);
+        continue;
+      }
+      const types=property.type===undefined ? [] : Array.isArray(property.type) ? property.type : [property.type];
+      const matches=(type:string):boolean =>
+        type==='null' ? value===null :
+        type==='array' ? Array.isArray(value) :
+        type==='integer' ? typeof value==='number' && Number.isInteger(value) :
+        type==='string' ? typeof value==='string' :
+        type==='boolean' ? typeof value==='boolean' : false;
+      if (types.length && !types.some(matches)) violations.push('type:'+key);
+      if (property.enum && !property.enum.includes(value as string)) violations.push('enum:'+key);
+      if (property.minLength!==undefined && typeof value==='string' && value.length<property.minLength) {
+        violations.push('minLength:'+key);
+      }
+      if (property.minimum!==undefined && typeof value==='number' && value<property.minimum) {
+        violations.push('minimum:'+key);
+      }
+      if (property.items?.type==='string' && Array.isArray(value) && value.some(v=>typeof v!=='string')) {
+        violations.push('items:'+key);
+      }
+    }
+    return violations;
+  };
+  assert.ok(rows.length>0);
+  for (const row of rows) assert.deepEqual(errors(row),[],row.gapId as string);
+  const valid=rows[0];
+  const invalid=[
+    {...valid,state:'LIVE_VERIFIED'},
+    {...valid,priority:-1},
+    {...valid,priority:1.5},
+    {...valid,dependencies:[42]},
+    {...valid,requiresLive:'true'},
+    {...valid,summary:''},
+    {...valid,unrecognized:true},
+  ];
+  for (const row of invalid) assert.ok(errors(row).length>0,'invalid operating gap accepted');
+});
