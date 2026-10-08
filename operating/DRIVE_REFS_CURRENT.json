@@ -2,6 +2,7 @@
   "schema": "libre-chat-vx.operating-drive-refs.v2",
   "current_start_here": {
     "document_id": "11e70lpwe5U3k9FMZWd7h-N0eNaidgaINJP9Pwz1bGx8",
+    "name": "00 Entry/CURRENT/Bootstrap",
     "revision_id": "AHj4eMTFLiEbkpgVenaJhnvit3npY0VnPtnddD3_DXyS45Vq_vH4eqZZqNFFFlNNYgZEKDwFlyB7fmofFNF4jfJsBt28FqLTHF2j3DN4xJY"
   },
   "librechat": {
@@ -30,9 +31,10 @@
     "pre_living_start_here_doc": {
       "document_id": "10sokDQr6eFQGSceTl0KYwfVinmF8ixTUz-XG0e8RyjQ",
       "revision_id": "AHj4eMSdC3jni5ZNbS1vmP_tBQYKe3No-jQGn3rV1yK6h9n7gcE-DfD4rIbZU_gLoRMSIL86Gkogv-ZtECA26cX-RMccc5VLQPjZr0gHzOc"
-    }
+    },
+    "legacy_start_here_reference": "11e70lpwe5U3k9FMZWd7h-N0eNaidgaINJP9Pwz1bGx8"
   },
-  "readback": "PASS_REFERENCES_READBACK_ONLY_NOT_LIVE_SYSTEM",
+  "readback": "SOURCE_REF_UPDATED_NOT_ALL_DOCS_REVERIFIED_LIVE",
   "local_touched": false,
   "living_package": {
     "10": {
@@ -61,5 +63,23 @@
       "title": "00 — LIBRECHAT VX — Entrada, CURRENT, Bootstrap y Continuidad"
     }
   },
-  "updated_for": "OPERATING_CRIBA_SKILLS_SEMANTIC_BACKLOG_2026-10-08"
+  "updated_for": "OPERATING_CRIBA_SKILLS_SEMANTIC_BACKLOG_2026-10-08",
+  "living_docs": {
+    "design": {
+      "document_id": "1fndkYM-UBmSfacQcbu_oewcDe4JzEClw-qd7K7J9pGg",
+      "role": "10 DESIGN"
+    },
+    "operations": {
+      "document_id": "1py0BlozuMOjmo4lUEqxuqCmLaN2O3_6wYwXrTwfVcuY",
+      "role": "20 OPERATIONS"
+    },
+    "backlog_closeout": {
+      "document_id": "19_Bm72_3aaxT6gggEAmfkZG0y0N1hXK6tMQrYLR4sDI",
+      "role": "30 BACKLOG_CLOSEOUT"
+    },
+    "wiring_map": {
+      "document_id": "1UD9LnU0eaKdEHrLUkMJyPp-II_6rZPtlD7uzn_sqWCc",
+      "role": "40 MAP_COVERAGE"
+    }
+  }
 }
