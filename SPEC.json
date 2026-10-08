@@ -944,6 +944,29 @@
         "contracts/nostromo-hybrid.schema.json#/required",
         "config/nostromo_hybrid.current.json"
       ]
+    },
+    {
+      "estado": "ABIERTA",
+      "bloqueante": true,
+      "evidencia_source": {
+        "comprobacion": "contraste recursivo de JSON Schema vs instancia: conformidad estructural; contraste semantico de runtime.status con SPEC.meta.estado_runtime_enum y fallback TypeScript: deriva detectada",
+        "git_commit_sha": "9874553bacb6389ba009c874c5e67433f8ca516e",
+        "repositorio": "elkakas314/libre_chat_vx",
+        "schema_git_blob_sha": "da01b36e7d02e767b146f1e9a81377cd88e24f3f",
+        "instancia_git_blob_sha": "c4c6237bd4b95063ad173d4038fda451804aa50b",
+        "generador_git_blob_sha": "a38694bd4a7dd418d96215b830989f963a7b06dd",
+        "test_git_blob_sha": "cf364d386c380c660853cfd5c86eb7959363a505"
+      },
+      "hecho": "operating/BOOTSTRAP_CURRENT.json satisface los campos, tipos y restricciones declaradas por contracts/operating-bootstrap.schema.json, pero sus valores runtime.status=NO_VERIFICADO y runtime.tailscale_serve=NOT_DEPLOYED no respetan la taxonomia de evidencia vigente en SPEC.json#/meta/estado_runtime_enum al no existir readback LIVE del host. El esquema declara runtime como object sin restringir sus estados; src/operating/bootstrap.ts emite NO_VERIFICADO en el fallback SOURCE_ONLY y LIVE_BOUND en el fallback LIVE_BOUND, tampoco miembros del enum runtime. El test SOURCE actual exige NO_VERIFICADO y por ello no detecta la deriva semantica.",
+      "id": "LC-DISC-BOOTSTRAP-001",
+      "tratamiento": "No alterar ni reinterpretar pruebas historicas o claims de despliegue. Reconciliar representacion de runtime sin readback a NO_DEPLOYMENT_EVIDENCE en la proyeccion CURRENT, el generador, tipos/schema aplicables y sus pruebas, preservando por separado el estado del gate y el modo SOURCE_ONLY/LIVE_BOUND. Realizar cambios de contrato/tipos en rama vx-block1-operating-bootstrap y PR con aprobacion del usuario; no declarar LIVE ni tocar el host. Esta PR registra solamente el hallazgo y no corrige el comportamiento.",
+      "ubicacion": [
+        "contracts/operating-bootstrap.schema.json#/properties/runtime",
+        "operating/BOOTSTRAP_CURRENT.json#/runtime",
+        "src/operating/bootstrap.ts#buildBootstrap",
+        "SPEC.json#/meta/estado_runtime_enum",
+        "tests/operating-current-data.test.ts"
+      ]
     }
   ],
   "frontend": {
