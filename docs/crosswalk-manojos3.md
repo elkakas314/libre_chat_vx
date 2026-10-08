@@ -95,14 +95,15 @@ assert.equal(result.availability, 'AVAILABLE');
 
 **No se debe afirmar que estas aserciones hayan pasado:** son especificación de una prueba futura. `ADR-09` está `PROPUESTA`.
 
-## 4. Secuencia de PR y gates para merge
+## 4. Secuencia de PR y gates para merge — estado tras integración de Hybrid
 
-1. **PR #2 — Bootstrap**: revisar `vx-block1-operating-bootstrap`; CI `37830105804` SUCCESS en git_commit_sha `ce351d0f8d09c6e99c277e5cdde5202a718a2b11`. **Solo el usuario aprueba el merge**. Tras fusionarlo, readback del nuevo HEAD de `handoff_current_bootstrps` y repetir CI de ese HEAD; no dar por PASS el CI histórico sin comprobar base integrada.
-2. **PR #3 — Hybrid**: reconciliar/rebasar sin force-push sobre nuevo HEAD tras #2; validar el contrato `nostromo-hybrid`, `authority=false`, las siete rutas, suite y overlay; después aprobación humana y merge.
-3. **PR #4 — ADR-09 + anexo + gaps**: reconciliar/rebasar sobre nuevo HEAD tras #2/#3, conservar los tres commits de contenido y los nuevos registros de GAP-002/003/004; verificar CI; sin cierre de gates LIVE. Si se exige una intención por PR, dividir en PRs sin pérdida de evidencia antes de merge.
-4. **PR #5 — adapter**, **solo después de #2 integrado y validado** y de la aceptación de ADR-09: implementar normalización + fixtures en rama propia y revisión/CI; no reutilizar `vx-block1-manojos3-binding` mientras esté ocupada por PR #4.
+1. **PR #2 — Bootstrap: MERGEADO.** HEAD integrado git_commit_sha `8486b27792e12624a61a2b46890dbe58dc3df591`; CI del HEAD integrado [37835761245](https://github.com/elkakas314/libre_chat_vx/actions/runs/37835761245) SUCCESS, incluidos `build-test` y `overlay-smoke`. No se vuelve a fusionar.
+2. **PR #3 — Hybrid: MERGEADO.** HEAD integrado git_commit_sha `a1759ad10c94ef68399b8c6da89eedc47758c011`; CI integrado [37837275726](https://github.com/elkakas314/libre_chat_vx/actions/runs/37837275726) SUCCESS, incluidos `build-test` y `overlay-smoke`. Las siete rutas coinciden con `SPEC.json#/integraciones/1/rutas` y `TOPOLOGY.json#/rutas_inferencia`. No se vuelve a fusionar.
+3. **PR #4 — ADR-09 + crosswalk + observaciones + gaps: ABIERTA, SIN MERGE.** Su única intención es documentar la auditoría SOURCE de MANOJOS3 en tres archivos interdependientes; se ha reconciliado de forma no reescritora con el HEAD integrado de PR #3. Requiere CI verde en HEAD exacto con overlay finalizado, revisión del diff íntegro y **autorización explícita del usuario** antes de merge. Tras un merge autorizado, verificar CI del nuevo HEAD de `handoff_current_bootstrps` y reexportar Drive con ruta, git_blob_sha, fecha y commit integrado. Un fallo del CI integrado exige revert del merge.
+4. **Contrato 5 — ui-action.schema.json: SIGUIENTE DESPUÉS DE #4.** Registrar `LC-DISC-UI-ACTION-001` por RED que admite `capability_ref=null` y/o `target_scope=AUTO/BOTH`; corrección en rama dedicada y PR, sin modificar MANOJOS3.
+5. **Adaptador MANOJOS3 (PR futura, número aún no reservado): DESPUÉS DEL CONTRATO 5.** Implementar normalización + fixtures cuando ADR-09 esté integrado y el contrato 5 cerrado; sin reutilizar la rama `vx-block1-manojos3-binding` mientras pertenezca a PR #4.
 
-**Estado actual sin integración:** PR #2/#3/#4 sin merge; `LC-M3-R0-BINDING=BLOCKED_DEPENDENCY`; `LC-AGENT-EVENTS-LIVE=OPEN`. No modificar MANOJOS3, no realizar pruebas LIVE y no usar `manojos_prepare/submit/resume` en SOURCE.
+**Gates actuales:** `LC-M3-R0-BINDING=BLOCKED_DEPENDENCY`; `LC-AGENT-EVENTS-LIVE=OPEN`. Ninguna prueba SOURCE implica LIVE; no usar `manojos_prepare/submit/resume` durante el trabajo de contrato o documentación.
 
 ## 5. Observaciones de propiedad y límites
 
