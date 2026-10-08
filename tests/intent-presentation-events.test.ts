@@ -50,3 +50,25 @@ test('Tentáculo companion is cognitive only', () => {
   assert.equal(TENTACULO_COMPANION.capabilities.includes('EVENT_TRIAGE'),true);
   assert.equal(TENTACULO_COMPANION.forbidden.includes('MATERIAL_EXECUTION'),true);
 });
+
+test('material intent without concrete target needs resolution; reads never become commands', () => {
+  for (const currentScope of ['AUTO', 'BOTH'] as const) {
+    const draft = interpretIntent({wantsExternalChange:true,currentScope});
+    assert.equal(draft.intentClass,'TARGET_COMMAND');
+    assert.equal(draft.needsClarification,true);
+    assert.equal(draft.targetHint,undefined);
+    assert.equal(draft.materialRequested,true);
+    assert.equal(draft.authority,false);
+    const read = interpretIntent({wantsSystemRead:true,currentScope});
+    assert.equal(read.intentClass,'TARGET_READ');
+    assert.equal(read.materialRequested,false);
+    assert.equal(read.authority,false);
+  }
+  assert.equal(interpretIntent({wantsExternalChange:true}).needsClarification,true);
+  const focused = interpretIntent({wantsExternalChange:true,currentScope:'VX13'});
+  assert.equal(focused.targetHint,'VX13');
+  assert.equal(focused.needsClarification,false);
+  const explicit = interpretIntent({wantsExternalChange:true,currentScope:'BOTH',explicitTarget:'MANOJOS3'});
+  assert.equal(explicit.targetHint,'MANOJOS3');
+  assert.equal(explicit.needsClarification,false);
+});
