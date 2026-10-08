@@ -1,4 +1,5 @@
 import type { ConcreteTargetId, TargetScope } from '../cockpit/systemTarget';
+import { isConcreteTarget } from '../cockpit/systemTarget';
 
 export type NostromoIntentClass =
   | 'CONVERSATION'
@@ -45,13 +46,16 @@ export function interpretIntent(signals: IntentSignals): NostromoIntentDraft {
     };
   }
   if (signals.wantsExternalChange) {
+    // AUTO/BOTH are read/view scopes. A material intent needs one concrete target.
+    const concreteTarget = signals.explicitTarget ??
+      (signals.currentScope && isConcreteTarget(signals.currentScope) ? signals.currentScope : undefined);
     return {
       intentClass:'TARGET_COMMAND',
-      targetHint:signals.explicitTarget,
+      targetHint:concreteTarget,
       targetScope:signals.currentScope,
       needsResearch:Boolean(signals.wantsResearch),
       needsVisualization:Boolean(signals.wantsVisualization),
-      needsClarification:false,
+      needsClarification:!concreteTarget,
       materialRequested:true,
       authority:false,
     };
