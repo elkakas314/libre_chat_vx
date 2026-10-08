@@ -214,7 +214,51 @@
         "job:build-test:114_PASS_0_FAIL",
         "job:overlay-smoke:SUCCESS"
       ]
+    },
+    {
+      "proofId": "skill-sync-two-phase-source-ci-20261008",
+      "subject": "GitHub Skill Sync stage1 12 physical then stage2 10 active source canary, using pinned upstream path/depth discovery",
+      "proofClass": "TEST",
+      "state": "VALID",
+      "verified_at_source_head": "9ae2ba122b7bd13be91e447d731f3d73d33ea9ed",
+      "dependencies": [
+        "deployment/skill-sync/librechat.skill-sync-stage1.example.yaml",
+        "deployment/skill-sync/librechat.skill-sync-stage2.example.yaml",
+        "deployment/skill-sync/README.md",
+        "config/skills.current.json",
+        "tests/operating-current-data.test.ts"
+      ],
+      "history_classification": "SOURCE_ONLY_LIVE_SYNC_UNVERIFIED",
+      "dependencyFingerprint": "source:9ae2ba12|ci:37725889650|skill:2stage",
+      "evidenceRefs": [
+        "commit:9ae2ba122b7bd13be91e447d731f3d73d33ea9ed",
+        "github_actions_run:37725889650",
+        "test:Skill_Sync_two_stage:PASS",
+        "job:overlay-smoke:SUCCESS"
+      ]
+    },
+    {
+      "proofId": "inference-temporal-admission-source-ci-20261008",
+      "subject": "Zero-cost model and route admission reject absent, invalid, future and stale temporal evidence",
+      "proofClass": "TEST",
+      "state": "VALID",
+      "verified_at_source_head": "9ae2ba122b7bd13be91e447d731f3d73d33ea9ed",
+      "dependencies": [
+        "src/llm/inferenceGateway.ts",
+        "src/llm/modelRegistry.ts",
+        "tests/inference-gateway.test.ts",
+        "tests/model-registry.test.ts"
+      ],
+      "history_classification": "SOURCE_ONLY_CLOUDFLARE_LIVE_UNVERIFIED",
+      "dependencyFingerprint": "source:9ae2ba12|ci:37725889650|temporal",
+      "evidenceRefs": [
+        "commit:9ae2ba122b7bd13be91e447d731f3d73d33ea9ed",
+        "github_actions_run:37725889650",
+        "test:route_admission_fails_closed:PASS",
+        "test:model_candidate_admission:PASS",
+        "job:build-test:117_PASS_0_FAIL"
+      ]
     }
   ],
-  "source_evidence_cutoff_head": "73d4da310c980d78104c3aebc8ef90c92b38d233"
+  "source_evidence_cutoff_head": "9ae2ba122b7bd13be91e447d731f3d73d33ea9ed"
 }

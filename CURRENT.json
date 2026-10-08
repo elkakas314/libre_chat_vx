@@ -3,10 +3,10 @@
   "status": "SOURCE_CORE_AND_TRANSPORT_CANON_COMPLETE_LIVE_BINDINGS_PENDING",
   "repository": "elkakas314/libre_chat_vx",
   "branch": "handoff_current_bootstrps",
-  "source_evidence_cutoff_head": "73d4da310c980d78104c3aebc8ef90c92b38d233",
+  "source_evidence_cutoff_head": "9ae2ba122b7bd13be91e447d731f3d73d33ea9ed",
   "source_ci": {
     "workflow": "source-check",
-    "run_id": 37725106400,
+    "run_id": 37725889650,
     "conclusion": "SUCCESS"
   },
   "upstream": {
@@ -85,7 +85,9 @@
     "extension_review_skill": "IMPLEMENTED_SOURCE",
     "operating_canon": "RECONCILED_V8",
     "legacy_skill_aliases_on_disk": 2,
-    "semantic_capability_crosswalk": "DESIGN_REVIEW_PENDING"
+    "semantic_capability_crosswalk": "DESIGN_REVIEW_PENDING",
+    "skill_sync_stage_canary": "SOURCE_TWO_STAGE_12_PHYSICAL_THEN_10_ACTIVE_LIVE_NOT_VERIFIED",
+    "inference_readback_freshness": "SOURCE_GUARD_TESTED_LIVE_NOT_VERIFIED"
   },
   "transport": {
     "local_web": "127.0.0.1:3080",
@@ -142,7 +144,7 @@
     "map": "40",
     "refs": "operating/DRIVE_REFS_CURRENT.json"
   },
-  "post_proof_changes": "DOC_ONLY_CONTINUITY_READBACK_AFTER_VERIFIED_SOURCE",
+  "post_proof_changes": "CONTINUITY_AND_DRIVE_READBACK_ONLY",
   "design_review_queue": [
     "LC-NOSTROMO-SEMANTIC-BRIDGE"
   ],
@@ -159,15 +161,15 @@
       "overlay_smoke": "SUCCESS"
     },
     "last_verified_source": {
-      "head": "73d4da310c980d78104c3aebc8ef90c92b38d233",
-      "run_id": 37725106400,
-      "build_test": "SUCCESS_114_PASS_0_FAIL",
+      "head": "9ae2ba122b7bd13be91e447d731f3d73d33ea9ed",
+      "run_id": 37725889650,
+      "build_test": "SUCCESS_117_PASS_0_FAIL",
       "overlay_smoke": "SUCCESS"
     }
   },
   "last_confirmed_ci": {
-    "head": "73d4da310c980d78104c3aebc8ef90c92b38d233",
-    "workflow_run": 37725106400,
+    "head": "9ae2ba122b7bd13be91e447d731f3d73d33ea9ed",
+    "workflow_run": 37725889650,
     "conclusion": "SUCCESS",
     "applicability": "PROVEN_SOURCE_HEAD"
   },

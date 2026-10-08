@@ -1,5 +1,12 @@
 # LIBRECHAT HANDOFF CURRENT
 
+## Latest source proof — staged Skill Sync and inference freshness (2026-10-08)
+
+- Verified `9ae2ba122b7bd13be91e447d731f3d73d33ea9ed` with GitHub Actions `source-check` run `37725889650`: 117/117 tests PASS, overlay-smoke SUCCESS.
+- GitHub Skill Sync SOURCE has explicit two-stage examples: 12 physical first, 10 active after LIVE compatibility/rollback canary; see `deployment/skill-sync/README.md`.
+- Inference route/model admission rejects missing, future and stale observation timestamps; this is SOURCE, not proof of a zero-cost live Cloudflare account.
+- Drive 10/20/30 updated and read back. All ACTIVE_LIVE gaps remain OPEN; no host deployment, account grant, material receipt or target mutation.
+
 Mode: `SOURCE_COMPLETE_LIVE_BINDINGS_PENDING`.
 Live: `NO_VERIFICADO`.
 Material verified: `false`.

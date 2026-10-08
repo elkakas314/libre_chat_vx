@@ -69,3 +69,7 @@ Snapshot: NOSTROMO interpretation/visual cockpit; parallel transport canon (1 AI
 ## Contrato obligatorio de continuidad — no parar por un blocker parcial
 
 Adquirir el estado mediante bootstrap + CURRENT/HANDOFF + readback de Git/CI y, cuando exista, runtime. Ejecutar el `next_eligible` seguro, comprobar resultado y refrescar el plan; repetir dentro de la sesión hasta PASS de alcance o verdadero gate sin otra tarea independiente. Un fallo Cloudflare LIVE no impide corregir SOURCE/contratos/CI independientes, ni un owner de MANOJOS3 bloquea LibreChat. Ante `UNKNOWN/PARTIAL/RUNNING`, leer el run/receipt antes de cualquier retry. No enviar comandos materiales desde `AUTO/BOTH` ni por reutilizar un prompt. Para procedimiento completo consultar `operating/LIBRECHAT_OPERATING_CANON.md#continuidad-autónoma-sin-paradas-artificiales--lc-continuity-no-stop` y Drive 20; registrar en Drive 30.
+
+## Evidencia SOURCE reciente — siguiente trabajo independiente
+
+Readback GitHub `9ae2ba122b7bd13be91e447d731f3d73d33ea9ed`, `source-check` `37725889650` SUCCESS, 117 tests PASS y overlay PASS. GitHub Skill Sync: SOURCE staged at `deployment/skill-sync/`; live canary todavía OPEN. Zero-cost route selector requires fresh timestamp, but real Cloudflare account route costs/quotas remain NO_VERIFICADO. LC-CONTINUITY-NO-STOP: seguir con otros ámbitos independientes, nunca declarar LIVE por CI.
