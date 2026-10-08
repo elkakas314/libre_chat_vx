@@ -5,7 +5,13 @@ Live: `NO_VERIFICADO`.
 Material verified: `false`.
 Authority: `false`.
 
-## Exact source proof
+## Exact successor source proof (2026-10-08)
+
+- Source HEAD `874d7e0a49def329973a30416160f076dcf2fc05` with GitHub Actions `source-check` run `37724142946`: SUCCESS; build-test 110 PASS/0 FAIL; overlay-smoke SUCCESS.
+- OperatingGap/OperatingProof/Bootstrap JSON Schema reconciliation tested. Semantic material target selection fix remains covered.
+- SOURCE proof only: Cloudflare/Skills/Tailscale/research/events/recovery are not LIVE; authority=false; material_verified=false.
+
+## Historical source proof before successor review
 
 - Verified SOURCE baseline head: `60a6bbb974dae26e154d883121f22dd6bca560ce`.
 - GitHub Actions: `source-check` run `37709003357` — **SUCCESS**.
@@ -154,7 +160,7 @@ Skills: 10 active in `config/skills.current.json`; `nostromo-intent-translation`
 
 Drive living package: 00 Entry, 10 Design, 20 Operations, 30 Backlog/Closeout, 40 Map. MANOJOS3 transport convergence remains deferred.
 
-## Operator checkpoint — 2026-10-08 (VALIDATION DELEGATED)
+## Historical operator checkpoint — 2026-10-08 (successor validated source later)
 
 Read `handoff/LIBRECHAT_VX_CHECKPOINT_RELEVO_20261008.md` **in full** before further work. Created at commit `cb767e69eb8acea36cf0b844e7fe5b657f21a767`. All subsequent HEAD values must be discovered from GitHub, never guessed from this note. The last explicitly confirmed `source-check` PASS before checkpoint is run `37709003357` at `60a6bbb974dae26e154d883121f22dd6bca560ce`. Later documentation, Operating Canon, Skills and checkpoint commits **were not finally validated by the departing operator**, per user request. The next operator owns exact-head CI, Source/GDrive reconciliation and closeout.
 

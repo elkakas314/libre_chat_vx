@@ -3,7 +3,7 @@
 **Mode:** SOURCE_ONLY / LIVE_NO_VERIFICADO / MATERIAL_VERIFIED=false.  
 **Authority:** false.  
 **Baseline source evidence cutoff:** `77ceb1a9fe72dd70db9f968b28b0370c831115ff`, GitHub Actions run `37706857454` SUCCESS.  
-**Recent Skill + Operating Canon changes:** require exact-HEAD CI readback before marking new source proof PASS.
+**Latest exact source proof:** `874d7e0a49def329973a30416160f076dcf2fc05` · run `37724142946` SUCCESS (build-test 110 PASS, overlay-smoke SUCCESS). Historical baseline above retained. LIVE_NO_VERIFICADO; MATERIAL_VERIFIED=false.
 
 ## First read and precedence
 

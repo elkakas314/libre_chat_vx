@@ -21,6 +21,10 @@ Seven internal inference profiles:
 RAPIDO, NORMAL, PENSAR, INVESTIGAR, VISUALIZAR, CONTEXTO_LARGO, VISION.
 No CODIGO profile; coding-related work is delegated to specialist targets when connected.
 
+## Successor verified SOURCE evidence (2026-10-08)
+
+Head `874d7e0a49def329973a30416160f076dcf2fc05`, source-check run `37724142946` SUCCESS (110 tests, overlay-smoke PASS). No Cloudflare account/host LIVE readback in this thread. First ACTIVE_LIVE gate is AI Gateway, not MANOJOS3 transport. Runtime/mutation status remains NO_VERIFICADO.
+
 ## Current SOURCE / LIVE distinction
 
 Intent Interpreter, Presentation Planner, TargetGateway, Resource Tree, Skills registry, parallel transport canon, mobile continuity and tests exist in SOURCE.
@@ -48,7 +52,7 @@ AUTO/BOTH never mutate. Provider failover/offline/reconnect never replay materia
 UNKNOWN_OUTCOME needs target readback.
 Use the lightest native/config/Skill/MCP route. No MANOJOS3 transport changes.
 
-## Operator checkpoint — 2026-10-08 (VALIDATION DELEGATED)
+## Historical predecessor checkpoint — source validated later by successor
 
 Read `handoff/LIBRECHAT_VX_CHECKPOINT_RELEVO_20261008.md` **in full** before further work. Created at commit `cb767e69eb8acea36cf0b844e7fe5b657f21a767`. All subsequent HEAD values must be discovered from GitHub, never guessed from this note. The last explicitly confirmed `source-check` PASS before checkpoint is run `37709003357` at `60a6bbb974dae26e154d883121f22dd6bca560ce`. Later documentation, Operating Canon, Skills and checkpoint commits **were not finally validated by the departing operator**, per user request. The next operator owns exact-head CI, Source/GDrive reconciliation and closeout.
 

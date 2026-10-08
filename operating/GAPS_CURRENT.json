@@ -1,6 +1,6 @@
 {
   "schema": "libre-chat-vx.operating-gaps.v2",
-  "snapshot_id": "source-criba-2026-10-08",
+  "snapshot_id": "source-2026-10-08-criba",
   "classification_order": [
     "ACTIVE_LIVE",
     "TARGET_LATER",
@@ -9,8 +9,8 @@
     "CLOSED_SOURCE"
   ],
   "source_proof_basis": {
-    "head": "77ceb1a9fe72dd70db9f968b28b0370c831115ff",
-    "github_actions_run": 37706857454,
+    "head": "874d7e0a49def329973a30416160f076dcf2fc05",
+    "github_actions_run": 37724142946,
     "conclusion": "SUCCESS"
   },
   "gaps": [

@@ -3,10 +3,10 @@
   "status": "SOURCE_CORE_AND_TRANSPORT_CANON_COMPLETE_LIVE_BINDINGS_PENDING",
   "repository": "elkakas314/libre_chat_vx",
   "branch": "handoff_current_bootstrps",
-  "source_evidence_cutoff_head": "60a6bbb974dae26e154d883121f22dd6bca560ce",
+  "source_evidence_cutoff_head": "874d7e0a49def329973a30416160f076dcf2fc05",
   "source_ci": {
     "workflow": "source-check",
-    "run_id": 37709003357,
+    "run_id": 37724142946,
     "conclusion": "SUCCESS"
   },
   "upstream": {
@@ -142,21 +142,27 @@
     "map": "40",
     "refs": "operating/DRIVE_REFS_CURRENT.json"
   },
-  "post_proof_changes": "GIT_CHECKPOINT_AND_OPERATING_SKILL_DOCUMENTATION_NOT_FULLY_VALIDATED_AT_HANDOFF",
+  "post_proof_changes": "CONTINUITY_ONLY_AFTER_VERIFIED_SOURCE_HEAD",
   "design_review_queue": [
     "LC-NOSTROMO-SEMANTIC-BRIDGE"
   ],
   "checkpoint": {
     "path": "handoff/LIBRECHAT_VX_CHECKPOINT_RELEVO_20261008.md",
     "created_commit": "cb767e69eb8acea36cf0b844e7fe5b657f21a767",
-    "status": "SAVED_SUCCESSOR_VALIDATION_PENDING",
+    "status": "SUCCESSOR_VALIDATED_SOURCE_CI_LIVE_PENDING",
     "handoff_instruction": "NEXT_OPERATOR_MUST_CHECK_EXACT_HEAD_CI_BEFORE_SOURCE_CLOSEOUT",
-    "final_validation_done_by_predecessor": false
+    "final_validation_done_by_predecessor": false,
+    "successor_source_validation": {
+      "head": "874d7e0a49def329973a30416160f076dcf2fc05",
+      "github_actions_run": 37724142946,
+      "build_test": "SUCCESS_110_PASS_0_FAIL",
+      "overlay_smoke": "SUCCESS"
+    }
   },
   "last_confirmed_ci": {
-    "head": "60a6bbb974dae26e154d883121f22dd6bca560ce",
-    "workflow_run": 37709003357,
+    "head": "874d7e0a49def329973a30416160f076dcf2fc05",
+    "workflow_run": 37724142946,
     "conclusion": "SUCCESS",
-    "applicability": "PROVEN_HEAD_ONLY"
+    "applicability": "PROVEN_SOURCE_HEAD"
   }
 }

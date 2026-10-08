@@ -132,7 +132,30 @@
         "github_actions_run:37708437853"
       ],
       "verified_at_source_head": "409d3f47bf196f4a2eee469d6a1abe29851c0387"
+    },
+    {
+      "proofId": "operating-contracts-source-ci-20261008",
+      "subject": "Typed CURRENT operating schemas and material-target intent fence verified on exact source head",
+      "proofClass": "TEST",
+      "state": "VALID",
+      "verified_at_source_head": "874d7e0a49def329973a30416160f076dcf2fc05",
+      "dependencies": [
+        "src/intent/intentInterpreter.ts",
+        "tests/intent-presentation-events.test.ts",
+        "contracts/operating-gap.schema.json",
+        "contracts/operating-proof.schema.json",
+        "contracts/operating-bootstrap.schema.json",
+        "tests/operating-current-data.test.ts"
+      ],
+      "history_classification": "EXACT_SOURCE_HEAD_VERIFIED",
+      "dependencyFingerprint": "head:874d7e0a|ci:37724142946|upstream:f10b1d91",
+      "evidenceRefs": [
+        "commit:874d7e0a49def329973a30416160f076dcf2fc05",
+        "github_actions_run:37724142946",
+        "job:build-test:110_PASS_0_FAIL",
+        "job:overlay-smoke:SUCCESS"
+      ]
     }
   ],
-  "source_evidence_cutoff_head": "409d3f47bf196f4a2eee469d6a1abe29851c0387"
+  "source_evidence_cutoff_head": "874d7e0a49def329973a30416160f076dcf2fc05"
 }

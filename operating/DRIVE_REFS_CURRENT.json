@@ -34,12 +34,12 @@
     },
     "legacy_start_here_reference": "11e70lpwe5U3k9FMZWd7h-N0eNaidgaINJP9Pwz1bGx8"
   },
-  "readback": "DRIVE_WRITE_REVISIONS_CAPTURED_NOT_SOURCE_OR_LIVE_VALIDATION",
+  "readback": "LIVING_DOC_REVISIONS_READBACK_SOURCE_CI_VERIFIED_LIVE_UNVERIFIED",
   "local_touched": false,
   "living_package": {
     "10": {
       "document_id": "1fndkYM-UBmSfacQcbu_oewcDe4JzEClw-qd7K7J9pGg",
-      "revision_id": "AHj4eMS8PeUEKuRPTS5NUhgUolsJJfGYK1YcRm8eR33OS0Ks1tVrR26PGbWIk06A_lkVwop95kHKrc27KNbHsMyKAejVT5MXjk4t2amU_LY",
+      "revision_id": "ANLCKQmeb94WiqBNz6mjRkxW3wbAFyEPfGk4Hf1afcYkTKGkY_7XwZ_G0kX8sJib2oCqrXIRZ1psLjj0LunIHbmCy0p5ZjjqlJqLXceVFgg",
       "title": "10 — LIBRECHAT VX — Diseño Canónico vivo"
     },
     "20": {
@@ -49,7 +49,7 @@
     },
     "30": {
       "document_id": "19_Bm72_3aaxT6gggEAmfkZG0y0N1hXK6tMQrYLR4sDI",
-      "revision_id": "AHj4eMSAkTZMuU_xf0RqAzf-MfTO971gIPzDw4KLpiMXoxd6mHckXxyoaAdrkbu02lWimh0K_HIupU-lgx7DncdiWY34UE_slqgmcNlfEQs",
+      "revision_id": "AHj4eMRB731iVuGjk-YJ-qePsqZbO0C1RsvEL8Nw6ymvKBd9wYksPGOl1Xb6Q2lL_4JnyTXkep25NvDqU-71YPx6FDLu6FnGJwSU6Ksfk2w",
       "title": "30 — LIBRECHAT VX — Cierre, Continuidad y Handoff vivo"
     },
     "40": {
@@ -63,7 +63,7 @@
       "title": "00 — LIBRECHAT VX — Entrada, CURRENT, Bootstrap y Continuidad"
     }
   },
-  "updated_for": "OPERATOR_HANDOFF_CHECKPOINT_2026-10-08",
+  "updated_for": "SOURCE_CI_RECONCILIATION_2026-10-08",
   "living_docs": {
     "design": {
       "document_id": "1fndkYM-UBmSfacQcbu_oewcDe4JzEClw-qd7K7J9pGg",
@@ -85,6 +85,6 @@
   "checkpoint": {
     "path": "handoff/LIBRECHAT_VX_CHECKPOINT_RELEVO_20261008.md",
     "created_commit": "cb767e69eb8acea36cf0b844e7fe5b657f21a767",
-    "validation": "DELEGATED_TO_SUCCESSOR"
+    "validation": "SOURCE_EXACT_HEAD_VERIFIED_874D7E0A_CI_37724142946"
   }
 }
