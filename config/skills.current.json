@@ -1,6 +1,6 @@
 {
-  "schema": "libre-chat-vx.skill-catalog.v2",
-  "observed_at": "2026-10-07",
+  "schema": "libre-chat-vx.skill-catalog.v3",
+  "observed_at": "2026-10-08",
   "canonical_path": "skills",
   "authority": false,
   "distribution": {
@@ -9,17 +9,66 @@
     "optional_bundle": "AGENT_PLUGINS_EXPERIMENTAL"
   },
   "catalog": [
-    {"name":"nostromo-core","scope":"GLOBAL","role":"CONVERSATIONAL_COCKPIT","authority":false},
-    {"name":"nostromo-intent-translation","scope":"GLOBAL","role":"INTENT_INTERPRETATION","authority":false},
-    {"name":"nostromo-visualization","scope":"GLOBAL","role":"VISUAL_PRESENTATION","authority":false},
-    {"name":"nostromo-research","scope":"GLOBAL","role":"PUBLIC_RESEARCH","authority":false},
-    {"name":"nostromo-event-triage","scope":"GLOBAL","role":"EVENT_TRIAGE","authority":false},
-    {"name":"nostromo-evidence-first","scope":"GLOBAL","role":"TRUTH_DISCIPLINE","authority":false},
-    {"name":"nostromo-resource-navigation","scope":"GLOBAL","role":"RESOURCE_NAVIGATION","authority":false},
-    {"name":"nostromo-tool-budget","scope":"GLOBAL","role":"LOW_POWER_TOOL_SELECTION","authority":false},
-    {"name":"manojos3-nostromo","scope":"MANOJOS3","role":"TARGET_COCKPIT","authority":false},
-    {"name":"vx13-nostromo","scope":"VX13","role":"TARGET_COCKPIT","authority":false},
-    {"name":"cross-target-read","scope":"MULTI_TARGET_READ","role":"READ_ONLY_COMPARISON","authority":false}
+    {
+      "name": "nostromo-core",
+      "scope": "GLOBAL",
+      "role": "CONVERSATIONAL_COCKPIT",
+      "authority": false
+    },
+    {
+      "name": "nostromo-visualization",
+      "scope": "GLOBAL",
+      "role": "VISUAL_PRESENTATION",
+      "authority": false
+    },
+    {
+      "name": "nostromo-research",
+      "scope": "GLOBAL",
+      "role": "PUBLIC_RESEARCH",
+      "authority": false
+    },
+    {
+      "name": "nostromo-event-triage",
+      "scope": "GLOBAL",
+      "role": "EVENT_TRIAGE",
+      "authority": false
+    },
+    {
+      "name": "nostromo-evidence-first",
+      "scope": "GLOBAL",
+      "role": "TRUTH_DISCIPLINE",
+      "authority": false
+    },
+    {
+      "name": "nostromo-resource-navigation",
+      "scope": "GLOBAL",
+      "role": "RESOURCE_NAVIGATION",
+      "authority": false
+    },
+    {
+      "name": "manojos3-nostromo",
+      "scope": "MANOJOS3",
+      "role": "TARGET_COCKPIT",
+      "authority": false
+    },
+    {
+      "name": "vx13-nostromo",
+      "scope": "VX13",
+      "role": "TARGET_COCKPIT",
+      "authority": false
+    },
+    {
+      "name": "cross-target-read",
+      "scope": "MULTI_TARGET_READ",
+      "role": "READ_ONLY_COMPARISON",
+      "authority": false
+    },
+    {
+      "name": "nostromo-extension-review",
+      "scope": "REVIEW_ON_DEMAND",
+      "role": "ANTI_MONOLITH_BACKLOG_CRIBA",
+      "authority": false
+    }
   ],
   "rules": [
     "SKILL_IS_INSTRUCTION_NOT_AUTHORITY",
@@ -28,6 +77,24 @@
     "MCP_OR_ACTION_BEFORE_CORE_PATCH",
     "LAZY_AND_DEFERRED_BY_DEFAULT",
     "LIBRECHAT_INTERPRETS_AND_PRESENTS; TARGETS_EXECUTE",
-    "GITHUB_SKILL_SYNC_DIRECT; NO_WORKER_REQUIRED"
-  ]
+    "GITHUB_SKILL_SYNC_DIRECT; NO_WORKER_REQUIRED",
+    "NO_LEGACY_SKILL_DELETION_BEFORE_GITHUB_SKILL_SYNC_LIVE_CANARY"
+  ],
+  "legacy_compatibility": [
+    {
+      "name": "nostromo-intent-translation",
+      "superseded_by": "nostromo-core",
+      "status": "PRESENT_ON_DISK_UNTIL_LIVE_SKILL_SYNC_CANARY"
+    },
+    {
+      "name": "nostromo-tool-budget",
+      "superseded_by": "nostromo-core",
+      "status": "PRESENT_ON_DISK_UNTIL_LIVE_SKILL_SYNC_CANARY"
+    }
+  ],
+  "counts": {
+    "active_catalog": 10,
+    "legacy_on_disk": 2,
+    "physical_skills": 12
+  }
 }
