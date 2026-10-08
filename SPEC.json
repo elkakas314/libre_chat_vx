@@ -1176,6 +1176,27 @@
         "manojos3_adapter_git_blob_sha": "fb08050d12562fb909f255e0d5dbb803aac67848"
       },
       "commit_deteccion": "571844964757bf5a13109fcd8e0ac2686ee526a9"
+    },
+    {
+      "id": "LC-DISC-BACKGROUND-MUTATION-FENCE-001",
+      "estado": "ABIERTA",
+      "bloqueante": true,
+      "ubicacion": [
+        "contracts/background-mutation-fence.schema.json#/required",
+        "contracts/background-mutation-fence.schema.json#/properties",
+        "src/recovery/backgroundMutationFence.ts#BackgroundMutationFence"
+      ],
+      "hecho": "El schema describe operation_id, target_id, effect_scope, status y readback_required obligatorios en snake_case, mientras el consumidor TypeScript define operationId, targetId, capabilityRef, effectScope, status y readbackRequired en camelCase, sin conversor/serializador declarado. capabilityRef es obligatorio en TypeScript pero falta en schema. authority_ref del schema no coincide con authorizationRef del consumidor. El schema admite target_id arbitrario y expected_state sólo objeto/null, mientras TypeScript usa ConcreteTargetId y expectedState?: unknown. Una instancia directa de cualquiera de las dos representaciones no está garantizada conforme a la otra.",
+      "tratamiento": "Reconciliar explícitamente el contrato de transporte con su consumidor existente, fijando nombres, campos obligatorios, identidad target y alcance de expected_state; documentar un mapping sólo si ya es parte de la frontera requerida. Mantener readbackRequired=true y bloqueo de replay. Corregir en PR propia posterior; no modificar MANOJOS3 ni atribuir LIVE.",
+      "evidencia_source": {
+        "repositorio": "elkakas314/libre_chat_vx",
+        "git_commit_sha": "84d3e9979d6eb3d94f31a75bb070236557179d2d",
+        "schema_git_blob_sha": "ff2427f6906c1c019d1949c1dfd9a64ee447971f",
+        "consumer_git_blob_sha": "35904e73cfc34515c61d2f338f714be253900eae",
+        "consumer": "src/recovery/backgroundMutationFence.ts#BackgroundMutationFence",
+        "metodo": "Comparación de required/properties/enum y nombres de campos del JSON Schema con interfaz y funciones TypeScript; no se identificó transformación en el consumidor.",
+        "runtime": "NO_DEPLOYMENT_EVIDENCE"
+      }
     }
   ],
   "frontend": {
