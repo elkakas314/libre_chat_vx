@@ -120,3 +120,14 @@ A new backlog item does not become custom source unless all are answered:
 10. What exact LIVE evidence would justify promotion.
 
 If these are not answered, classify as FUSIONAR, DEFERIR, EXTERNAL or RECHAZAR instead of building.
+
+## New user idea — NOSTROMO semantic layer and MANOJOS3 crosswalk (2026-10-08)
+
+**ID:** LC-NOSTROMO-SEMANTIC-BRIDGE  
+**State:** DESIGN_REVIEW_PENDING · HIGH · no implementation authorization.
+
+Assess whether LibreChat/NOSTROMO needs an explicit domain vocabulary/semantic registry for its own capabilities (conversation, presentation, research, Resources, Events, Skills/plugins, target reads and intents). Compare it with existing Intent Interpreter, semantic contracts, and MANOJOS3 semantic projection. Prefer a **thin semantic crosswalk** linking NOSTROMO intent -> target semantic Intent Flow/Interflow/driver/capability, with ownership on each side. The user speaks naturally; no duplicated MANOJOS3 semantic engine and no copied authority/executor.
+
+**Acceptance:** inventory existing semantics; spot actual gaps; propose canonical Intent/Capability mappings; test colloquial/referential phrases and ambiguous target selection; prove never converts read -> material submit and never treats a semantic match as authorization; route to existing Skills/native config where possible. Only develop missing SOURCE after design/reuse audit.
+
+**Boundaries:** This is a LibreChat backlog idea only; do not edit MANOJOS3. Review early, but do not derail the already-active Operating Canon + Skill consolidation.
