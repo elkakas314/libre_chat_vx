@@ -142,8 +142,21 @@
     "map": "40",
     "refs": "operating/DRIVE_REFS_CURRENT.json"
   },
-  "post_proof_changes": "DOCUMENTATION_AND_READ_MODEL_UPDATES_ONLY_AFTER_SOURCE_TEST",
+  "post_proof_changes": "GIT_CHECKPOINT_AND_OPERATING_SKILL_DOCUMENTATION_NOT_FULLY_VALIDATED_AT_HANDOFF",
   "design_review_queue": [
     "LC-NOSTROMO-SEMANTIC-BRIDGE"
-  ]
+  ],
+  "checkpoint": {
+    "path": "handoff/LIBRECHAT_VX_CHECKPOINT_RELEVO_20261008.md",
+    "created_commit": "cb767e69eb8acea36cf0b844e7fe5b657f21a767",
+    "status": "SAVED_SUCCESSOR_VALIDATION_PENDING",
+    "handoff_instruction": "NEXT_OPERATOR_MUST_CHECK_EXACT_HEAD_CI_BEFORE_SOURCE_CLOSEOUT",
+    "final_validation_done_by_predecessor": false
+  },
+  "last_confirmed_ci": {
+    "head": "60a6bbb974dae26e154d883121f22dd6bca560ce",
+    "workflow_run": 37709003357,
+    "conclusion": "SUCCESS",
+    "applicability": "PROVEN_HEAD_ONLY"
+  }
 }
