@@ -434,7 +434,31 @@
         "SEMANTIC_MATCH_DOES_NOT_AUTHORIZE"
       ],
       "promotion_gate": "COVERAGE_GAP_PROVED_BY_EXPLICIT_TEST_AND_CONTRACT_MAPPING",
-      "status": "QUEUED_NOT_IMPLEMENTED"
+      "status": "QUEUED_FOR_COMPARATIVE_FEASIBILITY_REVIEW",
+      "alternatives": [
+        {
+          "id": "NATIVE_PLUS_INTERPRETER",
+          "preferred": "ASSESS_FIRST",
+          "description": "Native LibreChat configs/Skills + existing Intent Interpreter + small NOSTROMO vocabulary where gap proven"
+        },
+        {
+          "id": "TYPED_TARGET_GATEWAY_CROSSWALK",
+          "preferred": "LIKELY",
+          "description": "Authority=false semantic envelope mapping into target-owned MANOJOS3 Intent Flows/Interflows via read-only descriptors"
+        },
+        {
+          "id": "DECLARATIVE_READONLY_REGISTRY",
+          "preferred": "IF_NEEDED",
+          "description": "Source-versioned capability vocabulary with provenance and tests"
+        },
+        {
+          "id": "SECOND_SEMANTIC_ENGINE",
+          "preferred": "REJECT_DEFAULT",
+          "description": "Duplicate semantic runtime/flow engine"
+        }
+      ],
+      "required_decision": "SELECT_MINIMAL_OPTION_BY_COVERAGE_TEST_NO_DUPLICATE_RUNTIME",
+      "skill_boundary": "Conversational resolution procedure may be Skill; material target rules remain typed contracts."
     }
   ]
 }
