@@ -105,6 +105,12 @@ assert.equal(result.availability, 'AVAILABLE');
 
 **Gates actuales:** `LC-M3-R0-BINDING=BLOCKED_DEPENDENCY`; `LC-AGENT-EVENTS-LIVE=OPEN`. Ninguna prueba SOURCE implica LIVE; no usar `manojos_prepare/submit/resume` durante el trabajo de contrato o documentación.
 
+## Criterio de cierre documental del crosswalk
+
+> cerrado cuando los 4 gaps estén en SPEC.json#/backlog/deferred_external y no queden archivos del sandbox que sean fuente de verdad
+
+Este criterio exige verificar que GAP-001, GAP-002, GAP-003 y GAP-004 estén registrados en el backlog externo de SPEC y que GitHub sea la única fuente canónica; las exportaciones de Drive son copias y no sustituyen los archivos versionados. **Cierre documental no equivale a resolver los gaps de integración, ni a LIVE.**
+
 ## 5. Observaciones de propiedad y límites
 
 - **Fuente externa independiente:** `docs/observaciones-externas/OBSERVACIONES_MANOJOS3.md` preserva `OBS-M3-001` (OpenAPI vs server en auth) y `OBS-M3-002` (eventos internos) sin importar deuda del target al canon de LibreChat.
