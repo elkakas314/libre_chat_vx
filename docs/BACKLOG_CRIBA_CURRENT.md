@@ -144,3 +144,13 @@ Compare these options **before authorizing implementation**:
 **Decision rule:** choose the smallest of (1)–(3) that passes coverage tests. Investigate natural language, implicit referents, colloquial ambiguity, own LibreChat features, multi-target requests, negative cases (read != submit; semantic match != grant), versioning and rollback. Prefer a focused Skill for conversation/application guidance; keep wire contract, ACL, target selection and material fences in typed code. Any M3 mapping is advisory/R0 until actual target readback validates it.
 
 **Acceptance evidence:** comparison matrix, gaps against existing `src/intent`, `src/manojos3`, `config/skills.current.json` and canonical target contracts; proposed semantic IDs/flows; tests showing how phrases map to intents without authority; explicit source vs LIVE separation. **Status remains queued and not yet developed.**
+
+### Existing-semantic-source evidence (review, not implementation)
+
+Inspected source: `src/intent/intentInterpreter.ts` already classifies CONVERSATION/RESEARCH/VISUALIZE/EXPLAIN/TARGET_READ/TARGET_COMMAND/CLARIFY; `docs/SEMANTIC_MODEL_CURRENT.md` already defines product/scope/target/research/event/truth semantics; `src/manojos3/gptSemanticBridge.ts` already defines TECHNICAL_MISSING_SLOT, SEMANTIC_MISSING_SLOT, RISK_CONFIRMATION and prohibits context-only submit; `src/targets/targetGateway.ts` already delegates with no authority or material retry.
+
+**Preferred minimal design hypothesis:** extend existing typed interpreter with a small SOURCE-versioned NOSTROMO capability vocabulary **only for uncovered application functions**, and a read-only TargetGateway/adapter semantic crosswalk to target-owned Intent Flows/Interflows. Do not copy MANOJOS3 flow tables into an authoritative LibreChat runtime. Preserve provenance and freshness. A Skill may teach natural-language clarification and correct view selection, but not enforce grants or run mutation.
+
+**Critical feasibility tests:** colloquial paraphrases and coreference; own feature commands vs target read/target change; two plausible targets; read-only AUTO/BOTH; model/provider failover; and target-descriptor drift. Crosswalk returns candidate mapping and confidence/provenance, never authorization. If native vocabulary/Skill guidance already passes the test, cancel new registry/adapter work.
+
+State remains `DESIGN_REVIEW_PENDING` (not SOURCE-developed). 
