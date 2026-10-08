@@ -3,7 +3,7 @@
   "current_start_here": {
     "document_id": "11e70lpwe5U3k9FMZWd7h-N0eNaidgaINJP9Pwz1bGx8",
     "name": "00 Entry/CURRENT/Bootstrap",
-    "revision_id": "AHj4eMTFLiEbkpgVenaJhnvit3npY0VnPtnddD3_DXyS45Vq_vH4eqZZqNFFFlNNYgZEKDwFlyB7fmofFNF4jfJsBt28FqLTHF2j3DN4xJY"
+    "revision_id": "AHj4eMTJeaytNgkvWft2iY_9dWUdPPeWZsgnXy1LxRRT-AQTPdc7Fx6oadojXFUk-Fi-dWwTDJ4ebnNJNqdvLBz7HYGM2PYdMOTRQ5E9kYU"
   },
   "librechat": {
     "nostromo_hybrid": {
@@ -34,36 +34,36 @@
     },
     "legacy_start_here_reference": "11e70lpwe5U3k9FMZWd7h-N0eNaidgaINJP9Pwz1bGx8"
   },
-  "readback": "SOURCE_REF_UPDATED_NOT_ALL_DOCS_REVERIFIED_LIVE",
+  "readback": "DRIVE_WRITE_REVISIONS_CAPTURED_NOT_SOURCE_OR_LIVE_VALIDATION",
   "local_touched": false,
   "living_package": {
     "10": {
       "document_id": "1fndkYM-UBmSfacQcbu_oewcDe4JzEClw-qd7K7J9pGg",
-      "revision_id": "AHj4eMR_XbF152hgFQOpKgzxJyN25cR-v5DYPWL8KXnq6IaEMeXinDVtjoyHS-qSFaN_34Xy8tk3OE-yathbrnJsGpZgbOcug-Pjy8Mlzgg",
+      "revision_id": "AHj4eMS8PeUEKuRPTS5NUhgUolsJJfGYK1YcRm8eR33OS0Ks1tVrR26PGbWIk06A_lkVwop95kHKrc27KNbHsMyKAejVT5MXjk4t2amU_LY",
       "title": "10 — LIBRECHAT VX — Diseño Canónico vivo"
     },
     "20": {
       "document_id": "1py0BlozuMOjmo4lUEqxuqCmLaN2O3_6wYwXrTwfVcuY",
-      "revision_id": "AHj4eMToY-kmUiBuYVwZWT8L0i1mHVQL9TSYVhICFQhrL5QSqBFCMeuUU075kIwE0YhL1s89pJ8qCnR979Bal-lS4KjjSIEVMADEhb6L06I",
+      "revision_id": "AHj4eMT87F8YoEH7j7Hwh2W8UaKKu6vnyZxOv7gCFYRoemukcWplgPyvT3TA4VNIa8C2ICj72i22odW-dhgtTxSsUZHPG87F6sGqmZlQzLk",
       "title": "20 — LIBRECHAT VX — Uso Operativo vivo"
     },
     "30": {
       "document_id": "19_Bm72_3aaxT6gggEAmfkZG0y0N1hXK6tMQrYLR4sDI",
-      "revision_id": "AHj4eMRjTvI4z5nMRxu_CdnOuybc-Dp6mdUQCH1ooWixCtg0l-C2EddZm3xj2y-WRFX420HSkU1eYdKfdDdo1oo_N8r5eqk0j_v6XMHnsB0",
+      "revision_id": "AHj4eMSAkTZMuU_xf0RqAzf-MfTO971gIPzDw4KLpiMXoxd6mHckXxyoaAdrkbu02lWimh0K_HIupU-lgx7DncdiWY34UE_slqgmcNlfEQs",
       "title": "30 — LIBRECHAT VX — Cierre, Continuidad y Handoff vivo"
     },
     "40": {
       "document_id": "1UD9LnU0eaKdEHrLUkMJyPp-II_6rZPtlD7uzn_sqWCc",
-      "revision_id": "AHj4eMQl02mJzJDrXaScBtsauloaVJP2xTySoEdJBUfkWKwy48FdP8CEfAjHhLdArcJ2N0TI2fAqUWbeT5-jYQYPCERq7dg5Qsk3kKjfHnM",
+      "revision_id": "AHj4eMQvCguT49N7WZq54cmLhs8WxJnliwFEoiWSx7Q-VkxM7vss3P6SEOF2MWTSHow3Hioq6TaGI3ApRdva_RMJW64vHYo5UWKZ-hUqWxk",
       "title": "40 — LIBRECHAT VX — Mapa Canónico, Cableado y Cobertura vivo"
     },
     "00": {
       "document_id": "11e70lpwe5U3k9FMZWd7h-N0eNaidgaINJP9Pwz1bGx8",
-      "revision_id": "AHj4eMTFLiEbkpgVenaJhnvit3npY0VnPtnddD3_DXyS45Vq_vH4eqZZqNFFFlNNYgZEKDwFlyB7fmofFNF4jfJsBt28FqLTHF2j3DN4xJY",
+      "revision_id": "AHj4eMTJeaytNgkvWft2iY_9dWUdPPeWZsgnXy1LxRRT-AQTPdc7Fx6oadojXFUk-Fi-dWwTDJ4ebnNJNqdvLBz7HYGM2PYdMOTRQ5E9kYU",
       "title": "00 — LIBRECHAT VX — Entrada, CURRENT, Bootstrap y Continuidad"
     }
   },
-  "updated_for": "OPERATING_CRIBA_SKILLS_SEMANTIC_BACKLOG_2026-10-08",
+  "updated_for": "OPERATOR_HANDOFF_CHECKPOINT_2026-10-08",
   "living_docs": {
     "design": {
       "document_id": "1fndkYM-UBmSfacQcbu_oewcDe4JzEClw-qd7K7J9pGg",
@@ -81,5 +81,10 @@
       "document_id": "1UD9LnU0eaKdEHrLUkMJyPp-II_6rZPtlD7uzn_sqWCc",
       "role": "40 MAP_COVERAGE"
     }
+  },
+  "checkpoint": {
+    "path": "handoff/LIBRECHAT_VX_CHECKPOINT_RELEVO_20261008.md",
+    "created_commit": "cb767e69eb8acea36cf0b844e7fe5b657f21a767",
+    "validation": "DELEGATED_TO_SUCCESSOR"
   }
 }
