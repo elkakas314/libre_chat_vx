@@ -57,10 +57,14 @@ export function admitModelCandidate(
   if (!candidate.privacyAllowed) reasons.push('PRIVACY_POLICY_REJECTED');
   if (!candidate.evidenceRefs.length) reasons.push('EVIDENCE_REQUIRED');
 
-  if (candidate.observedAtMs !== undefined) {
-    const now=options.nowMs ?? Date.now();
-    const maxFreshness=options.maxFreshnessMs ?? 300_000;
-    if (now-candidate.observedAtMs > maxFreshness) reasons.push('READBACK_STALE');
+  const now=options.nowMs ?? Date.now();
+  const maxFreshness=options.maxFreshnessMs ?? 300_000;
+  if (candidate.observedAtMs === undefined || !Number.isFinite(candidate.observedAtMs)) {
+    reasons.push('READBACK_TIMESTAMP_REQUIRED');
+  } else if (candidate.observedAtMs > now) {
+    reasons.push('READBACK_FROM_FUTURE');
+  } else if (!Number.isFinite(maxFreshness) || maxFreshness < 0 || now - candidate.observedAtMs > maxFreshness) {
+    reasons.push('READBACK_STALE');
   }
 
   return { candidateId:candidate.candidateId, admitted:reasons.length===0, reasons };

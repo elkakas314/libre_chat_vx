@@ -130,10 +130,14 @@ export function admitProviderRoute(
     reasons.push('CONTEXT_FIT_FAILED');
   }
 
-  if (route.observedAtMs !== undefined) {
-    const now=request.nowMs ?? Date.now();
-    const maxFreshness=request.maxFreshnessMs ?? 300_000;
-    if (now - route.observedAtMs > maxFreshness) reasons.push('ROUTE_READBACK_STALE');
+  const now=request.nowMs ?? Date.now();
+  const maxFreshness=request.maxFreshnessMs ?? 300_000;
+  if (route.observedAtMs === undefined || !Number.isFinite(route.observedAtMs)) {
+    reasons.push('ROUTE_READBACK_TIMESTAMP_REQUIRED');
+  } else if (route.observedAtMs > now) {
+    reasons.push('ROUTE_READBACK_FROM_FUTURE');
+  } else if (!Number.isFinite(maxFreshness) || maxFreshness < 0 || now - route.observedAtMs > maxFreshness) {
+    reasons.push('ROUTE_READBACK_STALE');
   }
 
   return { routeId:route.id, admitted:reasons.length===0, reasons };

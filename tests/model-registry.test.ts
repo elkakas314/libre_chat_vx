@@ -40,3 +40,18 @@ test('billable or exhausted models are rejected rather than silently used', () =
   assert.equal(plan.active.some((x)=>x.candidateId==='free'),true);
   assert.equal(plan.rejected.length,2);
 });
+
+test('model candidate admission rejects absent, future and stale observation timestamps', () => {
+  const cases = [
+    [undefined,'READBACK_TIMESTAMP_REQUIRED'],
+    [Number.NaN,'READBACK_TIMESTAMP_REQUIRED'],
+    [now+1,'READBACK_FROM_FUTURE'],
+    [now-300_001,'READBACK_STALE'],
+  ] as const;
+  for (const [observedAtMs,reason] of cases) {
+    const plan=planModelPool('NORMAL',[candidate('invalid',{observedAtMs})],{nowMs:now});
+    assert.equal(plan.active.length,0);
+    assert.ok(plan.rejected[0].reasons.includes(reason));
+  }
+  assert.equal(planModelPool('NORMAL',[candidate('fresh')],{nowMs:now}).active.length,1);
+});

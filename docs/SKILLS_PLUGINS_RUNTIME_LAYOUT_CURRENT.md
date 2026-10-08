@@ -114,19 +114,13 @@ Custom source:
 
 ## Current VX Skills
 
-- nostromo-core
-- nostromo-intent-translation
-- nostromo-visualization
-- nostromo-research
-- nostromo-event-triage
-- nostromo-evidence-first
-- nostromo-resource-navigation
-- nostromo-tool-budget
-- manojos3-nostromo
-- vx13-nostromo
-- cross-target-read
+Canonical active catalog (10): `config/skills.current.json` is the source of names/roles, not this historical list. The 10 active names are `nostromo-core`, `nostromo-visualization`, `nostromo-research`, `nostromo-event-triage`, `nostromo-evidence-first`, `nostromo-resource-navigation`, `manojos3-nostromo`, `vx13-nostromo`, `cross-target-read` and `nostromo-extension-review`.
 
-All authority=false.
+Two legacy folders remain on disk: `nostromo-intent-translation` and `nostromo-tool-budget`. They are **not** part of the active SOURCE catalog; no LIVE sync is yet verified. All Skills authority=false.
+
+### Two-stage GitHub Skill Sync source canary
+
+See `deployment/skill-sync/README.md` and two example YAML fragments. Stage 1 scans the full `skills` folder (12 physical roots), stage 2 selects exactly ten canonical root paths with `skillDiscoveryDepth: 0` after an authenticated LIVE canary and rollback-readback. Do not delete legacy files or deploy the second stage automatically. Source proof != LIVE sync.
 
 ## Download/import sources
 

@@ -138,3 +138,18 @@ test('Cloudflare client sends OpenAI-compatible chat request without persisting 
   assert.equal(observedNoWholesale,'true');
   assert.equal(JSON.stringify(binding).includes('runtime-token'),false);
 });
+
+test('route admission fails closed for missing, future and stale LIVE timestamps', () => {
+  const cases = [
+    [undefined,'ROUTE_READBACK_TIMESTAMP_REQUIRED'],
+    [Number.NaN,'ROUTE_READBACK_TIMESTAMP_REQUIRED'],
+    [now+1,'ROUTE_READBACK_FROM_FUTURE'],
+    [now-300_001,'ROUTE_READBACK_STALE'],
+  ] as const;
+  for (const [observedAtMs,reason] of cases) {
+    const decision=admitProviderRoute(route({observedAtMs}),{profile:'NORMAL',nowMs:now});
+    assert.equal(decision.admitted,false);
+    assert.ok(decision.reasons.includes(reason),reason);
+  }
+  assert.equal(admitProviderRoute(route(),{profile:'NORMAL',nowMs:now}).admitted,true);
+});
