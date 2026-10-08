@@ -84,3 +84,18 @@ test('operating gap/proof JSON Schemas match CURRENT camelCase data and allow hi
     }
   }
 });
+
+test('operating bootstrap CURRENT fields are declared by its versioned JSON Schema', () => {
+  const schema=readJson('contracts/operating-bootstrap.schema.json');
+  const bootstrap=readJson('operating/BOOTSTRAP_CURRENT.json');
+  assert.equal(bootstrap.schema,'libre-chat-vx.operating-bootstrap.v2');
+  assert.equal(schema.additionalProperties,false);
+  for (const required of schema.required as string[]) {
+    assert.ok(Object.hasOwn(bootstrap,required),'bootstrap missing '+required);
+  }
+  for (const key of Object.keys(bootstrap)) {
+    assert.ok(Object.hasOwn(schema.properties,key),'undeclared bootstrap field '+key);
+  }
+  assert.equal(bootstrap.runtime.status,'NO_VERIFICADO');
+  assert.equal(bootstrap.closeout,'INCOMPLETE');
+});

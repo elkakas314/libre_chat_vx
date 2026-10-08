@@ -20,41 +20,117 @@
     "closeout"
   ],
   "properties": {
-    "canon": {"const": "LIBRECHAT_OPERATING_CANON"},
-    "target_version": {"type": "integer", "minimum": 1},
-    "snapshot_id": {"type": "string", "minLength": 1},
-    "evidence_cutoff_head": {"type": "string", "minLength": 1},
-    "mode": {"enum": ["SOURCE_ONLY", "LIVE_BOUND"]},
+    "canon": {
+      "const": "LIBRECHAT_OPERATING_CANON"
+    },
+    "target_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "snapshot_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evidence_cutoff_head": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mode": {
+      "enum": [
+        "SOURCE_ONLY",
+        "LIVE_BOUND"
+      ]
+    },
     "git": {
       "type": "object",
       "properties": {
-        "head": {"type": "string"},
-        "origin_main": {"type": "string"},
-        "clean": {"type": "boolean"},
-        "status": {"type": "string"}
+        "head": {
+          "type": "string"
+        },
+        "origin_main": {
+          "type": "string"
+        },
+        "clean": {
+          "type": "boolean"
+        },
+        "status": {
+          "type": "string"
+        }
       },
       "additionalProperties": false
     },
-    "runtime": {"type": "object"},
+    "runtime": {
+      "type": "object"
+    },
     "proofs": {
       "type": "object",
-      "required": ["valid", "stale", "missing", "unavailable"],
+      "required": [
+        "valid",
+        "stale",
+        "missing",
+        "unavailable"
+      ],
       "properties": {
-        "valid": {"type": "array", "items": {"type": "string"}},
-        "stale": {"type": "array", "items": {"type": "string"}},
-        "missing": {"type": "array", "items": {"type": "string"}},
-        "unavailable": {"type": "array", "items": {"type": "string"}}
+        "valid": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "stale": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "missing": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "unavailable": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
       },
       "additionalProperties": false
     },
     "ownership": {
       "type": "object",
-      "required": ["owned", "stale_claims", "free", "unobserved"],
+      "required": [
+        "owned",
+        "stale_claims",
+        "free",
+        "unobserved"
+      ],
       "properties": {
-        "owned": {"type": "array", "items": {"type": "string"}},
-        "stale_claims": {"type": "array", "items": {"type": "string"}},
-        "free": {"type": "array", "items": {"type": "string"}},
-        "unobserved": {"type": "array", "items": {"type": "string"}}
+        "owned": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "stale_claims": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "free": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "unobserved": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
       },
       "additionalProperties": false
     },
@@ -73,36 +149,160 @@
         "blocked_live"
       ],
       "properties": {
-        "pass": {"type": "array", "items": {"type": "string"}},
-        "open": {"type": "array", "items": {"type": "string"}},
-        "stale_proof": {"type": "array", "items": {"type": "string"}},
-        "reconcile_required": {"type": "array", "items": {"type": "string"}},
-        "not_tested": {"type": "array", "items": {"type": "string"}},
-        "owned": {"type": "array", "items": {"type": "string"}},
-        "blocked_dependency": {"type": "array", "items": {"type": "string"}},
-        "external_gates": {"type": "array", "items": {"type": "string"}},
-        "human_gates": {"type": "array", "items": {"type": "string"}},
-        "blocked_live": {"type": "array", "items": {"type": "string"}}
+        "pass": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "open": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "stale_proof": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "reconcile_required": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "not_tested": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "owned": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "blocked_dependency": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "external_gates": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "human_gates": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "blocked_live": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
       },
       "additionalProperties": false
     },
     "living_plan": {
       "type": "object",
-      "required": ["eligible", "blocked_live", "owned_ready", "waiting_internal"],
+      "required": [
+        "eligible",
+        "blocked_live",
+        "owned_ready",
+        "waiting_internal"
+      ],
       "properties": {
-        "eligible": {"type": "array", "items": {"type": "string"}},
-        "blocked_live": {"type": "array", "items": {"type": "string"}},
-        "owned_ready": {"type": "array", "items": {"type": "string"}},
-        "waiting_internal": {"type": "boolean"},
-        "next_eligible": {"type": "string"}
+        "eligible": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "blocked_live": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "owned_ready": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "waiting_internal": {
+          "type": "boolean"
+        },
+        "next_eligible": {
+          "type": "string"
+        }
       },
       "additionalProperties": false
     },
-    "eligible_source_only": {"type": "array", "items": {"type": "string"}},
-    "blocked_live": {"type": "array", "items": {"type": "string"}},
-    "do_not_touch": {"type": "array", "items": {"type": "string"}},
-    "closeout": {"enum": ["COMPLETE", "INCOMPLETE"]},
-    "next_action": {"type": "string"}
+    "eligible_source_only": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "blocked_live": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "do_not_touch": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "closeout": {
+      "enum": [
+        "COMPLETE",
+        "INCOMPLETE"
+      ]
+    },
+    "next_action": {
+      "type": "string"
+    },
+    "schema": {
+      "const": "libre-chat-vx.operating-bootstrap.v2"
+    },
+    "baseline_ci": {
+      "type": "object",
+      "required": [
+        "github_actions_run",
+        "conclusion"
+      ],
+      "properties": {
+        "github_actions_run": {
+          "type": "integer"
+        },
+        "conclusion": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "design_review_queue": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "semantic_note": {
+      "type": "string"
+    }
   },
   "additionalProperties": false
 }
