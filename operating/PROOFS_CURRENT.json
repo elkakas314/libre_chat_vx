@@ -116,8 +116,8 @@
     },
     {
       "subject": "Consolidated Skills + operating docs exact-head validation",
-      "state": "MISSING",
-      "history_classification": "CURRENT_AWAITING_CI",
+      "state": "VALID",
+      "history_classification": "BASELINE_VERIFIED",
       "dependencies": [
         "skills/nostromo-core/SKILL.md",
         "config/skills.current.json",
@@ -126,9 +126,13 @@
       ],
       "proofId": "skill-criba-exact-head-ci",
       "proofClass": "TEST",
-      "dependencyFingerprint": "PENDING_EXACT_HEAD_CI",
-      "evidenceRefs": []
+      "dependencyFingerprint": "head:409d3f47|ci:37708437853|upstream:f10b1d91",
+      "evidenceRefs": [
+        "commit:409d3f47bf196f4a2eee469d6a1abe29851c0387",
+        "github_actions_run:37708437853"
+      ],
+      "verified_at_source_head": "409d3f47bf196f4a2eee469d6a1abe29851c0387"
     }
   ],
-  "source_evidence_cutoff_head": "77ceb1a9fe72dd70db9f968b28b0370c831115ff"
+  "source_evidence_cutoff_head": "409d3f47bf196f4a2eee469d6a1abe29851c0387"
 }
