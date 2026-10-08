@@ -47,11 +47,16 @@ export function effectiveGapState(
     return 'OWNED';
   }
 
-  if (
-    gap.state === 'BLOCKED_DEPENDENCY' ||
-    gap.state === 'OWNED' ||
-    gap.state === 'WAITING_INTERNAL'
-  ) {
+  if (gap.state === 'OWNED' || gap.state === 'WAITING_INTERNAL') {
+    // Absence of a live ownership claim is not evidence that the scope is FREE.
+    const scopeRecord = ownership.find((record) => record.scope === gap.scope);
+    if (scopeRecord?.state === 'FREE') return 'OPEN';
+    if (scopeRecord?.state === 'OWNED') return 'OWNED';
+    // Unknown/stale release: inspect claims, leases and effects before any work.
+    return 'RECONCILE_REQUIRED';
+  }
+
+  if (gap.state === 'BLOCKED_DEPENDENCY') {
     return 'OPEN';
   }
 

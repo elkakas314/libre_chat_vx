@@ -161,3 +161,35 @@ test('a fully externally blocked SOURCE_ONLY plan does not misreport WAITING_INT
   assert.deepEqual(plan.blockedLive,['live']);
   assert.equal(closeoutCheck(state).complete,false);
 });
+
+test('a previously OWNED gap does not silently become OPEN without explicit FREE evidence', () => {
+  const state=snapshot();
+  state.mode='LIVE_BOUND';
+  state.gaps=[{gapId:'claimed',summary:'previously claimed',state:'OWNED',priority:1,scope:'risky',requiresLive:true,dependencies:[]}];
+  for (const ownership of [
+    [],
+    [{scope:'risky',state:'UNOBSERVED' as const}],
+    [{scope:'risky',state:'STALE_CLAIM' as const}],
+  ]) {
+    const plan=buildLivingPlan(state.mode,state.gaps,ownership);
+    assert.deepEqual(plan.eligible,['claimed']); // eligible ONLY for RECONCILE_REQUIRED readback
+    assert.equal(plan.waitingInternal,false);
+  }
+  const active=buildLivingPlan(state.mode,state.gaps,[{scope:'risky',state:'OWNED'}]);
+  assert.deepEqual(active.eligible,[]);
+  assert.deepEqual(active.ownedReady,['claimed']);
+  const released=buildLivingPlan(state.mode,state.gaps,[{scope:'risky',state:'FREE'}]);
+  assert.deepEqual(released.eligible,['claimed']);
+});
+
+test('an unreconciled ownership scope does not suppress independent eligible work', () => {
+  const state=snapshot();
+  state.mode='LIVE_BOUND';
+  state.gaps=[
+    {gapId:'unproven-release',summary:'check old claim',state:'OWNED',priority:1,scope:'risky',requiresLive:true,dependencies:[]},
+    {gapId:'other',summary:'independent work',state:'OPEN',priority:2,scope:'independent',requiresLive:true,dependencies:[]},
+  ];
+  const plan=buildLivingPlan(state.mode,state.gaps,[]);
+  assert.deepEqual(plan.eligible,['unproven-release','other']);
+  assert.equal(plan.waitingInternal,false);
+});
