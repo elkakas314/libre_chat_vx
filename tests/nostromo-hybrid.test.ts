@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
@@ -102,4 +103,21 @@ test('MANOJOS3 semantic contract hides technical slots from user', () => {
 test('material success requires receipt evidence and readback', () => {
   assert.equal(acceptMaterialSuccess(true,true,true),true);
   assert.equal(acceptMaterialSuccess(true,true,false),false);
+});
+
+test('NOSTROMO hybrid persisted v2 contract matches source schema, authority and seven routes', () => {
+  const schema=JSON.parse(readFileSync('contracts/nostromo-hybrid.schema.json','utf8'));
+  const config=JSON.parse(readFileSync('config/nostromo_hybrid.current.json','utf8'));
+  const gateway=JSON.parse(readFileSync('config/cloudflare_ai_gateway.current.json','utf8'));
+  for (const required of schema.required as string[]) {
+    assert.ok(Object.hasOwn(config,required),'hybrid missing '+required);
+  }
+  assert.equal(config.architecture,schema.properties.architecture.const);
+  assert.equal(config.authority,schema.properties.authority.const);
+  assert.equal(config.authority,false);
+  assert.equal(config.actions.authority,false);
+  assert.equal(config.primary_inference.authority,false);
+  assert.equal(Object.hasOwn(config,'free_reasoning'),false,'obsolete free_reasoning field');
+  assert.deepEqual([...config.primary_inference.profiles].sort(),Object.keys(gateway.semantic_routes).sort());
+  assert.equal(config.primary_inference.profiles.includes('CODIGO'),false);
 });

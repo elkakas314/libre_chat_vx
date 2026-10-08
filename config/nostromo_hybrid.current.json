@@ -1,6 +1,7 @@
 {
   "schema": "libre-chat-vx.nostromo-hybrid.v2",
   "architecture": "NOSTROMO_HYBRID",
+  "authority": false,
   "status": "SOURCE_ROUTER_IMPLEMENTED_RUNTIME_UNVERIFIED",
   "one_active_architecture": true,
   "local_voice": {
@@ -71,7 +72,8 @@
       "RAPIDO",
       "NORMAL",
       "PENSAR",
-      "CODIGO",
+      "INVESTIGAR",
+      "VISUALIZAR",
       "CONTEXTO_LARGO",
       "VISION"
     ],
