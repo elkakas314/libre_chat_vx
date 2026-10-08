@@ -412,5 +412,29 @@
     }
   ],
   "invariant": "DEFERRED_AND_CLOSED_ARE_NOT_ACTIVE_GAPS",
-  "source": "docs/BACKLOG_CRIBA_CURRENT.md"
+  "source": "docs/BACKLOG_CRIBA_CURRENT.md",
+  "design_review_queue": [
+    {
+      "id": "LC-NOSTROMO-SEMANTIC-BRIDGE",
+      "classification": "DESIGN_REVIEW_PENDING",
+      "priority": "HIGH",
+      "intent": "Define and validate LibreChat/NOSTROMO's own user-facing semantic vocabulary for its capabilities and a governed semantic crosswalk with MANOJOS3 Intent Flows, Interflows, drivers and capabilities.",
+      "scope": "LIBRECHAT_ONLY_SOURCE_REVIEW_FIRST",
+      "inspect_existing": [
+        "src/intent",
+        "src/manojos3",
+        "tests/semantic-contract.test.ts",
+        "tests/intent-presentation-events.test.ts"
+      ],
+      "constraints": [
+        "DO_NOT_CLONE_MANOJOS3_SEMANTIC_ENGINE",
+        "DO_NOT_CREATE_SECOND_AUTHORITY",
+        "NATURAL_OBJECTIVE_NOT_TECHNICAL_SLOTS",
+        "NO_M3_MUTATION",
+        "SEMANTIC_MATCH_DOES_NOT_AUTHORIZE"
+      ],
+      "promotion_gate": "COVERAGE_GAP_PROVED_BY_EXPLICIT_TEST_AND_CONTRACT_MAPPING",
+      "status": "QUEUED_NOT_IMPLEMENTED"
+    }
+  ]
 }
