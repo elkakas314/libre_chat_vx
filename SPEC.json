@@ -1197,6 +1197,29 @@
         "metodo": "Comparación de required/properties/enum y nombres de campos del JSON Schema con interfaz y funciones TypeScript; no se identificó transformación en el consumidor.",
         "runtime": "NO_DEPLOYMENT_EVIDENCE"
       }
+    },
+    {
+      "id": "LC-DISC-CROSS-TARGET-TRUTH-ENVELOPE-001",
+      "estado": "ABIERTA",
+      "bloqueante": true,
+      "ubicacion": [
+        "contracts/cross-target-truth-envelope.schema.json#/required",
+        "contracts/cross-target-truth-envelope.schema.json#/properties",
+        "src/core/types.ts#CrossTargetTruthEnvelope",
+        "src/adapters/manojos3McpAdapter.ts#toReadResult"
+      ],
+      "hecho": "JSON Schema usa campos snake_case (target_id, truth_class, observed_at, observed_revision, evidence_refs, receipt_ref, verification_ref, uncertainty_reason), mientras el tipo y el productor TypeScript usan camelCase (targetId, truthClass, observedAt, observedRevision, evidenceRefs, receiptRef, verificationRef, uncertaintyReason), sin serialización contractual entre ambos identificada. evidence_refs es opcional en schema pero evidenceRefs obligatorio en TypeScript. target_id admite cualquier cadena no vacía frente a ConcreteTargetId (VX13/MANOJOS3). El schema contiene source_ref/fresh_until sin campos homólogos en la interfaz. Enums truth_class/status sí coinciden.",
+      "tratamiento": "Alinear representación JSON del contrato y tipo/consumidor existentes; definir nomenclatura única o mapeo explícito en frontera ya existente, hacer evidence_refs obligatorio y acotar identidad del target, aclarar source_ref/fresh_until. Mantener semántica de no promover SOURCE a LIVE/VERIFIED y no modificar arquitectura ni targets. Corrección en PR dedicada posterior.",
+      "evidencia_source": {
+        "repositorio": "elkakas314/libre_chat_vx",
+        "git_commit_sha": "63e678ef44a0d52b056ee55523737f90569434e7",
+        "schema_git_blob_sha": "5f3b52ca91c544552db419aa8cc381e8a67c54b5",
+        "types_git_blob_sha": "b8036c4f35fcae157d60a3ff4e898ae998e27829",
+        "adapter_git_blob_sha": "fb08050d12562fb909f255e0d5dbb803aac67848",
+        "cross_target_read_git_blob_sha": "43c17d71e6c4eff2997c96a4a697024e95841546",
+        "metodo": "Contraste de propiedades required/enum del JSON Schema frente a CrossTargetTruthEnvelope y objeto truth emitido en Manojos3McpTargetAdapter.toReadResult; sin conversión snake_case en productor.",
+        "runtime": "NO_DEPLOYMENT_EVIDENCE"
+      }
     }
   ],
   "frontend": {
