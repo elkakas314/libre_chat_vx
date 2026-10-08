@@ -5,7 +5,7 @@
   "required": [
     "architecture",
     "local_voice",
-    "free_reasoning",
+    "primary_inference",
     "actions",
     "authority"
   ],
@@ -16,14 +16,14 @@
     "local_voice": {
       "type": "object"
     },
-    "free_reasoning": {
-      "type": "object"
-    },
     "actions": {
       "type": "object"
     },
     "authority": {
       "const": false
+    },
+    "primary_inference": {
+      "type": "object"
     }
   },
   "additionalProperties": true
