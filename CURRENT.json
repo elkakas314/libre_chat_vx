@@ -3,12 +3,11 @@
   "status": "SOURCE_CORE_AND_TRANSPORT_CANON_COMPLETE_LIVE_BINDINGS_PENDING",
   "repository": "elkakas314/libre_chat_vx",
   "branch": "handoff_current_bootstrps",
-  "source_evidence_cutoff_head": "409d3f47bf196f4a2eee469d6a1abe29851c0387",
+  "source_evidence_cutoff_head": "60a6bbb974dae26e154d883121f22dd6bca560ce",
   "source_ci": {
     "workflow": "source-check",
-    "run_id": 37708437853,
-    "conclusion": "SUCCESS",
-    "basis": "SKILLS_AND_OPERATING_SOURCE_PROVED"
+    "run_id": 37709003357,
+    "conclusion": "SUCCESS"
   },
   "upstream": {
     "repository": "LibreChat-AI/LibreChat",
@@ -84,7 +83,9 @@
     "llm_bootstrap": "IMPLEMENTED_SOURCE",
     "legacy_skills_on_disk": 2,
     "extension_review_skill": "IMPLEMENTED_SOURCE",
-    "operating_canon": "RECONCILED_SOURCE_PASS"
+    "operating_canon": "RECONCILED_V8",
+    "legacy_skill_aliases_on_disk": 2,
+    "semantic_capability_crosswalk": "DESIGN_REVIEW_PENDING"
   },
   "transport": {
     "local_web": "127.0.0.1:3080",
@@ -110,7 +111,8 @@
     "cloudflare_tunnel_access": "NOT_DEPLOYED",
     "web_research": "NO_VERIFICADO",
     "agent_events": "NO_VERIFICADO",
-    "target_bindings": "GATED"
+    "target_bindings": "GATED",
+    "skill_sync": "NO_VERIFICADO"
   },
   "material_verified": false,
   "authority": false,
@@ -140,5 +142,8 @@
     "map": "40",
     "refs": "operating/DRIVE_REFS_CURRENT.json"
   },
-  "post_proof_changes": "DOCUMENTATION_AND_READ_MODEL_UPDATES_ONLY_AFTER_SOURCE_TEST"
+  "post_proof_changes": "DOCUMENTATION_AND_READ_MODEL_UPDATES_ONLY_AFTER_SOURCE_TEST",
+  "design_review_queue": [
+    "LC-NOSTROMO-SEMANTIC-BRIDGE"
+  ]
 }
