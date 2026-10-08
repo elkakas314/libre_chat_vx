@@ -15,156 +15,156 @@
   },
   "gaps": [
     {
-      "gap_id": "LC-CF-AIG-BINDING",
+      "gapId": "LC-CF-AIG-BINDING",
       "summary": "Live Cloudflare AI Gateway: zero-cost provider probes, seven routes, canary/readback/rollback",
       "state": "OPEN",
       "priority": 10,
       "scope": "inference_live",
-      "requires_live": true,
+      "requiresLive": true,
       "dependencies": [],
-      "preferred_route": "LIVE_HOST_OR_ACCOUNT_READBACK"
+      "preferredRoute": "LIVE_HOST_OR_ACCOUNT_READBACK"
     },
     {
-      "gap_id": "LC-SKILL-SYNC-LIVE",
+      "gapId": "LC-SKILL-SYNC-LIVE",
       "summary": "GitHub Skill Sync: 10 active plus 2 legacy on disk; canary before retiring legacy aliases",
       "state": "OPEN",
       "priority": 20,
       "scope": "skills_live",
-      "requires_live": true,
+      "requiresLive": true,
       "dependencies": [],
-      "preferred_route": "LIVE_HOST_OR_ACCOUNT_READBACK"
+      "preferredRoute": "LIVE_HOST_OR_ACCOUNT_READBACK"
     },
     {
-      "gap_id": "LC-TAILSCALE-MOBILE-LIVE",
+      "gapId": "LC-TAILSCALE-MOBILE-LIVE",
       "summary": "Tailscale Serve: mobile/desktop session, Wi-Fi/data reconnect, revocation and rollback",
       "state": "OPEN",
       "priority": 30,
       "scope": "mobile_live",
-      "requires_live": true,
+      "requiresLive": true,
       "dependencies": [],
-      "preferred_route": "LIVE_HOST_OR_ACCOUNT_READBACK"
+      "preferredRoute": "LIVE_HOST_OR_ACCOUNT_READBACK"
     },
     {
-      "gap_id": "LC-WEB-RESEARCH-LIVE",
+      "gapId": "LC-WEB-RESEARCH-LIVE",
       "summary": "Native LibreChat Web Search/fetch canary; defer SearXNG/Firecrawl without benchmark",
       "state": "OPEN",
       "priority": 40,
       "scope": "web_research_live",
-      "requires_live": true,
+      "requiresLive": true,
       "dependencies": [],
-      "preferred_route": "LIVE_HOST_OR_ACCOUNT_READBACK"
+      "preferredRoute": "LIVE_HOST_OR_ACCOUNT_READBACK"
     },
     {
-      "gap_id": "LC-AGENT-EVENTS-LIVE",
+      "gapId": "LC-AGENT-EVENTS-LIVE",
       "summary": "Authenticated Agent Events, idempotency, Tentáculo triage and mobile notification canary",
       "state": "OPEN",
       "priority": 50,
       "scope": "events_live",
-      "requires_live": true,
+      "requiresLive": true,
       "dependencies": [],
-      "preferred_route": "LIVE_HOST_OR_ACCOUNT_READBACK"
+      "preferredRoute": "LIVE_HOST_OR_ACCOUNT_READBACK"
     },
     {
-      "gap_id": "LC-RECOVERY-LIVE",
+      "gapId": "LC-RECOVERY-LIVE",
       "summary": "Host service and Tailscale SSH recovery outside LibreChat",
       "state": "OPEN",
       "priority": 60,
       "scope": "recovery_live",
-      "requires_live": true,
+      "requiresLive": true,
       "dependencies": [],
-      "preferred_route": "LIVE_HOST_OR_ACCOUNT_READBACK"
+      "preferredRoute": "LIVE_HOST_OR_ACCOUNT_READBACK"
     },
     {
-      "gap_id": "LC-LOW-POWER-MEASURE",
+      "gapId": "LC-LOW-POWER-MEASURE",
       "summary": "Real Lenovo RAM/CPU/browser/context/stream measurements, idle vs active",
       "state": "GATE_HUMAN",
       "priority": 70,
       "scope": "host_measurement",
-      "requires_live": true,
+      "requiresLive": true,
       "dependencies": [],
-      "preferred_route": "LIVE_HOST_OR_ACCOUNT_READBACK"
+      "preferredRoute": "LIVE_HOST_OR_ACCOUNT_READBACK"
     }
   ],
   "target_later": [
     {
-      "gap_id": "LC-M3-R0-BINDING",
       "summary": "Real governed MANOJOS3 MCP bootstrap + one R0 objective/readback/receipt",
       "state": "BLOCKED_DEPENDENCY",
       "priority": 70,
       "scope": "manojos3_binding",
-      "requires_live": true,
       "dependencies": [
         "LC-M3-ADAPTER-SOURCE"
       ],
-      "preferred_route": "manojos3_inbound_mcp",
       "classification": "TARGET_LATER",
-      "promotion": "AFTER_PARALLEL_STACK_LIVE_FREEZE"
+      "promotion": "AFTER_PARALLEL_STACK_LIVE_FREEZE",
+      "gapId": "LC-M3-R0-BINDING",
+      "requiresLive": true,
+      "preferredRoute": "manojos3_inbound_mcp"
     },
     {
-      "gap_id": "LC-VX13-BINDING",
       "summary": "Future VX13 binding through NostromoTargetGateway to Tentaculo Link/canonical VX13 frontdoor",
       "state": "GATE_EXTERNAL",
       "priority": 80,
       "scope": "vx13_binding",
-      "requires_live": true,
       "dependencies": [
         "LC-TARGET-GATEWAY-FACADE",
         "VX13_CANONICAL_FRONTDOOR"
       ],
       "classification": "TARGET_LATER",
-      "promotion": "AFTER_PARALLEL_STACK_LIVE_FREEZE"
+      "promotion": "AFTER_PARALLEL_STACK_LIVE_FREEZE",
+      "gapId": "LC-VX13-BINDING",
+      "requiresLive": true
     },
     {
-      "gap_id": "LC-FIRST-R2",
       "summary": "First minimal governed material mutation through MANOJOS3",
       "state": "BLOCKED_DEPENDENCY",
       "priority": 90,
       "scope": "material_mutation",
-      "requires_live": true,
       "dependencies": [
         "LC-M3-R0-BINDING",
         "LC-UPSTREAM-OVERLAY-REVALIDATE"
       ],
       "classification": "TARGET_LATER",
-      "promotion": "AFTER_PARALLEL_STACK_LIVE_FREEZE"
+      "promotion": "AFTER_PARALLEL_STACK_LIVE_FREEZE",
+      "gapId": "LC-FIRST-R2",
+      "requiresLive": true
     }
   ],
   "deferred_external": [
     {
-      "gap_id": "LC-M3-TRANSPORT-DOC-DRIFT",
       "summary": "Resolve Action Proxy origin documentation contradiction and classify plugin/public_origin drift from LIVE evidence",
       "state": "SOURCE_CONFLICT_REQUIRES_LIVE_READBACK",
       "priority": 24,
       "scope": "manojos3_transport_documentation",
-      "requires_live": true,
       "dependencies": [],
-      "preferred_route": "handoff_11_m3_transport_documentation_gaps",
       "classification": "DEFERRED_EXTERNAL",
-      "promotion": "NOT_A_LIBRECHAT_CRITICAL_PATH"
+      "promotion": "NOT_A_LIBRECHAT_CRITICAL_PATH",
+      "gapId": "LC-M3-TRANSPORT-DOC-DRIFT",
+      "requiresLive": true,
+      "preferredRoute": "handoff_11_m3_transport_documentation_gaps"
     },
     {
-      "gap_id": "LC-M3-TRANSPORT-LIVE",
       "summary": "Read back current Cloudflare/Tailscale/OpenAI Secure MCP transport state and select LibreChat action binding profile A/B/C",
       "state": "BLOCKED_DEPENDENCY",
       "priority": 66,
       "scope": "manojos3_transport",
-      "requires_live": true,
       "dependencies": [],
-      "preferred_route": "governed_m3_edge_cli_r0",
       "classification": "DEFERRED_EXTERNAL",
-      "promotion": "NOT_A_LIBRECHAT_CRITICAL_PATH"
+      "promotion": "NOT_A_LIBRECHAT_CRITICAL_PATH",
+      "gapId": "LC-M3-TRANSPORT-LIVE",
+      "requiresLive": true,
+      "preferredRoute": "governed_m3_edge_cli_r0"
     },
     {
-      "gap_id": "LC-M3-LLM-LIVE-READBACK",
       "summary": "Verify MANOJOS3 internal LiteLLM consumers/aliases after LibreChat inference decoupling",
       "state": "BLOCKED_DEPENDENCY",
       "priority": 71,
       "scope": "manojos3_internal_llm_live",
-      "requires_live": true,
       "dependencies": [],
-      "preferred_route": "m3_internal_litellm_status_and_consumer_canary",
       "classification": "DEFERRED_EXTERNAL",
-      "promotion": "NOT_A_LIBRECHAT_CRITICAL_PATH"
+      "promotion": "NOT_A_LIBRECHAT_CRITICAL_PATH",
+      "gapId": "LC-M3-LLM-LIVE-READBACK",
+      "requiresLive": true,
+      "preferredRoute": "m3_internal_litellm_status_and_consumer_canary"
     }
   ],
   "optional_reentry": [
@@ -185,26 +185,24 @@
   ],
   "closed_source_archive": [
     {
-      "gap_id": "LC-OPERATING-CANON",
       "summary": "Operating Canon + bootstrap + handoff source/Drive continuity",
       "state": "PASS",
       "priority": 0,
       "scope": "continuity",
-      "requires_live": false,
       "dependencies": [],
       "evidence_refs": [
         "commit:fef7b5521792e50efd64dd3c4af1ed0dff62ef3c"
       ],
       "original_state": "PASS",
-      "classification": "CLOSED_SOURCE"
+      "classification": "CLOSED_SOURCE",
+      "gapId": "LC-OPERATING-CANON",
+      "requiresLive": false
     },
     {
-      "gap_id": "LC-CURRENT-HEAD-TESTS",
       "summary": "Exact-head TypeScript build and full source test suite",
       "state": "PASS",
       "priority": 10,
       "scope": "source_tests",
-      "requires_live": false,
       "dependencies": [],
       "evidence_refs": [
         "commit:24b971a2bcabf828d2c99afa1f3fede2151178c1",
@@ -212,15 +210,15 @@
         "job:build-test:SUCCESS"
       ],
       "original_state": "PASS",
-      "classification": "CLOSED_SOURCE"
+      "classification": "CLOSED_SOURCE",
+      "gapId": "LC-CURRENT-HEAD-TESTS",
+      "requiresLive": false
     },
     {
-      "gap_id": "LC-M3-INTERFLOW-PROJECTION",
       "summary": "MANOJOS3 Intent/Interflow semantic projection",
       "state": "PASS",
       "priority": 20,
       "scope": "manojos3_projection",
-      "requires_live": false,
       "dependencies": [
         "LC-OPERATING-CANON"
       ],
@@ -228,15 +226,15 @@
         "commit:7a9ebc7da0a172b5c6ff20999ab2b855a5999599"
       ],
       "original_state": "PASS",
-      "classification": "CLOSED_SOURCE"
+      "classification": "CLOSED_SOURCE",
+      "gapId": "LC-M3-INTERFLOW-PROJECTION",
+      "requiresLive": false
     },
     {
-      "gap_id": "LC-NOSTROMO-HYBRID",
       "summary": "Single Nostromo identity + Cloudflare remote inference + optional local model + MANOJOS3 MCP architecture",
       "state": "PASS",
       "priority": 21,
       "scope": "hybrid_llm",
-      "requires_live": false,
       "dependencies": [
         "LC-M3-INTERFLOW-PROJECTION"
       ],
@@ -245,15 +243,15 @@
         "drive:1PqXk7nM8M_arbI472RU5n4T0rFQI1Yt-MH54VSapYc8"
       ],
       "original_state": "PASS",
-      "classification": "CLOSED_SOURCE"
+      "classification": "CLOSED_SOURCE",
+      "gapId": "LC-NOSTROMO-HYBRID",
+      "requiresLive": false
     },
     {
-      "gap_id": "LC-M3-GPT-SEMANTIC-BRIDGE",
       "summary": "Import MANOJOS3 GPT/controller semantics into LibreChat/Nostromo",
       "state": "PASS",
       "priority": 22,
       "scope": "manojos3_semantics",
-      "requires_live": false,
       "dependencies": [
         "LC-M3-INTERFLOW-PROJECTION",
         "LC-NOSTROMO-HYBRID"
@@ -263,15 +261,15 @@
         "drive:1gAbtU0XISM4GWuspp-6wWEZACAycWtZBqzMrEJUu6y0"
       ],
       "original_state": "PASS",
-      "classification": "CLOSED_SOURCE"
+      "classification": "CLOSED_SOURCE",
+      "gapId": "LC-M3-GPT-SEMANTIC-BRIDGE",
+      "requiresLive": false
     },
     {
-      "gap_id": "LC-M3-ENTRYPOINT-CONTRACTS",
       "summary": "MANOJOS3 MCP action contract + internal LiteLLM advisory/compatibility contract",
       "state": "PASS",
       "priority": 23,
       "scope": "manojos3_entrypoints",
-      "requires_live": false,
       "dependencies": [
         "LC-M3-GPT-SEMANTIC-BRIDGE"
       ],
@@ -279,15 +277,15 @@
         "drive:19WZ2DM3pXyIe9-mhyq_3oVXQ63QmvDBf7i720mGW1N4"
       ],
       "original_state": "PASS",
-      "classification": "CLOSED_SOURCE"
+      "classification": "CLOSED_SOURCE",
+      "gapId": "LC-M3-ENTRYPOINT-CONTRACTS",
+      "requiresLive": false
     },
     {
-      "gap_id": "LC-NATIVE-SURFACE-BINDING",
       "summary": "Native LibreChat surface reuse",
       "state": "PASS",
       "priority": 50,
       "scope": "librechat_native",
-      "requires_live": false,
       "dependencies": [
         "LC-M3-INTERFLOW-PROJECTION"
       ],
@@ -295,15 +293,15 @@
         "commit:587090f7fea2d5fd6ef94fa470458009bfd136dc"
       ],
       "original_state": "PASS",
-      "classification": "CLOSED_SOURCE"
+      "classification": "CLOSED_SOURCE",
+      "gapId": "LC-NATIVE-SURFACE-BINDING",
+      "requiresLive": false
     },
     {
-      "gap_id": "LC-MOBILE-RECOVERY",
       "summary": "Same history, resume/reconnect, no material replay",
       "state": "PASS",
       "priority": 60,
       "scope": "mobile_recovery",
-      "requires_live": false,
       "dependencies": [
         "LC-NATIVE-SURFACE-BINDING"
       ],
@@ -311,15 +309,15 @@
         "commit:62815f4a8378c60e268e9ae4daff4cbe32e711e3"
       ],
       "original_state": "PASS",
-      "classification": "CLOSED_SOURCE"
+      "classification": "CLOSED_SOURCE",
+      "gapId": "LC-MOBILE-RECOVERY",
+      "requiresLive": false
     },
     {
-      "gap_id": "LC-PROVIDER-HUD-BRIDGE",
       "summary": "Wire ProviderStatusView into Tentaculo HUD while preserving separate inference and target truth lanes",
       "state": "PASS",
       "priority": 63,
       "scope": "provider_status_hud_bridge",
-      "requires_live": false,
       "dependencies": [
         "LC-NOSTROMO-HYBRID"
       ],
@@ -327,15 +325,15 @@
         "commit:aed4a617d8c19a9761a687da24715cce0ff8c2a9"
       ],
       "original_state": "PASS_SOURCE",
-      "classification": "CLOSED_SOURCE"
+      "classification": "CLOSED_SOURCE",
+      "gapId": "LC-PROVIDER-HUD-BRIDGE",
+      "requiresLive": false
     },
     {
-      "gap_id": "LC-TARGET-GATEWAY-FACADE",
       "summary": "Implement NostromoTargetGateway as an in-process authority=false facade with MANOJOS3 and future VX13 adapters",
       "state": "PASS",
       "priority": 64,
       "scope": "target_gateway_source",
-      "requires_live": false,
       "dependencies": [
         "LC-NOSTROMO-HYBRID"
       ],
@@ -343,15 +341,15 @@
         "commit:aed4a617d8c19a9761a687da24715cce0ff8c2a9"
       ],
       "original_state": "PASS_SOURCE",
-      "classification": "CLOSED_SOURCE"
+      "classification": "CLOSED_SOURCE",
+      "gapId": "LC-TARGET-GATEWAY-FACADE",
+      "requiresLive": false
     },
     {
-      "gap_id": "LC-ADAPTER-COMPAT-SOURCE",
       "summary": "Fail-closed AdapterCompatibilityReport source contract",
       "state": "PASS",
       "priority": 64.3,
       "scope": "adapter_compatibility_source",
-      "requires_live": false,
       "dependencies": [
         "LC-NATIVE-SURFACE-BINDING"
       ],
@@ -359,15 +357,15 @@
         "commit:aed4a617d8c19a9761a687da24715cce0ff8c2a9"
       ],
       "original_state": "PASS_SOURCE",
-      "classification": "CLOSED_SOURCE"
+      "classification": "CLOSED_SOURCE",
+      "gapId": "LC-ADAPTER-COMPAT-SOURCE",
+      "requiresLive": false
     },
     {
-      "gap_id": "LC-RESOURCE-TREE",
       "summary": "Generic lazy Resource Tree for cloud resources, LibreChat resources and future target hierarchies",
       "state": "PASS",
       "priority": 64.2,
       "scope": "resource_tree_source",
-      "requires_live": false,
       "dependencies": [
         "LC-NATIVE-SURFACE-BINDING"
       ],
@@ -375,15 +373,15 @@
         "commit:aed4a617d8c19a9761a687da24715cce0ff8c2a9"
       ],
       "original_state": "PASS_SOURCE",
-      "classification": "CLOSED_SOURCE"
+      "classification": "CLOSED_SOURCE",
+      "gapId": "LC-RESOURCE-TREE",
+      "requiresLive": false
     },
     {
-      "gap_id": "LC-M3-ADAPTER-SOURCE",
       "summary": "MANOJOS3 MCP TargetAdapter source implementation; transport injected and material path fail-closed until live binding",
       "state": "PASS",
       "priority": 64.1,
       "scope": "manojos3_target_adapter_source",
-      "requires_live": false,
       "dependencies": [
         "LC-TARGET-GATEWAY-FACADE"
       ],
@@ -391,15 +389,15 @@
         "commit:aed4a617d8c19a9761a687da24715cce0ff8c2a9"
       ],
       "original_state": "PASS_SOURCE",
-      "classification": "CLOSED_SOURCE"
+      "classification": "CLOSED_SOURCE",
+      "gapId": "LC-M3-ADAPTER-SOURCE",
+      "requiresLive": false
     },
     {
-      "gap_id": "LC-UPSTREAM-OVERLAY-REVALIDATE",
       "summary": "Pinned LibreChat upstream overlay install + VX workspace build + frontend build + uninstall + clean readback",
       "state": "PASS",
       "priority": 72,
       "scope": "upstream_overlay",
-      "requires_live": false,
       "dependencies": [],
       "evidence_refs": [
         "commit:24b971a2bcabf828d2c99afa1f3fede2151178c1",
@@ -408,7 +406,9 @@
         "upstream:f10b1d91f1eee3a2c82d5247bf620351486b7c1b"
       ],
       "original_state": "PASS",
-      "classification": "CLOSED_SOURCE"
+      "classification": "CLOSED_SOURCE",
+      "gapId": "LC-UPSTREAM-OVERLAY-REVALIDATE",
+      "requiresLive": false
     }
   ],
   "invariant": "DEFERRED_AND_CLOSED_ARE_NOT_ACTIVE_GAPS",
