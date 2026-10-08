@@ -2,7 +2,7 @@
   "schema": "libre-chat-vx.operating-drive-refs.v2",
   "current_start_here": {
     "document_id": "11e70lpwe5U3k9FMZWd7h-N0eNaidgaINJP9Pwz1bGx8",
-    "revision_id": "AHj4eMSPAbX-NgPeNeJ6ar3vi_rvQAYmajCa1L_VLWhteCa-TocFoEa4L0BX1ybln7UhC6XL4RqfVvmLA3EMpdeTkrqTgbBHqfg-7YEmpQU"
+    "revision_id": "AHj4eMTFLiEbkpgVenaJhnvit3npY0VnPtnddD3_DXyS45Vq_vH4eqZZqNFFFlNNYgZEKDwFlyB7fmofFNF4jfJsBt28FqLTHF2j3DN4xJY"
   },
   "librechat": {
     "nostromo_hybrid": {
@@ -37,28 +37,29 @@
   "living_package": {
     "10": {
       "document_id": "1fndkYM-UBmSfacQcbu_oewcDe4JzEClw-qd7K7J9pGg",
-      "revision_id": "AHj4eMRADV1N-UAupVKhE-87xlcTkvewqhlew9P6caUf9jVj89c5ROonXQfml-_se2SZHZtqq_TIHucUdTmsUpl7lhwYqkV-s63MBU0zXLQ",
+      "revision_id": "AHj4eMR_XbF152hgFQOpKgzxJyN25cR-v5DYPWL8KXnq6IaEMeXinDVtjoyHS-qSFaN_34Xy8tk3OE-yathbrnJsGpZgbOcug-Pjy8Mlzgg",
       "title": "10 — LIBRECHAT VX — Diseño Canónico vivo"
     },
     "20": {
       "document_id": "1py0BlozuMOjmo4lUEqxuqCmLaN2O3_6wYwXrTwfVcuY",
-      "revision_id": "AHj4eMQy-Iu5gvdWnrRnLeeFj5AiLVsxnpowu91G32F8NRoekDN_TgCepiYhTR5oKAxvrgXoYYTstt0LeKYyynyeal1BkDVnHOCtlZADVkg",
+      "revision_id": "AHj4eMToY-kmUiBuYVwZWT8L0i1mHVQL9TSYVhICFQhrL5QSqBFCMeuUU075kIwE0YhL1s89pJ8qCnR979Bal-lS4KjjSIEVMADEhb6L06I",
       "title": "20 — LIBRECHAT VX — Uso Operativo vivo"
     },
     "30": {
       "document_id": "19_Bm72_3aaxT6gggEAmfkZG0y0N1hXK6tMQrYLR4sDI",
-      "revision_id": "AHj4eMTEvyzxwhapaAa6vEQGECxd58JUQfWd357BBumcKNxKNy4ScMh1oK87Vfp-Yx5wZh0rZpPdzPjfWUm5D3cEFjeO1FcPFPe5ijGdFBk",
+      "revision_id": "AHj4eMQaBKDfjEosYH34Epyt0AptlZKgRQ_7xcaW2xDqYNWX0-zaY4flVrJyb1agnCwHJ6abE7PX9t7JzIuzNWoxPaxrEwcIjzwhtuIUQsw",
       "title": "30 — LIBRECHAT VX — Cierre, Continuidad y Handoff vivo"
     },
     "40": {
       "document_id": "1UD9LnU0eaKdEHrLUkMJyPp-II_6rZPtlD7uzn_sqWCc",
-      "revision_id": "AHj4eMQfpdcGZkP6aDYMd8hxS6lwDIThqLZm3Kcvn_85KP50LO8ewU1ZhUabKwL8r3P6e9aioDwaHMRp1nTvWw8jk2Npb1RBClZujPEl6i0",
+      "revision_id": "AHj4eMQl02mJzJDrXaScBtsauloaVJP2xTySoEdJBUfkWKwy48FdP8CEfAjHhLdArcJ2N0TI2fAqUWbeT5-jYQYPCERq7dg5Qsk3kKjfHnM",
       "title": "40 — LIBRECHAT VX — Mapa Canónico, Cableado y Cobertura vivo"
     },
     "00": {
       "document_id": "11e70lpwe5U3k9FMZWd7h-N0eNaidgaINJP9Pwz1bGx8",
-      "revision_id": "AHj4eMSPAbX-NgPeNeJ6ar3vi_rvQAYmajCa1L_VLWhteCa-TocFoEa4L0BX1ybln7UhC6XL4RqfVvmLA3EMpdeTkrqTgbBHqfg-7YEmpQU",
+      "revision_id": "AHj4eMTFLiEbkpgVenaJhnvit3npY0VnPtnddD3_DXyS45Vq_vH4eqZZqNFFFlNNYgZEKDwFlyB7fmofFNF4jfJsBt28FqLTHF2j3DN4xJY",
       "title": "00 — LIBRECHAT VX — Entrada, CURRENT, Bootstrap y Continuidad"
     }
-  }
+  },
+  "updated_for": "OPERATING_CRIBA_SKILLS_SEMANTIC_BACKLOG_2026-10-08"
 }
