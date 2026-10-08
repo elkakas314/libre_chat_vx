@@ -1244,6 +1244,28 @@
         "metodo": "Contraste de required y enum en JSON Schema con campos y ramas retornadas por chooseRemoteAccess(), inspección de config CURRENT y tests de acceso. No existe equivalencia 1:1 demostrada.",
         "runtime": "NO_DEPLOYMENT_EVIDENCE"
       }
+    },
+    {
+      "id": "LC-DISC-TRANSPORT-RESOURCE-001",
+      "estado": "ABIERTA",
+      "bloqueante": true,
+      "ubicacion": [
+        "contracts/transport-resource.schema.json#/properties/status",
+        "config/transport_registry.current.json#/resources",
+        "TOPOLOGY.json#/recursos",
+        "SPEC.json#/meta/estado_runtime_enum"
+      ],
+      "hecho": "El esquema transport-resource utiliza claves de forma ya alineada (id/kind/owner/purpose/status): los ocho registros activos config/transport_registry.current.json#/resources son estructuralmente válidos. Pero status sólo exige cadena no vacía y no distingue estado SOURCE de estado runtime. El registro SOURCE usa NOT_DEPLOYED para lc-tailserve y lc-cf-web y LIVE_NOT_VERIFIED para lc-aig y lc-agent-events; TOPOLOGY.json#/recursos documenta para los mismos recursos estado_runtime=NO_DEPLOYMENT_EVIDENCE y evidencia_runtime=[]; LIVE_NOT_VERIFIED no pertenece a SPEC.json#/meta/estado_runtime_enum. La validación estructural admite afirmaciones no respaldadas y mezcla espacios de estados. Las entradas deferred carecen de campos obligatorios pero no son instancias del esquema de resource activo.",
+      "tratamiento": "Separar explícitamente estado SOURCE declarado de estado runtime con procedencia/verificación sin promover ausencia o despliegue por documentación; reconciliar registry con TOPOLOGY y enum runtime, manteniendo valores no observados en NO_DEPLOYMENT_EVIDENCE. Acotar status o definir su espacio de nombres sin reescribir transportes ni inferir LIVE; corrección en PR dedicada posterior.",
+      "evidencia_source": {
+        "repositorio": "elkakas314/libre_chat_vx",
+        "git_commit_sha": "180ab7f7ef5bc18dcca207fa3aadf2453fe8e6ab",
+        "schema_git_blob_sha": "18403664bc48036f10e2f8edf9e677aa130b01a9",
+        "registry_git_blob_sha": "42a44df41af4752d42c3a3d7819b2a3f648620c9",
+        "topology_git_blob_sha": "201b4c81e0870b69329309d6a7a155d9f2bfbfa2",
+        "method": "Contraste de required/properties y enum kind contra 8 recursos activos; comparación por id de status de registry con estado_runtime y evidencia_runtime de TOPOLOGY; revisión de SPEC.meta.estado_runtime_enum.",
+        "runtime": "NO_DEPLOYMENT_EVIDENCE"
+      }
     }
   ],
   "frontend": {
