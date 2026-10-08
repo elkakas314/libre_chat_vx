@@ -1,6 +1,6 @@
 {
-  "schema": "libre-chat-vx.operating-proofs.v1",
-  "snapshot_id": "source-2026-10-03-a54b1f66",
+  "schema": "libre-chat-vx.operating-proofs.v2",
+  "snapshot_id": "source-2026-10-08-criba",
   "proofs": [
     {
       "proof_id": "nostromo-hybrid-source-drive",
@@ -18,7 +18,8 @@
       "evidence_refs": [
         "commit:a54b1f66327f0b4279f7024c92e70183b51cee14",
         "drive:1PqXk7nM8M_arbI472RU5n4T0rFQI1Yt-MH54VSapYc8"
-      ]
+      ],
+      "history_classification": "HISTORICAL_PRESERVED"
     },
     {
       "proof_id": "m3-gpt-semantic-bridge-source-drive",
@@ -35,7 +36,8 @@
       "evidence_refs": [
         "commit:a54b1f66327f0b4279f7024c92e70183b51cee14",
         "drive:1gAbtU0XISM4GWuspp-6wWEZACAycWtZBqzMrEJUu6y0"
-      ]
+      ],
+      "history_classification": "HISTORICAL_PRESERVED"
     },
     {
       "proof_id": "tentacle-hud-model-independence",
@@ -51,7 +53,8 @@
       ],
       "evidence_refs": [
         "commit:a54b1f66327f0b4279f7024c92e70183b51cee14"
-      ]
+      ],
+      "history_classification": "HISTORICAL_PRESERVED"
     },
     {
       "proof_id": "nostromo-material-test",
@@ -68,7 +71,8 @@
       ],
       "evidence_refs": [
         "test:26_PASS@94c632762f7afee7d9fa9d0f0c23c80d7494d2d2"
-      ]
+      ],
+      "history_classification": "HISTORICAL_PRESERVED"
     },
     {
       "proof_id": "m3-live-binding",
@@ -77,7 +81,8 @@
       "state": "UNAVAILABLE",
       "dependency_fingerprint": "DEPLOYMENT_UNBOUND",
       "dependencies": [],
-      "evidence_refs": []
+      "evidence_refs": [],
+      "history_classification": "HISTORICAL_PRESERVED"
     },
     {
       "proof_id": "m3-free-reasoner-live",
@@ -86,7 +91,44 @@
       "state": "UNAVAILABLE",
       "dependency_fingerprint": "SOURCE_CONFLICT_REQUIRES_LIVE_READBACK",
       "dependencies": [],
+      "evidence_refs": [],
+      "history_classification": "HISTORICAL_PRESERVED"
+    },
+    {
+      "proof_id": "transport-and-source-ci-20261008",
+      "subject": "LibreChat VX source and overlay exact-head PASS before Skills consolidation",
+      "proof_class": "TEST",
+      "state": "VALID",
+      "history_classification": "BASELINE_VERIFIED",
+      "verified_at_source_head": "77ceb1a9fe72dd70db9f968b28b0370c831115ff",
+      "dependency_fingerprint": "head:77ceb1a9|ci:37706857454|upstream:f10b1d91",
+      "dependencies": [
+        "scripts/validate-parallel-transport.mjs",
+        "config/parallel_transport.current.json",
+        "overlay",
+        "tests"
+      ],
+      "evidence_refs": [
+        "commit:77ceb1a9fe72dd70db9f968b28b0370c831115ff",
+        "github_actions_run:37706857454",
+        "upstream:f10b1d91f1eee3a2c82d5247bf620351486b7c1b"
+      ]
+    },
+    {
+      "proof_id": "skill-criba-exact-head-ci",
+      "subject": "Consolidated Skills + operating docs exact-head validation",
+      "proof_class": "TEST",
+      "state": "MISSING",
+      "history_classification": "CURRENT_AWAITING_CI",
+      "dependency_fingerprint": "PENDING_EXACT_HEAD_CI",
+      "dependencies": [
+        "skills/nostromo-core/SKILL.md",
+        "config/skills.current.json",
+        "operating/TARGET_CANON.json",
+        "operating/GAPS_CURRENT.json"
+      ],
       "evidence_refs": []
     }
-  ]
+  ],
+  "source_evidence_cutoff_head": "77ceb1a9fe72dd70db9f968b28b0370c831115ff"
 }
