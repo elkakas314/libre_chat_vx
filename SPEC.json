@@ -276,9 +276,9 @@
           "ningún merge sin instrucción específica"
         ]
       },
-      "plan_cierre_cinco_bloqueantes": {
-        "estado": "PLANIFICADO_SIN_CORRECCIONES",
-        "objetivo": "Cerrar cinco discrepancias SOURCE del Bloque 1, cada una mediante PR individual y readback; no confundir CI con deployment.",
+      "plan_cierre_contratos_6_12": {
+        "estado": "PLAN_ACTUALIZADO_CORRECCION_7_EN_PREPARACION",
+        "objetivo": "Cerrar 6 discrepancias funcionales abiertas de 6,7,8,9,10,12 y clasificar documentalmente contrato 11 huérfano con intención; siete hallazgos 6–12 en plan explícito.",
         "secuencia": [
           {
             "orden": 0,
@@ -297,22 +297,22 @@
             "orden": 1,
             "pr": "PR futura dedicada contrato 6",
             "adr": [
-              "ADR-09",
               "ADR-10"
             ],
             "discrepancia": "LC-DISC-TARGET-CAPABILITY-PROJECTION-001",
-            "accion": "Normalizar índice de capabilities real (ADR-09) y nombres/required en frontera existente (ADR-10); fail-closed cuando no hay evidence/authority/risk observables; no tocar MANOJOS3.",
-            "gate": "tests/fixtures SOURCE + build-test + overlay-smoke + readback de integración"
+            "accion": "Exclusivamente ADR-10: normalización wire snake_case → dominio TS camelCase de TargetCapabilityProjection, required/nullability/identity y mapeo explícito en frontera existente. No incluye normalización semántica del índice MCP (ADR-09, iniciativa independiente).",
+            "gate": "fixture wire schema + consumer TS + fail-closed sin inventar propiedades + build-test + overlay-smoke"
           },
           {
             "orden": 2,
-            "pr": "PR futura dedicada contrato 7",
+            "pr": "PR #7 — contrato 7",
             "adr": [
               "ADR-10"
             ],
             "discrepancia": "LC-DISC-BACKGROUND-MUTATION-FENCE-001",
-            "accion": "Contrato externo snake_case versus interfaz TypeScript, scopes, nullability y campos obligatorios; asegurar no replay y UNKNOWN_OUTCOME/readback.",
-            "gate": "fixtures schema→consumer + tests negativos + CI"
+            "accion": "Normalizar explícitamente schema snake_case ⇄ TS camelCase en frontera existente; sincronizar campos obligatorios sin nuevos ejecutores ni replay; fixtures válidas e inválidas.",
+            "gate": "fixtures schema→consumer + tests negativos + CI",
+            "estado": "PROGRAMADA_PARA_CORRECCION_SOURCE_EN_ESTE_TURNO"
           },
           {
             "orden": 3,
@@ -327,22 +327,49 @@
           {
             "orden": 4,
             "pr": "PR futura dedicada contrato 9",
-            "adr": [
-              "Decisión local de representación del estado UNAVAILABLE; ADR nuevo solo si altera frontera o semántica pública"
-            ],
+            "adr": [],
             "discrepancia": "LC-DISC-MOBILE-ACCESS-001",
-            "accion": "Fijar consumidor del esquema mobile-access, modelar estado sin ruta y gates de autenticación sin habilitar Cloudflare pública implícitamente.",
-            "gate": "tests de DENY/autenticación/UNAVAILABLE + CI"
+            "accion": "En PR propia, alinear schema al resultado completo RemoteAccessDecision (incluido UNAVAILABLE) y mantener los gates Tailscale/Cloudflare y ausencia de replay; no tratar input de signals como output.",
+            "gate": "tests de DENY/autenticación/UNAVAILABLE + CI",
+            "decision_concreta": "Representación del resultado RemoteAccessDecision: incluir UNAVAILABLE en enum del schema; NO eliminar UNAVAILABLE de chooseRemoteAccess(). El esquema modelará salida de decisión con required mode, requiresFreshSession, materialReplayAllowed=false y reason; backendReachable/authenticated salen de required del resultado y permanecen comprobaciones/señales internas de autorización existentes."
           },
           {
             "orden": 5,
             "pr": "PR futura dedicada contrato 10",
             "adr": [
-              "ADR posterior solo si cambia taxonomía canónica SOURCE/runtime"
+              "ADR-11 OBLIGATORIO — taxonomy SOURCE/runtime status; PROPUESTA PENDIENTE"
             ],
             "discrepancia": "LC-DISC-TRANSPORT-RESOURCE-001",
-            "accion": "Desambiguar SOURCE vs runtime y tipar status, preservar NO_DEPLOYMENT_EVIDENCE sin inventar NOT_DEPLOYED/LIVE; ajustar registry/schema/toTopología con provenance.",
-            "gate": "validación recursos + estados/source/runtime + CI"
+            "accion": "ADR-11 obligatorio previo a modificar status: separar taxonomías SOURCE declarado vs runtime verificado. Después PR de contrato 10 con schema/registry/source provenance, preservando NO_DEPLOYMENT_EVIDENCE sin inferir despliegue.",
+            "gate": "validación recursos + estados/source/runtime + CI",
+            "decision": "ADR obligatorio, sin condicional."
+          },
+          {
+            "orden": 6,
+            "pr": "Cierre documental — contrato 11 (sin PR funcional hasta instancia real)",
+            "tipo": "HUERFANO",
+            "adr": [],
+            "inconsistencia": "LC-DOC-EXTENSION-PACKAGE-001",
+            "estado": "HUERFANO_INTENCION_DOCUMENTADA",
+            "dependencia": "Tras la secuencia de 6–10 para regularizar definición/uso; puede revisarse en paralelo de forma documental sin bloquear las PRs",
+            "accion": "Mantener en inconsistencias_documentales_y_limites, determinar si se implementa una instancia consumidora real. No inventar runtime ni abrir PR de corrección funcional mientras no exista consumidor.",
+            "gate": "Lectura de instancia/consumidor real o decisión explícita de retirar/deferir el contrato."
+          },
+          {
+            "orden": 7,
+            "pr": "PR futura dedicada contrato 12",
+            "tipo": "CORRECCION_CONTRATO",
+            "adr": [
+              "No ADR-09 ni ADR-10 salvo decisión específica sobre enum público"
+            ],
+            "discrepancia": "LC-DISC-MANOJOS3-ENTRYPOINT-001",
+            "estado": "PLANIFICADO_EN_PARALELO",
+            "paralelo_con": [
+              "Contrato 9",
+              "Contrato 10"
+            ],
+            "accion": "Alinear enum de entrypoint de inferencia interna con tipo LibreChat (INTERNAL_ADVISORY_LITELLM), mapear endpoint_env/deploymentEnv y establecer identity/provenance; tests de los tres entrypoints.",
+            "gate": "Contrato + fixture descriptor + CI, sin cambios MANOJOS3 ni afirmación LIVE"
           }
         ],
         "gate_cierre": "Para cada PR: diff exacto → CI del HEAD exacto → merge específico autorizado → CI del commit integrado → registro de cierre individual con git_commit_sha y CI; runtime sigue NO_DEPLOYMENT_EVIDENCE salvo readback LIVE real.",
@@ -350,7 +377,13 @@
         "adr_pendientes": [
           "ADR-09 PROPUESTA preexistente",
           "ADR-10 PROPUESTA en PR #6; aún no integrada"
-        ]
+        ],
+        "dependencias_adr": {
+          "ADR-09": "Sólo normalización semántica MCP capability-index; fuera de las correcciones del contrato 6, separada de ADR-10.",
+          "ADR-10": "Sólo normalización snake_case (wire) ↔ camelCase (TS) en contratos 6,7,8; PROPUESTA en PR #6.",
+          "ADR-11": "Obligatorio y pendiente, contrato 10: taxonomías status SOURCE/runtime."
+        },
+        "nota_ejecucion": "Contrato 12 puede tramitarse paralelo a 9 y 10 con scopes independientes (regla B); contrato 11 huérfano permanece registro documental, sin PR de código hasta instancia."
       }
     },
     "deferred_external": [
@@ -1360,29 +1393,6 @@
       }
     },
     {
-      "id": "LC-DISC-EXTENSION-PACKAGE-001",
-      "estado": "ABIERTA",
-      "bloqueante": true,
-      "ubicacion": [
-        "contracts/extension-package.schema.json",
-        "config/extension_registry.current.json",
-        "plugins/vx-nostromo/plugin.json",
-        "docs/EXTENSION_STRATEGY_CURRENT.md"
-      ],
-      "hecho": "El JSON Schema extension-package exige id, mechanism, authority=false y sourcePath como instancia de un paquete, pero no hay consumidor/instancia de ese shape en la fuente inspeccionada. config/extension_registry.current.json expresa una política decision_order/source_tree/deployment_tree (sin id, mechanism, sourcePath); plugins/vx-nostromo/plugin.json declara $schema agent-plugins.org y name/version/description, no es instancia del contrato extension-package. Adicionalmente decision_order usa MCP_OR_ACTION, mientras el enum de mechanism sólo admite MCP o ACTION como valores distintos. No es HUÉRFANO documental porque EXTENSION_STRATEGY_CURRENT.md sí establece la finalidad; es un contrato de instancia sin binding demostrado.",
-      "tratamiento": "Fijar qué representación concreta consume extension-package (descriptor de paquete vs política registry vs plugin externo) y conectar instancias tipadas/validación del shape existente sin alterar el estándar externo del Agent Plugin. Si el contrato sólo es prospectivo, declarar explícitamente su estado no instanciado en el canon y evitar atribuir conformidad o despliegue. Corrección separada tras aprobación de alcance.",
-      "evidencia_source": {
-        "repositorio": "elkakas314/libre_chat_vx",
-        "git_commit_sha": "38c384c180086854bae2c777a5eaee7f3a5b20c8",
-        "schema_git_blob_sha": "6601cb241f4beb7aa29729d3e3c43d88aca5658f",
-        "registry_git_blob_sha": "4f1e1fb51b552860b08eb4039a0c62d12146d7e8",
-        "plugin_git_blob_sha": "925b07ebda5360dba32542dc2cd58ae8070c22a2",
-        "plan_doc_git_blob_sha": "c6e26afa74d731c1d306e96422821fa594b639c7",
-        "method": "Comparación required/enums/additionalProperties con registry actual y plugin externo; búsqueda SOURCE de sourcePath/ExtensionPackage y pruebas; no se halló un consumidor o instancia dedicada.",
-        "runtime": "NO_DEPLOYMENT_EVIDENCE"
-      }
-    },
-    {
       "id": "LC-DISC-MANOJOS3-ENTRYPOINT-001",
       "estado": "ABIERTA",
       "bloqueante": true,
@@ -1569,6 +1579,33 @@
       "id": "REVISION-20261008-KEENABLE",
       "resolucion": "Proveedor soportado en upstream fijado f10b1d91 y documentación LibreChat. Mantenerlo como baseline SOURCE con límites públicos, prueba real aún pendiente.",
       "tema": "Duda sobre keenable"
+    },
+    {
+      "id": "LC-DOC-EXTENSION-PACKAGE-001",
+      "contrato": "11",
+      "clasificacion": "HUERFANO_CON_INTENCION_DOCUMENTADA",
+      "estado_declarado_source": "HUERFANO",
+      "ubicacion": [
+        "contracts/extension-package.schema.json",
+        "config/extension_registry.current.json",
+        "plugins/vx-nostromo/plugin.json",
+        "docs/EXTENSION_STRATEGY_CURRENT.md"
+      ],
+      "hecho": "contracts/extension-package.schema.json carece de instancia y consumidor demostrables; docs/EXTENSION_STRATEGY_CURRENT.md expresa finalidad planeada pero no vuelve el contrato activo. No es discrepancia funcional bloqueante actual.",
+      "tratamiento": "Conservar como inconsistencia documental; revisar tras contratos 6–10. Crear instancia y consumidor únicamente si hay requerimiento real, o documentar deferencia/retirada sin tocar mecanismo externo de Agent Plugin.",
+      "evidencia_source": {
+        "repositorio": "elkakas314/libre_chat_vx",
+        "git_commit_sha": "38c384c180086854bae2c777a5eaee7f3a5b20c8",
+        "schema_git_blob_sha": "6601cb241f4beb7aa29729d3e3c43d88aca5658f",
+        "registry_git_blob_sha": "4f1e1fb51b552860b08eb4039a0c62d12146d7e8",
+        "plugin_git_blob_sha": "925b07ebda5360dba32542dc2cd58ae8070c22a2",
+        "plan_doc_git_blob_sha": "c6e26afa74d731c1d306e96422821fa594b639c7",
+        "method": "Comparación required/enums/additionalProperties con registry actual y plugin externo; búsqueda SOURCE de sourcePath/ExtensionPackage y pruebas; no se halló un consumidor o instancia dedicada.",
+        "runtime": "NO_DEPLOYMENT_EVIDENCE"
+      },
+      "procedencia_discrepancia": "LC-DISC-EXTENSION-PACKAGE-001",
+      "reclasificacion": "B",
+      "bloqueante": false
     }
   ],
   "integraciones": [
