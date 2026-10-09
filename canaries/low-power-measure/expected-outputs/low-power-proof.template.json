@@ -1,0 +1,24 @@
+{
+  "schema": "libre-chat-vx.low-power-proof.v1",
+  "observed_at_utc": null,
+  "gate_id": "LC-LOW-POWER-MEASURE",
+  "gate_type": "GATE_HUMAN",
+  "measurement_files": {
+    "IDLE": null,
+    "STARTUP": null,
+    "SINGLE_CHAT": null,
+    "STREAMING": null
+  },
+  "spec_expected_values": {
+    "CPU_idle_y_activo": null,
+    "RAM_idle_y_activo": null,
+    "TTFT_y_latencia_proveedor": null,
+    "latencia_reconnect_movil": null,
+    "tiempo_build_overlay": null,
+    "consumo_stream_contexto": null
+  },
+  "human_decision": null,
+  "gate_closed": false,
+  "report": "report.md",
+  "example_only": true
+}

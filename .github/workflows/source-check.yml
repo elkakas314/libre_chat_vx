@@ -114,6 +114,7 @@ jobs:
             bash canaries/web-research-live/00-source-sanity.sh
             bash canaries/agent-events-live/00-source-sanity.sh
             bash canaries/recovery-live/00-source-sanity.sh
+            bash canaries/low-power-measure/00-source-sanity.sh
           '
           elapsed="$(( $(date +%s) - started ))"
           test "$elapsed" -lt 30
