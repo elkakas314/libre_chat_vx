@@ -1,0 +1,50 @@
+{
+  "schema": "libre-chat-vx.skill-sync-evidence.v1",
+  "gate_id": "LC-SKILL-SYNC-LIVE",
+  "gate_state": "OPEN",
+  "runtime_status": "NO_DEPLOYMENT_EVIDENCE",
+  "source": {
+    "ref": "handoff_current_bootstrps",
+    "git_commit_sha": null,
+    "git_tree_sha": null,
+    "catalog_git_blob_sha": null,
+    "authenticated_readback": false
+  },
+  "admin": {
+    "source_id": null,
+    "tenant_id": null,
+    "permissions_verified": false,
+    "source_id_conflict_resolved": false
+  },
+  "stage1": {
+    "status": "NOT_RUN",
+    "expected_skills": 12,
+    "status_readback_ref": null,
+    "mirror_proof_ref": null,
+    "rollback_snapshot_ref": null
+  },
+  "stage2": {
+    "status": "NOT_RUN",
+    "expected_skills": 10,
+    "status_readback_ref": null,
+    "mirror_proof_ref": null,
+    "rollback_snapshot_ref": null
+  },
+  "checks": {
+    "github_readback": "NOT_RUN",
+    "inventory_12": "NOT_RUN",
+    "admin_stage1": "NOT_RUN",
+    "mirror_stage1": "NOT_RUN",
+    "admin_stage2": "NOT_RUN",
+    "mirror_stage2": "NOT_RUN",
+    "rollback_readback": "NOT_RUN"
+  },
+  "result": {
+    "gate_closed": false,
+    "live_verified": false,
+    "material_verified": false,
+    "reviewed_by": null,
+    "reviewed_at_utc": null,
+    "notes": "SOURCE only; authenticated LIVE plus authority and rollback evidence required."
+  }
+}

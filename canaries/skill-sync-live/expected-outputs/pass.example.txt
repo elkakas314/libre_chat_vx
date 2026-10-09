@@ -1,0 +1,9 @@
+# SINTÉTICO: NO LIVE
+READ stable GitHub source ref=handoff_current_bootstrps; git_commit_sha=<observado>; git_tree_sha=<observado>
+PASS 01-github-source (probe only; LIVE gate OPEN)
+READ 12 physical SKILL.md roots: 10 active, 2 legacy (no deletions)
+PASS 02-inventory (probe only; LIVE gate OPEN)
+READ admin sync status stage=1 synced=12; no POST
+PASS 03-admin-sync-status (probe only; LIVE gate OPEN)
+CHECKED externally supplied per-Skill blob/provenance/ACL claims (structure only)
+PASS 04-mirror-permissions (probe only; LIVE gate OPEN)
