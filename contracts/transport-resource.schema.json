@@ -7,7 +7,10 @@
     "kind",
     "owner",
     "purpose",
-    "status"
+    "sourceStatus",
+    "runtimeStatus",
+    "runtimeEvidenceRefs",
+    "authority"
   ],
   "properties": {
     "id": {
@@ -43,16 +46,73 @@
     "target": {
       "type": "string"
     },
-    "status": {
-      "type": "string",
-      "minLength": 1
-    },
     "authority": {
       "const": false
     },
     "rollback": {
       "type": "string"
+    },
+    "sourceStatus": {
+      "enum": [
+        "SOURCE_DEFINED",
+        "DECLARED_NOT_DEPLOYED",
+        "DECLARED_LIVE_UNVERIFIED"
+      ]
+    },
+    "runtimeStatus": {
+      "enum": [
+        "NO_DEPLOYMENT_EVIDENCE",
+        "NOT_DEPLOYED",
+        "DEPLOYED_UNVERIFIED",
+        "LIVE_VERIFIED",
+        "MATERIAL_VERIFIED"
+      ]
+    },
+    "runtimeEvidenceRefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "runtimeObservedAt": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sourceRevision": {
+      "type": "string",
+      "minLength": 1
     }
   },
-  "additionalProperties": true
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "runtimeStatus": {
+            "enum": [
+              "NOT_DEPLOYED",
+              "DEPLOYED_UNVERIFIED",
+              "LIVE_VERIFIED",
+              "MATERIAL_VERIFIED"
+            ]
+          }
+        },
+        "required": [
+          "runtimeStatus"
+        ]
+      },
+      "then": {
+        "required": [
+          "runtimeObservedAt"
+        ],
+        "properties": {
+          "runtimeEvidenceRefs": {
+            "minItems": 1
+          }
+        }
+      }
+    }
+  ]
 }
