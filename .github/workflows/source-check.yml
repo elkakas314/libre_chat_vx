@@ -44,6 +44,8 @@ jobs:
         run: npm run transport:validate
       - name: Build and test
         run: npm test
+      - name: Validate agent event SOURCE projection with compiled runtime
+        run: node --test canaries/agent-events-live/01-local-delivery.test.cjs
 
   overlay-smoke:
     runs-on: ubuntu-latest
@@ -110,6 +112,7 @@ jobs:
             bash canaries/skill-sync-live/00-source-sanity.sh
             bash canaries/tailscale-mobile-live/00-source-sanity.sh
             bash canaries/web-research-live/00-source-sanity.sh
+            bash canaries/agent-events-live/00-source-sanity.sh
           '
           elapsed="$(( $(date +%s) - started ))"
           test "$elapsed" -lt 30

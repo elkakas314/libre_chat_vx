@@ -1,0 +1,39 @@
+{
+  "schema": "libre-chat-vx.agent-events-live-evidence.v1",
+  "gate_id": "LC-AGENT-EVENTS-LIVE",
+  "gate_state": "OPEN",
+  "runtime_status": "NO_DEPLOYMENT_EVIDENCE",
+  "source": {
+    "git_commit_sha": null,
+    "git_tree_sha": null,
+    "event_config_blob_sha": "3f200e70a849932a12011cc4045c7da66309749b",
+    "event_module_blob_sha": "1edc05c3f0b9d621473b8e3417e9ab5b84514657"
+  },
+  "m3_dependency": {
+    "gap_id": "LC-M3-GAP-001",
+    "state": "BLOCKED",
+    "external_event_readback_ref": null,
+    "skipped": true
+  },
+  "librechat": {
+    "local_projection_source_test": "NOT_RUN",
+    "authenticated_receive_readback_ref": null,
+    "idempotency_server_readback_ref": null,
+    "triage_readback_ref": null,
+    "notification_readback_ref": null
+  },
+  "checks": {
+    "source_sanity": "NOT_RUN",
+    "compiled_local_projection": "NOT_RUN",
+    "live_inbound": "SKIP",
+    "live_dedupe": "SKIP",
+    "live_notifications": "SKIP",
+    "m3_external": "SKIP"
+  },
+  "result": {
+    "gate_closed": false,
+    "live_verified": false,
+    "source_only": true,
+    "operator_authenticated_readback_verified": false
+  }
+}

@@ -1,0 +1,6 @@
+# Example (SYNTHETIC), no real host probed
+SKIP 02-read-inbound-evidence: No authenticated LibreChat inbound receipt/readback supplied; no event POST performed
+SKIP 03-idempotency-readback: No authenticated LibreChat inbound receipt/readback supplied; no event POST performed
+SKIP 04-triage-notifications: No authenticated LibreChat inbound receipt/readback supplied; no event POST performed
+SKIP 05-manojos3-external: LC-M3-GAP-001 BLOQUEADO: no verified MANOJOS3 GET /v1/events, stream or subscription; cannot close gate
+FAIL 03-idempotency-readback (exit=1) — No authenticated server-side deduplication readback
