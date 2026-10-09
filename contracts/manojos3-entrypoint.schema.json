@@ -3,37 +3,96 @@
   "$id": "manojos3-entrypoint.schema.json",
   "type": "object",
   "required": [
+    "id",
     "kind",
+    "transport",
     "state",
-    "authority"
+    "authority",
+    "sourcePins",
+    "notes"
   ],
   "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
     "kind": {
       "enum": [
         "ACTION_MCP",
-        "INFERENCE_OPENAI_COMPATIBLE",
+        "INTERNAL_ADVISORY_LITELLM",
         "INTERNAL_ADVISORY_INTERFLOW"
       ]
+    },
+    "transport": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sourceEndpoint": {
+      "type": "string",
+      "minLength": 1
+    },
+    "deploymentEnv": {
+      "type": "string",
+      "minLength": 1
     },
     "state": {
       "enum": [
         "SOURCE_EXISTS_DEPLOYMENT_UNBOUND",
-        "SOURCE_DISCOVERED_LIVE_UNVERIFIED",
         "SOURCE_INTERNAL_ONLY"
       ]
     },
-    "endpoint_env": {
-      "type": [
-        "string",
-        "null"
-      ]
-    },
-    "transport": {
-      "type": "string"
-    },
     "authority": {
       "const": false
+    },
+    "sourcePins": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "path",
+          "blobSha"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "blobSha": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{40}$"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
     }
   },
-  "additionalProperties": true
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "INTERNAL_ADVISORY_LITELLM"
+          }
+        },
+        "required": [
+          "kind"
+        ]
+      },
+      "then": {
+        "properties": {
+          "state": {
+            "const": "SOURCE_INTERNAL_ONLY"
+          }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
 }
