@@ -1,0 +1,11 @@
+# EJEMPLO SINTÉTICO — NO constituye evidencia LIVE.
+READ route=dynamic/nostromo-rapido (present)
+READ route=dynamic/nostromo-normal (present)
+READ route=dynamic/nostromo-pensar (present)
+READ route=dynamic/nostromo-investigar (present)
+READ route=dynamic/nostromo-visualizar (present)
+READ route=dynamic/nostromo-contexto-largo (present)
+READ route=dynamic/nostromo-vision (present)
+READ account, gateway and 7 routes: authenticated source readbacks saved outside repository
+PASS 01-account-and-routes
+# El PASS solo corresponde al alcance del script 01.

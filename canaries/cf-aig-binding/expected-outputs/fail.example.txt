@@ -1,0 +1,7 @@
+# EJEMPLO SINTÉTICO — sin IDs ni secretos.
+Missing or duplicated dynamic route: nostromo-vision
+FAIL 01-account-and-routes (exit=1)
+# O, antes de inferencia:
+# Inference may incur cost; explicit CF_AIG_ALLOW_INFERENCE=YES is required
+# FAIL 03-inference (exit=1)
+# Nunca traducir HTTP 200 o FAIL a LIVE_VERIFIED.
