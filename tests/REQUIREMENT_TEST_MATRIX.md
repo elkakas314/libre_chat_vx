@@ -1,6 +1,6 @@
 # REQUIREMENT TEST MATRIX
 
-Todos estos tests están `NOT_RUN` hasta ejecutarse en entorno real o runner configurado.
+Esta matriz describe **criterios de aceptación**, no garantiza una prueba independiente por cada fila. Las pruebas SOURCE de contrato, build, overlay y fixture visual se ejecutan en runners de GitHub; consultar el workflow del HEAD exacto. Las pruebas LIVE de host, cuentas externas, sesiones auténticas, autorizaciones y efectos materiales continúan `NOT_RUN/NO_VERIFICADO` hasta un despliegue gobernado. Nunca promover un criterio a PASS por el mero hecho de aparecer en esta matriz.
 
 ## LC-R001–R010 Authority
 - confirmar que UI/tool/model nunca produce autoridad por sí solo;

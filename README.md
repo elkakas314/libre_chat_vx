@@ -4,13 +4,19 @@ Repositorio independiente para construir la capa LibreChat de VX13/MANOJOS3/ORÁ
 
 ## Estado
 
-`DOCUMENTED_SOURCE_BOOTSTRAP`
+`SOURCE_CORE_COMPLETE / GITHUB_FIRST_QA_IN_PROGRESS`
 
+- `GITHUB_CI_SOURCE=SUCCESS` (código HEAD 3d0d7cb8981b2f5ab5bfc1cba077d9f867721993; run 37997966900)
+- `VISUAL_SOURCE_FIXTURE=SUCCESS` (Chromium escritorio+móvil; run 37997966956, artefacto 11648201561)
+- `UPSTREAM_MOUNTED_BROWSER_E2E=NOT_RUN` (pendiente, no equivale a pruebas en host)
+- `INSTALLATION=DEFERRED_TO_MANOJOS3`
 - `LIVE=NO_VERIFICADO`
 - `MATERIAL_VERIFIED=NO`
 - Upstream fijado: `LibreChat-AI/LibreChat@f10b1d91f1eee3a2c82d5247bf620351486b7c1b`
 - Upstream package observado: `v0.8.8`
 - Config schema observado: `1.3.17`
+
+El objetivo vigente es cerrar en GitHub las pruebas SOURCE, interfaz visual e integración reversible; la instalación y los canarios LIVE se realizarán después, mediante MANOJOS3. Estado y orden: `CURRENT.json`, `docs/BUILD_ORDER_CURRENT.md` y `docs/GITHUB_FIRST_VISUAL_VALIDATION.md`.
 
 ## Principios
 

@@ -1,5 +1,10 @@
 # LibreChat VX — SOURCE completion current
 
+## GitHub-first QA — actualización 2026-10-10
+
+Código/estilo SOURCE verificado en 3d0d7cb8981b2f5ab5bfc1cba077d9f867721993: source-check 37997966900 SUCCESS y visual-source-smoke 37997966956 SUCCESS (artefacto de capturas 11648201561). El navegador usa componentes React en un fixture aislado con CSS del overlay, no una sesión LibreChat desplegada. Sigue pendiente E2E visual del upstream realmente montado, accesibilidad y revisión humana. La instalación y los gates LIVE quedan para fase posterior con MANOJOS3. Véase docs/BUILD_ORDER_CURRENT.md y docs/GITHUB_FIRST_VISUAL_VALIDATION.md.
+
+
 Status: `SOURCE_CORE_COMPLETE / EXACT_HEAD_TESTS_PASS / UPSTREAM_OVERLAY_BUILD_PASS / LIVE_NO_VERIFICADO`
 
 Source implementation: `aed4a617d8c19a9761a687da24715cce0ff8c2a9`.
