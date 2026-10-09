@@ -1,0 +1,6 @@
+# Solo ejemplos SINTÉTICOS. No representan observaciones de ningún host.
+SKIP 03-canary-service-restart: RECOVERY_CANARY_ALLOW_RESTART=YES is required; no restart attempted
+SKIP 02-read-tailscale-ssh-policy: Tailnet admin SSH policy export unavailable; tailscale status alone is insufficient
+SKIP 04-evidence-freshness: Missing readback 03-result.json; no LIVE conclusion
+FAIL 04-evidence-freshness (exit=1): Evidence is future-dated or >=15 minutes old
+FAIL 03-canary-service-restart (exit=1): Restart failed or had unknown effect: manual recovery per 05-rollback.md
