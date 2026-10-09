@@ -352,10 +352,10 @@
             "tipo": "HUERFANO",
             "adr": [],
             "inconsistencia": "LC-DOC-EXTENSION-PACKAGE-001",
-            "estado": "HUERFANO_INTENCION_DOCUMENTADA",
+            "estado": "CERRADO_DOCUMENTAL",
             "dependencia": "Tras la secuencia de 6–10 para regularizar definición/uso; puede revisarse en paralelo de forma documental sin bloquear las PRs",
-            "accion": "Mantener en inconsistencias_documentales_y_limites, determinar si se implementa una instancia consumidora real. No inventar runtime ni abrir PR de corrección funcional mientras no exista consumidor.",
-            "gate": "Lectura de instancia/consumidor real o decisión explícita de retirar/deferir el contrato."
+            "accion": "Decisión final A: mantener inconsistencia solo a título de antecedente, sin acción ni PR funcional.",
+            "gate": "CERRADO documental; no requiere consumidor ni LIVE."
           },
           {
             "orden": 7,
@@ -1827,7 +1827,7 @@
         "docs/EXTENSION_STRATEGY_CURRENT.md"
       ],
       "hecho": "contracts/extension-package.schema.json carece de instancia y consumidor demostrables; docs/EXTENSION_STRATEGY_CURRENT.md expresa finalidad planeada pero no vuelve el contrato activo. No es discrepancia funcional bloqueante actual.",
-      "tratamiento": "Conservar como inconsistencia documental; revisar tras contratos 6–10. Crear instancia y consumidor únicamente si hay requerimiento real, o documentar deferencia/retirada sin tocar mecanismo externo de Agent Plugin.",
+      "tratamiento": "Cerrado definitivamente como documental conocido sin acción. No crear consumidor ni instancia ficticia, no modificar plugin externo.",
       "evidencia_source": {
         "repositorio": "elkakas314/libre_chat_vx",
         "git_commit_sha": "38c384c180086854bae2c777a5eaee7f3a5b20c8",
@@ -1840,7 +1840,11 @@
       },
       "procedencia_discrepancia": "LC-DISC-EXTENSION-PACKAGE-001",
       "reclasificacion": "B",
-      "bloqueante": false
+      "bloqueante": false,
+      "estado": "CERRADA_DOCUMENTAL",
+      "decision_final": "A — documental conocido, sin acción",
+      "cierre": "Se conserva en inconsistencias_documentales_y_limites únicamente como antecedente informativo. No es bloqueante ni tarea futura automática; nueva activación del contrato requeriría una necesidad y autorización distintas.",
+      "accion_pendiente": false
     }
   ],
   "integraciones": [
@@ -2123,7 +2127,21 @@
       "url": "https://github.com/elkakas314/libre_chat_vx/actions/runs/37726226657",
       "workflow": "source-check"
     },
-    "version_documento": "2.0.0-canon-consolidado"
+    "version_documento": "2.0.0-canon-consolidado",
+    "orden_contratos_bloque1": [
+      "nostromo-hybrid",
+      "operating-gap",
+      "operating-proof",
+      "operating-bootstrap",
+      "ui-action",
+      "target-capability-projection",
+      "background-mutation-fence",
+      "cross-target-truth-envelope",
+      "mobile-access",
+      "transport-resource",
+      "extension-package",
+      "manojos3-entrypoint"
+    ]
   },
   "objetivos": {
     "negocio": [
