@@ -1124,6 +1124,80 @@
       },
       "alcance": "SOURCE: definicion de adaptador y tests fixture sin invocar MANOJOS3, sin nuevos endpoints ni token, sin cambios en el canon del target. LC-M3-R0-BINDING sigue BLOCKED_DEPENDENCY. No inicia control material.",
       "criterio_verificacion": "Fixture MCP con ok/http_status/data.schema=manojos3.capability-index.v1 y groups/planning_candidates/inventory_only; aserciones de normalizacion de IDs, risk/effect/availability/autoridades/evidencias solo cuando haya respaldo verificable; fail-closed si faltan campos; no producir LIVE_VERIFIED ni verified a partir de SOURCE."
+    },
+    {
+      "id": "ADR-10",
+      "estado": "APROBADA",
+      "titulo": "Normalización explícita de contratos JSON de frontera (snake_case) a consumidores TypeScript (camelCase)",
+      "decision": "Opción C APROBADA: mantener los JSON Schema como contratos de representación externa en snake_case y convertir explícitamente a tipos internos TypeScript camelCase en las fronteras/adaptadores ya existentes. Cada campo exigido por el consumidor deberá estar respaldado por evidencia o rechazo fail-closed; los adaptadores no conceden authority material ni promueven SOURCE a LIVE/VERIFIED.",
+      "alternativas": [
+        {
+          "opcion": "A",
+          "descripcion": "Alinear JSON Schema a camelCase",
+          "coste": "Medio-alto; exige revisar instancias/consumidores externos, contratos, documentación y fixtures.",
+          "riesgo": "Breaking change de interoperabilidad y compatibilidad con productores snake_case."
+        },
+        {
+          "opcion": "B",
+          "descripcion": "Alinear TypeScript a snake_case",
+          "coste": "Alto; modificación transversal de tipos, consumidores, interfaces y pruebas.",
+          "riesgo": "Regresiones en cockpit/adaptadores y mezcla de nomenclatura de frontend."
+        },
+        {
+          "opcion": "C",
+          "descripcion": "Normalizar en fronteras ya existentes",
+          "coste": "Acotado por frontera; mappings y tests positivos/negativos con lectura de contrato.",
+          "riesgo": "Drift, mapping ambiguo o falsa completitud si faltan required/provenance; exigir fail-closed y rechazo de valores no demostrados."
+        },
+        {
+          "opcion": "D",
+          "descripcion": "Duplicar tipos/contratos híbridos o aceptar ambas convenciones sin frontera tipada",
+          "coste": "Bajo al inicio, alto en mantenimiento.",
+          "riesgo": "Ambigüedad de fuentes y validaciones divergentes; no recomendado."
+        }
+      ],
+      "recomendacion": "C",
+      "motivo": "Los contratos 6, 7 y 8 presentan desalineación de forma en distintos consumidores, no una autoridad común rota. La conversión acotada permite mantener el wire contract y el dominio TS sin migración transversal. Debe reaprovechar fronteras existentes, sin crear otro gateway, Kernel, executor ni capa de autoridad.",
+      "alcance": {
+        "contratos": [
+          "contracts/target-capability-projection.schema.json",
+          "contracts/background-mutation-fence.schema.json",
+          "contracts/cross-target-truth-envelope.schema.json"
+        ],
+        "discrepancias": [
+          "LC-DISC-TARGET-CAPABILITY-PROJECTION-001",
+          "LC-DISC-BACKGROUND-MUTATION-FENCE-001",
+          "LC-DISC-CROSS-TARGET-TRUTH-ENVELOPE-001"
+        ],
+        "fronteras_existentes": [
+          "src/adapters/manojos3McpAdapter.ts#discoverCapabilities",
+          "src/recovery/backgroundMutationFence.ts",
+          "src/adapters/manojos3McpAdapter.ts#toReadResult"
+        ],
+        "afectacion_9_12": "PENDIENTE_AUDITORIA"
+      },
+      "criterios_aceptacion": [
+        "Sin modificación del esquema ni de TypeScript en esta propuesta; la aplicación exige decisión humana posterior y PRs contractuales específicas.",
+        "Mantener JSON Schema snake_case solo en frontera y TS camelCase internamente; conversiones comprobables y sin data loss silencioso.",
+        "No inventar requiredScopes, evidenceRefs, sourceRevision, observedAt, authority refs o target IDs; rechazo fail-closed si falta fuente verificable.",
+        "Comparar required, enums, nullability, tipos, identity, status, provenance y fecha; casos válidos e inválidos de contrato y consumidor.",
+        "Los targets MANOJOS3/VX13 conservan toda autoridad material; no se presume deployment LIVE por CI/source.",
+        "ADR-09 sigue independiente: normalización semántica del índice de capacidades de MANOJOS3, complementaria a la normalización de forma ADR-10."
+      ],
+      "evidencia_source": {
+        "repositorio": "elkakas314/libre_chat_vx",
+        "head_base_git_commit_sha": "7aba0e153b8bc1a0321afee2dd217239a6e06937",
+        "contrato_6_git_blob_sha": "66f677e4d8fdafaf92c7a63d4edac5ed3d936fae",
+        "contrato_7_git_blob_sha": "ff2427f6906c1c019d1949c1dfd9a64ee447971f",
+        "contrato_8_git_blob_sha": "5f3b52ca91c544552db419aa8cc381e8a67c54b5",
+        "types_git_blob_sha": "b8036c4f35fcae157d60a3ff4e898ae998e27829",
+        "background_consumer_git_blob_sha": "35904e73cfc34515c61d2f338f714be253900eae",
+        "adapter_git_blob_sha": "fb08050d12562fb909f255e0d5dbb803aac67848"
+      },
+      "resultado": "APROBADA",
+      "runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "aplicabilidad": "ADR-10 aplica cuando existe frontera entre schema y consumidor externo. Contratos sin frontera externa corrigen el schema directamente.",
+      "excepcion_contrato_12": "contracts/manojos3-entrypoint.schema.json: descriptor TS local sin frontera externa. Alinear schema a INTERNAL_ADVISORY_LITELLM, deploymentEnv e id obligatorio; no crear normalizador ADR-10."
     }
   ],
   "despliegue": {
