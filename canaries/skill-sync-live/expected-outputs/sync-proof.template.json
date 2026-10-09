@@ -21,7 +21,9 @@
       "visible_to_expected_principals": false,
       "hidden_from_unauthorized_principals": false,
       "scope_verified": false,
-      "readback_ref": null
+      "readback_ref": null,
+      "historical_commit_ancestor_verified": false,
+      "historical_commit_git_readback_ref": null
     }
   ],
   "warning": "Not live proof. Populate 12/10 mirrors from authenticated LibreChat per-Skill admin/UI readbacks in private storage; do not commit."

@@ -22,7 +22,10 @@ jq -e --argjson stage "$LC_SKILL_STAGE" --slurpfile src "$SS_DIR/01-source.json"
  (.mirrors as $mirrors |
    all((if $stage==1 then ($inv[0].active+$inv[0].legacy) else $inv[0].active end)[]; . as $name |
      any($mirrors[]; .name==$name and .root_path==("skills/"+$name) and
-      .git_commit_sha==$src[0].git_commit_sha and
+      (.git_commit_sha|type=="string" and test("^[a-fA-F0-9]{40}$")) and
+      (if .git_commit_sha==$src[0].git_commit_sha then true
+       else .historical_commit_ancestor_verified==true and
+        (.historical_commit_git_readback_ref|type=="string" and length>8) end) and
       (.skill_md_git_blob_sha as $blob |
         any($inv[0].physical[];.name==$name and .git_blob_sha==$blob)) and
       .visible_to_expected_principals==true and
