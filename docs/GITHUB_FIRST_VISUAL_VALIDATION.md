@@ -17,3 +17,5 @@ A PASS in this workflow establishes only SOURCE React browser rendering and inte
 The screenshot fixture has simple test-only CSS; this is NOT the final product skin. Review the screenshots before considering the UX design approved. Remaining visual closure needs actual upstream-mounted interactive E2E on CI, accessibility audit, design review and mobile behavior. Avoid claims of full visual product completion.
 
 No active_live gate in SPEC.json is closed by this test. No host, credentials, accounts, MANOJOS3, or VX13 accessed or modified.
+
+Product styling: overlay/upstream/VXCockpit.css is imported by VXCockpitBridge and copied into upstream by the reversible overlay installer. The fixture loads this same scoped CSS for visual-regression inspection. The synthetic page wrapper remains test-only; actual upstream panel integration E2E and user UX sign-off are still separate gates.

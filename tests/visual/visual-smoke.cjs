@@ -3,7 +3,7 @@
 const assert = require('node:assert/strict');
 const { build } = require('esbuild');
 const { chromium } = require('playwright');
-const { mkdirSync, writeFileSync } = require('node:fs');
+const { mkdirSync, writeFileSync, copyFileSync } = require('node:fs');
 const { resolve } = require('node:path');
 const { pathToFileURL } = require('node:url');
 const root = resolve(__dirname, '../..');
@@ -16,9 +16,11 @@ async function run() {
     outfile: resolve(out, 'fixture.js'), bundle: true, platform: 'browser',
     format: 'iife', jsx: 'automatic', logLevel: 'warning',
   });
+  copyFileSync(resolve(root, 'overlay/upstream/VXCockpit.css'), resolve(out, 'VXCockpit.css'));
   writeFileSync(resolve(out, 'index.html'), [
     '<!doctype html><html lang="es"><head><meta charset="utf-8">',
     '<meta name="viewport" content="width=device-width,initial-scale=1">',
+    '<link rel="stylesheet" href="./VXCockpit.css">',
     '<style>html,body{margin:0;background:#0c1824;color:#eaf0fa;',
     'font:15px system-ui,sans-serif}.vx-visual-fixture{padding:12px;',
     'max-width:1080px;margin:auto}section,nav{min-width:0;border:1px solid #38536c;',

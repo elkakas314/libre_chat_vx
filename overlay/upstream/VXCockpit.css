@@ -1,0 +1,92 @@
+/* LibreChat VX cockpit — self-contained, low-cost, responsive native side-panel styling. */
+[data-testid="vx-nostromo-cockpit"] {
+  --vx-background: #121e2a;
+  --vx-panel: #1b2b39;
+  --vx-edge: #42596a;
+  --vx-text: #e8f1f8;
+  --vx-muted: #bdcbd6;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: .65rem;
+  min-width: 0;
+  max-width: 100%;
+  padding: .8rem;
+  color: var(--vx-text);
+  background: var(--vx-background);
+  border: 1px solid var(--vx-edge);
+  border-radius: .75rem;
+  font: inherit;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+[data-testid="vx-nostromo-cockpit"] *,
+[data-testid="vx-nostromo-cockpit"] *::before,
+[data-testid="vx-nostromo-cockpit"] *::after { box-sizing: border-box; }
+[data-testid="vx-nostromo-cockpit"] > nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35rem;
+  min-width: 0;
+}
+[data-testid="vx-nostromo-cockpit"] > section {
+  min-width: 0;
+  padding: .7rem .8rem;
+  border: 1px solid var(--vx-edge);
+  border-radius: .6rem;
+  background: var(--vx-panel);
+}
+[data-testid="vx-nostromo-cockpit"] > section[data-testid="vx-tentacle-hud"] {
+  border-inline-start: 3px solid #8ec9e7;
+}
+[data-testid="vx-nostromo-cockpit"] h2 {
+  font-size: 1rem;
+  margin: 0 0 .45rem;
+  color: var(--vx-text);
+  font-weight: 650;
+}
+[data-testid="vx-nostromo-cockpit"] p { margin: .25rem 0; color: var(--vx-muted); }
+[data-testid="vx-nostromo-cockpit"] ul { margin: .4rem 0; padding-inline-start: 1.2rem; }
+[data-testid="vx-nostromo-cockpit"] li { margin-bottom: .45rem; }
+[data-testid="vx-nostromo-cockpit"] button {
+  appearance: none;
+  min-width: 0;
+  max-width: 100%;
+  padding: .42rem .65rem;
+  border: 1px solid #7292ac;
+  border-radius: .4rem;
+  background: #284256;
+  color: var(--vx-text);
+  font: inherit;
+  cursor: pointer;
+}
+[data-testid="vx-nostromo-cockpit"] > nav button { flex: 1 1 40%; }
+[data-testid="vx-nostromo-cockpit"] button[aria-pressed="true"] {
+  border-color: #c4e5f6;
+  background: #385d75;
+  font-weight: 700;
+}
+[data-testid="vx-nostromo-cockpit"] button:disabled {
+  cursor: not-allowed;
+  opacity: .48;
+}
+[data-testid="vx-nostromo-cockpit"] button:focus-visible {
+  outline: 3px solid #ffcd68;
+  outline-offset: 2px;
+}
+[data-testid="vx-nostromo-cockpit"] fieldset {
+  min-width: 0;
+  margin: .5rem 0;
+  padding: .5rem;
+  border: 1px solid var(--vx-edge);
+  border-radius: .35rem;
+}
+[data-testid="vx-nostromo-cockpit"] legend { font-size: .85rem; color: var(--vx-muted); }
+[data-testid="vx-nostromo-cockpit"] fieldset button { margin: .2rem; }
+@media (max-width: 480px) {
+  [data-testid="vx-nostromo-cockpit"] { padding: .55rem; gap: .5rem; }
+  [data-testid="vx-nostromo-cockpit"] > section { padding: .55rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-testid="vx-nostromo-cockpit"] * { animation: none !important; transition: none !important; }
+}

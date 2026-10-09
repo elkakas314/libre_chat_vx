@@ -39,6 +39,10 @@ cpSync(
   resolve(sourceRoot, 'overlay/upstream/VXCockpitBridge.tsx'),
   resolve(bridgeDir, 'VXCockpitBridge.tsx')
 );
+cpSync(
+  resolve(sourceRoot, 'overlay/upstream/VXCockpit.css'),
+  resolve(bridgeDir, 'VXCockpit.css')
+);
 
 let presentation = readFileSync(presentationPath, 'utf8');
 const importAnchor = "import AppChatSurface from '~/components/Chat/Surface';";

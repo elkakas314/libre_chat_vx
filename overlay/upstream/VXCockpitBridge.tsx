@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react';
+import './VXCockpit.css';
 import {
   MANOJOS3_LIBRECHAT_INTEGRATION,
   MANOJOS3_PARITY_DESCRIPTOR,
