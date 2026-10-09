@@ -19,3 +19,5 @@ The screenshot fixture uses the scoped overlay CSS plus test-only wrapper layout
 No active_live gate in SPEC.json is closed by this test. No host, credentials, accounts, MANOJOS3, or VX13 accessed or modified.
 
 Product styling: overlay/upstream/VXCockpit.css is imported by VXCockpitBridge and copied into upstream by the reversible overlay installer. The fixture loads this same scoped CSS for visual-regression inspection. The synthetic page wrapper remains test-only; actual upstream panel integration E2E and user UX sign-off are still separate gates.
+
+Screenshot composition: the SourceOnlyCockpit is mounted hidden for truth-guard assertions; the visible screenshot contains only NostromoCockpit, matching the source overlay bridge's single cockpit rather than duplicating panels. This remains a fixture, not production E2E.

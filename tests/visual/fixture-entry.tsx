@@ -28,7 +28,7 @@ function Fixture() {
         <h1>LibreChat VX · NOSTROMO</h1>
         <p>Fixture SOURCE; no binding LIVE ni autoridad material.</p>
       </header>
-      <SourceOnlyCockpit />
+      <div hidden aria-hidden="true"><SourceOnlyCockpit /></div>
       <NostromoCockpit scope={scope} hud={hud} targetTruth={[m3, vx13]}
         activeTruth={activeTruth} windows={windows} onScopeChange={setScope} />
     </div>

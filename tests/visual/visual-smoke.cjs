@@ -49,7 +49,8 @@ async function run() {
         await page.locator('[data-testid="vx-target-navigator"] button[aria-pressed="true"]').innerText(),
         'AUTO',
       );
-      assert.match(await page.locator('[data-testid="librechat-vx-cockpit"]').innerText(),/SOURCE_ONLY/);
+      assert.equal(await page.locator('[data-testid="librechat-vx-cockpit"]').isHidden(),true);
+      assert.match(await page.locator('[data-testid="librechat-vx-cockpit"]').textContent(),/SOURCE_ONLY/);
       assert.match(await page.locator('[data-testid="vx-tentacle-hud"]').innerText(),/authority:false/);
       const truth = await page.locator('[data-testid="vx-minimal-truth"]').innerText();
       assert.match(truth,/MANOJOS3/);
