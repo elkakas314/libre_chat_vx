@@ -2,19 +2,84 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "background-mutation-fence.schema.json",
   "type": "object",
-  "required": ["operation_id", "target_id", "effect_scope", "status", "readback_required"],
+  "required": [
+    "operation_id",
+    "target_id",
+    "capability_ref",
+    "effect_scope",
+    "status",
+    "readback_required"
+  ],
   "properties": {
-    "operation_id": {"type": "string", "minLength": 1},
-    "target_id": {"type": "string", "minLength": 1},
-    "effect_scope": {"type": "string", "minLength": 1},
-    "expected_state": {"type": ["object", "null"]},
-    "idempotency_key": {"type": ["string", "null"]},
-    "authority_ref": {"type": ["string", "null"]},
-    "fence": {"type": ["integer", "null"], "minimum": 0},
-    "started_at": {"type": ["string", "null"]},
-    "timeout_at": {"type": ["string", "null"]},
-    "readback_required": {"const": true},
-    "status": {"enum": ["PREPARED", "SUBMITTED", "UNKNOWN_OUTCOME", "RECONCILING", "VERIFIED", "FAILED", "CANCELLED"]}
+    "operation_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_id": {
+      "enum": [
+        "VX13",
+        "MANOJOS3"
+      ]
+    },
+    "effect_scope": {
+      "type": "string",
+      "minLength": 1
+    },
+    "expected_state": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "idempotency_key": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "authority_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "fence": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "started_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "timeout_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "readback_required": {
+      "const": true
+    },
+    "status": {
+      "enum": [
+        "PREPARED",
+        "SUBMITTED",
+        "UNKNOWN_OUTCOME",
+        "RECONCILING",
+        "VERIFIED",
+        "FAILED",
+        "CANCELLED"
+      ]
+    },
+    "capability_ref": {
+      "type": "string",
+      "minLength": 1
+    }
   },
   "additionalProperties": false
 }
