@@ -1242,6 +1242,94 @@
         "consumer_git_blob_sha": "78ec5f868ea3d8f768d08c72ba47430dee0c6a5b",
         "plan_git_commit_sha": "2ad94ed20ff4a27f09e9ac4909bfb49c0f5e676e"
       }
+    },
+    {
+      "id": "ADR-11",
+      "titulo": "Taxonomías independientes para estado SOURCE y estado runtime de transport-resource",
+      "estado": "APROBADA",
+      "resultado": "APROBADA",
+      "decision": "Separar el campo genérico status de transport-resource en sourceStatus (afirmación documental de configuración) y runtimeStatus (estado observado bajo el enum canónico SPEC.meta.estado_runtime_enum). Nunca utilizar SOURCE_DEFINED, NOT_DEPLOYED o LIVE_NOT_VERIFIED del registry como prueba runtime. Mantener el contrato de recursos authority=false y validar explícitamente los estados por esquema y evidencia.",
+      "alternativas": [
+        {
+          "opcion": "A — ELEGIDA",
+          "descripcion": "Dos dimensiones tipadas sourceStatus y runtimeStatus, con provenance y evidencia runtime obligatorias para cualquier afirmación positiva de despliegue",
+          "coste": "Migración focalizada del schema/registry/consumidores con fixtures de estados",
+          "riesgo": "Cambiar el shape del registry: debe hacerse en PR posterior y probar todos los lectores."
+        },
+        {
+          "opcion": "B — DESCARTADA",
+          "descripcion": "Reutilizar status sin tipar como etiqueta mixta SOURCE/runtime",
+          "riesgo": "Permite afirmar LIVE sin readback y confunde SOURCE con deployment."
+        },
+        {
+          "opcion": "C — DESCARTADA",
+          "descripcion": "Interpretar LIVE_NOT_VERIFIED como DEPLOYED_UNVERIFIED y NOT_DEPLOYED como runtime verificado",
+          "riesgo": "Promoción injustificada de afirmaciones históricas/documentales."
+        }
+      ],
+      "clasificacion": {
+        "sourceStatus": {
+          "funcion": "Estado de definición/configuración en SOURCE; nunca hecho LIVE.",
+          "valores_propuestos": [
+            "SOURCE_DEFINED",
+            "DECLARED_NOT_DEPLOYED",
+            "DECLARED_LIVE_UNVERIFIED"
+          ],
+          "mapeo_legacy": {
+            "SOURCE_DEFINED": "SOURCE_DEFINED",
+            "NOT_DEPLOYED": "DECLARED_NOT_DEPLOYED",
+            "LIVE_NOT_VERIFIED": "DECLARED_LIVE_UNVERIFIED"
+          },
+          "regla": "Los prefijos DECLARED identifican afirmaciones SOURCE heredadas, no pruebas de despliegue. No traducir automáticamente la taxonomía de TOPOLOGY.estado_source_declarado: éste puede tener detalle semántico adicional y exige correspondencia explícita por id."
+        },
+        "runtimeStatus": {
+          "funcion": "Estado efectivo del despliegue observado sólo por readback válido.",
+          "enum_referencia": "SPEC.json#/meta/estado_runtime_enum",
+          "valores": [
+            "NO_DEPLOYMENT_EVIDENCE",
+            "NOT_DEPLOYED",
+            "DEPLOYED_UNVERIFIED",
+            "LIVE_VERIFIED",
+            "MATERIAL_VERIFIED"
+          ],
+          "default_sin_prueba": "NO_DEPLOYMENT_EVIDENCE",
+          "regla": "NO_DEPLOYMENT_EVIDENCE no significa que el recurso no esté desplegado. NOT_DEPLOYED requiere readback negativo; DEPLOYED_UNVERIFIED requiere readback de presencia; LIVE_VERIFIED exige canario LIVE y evidencia; MATERIAL_VERIFIED exige recibo/verificación material cuando corresponda."
+        },
+        "provenance": {
+          "principio": "Anclar por ID al recurso de config/transport_registry.current.json y TOPOLOGY.json#/recursos sin asumir que las formas sean idénticas.",
+          "evidencia": "Toda promoción de runtimeStatus debe conservar readback_refs/observed_at/source_revision o identificadores equivalentes verificables; evidencia_runtime=[] impide LIVE_VERIFIED o MATERIAL_VERIFIED.",
+          "crosswalk": "Si falta readback o la correspondencia de ids, mantener NO_DEPLOYMENT_EVIDENCE y registrar el hueco."
+        }
+      },
+      "alcance": {
+        "contrato": "contracts/transport-resource.schema.json",
+        "registry": "config/transport_registry.current.json",
+        "topologia": "TOPOLOGY.json#/recursos",
+        "discrepancia": "LC-DISC-TRANSPORT-RESOURCE-001",
+        "authority": false,
+        "no_incluye": [
+          "Modificar el host, Cloudflare, Tailscale o MANOJOS3",
+          "Inventar credenciales, despliegues o recursos",
+          "Normalización camelCase/snake_case del ADR-10",
+          "Corregir contrato 9 o 12"
+        ]
+      },
+      "criterios_aceptacion": [
+        "Aplicar esta política sólo en PR de corrección del contrato 10 posterior a la aprobación y merge de ADR-11.",
+        "Schema y instancias tipadas: distinguir sourceStatus de runtimeStatus, con enum runtime exacto; no dejar status libre ambiguo.",
+        "Los ocho recursos activos se migran sin perder id/kind/owner/purpose/rollback ni etiquetas SOURCE heredadas.",
+        "Las dos entradas diferidas continúan diferidas; no se presentan como recursos activos desplegados.",
+        "Sin readback vivo mantener runtimeStatus=NO_DEPLOYMENT_EVIDENCE; nunca convertir NOT_DEPLOYED/LIVE_NOT_VERIFIED SOURCE directamente a estados runtime.",
+        "Tests de migración, presencia sin verificación, ausencia probada, promociones autorizadas, casos inválidos, coincidencia por id y fail-closed de authority=false.",
+        "CI build-test y overlay-smoke del HEAD exacto y readback posterior al merge. SOURCE CI no prueba LIVE."
+      ],
+      "evidencia_source": {
+        "git_commit_sha": "604a3b47ed945933156f216384581c179ea982af",
+        "schema_git_blob_sha": "18403664bc48036f10e2f8edf9e677aa130b01a9",
+        "registry_git_blob_sha": "42a44df41af4752d42c3a3d7819b2a3f648620c9",
+        "topology_git_blob_sha": "201b4c81e0870b69329309d6a7a155d9f2bfbfa2"
+      },
+      "runtime": "NO_DEPLOYMENT_EVIDENCE"
     }
   ],
   "despliegue": {
