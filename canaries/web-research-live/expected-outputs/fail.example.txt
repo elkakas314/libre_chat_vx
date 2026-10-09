@@ -1,12 +1,7 @@
-# SINTÉTICO — FAIL no acredita NOT_DEPLOYED
-DETAIL: Authenticated LibreChat GET returned HTTP=403 or invalid JSON
-FAIL 01-authenticated-config (exit=1)
-# O
-DETAIL: Mounted host YAML differs from keyless/SSRF-safe SOURCE policy
-FAIL 02-host-web-search-config (exit=1)
-# O
-DETAIL: Search/fetch/citation evidence incomplete or lacks references
-FAIL 03-native-search-fetch-proof (exit=1)
-# O
-DETAIL: Authenticated ACL/safety/citation/cost proof incomplete or contains unauthorized route
-FAIL 04-citations-security-cost (exit=1)
+# SINTÉTICO, NO prueba LIVE ni NOT_DEPLOYED
+SKIP 01-read-search-config: LIBRECHAT_ACTIVE_YAML unavailable: no authenticated host-mounted config
+FAIL 01-read-search-config (exit=1) — Real YAML differs from SPEC.json required Keenable/none/safeSearch=1
+SKIP 02-verify-search-provider: Keenable HTTP 429 without key; keyless is supported but this request was NOT verified
+FAIL 02-verify-search-provider (exit=1) — HTTP 200 but Keenable results lack HTTPS URLs/titles/snippets
+SKIP 04-canary-search-query: No authenticated read-only native pipeline output; pinned LibreChat has no safe GET query invocation
+SKIP 05-canary-fetch: No authenticated read-only pipeline fetch evidence; no safe GET tool invocation

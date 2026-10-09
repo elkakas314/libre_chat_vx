@@ -1,0 +1,28 @@
+{
+  "schema": "libre-chat-vx.web-research-pipeline-proof.v1",
+  "authenticated_librechat_readback": false,
+  "pipeline_available": false,
+  "source": "LIBRECHAT_NATIVE_WEB_SEARCH",
+  "provider": "keenable",
+  "scraper": "keenable",
+  "observed_at_utc": null,
+  "search": {
+    "completed": false,
+    "readback_ref": null,
+    "results": [
+      {
+        "url": null,
+        "snippet": null
+      }
+    ]
+  },
+  "fetch": {
+    "completed": false,
+    "url": null,
+    "text_length": null,
+    "content_sha256": null,
+    "readback_ref": null
+  },
+  "config_modified": false,
+  "warning": "SYNTHETIC TEMPLATE ONLY. Populate privately from an authenticated LibreChat pipeline readback, never invent URLs or hashes."
+}

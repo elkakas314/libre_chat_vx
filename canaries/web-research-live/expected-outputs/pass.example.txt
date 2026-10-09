@@ -1,10 +1,12 @@
-# SINTÉTICO — ninguna prueba LIVE ejecutada por este fichero
-PASS 00-web-research-source-sanity (SOURCE only)
-READ authenticated LibreChat webSearch config and session; no search/POST
-PASS 01-authenticated-config (READ_ONLY; gate OPEN)
-READ host-mounted YAML summary (no secrets); provider/keyless/safeSearch match SOURCE
-PASS 02-host-web-search-config (READ_ONLY; gate OPEN)
-CHECKED external native Web Search/fetch/citations proof STRUCTURE; not independently verified LIVE
-PASS 03-native-search-fetch-proof (READ_ONLY; gate OPEN)
-CHECKED supplied ACL/SSRF/citation/quota/cost structure; admin corroboration still required
-PASS 04-citations-security-cost (READ_ONLY; gate OPEN)
+# SINTÉTICO, NO prueba LIVE
+PASS 00-web-research-source-sanity (offline SOURCE)
+READ host YAML: Keenable/none/safeSearch=1; no configuration changed
+PASS 01-read-search-config (SOURCE/LIVE probe only; gate OPEN)
+READ Keenable keyless search: HTTP 200, 3 results; no config mutation
+PASS 02-verify-search-provider (SOURCE/LIVE probe only; gate OPEN)
+READ Keenable keyless fetch: HTTP 200, 120 text chars; no config mutation
+PASS 03-verify-scraper-provider (SOURCE/LIVE probe only; gate OPEN)
+READ existing authenticated pipeline search evidence; no new generation
+PASS 04-canary-search-query (SOURCE/LIVE probe only; gate OPEN)
+READ existing authenticated pipeline fetch evidence; no new generation
+PASS 05-canary-fetch (SOURCE/LIVE probe only; gate OPEN)
