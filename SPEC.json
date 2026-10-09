@@ -1198,6 +1198,50 @@
       "runtime": "NO_DEPLOYMENT_EVIDENCE",
       "aplicabilidad": "ADR-10 aplica cuando existe frontera entre schema y consumidor externo. Contratos sin frontera externa corrigen el schema directamente.",
       "excepcion_contrato_12": "contracts/manojos3-entrypoint.schema.json: descriptor TS local sin frontera externa. Alinear schema a INTERNAL_ADVISORY_LITELLM, deploymentEnv e id obligatorio; no crear normalizador ADR-10."
+    },
+    {
+      "id": "ADR-12",
+      "estado": "APROBADA",
+      "resultado": "APROBADA",
+      "titulo": "Contrato mobile-access es la salida de RemoteAccessDecision con ruta denegada explícita",
+      "decision": "Modificar solamente el schema mobile-access de SALIDA en PR de corrección posterior: añadir UNAVAILABLE al enum mode; hacer obligatorios mode, requiresFreshSession, materialReplayAllowed (const false) y reason. Retirar backendReachable y authenticated del required de salida, pues son señales de entrada/gates internos y no campos de RemoteAccessDecision. No modificar chooseRemoteAccess, prioridad LOCAL→TAILSCALE_PRIVATE→CLOUDFLARE_ACCESS_PUBLIC→UNAVAILABLE ni política de identidad.",
+      "motivacion": "El schema actual obliga a backendReachable/authenticated que no son campos de la decisión producida por src/mobile/remoteAccess.ts y omite la opción fail-closed UNAVAILABLE. El contrato debe describir la salida real sin exponer señales internas ni permitir replay.",
+      "alternativas": [
+        {
+          "opcion": "A ELEGIDA",
+          "decision": "Schema describe RemoteAccessDecision y conserva UNAVAILABLE",
+          "coste": "Acotado: esquema + fixtures/tests de las cuatro rutas",
+          "riesgo": "Breaking change de instancias antiguas que asumían esquema de entrada; exigir revisión de consumidores."
+        },
+        {
+          "opcion": "B DESCARTADA",
+          "decision": "Eliminar UNAVAILABLE del selector runtime",
+          "riesgo": "Ocultaría ausencia de ruta autorizada y arriesgaría fallback indebido."
+        },
+        {
+          "opcion": "C DESCARTADA",
+          "decision": "Añadir backendReachable/authenticated a RemoteAccessDecision",
+          "riesgo": "Duplicaría señales internas en el contrato de resultado y podría confundir una señal con un gate autorizado."
+        }
+      ],
+      "precondiciones": [
+        "ADR-12 aprobado antes de modificar contrato 9",
+        "No abrir ruta pública implícitamente",
+        "No transformar SOURCE CI en LIVE"
+      ],
+      "criterios_aceptacion": [
+        "Schema valida los 4 resultados de chooseRemoteAccess incluidas rutas fallidas",
+        "UNAVAILABLE implica materialReplayAllowed=false",
+        "Ruta Cloudflare pública sólo si Access autenticada y edge reachable",
+        "Sin queue/replay de mutación tras reconexión",
+        "CI build-test/overlay-smoke del HEAD exacto; readback de merge separado"
+      ],
+      "alcance": "Solo representación SOURCE de mobile-access. No cambios de contratos 10/12, MANOJOS3, red ni estado LIVE.",
+      "evidencia_source": {
+        "schema_git_blob_sha": "30da9fec03dddac0980df6572b173bbe0c62a551",
+        "consumer_git_blob_sha": "78ec5f868ea3d8f768d08c72ba47430dee0c6a5b",
+        "plan_git_commit_sha": "2ad94ed20ff4a27f09e9ac4909bfb49c0f5e676e"
+      }
     }
   ],
   "despliegue": {
