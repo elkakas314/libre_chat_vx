@@ -1,69 +1,63 @@
-# LC-SKILL-SYNC-LIVE — canarios SOURCE de solo lectura
+# LC-SKILL-SYNC-LIVE — canario SOURCE de observación
 
-**Gate OPEN; runtime NO_DEPLOYMENT_EVIDENCE.** Scripts preparados, no ejecutados en host. No despliegan, sincronizan ni eliminan nada: todas las peticiones externas son **GET**. LibreChat VX/NOSTROMO authority=false.
+**Gate OPEN.** Se comprueba la distribución GitHub Skill Sync sin sincronizar, desplegar, alterar permisos ni tocar MANOJOS3. Pueden leerse datos privados en el **host autorizado**; nunca incorporarlos a Git o Drive. El PASS de un script prueba solo su condición, no LIVE_VERIFIED.
 
-## Fuentes exactas
+## SOURCE y dos etapas
 
-- `SPEC.json#/backlog/active_live/1`, `#/meta/reglas_evidencia_runtime`, `#/configuracion/librechat_yaml/skill_sync_id_canonicalizacion`.
-- `config/skills.current.json#/counts`, `#/catalog`, `#/legacy_compatibility`.
-- `deployment/skill-sync/README.md` y `librechat.skill-sync-stage{1,2}.example.yaml`.
-- LibreChat upstream fijado `f10b1d91f1eee3a2c82d5247bf620351486b7c1b`: `api/server/routes/admin/skills.js`, `packages/api/src/admin/skills.ts`, `packages/api/src/skills/sync/github.ts`, `packages/data-schemas/src/types/skillSync.ts`.
+- Canon: `SPEC.json#/backlog/active_live/1`, `#/meta/reglas_evidencia_runtime`; `config/skills.current.json#/catalog`, `#/legacy_compatibility`, `#/counts`.
+- Config staged: `deployment/skill-sync/README.md` y sus dos YAML de ejemplo. Stage 1 descubre las 12 carpetas físicas mediante `paths=["skills"]`, depth 1; stage 2 selecciona 10 activas, depth 0, reteniendo en Git las dos heredadas.
+- Upstream fijado: `f10b1d91f1eee3a2c82d5247bf620351486b7c1b`; el admin status devuelve `sources[].sourceId` (camelCase), normalizado a `source_id` en la evidencia.
+- **Conflicto abierto:** ejemplo antiguo `librechat-vx-skills` y staged `nostromo-vx-skills`. Ningún ID se presume LIVE: leer admin `sourceId` y resolver el mirror preexistente sin renombrarlo.
 
-**Conflicto REAL por resolver:** `SPEC.json#/configuracion/librechat_yaml/skill_sync_id_canonicalizacion` registra `librechat-vx-skills` (ejemplo antiguo, `runOnStartup:true`, depth 2) frente a `nostromo-vx-skills` (staged, `runOnStartup:false`, depth 1/0). **Ningún sourceId LIVE está confirmado**. Resolver identidad y tenant mediante lectura autenticada del servidor **antes** de cualquier activación. No duplicar IDs ni reemplazar una configuración desconocida.
+## Dependencias y variables (solo entorno del host)
 
-## Requisitos y variables de entorno
+Bash, curl, jq, Git, SHA256, find y HTTPS. Gestor de secretos para todos los tokens; nunca usar `set -x`. No colocar valores en scripts ni en ejemplos de evidencia.
 
-Host autorizado: Bash, curl, jq, base64, date, HTTPS, JWT de administrador LibreChat capaz de ver credenciales/metadatos Skill Sync y token **read-only** GitHub para el repositorio privado. Ningún valor real se consigna en Git, Drive o chat. No usar `set -x`.
-
-| Variable | Uso |
+| Variable | Función |
 |---|---|
-| `GITHUB_SKILLS_TOKEN` | Solo lectura GitHub Contents/Metadata; verificar alcance fuera del script. |
-| `LC_SKILL_REPO_OWNER` | Propietario del repo observado en configuración SOURCE, no embebido en scripts. |
-| `LC_SKILL_REPO_NAME` | Nombre de repo observado en configuración SOURCE, no embebido en scripts. |
-| `LC_SKILL_SOURCE_REF` | Obligatoria: rama observada en el YAML staged y leída de GitHub, no se inventa. |
-| `LC_SKILL_EVIDENCE_DIR` | Opcional; evidencia privada `${XDG_RUNTIME_DIR:-/tmp}/lc-skill-sync-$(id -u)`. |
-| `LC_BASE_URL` | Base HTTPS de LibreChat real; sin path/query. |
-| `LC_ADMIN_JWT` | JWT admin con lectura de status, no se guarda en evidencia. |
-| `LC_SKILL_SOURCE_ID` | Exacto, descubierto en status/admin; no usar valor supuesto. |
-| `LC_EXPECTED_TENANT_ID` | Tenant exacto; omitir solo para instancia sin tenant. |
-| `LC_SKILL_STAGE` | `1` (12 físicas) o `2` (10 activas). |
-| `LC_SKILL_MIRROR_PROOF_FILE` | Evidencia privada de mirrors/ACL por Skill (plantilla en `expected-outputs/`). |
-| `LC_SKILL_MAX_AGE_SECONDS` | TTL máximo de lecturas admin; default 900 segundos. |
+| `LIBRECHAT_BASE_URL` | URL origin HTTPS exacta del servidor autorizado. |
+| `LIBRECHAT_ADMIN_TOKEN` | JWT real de admin con lectura de Skill Sync y vista individual del mirror. |
+| `SKILL_SYNC_SOURCE_ID` | Opcional si hay una sola fuente; con varias, identificador verificado en status. |
+| `SKILLS_REPO_ROOT` | Opcional, checkout Git del repo SOURCE; por defecto raíz de este checkout. |
+| `SKILLS_SOURCE_DIR` | Opcional, carpeta física `skills/` dentro del checkout. |
+| `SKILLS_CATALOG_FILE` | Opcional, `config/skills.current.json` dentro del checkout. |
+| `SKILL_SYNC_EVIDENCE_DIR` | Opcional, carpeta privada externa; default `${XDG_RUNTIME_DIR:-/tmp}/lc-skill-sync-$(id -u)`. |
+| `SKILL_SYNC_STAGE` | `1` o `2`, configuración LIVE realmente aplicada. |
+| `GITHUB_SKILLS_TOKEN` | Token GitHub read-only para comprobar ref remoto autenticado. |
+| `SKILL_MIRROR_IDS_FILE` | JSON privado con IDs observados en el admin: `{schema:"libre-chat-vx.skill-sync-mirror-ids.v1",source_id:"...",skills:[{name:"...",id:"..."}]}`. |
+| `LIBRECHAT_ALLOWED_ROLE_TOKEN` | JWT de una cuenta que debe poder leer los mirrors. |
+| `LIBRECHAT_DENIED_ROLE_TOKEN` | JWT de una cuenta a la que se debe denegar lectura. |
+| `LIBRECHAT_ALLOWED_ROLE` | Rol real esperado del primer testigo, verificado con GET `/api/user`. |
+| `LIBRECHAT_DENIED_ROLE` | Rol real esperado del segundo testigo. |
 
-Los readbacks se almacenan con permisos 600 en un directorio 700 **fuera del repositorio**. Puede haber datos privados de tenencia/ACL, por lo que no se versionan ni exportan.
+Las respuestas completas (incluyendo identidad, tenant o contenido) se guardan en archivos chmod 600, carpeta chmod 700, **fuera del repo**. El script 01 exige `sourceId` y `paths`, además de HTTP 200. `source_id` en snake_case es el campo normalizado, no el campo original de LibreChat.
 
-## Ejecución en el host, no en este hilo
+## Orden de ejecución futura
 
 ```bash
-export LC_SKILL_REPO_OWNER='OWNER_DEL_YAML_SOURCE'
-export LC_SKILL_REPO_NAME='REPO_DEL_YAML_SOURCE'
-export LC_SKILL_SOURCE_REF='RAMA_DEL_YAML_SOURCE'
 bash canaries/skill-sync-live/00-source-sanity.sh
-bash canaries/skill-sync-live/01-authenticated-source-readback.sh
-bash canaries/skill-sync-live/02-inventory-12-skills.sh
-
-# Resolver sourceId y tenant a partir del GET autenticado /api/admin/skills/sync/status
-# y realizar cualquier sincronización necesaria por procedimiento administrado EXTERNO.
-export LC_SKILL_STAGE=1
-export LC_SKILL_SOURCE_ID='VALOR_VERIFICADO_EN_ADMIN'
-export LC_BASE_URL='https://URL_REAL_LIBRECHAT'
-bash canaries/skill-sync-live/03-admin-sync-status.sh
-export LC_SKILL_MIRROR_PROOF_FILE='/ruta/privada/mirror-proof.json'
+bash canaries/skill-sync-live/01-authenticated-readback.sh
+bash canaries/skill-sync-live/02-inventory-skills.sh
+# Proporcionar las variables de stage, readback GitHub y archivo de IDs autenticados.
+bash canaries/skill-sync-live/03-verify-sync-content.sh
+# Proporcionar los dos tokens y roles de prueba autenticados.
 bash canaries/skill-sync-live/04-permissions-and-visibility.sh
 ```
 
-Para etapa 2, ejecutar los dos últimos scripts con `LC_SKILL_STAGE=2` **solo tras** stage 1 aceptada por humano, snapshot de rollback y aplicación separada, autorizada, del YAML de etapa 2 **al mismo sourceId**. El paquete no hace `POST /api/admin/skills/sync/run`: esa llamada escribe en el mirror. Prohibido iniciarla automáticamente. No borrar los dos alias en Git.
+**Sin POST.** En el upstream fijado, incluso `GET /api/skills` puede disparar una sincronización por petición, por lo que **este canario NO llama a esa ruta de lista**. Para el mirror usa `GET /api/skills/:id` con IDs obtenidos previamente desde una fuente autorizada y lectura de GitHub ref; `GET /api/admin/skills/sync/status` no altera el mirror. No se ejecuta `POST /api/admin/skills/sync/run`.
 
-## Aceptación acumulativa
+## Qué considera cada PASS
 
-1. GitHub: lectura autenticada de ref y tree no truncado, `git_commit_sha` y `git_tree_sha` estables. Hashes de `config/skills.current.json` y `SKILL.md` declarados **git_blob_sha**.
-2. Fuente: exactamente 12 directorios físicos `skills/*/SKILL.md`, 10 nombres activos y los alias `nostromo-intent-translation`, `nostromo-tool-budget`. Ninguna carpeta eliminada.
-3. Admin: `GET /api/admin/skills/sync/status` autenticado, sourceId/tenant resueltos; `enabled=true`, `runOnStartup=false`, `status=succeeded`, contadores exactos (12/0 borrados etapa 1, 10/2 borrados etapa 2), sin skipped/partial, rutas stage1 `["skills"]` o 10 explícitas stage2. `finishedAt` fresco.
-4. Mirror: por cada Skill se exige evidencia autenticada de `sourceMetadata.commitSha`, `sourceMetadata.skillBlobSha`, ámbito, visibilidad positiva y negativa con actores apropiados, no regresión y snapshot rollback. El upstream ignora `commitSha` y `syncedAt` al decidir si una definición cambió: un Skill inalterado puede conservar `commitSha` histórico. El `skillBlobSha` sí debe coincidir con el blob del HEAD. Cuando `commitSha` sea anterior, exigir prueba Git autenticada de que ese commit es ancestro del HEAD y registrar su referencia externa; jamás comparar un git_blob_sha con un git_commit_sha. El endpoint admin de status **no aporta hashes por Skill**; por eso el `04` valida referencias separadas y exige corroboración manual. Un JSON autodeclarado no prueba autenticidad.
-5. La transición etapa 1 → etapa 2 es **material**; requiere permiso admin propio y rollback operable. Verificar 2 alias fuera del mirror y aún presentes en Git. Si falta algo, **gate sigue OPEN**.
+1. **01:** endpoint admin autenticado HTTP 200 con sourceId/paths válidos y fuente seleccionada sin ambigüedad. Un 200 solo acredita lectura, no coherencia del mirror.
+2. **02:** inventario físico de 12, catálogo de 10 activos y 2 heredados, sin cambiar archivos; registra JSON aunque haya discrepancia y acaba FAIL.
+3. **03:** estado `succeeded`, paths de etapa correcta, 0 skipped, contadores de 12/10, HEAD checkout igual al GitHub ref autenticado; los 12/10 mirror IDs se obtienen de un readback externo privado. Para cada `SKILL.md`, `git_blob_sha` remoto y `sha256` del body del mirror deben coincidir. Un `sourceMetadata.commitSha` histórico debe ser antecesor del HEAD: no confundir git_commit_sha con git_blob_sha. Falla cerrado si falta acceso a `GET /api/skills/:id`.
+4. **04:** dos cuentas de roles distintos (GET `/api/user`) prueban lectura 200 y denegación 403/404 del mismo Skill. Comprobar que no es público. Esto prueba **visibilidad efectiva de los dos testigos**, no un inventario exhaustivo de ACL internas.
+5. **Gate LIVE:** además de los cuatro PASS, exigir confirmación de permisos y tenant, snapshot previo y posterior, auditoría de ACL completa cuando esté disponible, origen de los IDs, ausencia de aliases en el mirror stage 2, rollback readback y aceptación operativa. La fuente Source no prueba que la sincronización material haya ocurrido. Sin estas pruebas, **OPEN**.
 
-Todos los scripts finalizan con PASS/FAIL; PASS significa **únicamente** prueba indicada, no `LIVE_VERIFIED`. Un HTTP 200 aislado sigue siendo `DEPLOYED_UNVERIFIED`. Sin host/credenciales, `NO_DEPLOYMENT_EVIDENCE` y nunca `NOT_DEPLOYED`. Ante `UNKNOWN_OUTCOME`, obtener readback del mismo sync antes de reintentar.
+## Rollback
 
-## Contención y rollback
+`05-rollback.md`: no ejecuta rollback. En stage 2, conservar las 2 carpetas heredadas en Git aunque los mirrors se retiren mediante acción de admin separada y autorizada. Ante UNKNOWN_OUTCOME, readback del mismo estado/ejecución antes de reintentar materialmente.
 
-Ver `05-rollback.md`. No hay mutadores en este paquete. El `runOnStartup:true` del ejemplo histórico no debe mezclarse con los fragmentos staged, y el sourceId previo debe conservarse si un mirror real lo utiliza.
+## Notas de seguridad
+
+Ningún token ni ID concreto está embebido. El endpoint de lectura individual `GET /api/skills/:id` usa IDs del archivo privado `SKILL_MIRROR_IDS_FILE` verificado por el operador. Un FAIL con 401/403 puede indicar permisos insuficientes, **no** ausencia de deployment. Estados runtime se mantienen `NO_DEPLOYMENT_EVIDENCE` salvo evidencia real autenticada.

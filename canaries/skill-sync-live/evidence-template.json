@@ -1,50 +1,58 @@
 {
-  "schema": "libre-chat-vx.skill-sync-evidence.v1",
+  "schema": "libre-chat-vx.skill-sync-live-evidence.v1",
   "gate_id": "LC-SKILL-SYNC-LIVE",
   "gate_state": "OPEN",
   "runtime_status": "NO_DEPLOYMENT_EVIDENCE",
   "source": {
-    "ref": null,
     "git_commit_sha": null,
     "git_tree_sha": null,
     "catalog_git_blob_sha": null,
-    "authenticated_readback": false
+    "origin_ref_readback_ref": null
   },
   "admin": {
     "source_id": null,
     "tenant_id": null,
-    "permissions_verified": false,
-    "source_id_conflict_resolved": false
+    "paths": null,
+    "readback_ref": null,
+    "authenticated": false
   },
-  "stage1": {
-    "status": "NOT_RUN",
-    "expected_skills": 12,
-    "status_readback_ref": null,
-    "mirror_proof_ref": null,
-    "rollback_snapshot_ref": null
+  "inventory": {
+    "physical": null,
+    "active": null,
+    "legacy": null,
+    "readback_ref": null
   },
-  "stage2": {
-    "status": "NOT_RUN",
-    "expected_skills": 10,
-    "status_readback_ref": null,
-    "mirror_proof_ref": null,
-    "rollback_snapshot_ref": null
+  "content": {
+    "stage": null,
+    "mirrored_skills": null,
+    "sha256_match": false,
+    "git_blob_sha_match": false,
+    "readback_ref": null
+  },
+  "acl": {
+    "allowed_role": null,
+    "denied_role": null,
+    "role_readback_refs": [],
+    "visibility_positive": false,
+    "visibility_negative": false,
+    "full_acl_export_verified": false
+  },
+  "rollback": {
+    "prior_snapshot_ref": null,
+    "prior_mirror_readback_ref": null,
+    "post_readback_ref": null
   },
   "checks": {
-    "github_readback": "NOT_RUN",
-    "inventory_12": "NOT_RUN",
-    "admin_stage1": "NOT_RUN",
-    "mirror_stage1": "NOT_RUN",
-    "admin_stage2": "NOT_RUN",
-    "mirror_stage2": "NOT_RUN",
-    "rollback_readback": "NOT_RUN"
+    "admin_status": "NOT_RUN",
+    "physical_inventory": "NOT_RUN",
+    "content_hashes": "NOT_RUN",
+    "role_visibility": "NOT_RUN"
   },
   "result": {
     "gate_closed": false,
     "live_verified": false,
     "material_verified": false,
     "reviewed_by": null,
-    "reviewed_at_utc": null,
-    "notes": "SOURCE only; authenticated LIVE plus authority and rollback evidence required."
+    "reviewed_at_utc": null
   }
 }

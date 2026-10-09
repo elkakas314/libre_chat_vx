@@ -1,30 +1,11 @@
 {
-  "schema": "libre-chat-vx.skill-sync-mirror-proof.v1",
-  "stage": null,
+  "schema": "libre-chat-vx.skill-sync-mirror-ids.v1",
   "source_id": null,
-  "observed_at_utc": null,
-  "authenticated_admin_readback": false,
-  "permissions_verified": false,
-  "scope_verified": false,
-  "viewer_roles_tested": false,
-  "mirror_readback_ref": null,
-  "viewer_proof_ref": null,
-  "rollback_snapshot_ref": null,
-  "stage1_verified_proof_ref": null,
-  "legacy_absence_confirmed": null,
-  "mirrors": [
+  "skills": [
     {
       "name": null,
-      "root_path": null,
-      "git_commit_sha": null,
-      "skill_md_git_blob_sha": null,
-      "visible_to_expected_principals": false,
-      "hidden_from_unauthorized_principals": false,
-      "scope_verified": false,
-      "readback_ref": null,
-      "historical_commit_ancestor_verified": false,
-      "historical_commit_git_readback_ref": null
+      "id": null
     }
   ],
-  "warning": "Not live proof. Populate 12/10 mirrors from authenticated LibreChat per-Skill admin/UI readbacks in private storage; do not commit."
+  "note": "SYNTHETIC TEMPLATE ONLY. Do not commit real IDs. Populate from authenticated admin mirror state; stage1 12 entries; stage2 10 entries."
 }

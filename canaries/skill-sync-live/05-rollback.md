@@ -1,11 +1,10 @@
-# LC-SKILL-SYNC-LIVE — rollback / contención
+# LC-SKILL-SYNC-LIVE — rollback escrito, jamás automático
 
-1. Los scripts de `canaries/skill-sync-live/` son **GET y validación local**, sin `POST`, `PUT`, `DELETE`, cambios de YAML ni ACL. Un FAIL no concede autorización para reparar el runtime.
-2. Guardar los resultados JSON privados, hora, sourceId/tenant, `git_commit_sha`, `git_blob_sha`, status, `finishedAt` y snapshot de la configuración previa; **nunca** guardar JWT ni token GitHub.
-3. Ante resultado desconocido de una sincronización administrada externa, leer **el mismo** mirror y status antes de cualquier nuevo `POST`. Evitar duplicar efectos.
-4. Si falló la etapa 1, conservar las 12 carpetas Git y la configuración preexistente; no aplicar etapa 2.
-5. Si falló etapa 2, comparar con snapshot stage1 de 12 mirrors. La restauración del YAML anterior y una sincronización de recuperación **son materiales** y pertenecen al administrador LibreChat con autorización específica y rollback probado, fuera de este paquete.
-6. Tras restauración autorizada, confirmar identidad y sourceId original, readbacks de 12 mirrors, hashes y ACL; no declarar PASS solo por HTTP 200.
-7. Nunca borrar `skills/nostromo-intent-translation` ni `skills/nostromo-tool-budget` desde Git por un fallo del mirror. No inventar sourceId entre `librechat-vx-skills` y `nostromo-vx-skills`.
+1. Detener la observación tras FAIL; conservar evidencia privada 01–04 (sin JWT ni GitHub token), nombres, `git_commit_sha`, `git_blob_sha`, `sha256`, sourceId/tenant y timestamps. Un FAIL **no autoriza** un nuevo POST.
+2. Para errores o UNKNOWN_OUTCOME de una sincronización iniciada fuera de este canario: leer el **mismo** run/status y los mirrors afectados antes de cualquier nuevo intento.
+3. Stage 1: conservar el YAML previamente aplicado y los 12 Skill roots físicos, incluidos ambos aliases. No pasar a stage 2 con discrepancias.
+4. Stage 2: restaurar, solo mediante autorización admin externa, la configuración anterior del **mismo sourceId**, desde snapshot autenticado. Cualquier POST de resync es material y no forma parte del canario; exigir preflight, propietario y autorización propios.
+5. Después de un rollback administrado, repetir `GET /api/admin/skills/sync/status`, hashes de los 12 mirrors y visibilidad/ACL por rol; registrar readback verificable. Si snapshot o permisos no están disponibles, gate queda OPEN.
+6. No borrar de Git `skills/nostromo-intent-translation` ni `skills/nostromo-tool-budget`. No crear una segunda fuente al confundir `librechat-vx-skills` con `nostromo-vx-skills`.
 
-Si no hay snapshot verificado o falla la comprobación de tenant/permisos, mantener el gate **OPEN**.
+Todos los scripts del paquete son GET/lectura y no contienen mutadores. Ninguna cuota de servicios ni credencial se inventa.

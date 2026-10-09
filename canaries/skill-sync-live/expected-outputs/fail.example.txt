@@ -1,7 +1,10 @@
-# SINTÉTICO: NO LIVE
-DETAIL: Missing secret environment variable: GITHUB_SKILLS_TOKEN
-FAIL 01-github-source (exit=1)
-# Estado admin parcial o sourceId ambiguo:
-DETAIL: Status/sourceId/tenant/paths/counts ambiguous or not succeeded; stop
-FAIL 03-admin-sync-status (exit=1)
-# FAIL no demuestra NOT_DEPLOYED; PASS no acredita LIVE_VERIFIED.
+# SINTÉTICO / NO CONSTITUYE EVIDENCIA LIVE
+DETAIL: HTTP 200 but missing sources[].sourceId or paths
+FAIL 01-authenticated-readback (exit=1)
+# O
+DETAIL: 12 physical folders / 10 active / 2 legacy mismatch (recorded; not modified)
+FAIL 02-inventory-skills (exit=1)
+# O
+DETAIL: SHA256 mirror body differs from SOURCE: <skill-name>
+FAIL 03-verify-sync-content (exit=1)
+# FAIL no demuestra NOT_DEPLOYED; PASS no cierra LIVE.
