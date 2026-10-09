@@ -1,0 +1,10 @@
+# SINTÉTICO — ninguna prueba LIVE ejecutada por este fichero
+PASS 00-web-research-source-sanity (SOURCE only)
+READ authenticated LibreChat webSearch config and session; no search/POST
+PASS 01-authenticated-config (READ_ONLY; gate OPEN)
+READ host-mounted YAML summary (no secrets); provider/keyless/safeSearch match SOURCE
+PASS 02-host-web-search-config (READ_ONLY; gate OPEN)
+CHECKED external native Web Search/fetch/citations proof STRUCTURE; not independently verified LIVE
+PASS 03-native-search-fetch-proof (READ_ONLY; gate OPEN)
+CHECKED supplied ACL/SSRF/citation/quota/cost structure; admin corroboration still required
+PASS 04-citations-security-cost (READ_ONLY; gate OPEN)

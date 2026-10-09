@@ -109,6 +109,7 @@ jobs:
             bash canaries/cf-aig-binding/00-source-sanity.sh
             bash canaries/skill-sync-live/00-source-sanity.sh
             bash canaries/tailscale-mobile-live/00-source-sanity.sh
+            bash canaries/web-research-live/00-source-sanity.sh
           '
           elapsed="$(( $(date +%s) - started ))"
           test "$elapsed" -lt 30

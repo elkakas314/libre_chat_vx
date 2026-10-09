@@ -1,0 +1,57 @@
+{
+  "schema": "libre-chat-vx.web-research-live-evidence.v1",
+  "gate_id": "LC-WEB-RESEARCH-LIVE",
+  "gate_state": "OPEN",
+  "runtime_status": "NO_DEPLOYMENT_EVIDENCE",
+  "source": {
+    "git_commit_sha": null,
+    "git_tree_sha": null,
+    "upstream_commit": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
+    "spec_pointer": "SPEC.json#/backlog/active_live/3"
+  },
+  "runtime": {
+    "api_config_readback_ref": null,
+    "authenticated_session": false,
+    "search_provider": null,
+    "scraper_provider": null,
+    "reranker_type": null
+  },
+  "host": {
+    "actual_mounted_yaml_readback_ref": null,
+    "config_sha256": null,
+    "safe_search": null,
+    "private_address_exemptions_present": null
+  },
+  "web_search": {
+    "native_search_proof_ref": null,
+    "native_fetch_proof_ref": null,
+    "results_verified": false,
+    "citations_verified": false
+  },
+  "safety": {
+    "web_search_acl_readback_ref": null,
+    "unauthorized_role_deny_ref": null,
+    "ssrf_validation_ref": null,
+    "untrusted_web_content_fenced": false
+  },
+  "cost": {
+    "provider_quota_readback_ref": null,
+    "provider_billing_readback_ref": null,
+    "inference_billing_readback_ref": null,
+    "unauthorized_paid_fallback_used": null
+  },
+  "checks": {
+    "source_self_test": "NOT_RUN",
+    "authenticated_config": "NOT_RUN",
+    "host_config": "NOT_RUN",
+    "search_fetch_proof": "NOT_RUN",
+    "security_cost": "NOT_RUN"
+  },
+  "result": {
+    "gate_closed": false,
+    "live_verified": false,
+    "material_verified": false,
+    "reviewed_by": null,
+    "reviewed_at_utc": null
+  }
+}

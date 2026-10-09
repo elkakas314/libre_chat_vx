@@ -1,0 +1,12 @@
+# SINTÉTICO — FAIL no acredita NOT_DEPLOYED
+DETAIL: Authenticated LibreChat GET returned HTTP=403 or invalid JSON
+FAIL 01-authenticated-config (exit=1)
+# O
+DETAIL: Mounted host YAML differs from keyless/SSRF-safe SOURCE policy
+FAIL 02-host-web-search-config (exit=1)
+# O
+DETAIL: Search/fetch/citation evidence incomplete or lacks references
+FAIL 03-native-search-fetch-proof (exit=1)
+# O
+DETAIL: Authenticated ACL/safety/citation/cost proof incomplete or contains unauthorized route
+FAIL 04-citations-security-cost (exit=1)
