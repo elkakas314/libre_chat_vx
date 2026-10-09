@@ -8,6 +8,7 @@ wr_start "03-native-search-fetch-proof"; wr_need "01-result.json"; wr_need "02-h
 [[ -s "$WEB_RESEARCH_RESULT_PROOF_FILE" ]] || wr_fail "Missing authenticated search/fetch evidence"
 wr_obj "$WEB_RESEARCH_RESULT_PROOF_FILE"
 jq -e --slurpfile runtime "$WR_DIR/01-result.json" '
+ . as $root |
  .schema=="libre-chat-vx.web-research-results-proof.v1" and
  .authentic_librechat_ui_capture==true and
  .native_tool_name=="web_search" and
@@ -34,7 +35,7 @@ jq -e --slurpfile runtime "$WR_DIR/01-result.json" '
      any($root.search_results[]; .url==$c.url))) and
  .search_completed==true and .fetch_completed==true and
  .browser_interaction_used==false and .target_material_action_used==false
- ' --argjson root "$(cat "$WEB_RESEARCH_RESULT_PROOF_FILE")"  "$WEB_RESEARCH_RESULT_PROOF_FILE" >/dev/null ||
+ ' "$WEB_RESEARCH_RESULT_PROOF_FILE" >/dev/null ||
  wr_fail "Search/fetch/citation evidence incomplete or lacks references"
 observed="$(jq -r '.observed_at_utc' "$WEB_RESEARCH_RESULT_PROOF_FILE")"; wr_fresh "$observed"
 jq -n --arg now "$(date -u +%FT%TZ)" '
