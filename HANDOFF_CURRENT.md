@@ -3,9 +3,10 @@
 ## GitHub-first — nuevo criterio de cierre (10 octubre 2026)
 
 - Prioridad: completar código y QA SOURCE en GitHub antes de instalación; el Lenovo y gates LIVE quedan para MANOJOS3.
-- SOURCE código HEAD 3d0d7cb8981b2f5ab5bfc1cba077d9f867721993: source-check run 37997966900 SUCCESS; visual-source-smoke run 37997966956 SUCCESS (Chromium desktop/móvil; screenshots y visual-proof.json en artefacto 11648201561).
+- SOURCE HEAD de código y pruebas 6364f4211ec971b92da9126aa55bdc115edf1285: source-check run 37998515362 SUCCESS; visual-source-smoke run 37998515395 SUCCESS (Chromium escritorio/móvil; screenshots y visual-proof.json en artefacto 11648386603).
 - Overlay reversible con CSS propio responsive/low-motion. La evidencia visual proviene de fixture SOURCE, no de LibreChat autenticado ni del host.
-- NEXT_ACTION: E2E en navegador del upstream montado con entorno offline/mock; prueba de prioridad del panel nativo; accesibilidad, QA responsive y revisión humana de capturas; empaquetado/rollback/seguimiento de dependencias.
+- REVIEW VISUAL: el fixture ya no duplica paneles y no presenta overflow móvil; quedan etiquetas técnicas (scope, binding y nombres de mandos) por adaptar a UX conversacional NOSTROMO, sin ocultar verdad material.
+- NEXT_ACTION: E2E en navegador del upstream montado con entorno offline/mock; prioridad de panel nativo; accesibilidad, QA responsive y revisión humana de capturas; empaquetado/rollback/seguimiento de dependencias.
 - Main sigue retrasada respecto a handoff_current_bootstrps. No fusionar sin instrucción específica y CI del HEAD integrado.
 - LIVE permanece NO_VERIFICADO, SPEC active_live 0/7 cerrado, low-power GATE_HUMAN, material_verified=false; sin tocar MANOJOS3 ni VX13.
 

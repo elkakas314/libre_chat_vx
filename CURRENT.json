@@ -3,10 +3,10 @@
   "status": "SOURCE_CORE_AND_TRANSPORT_CANON_COMPLETE_LIVE_BINDINGS_PENDING",
   "repository": "elkakas314/libre_chat_vx",
   "branch": "handoff_current_bootstrps",
-  "source_evidence_cutoff_head": "3d0d7cb8981b2f5ab5bfc1cba077d9f867721993",
+  "source_evidence_cutoff_head": "6364f4211ec971b92da9126aa55bdc115edf1285",
   "source_ci": {
     "workflow": "source-check",
-    "run_id": 37997966900,
+    "run_id": 37998515362,
     "conclusion": "SUCCESS"
   },
   "upstream": {
@@ -144,7 +144,7 @@
     "map": "40",
     "refs": "operating/DRIVE_REFS_CURRENT.json"
   },
-  "post_proof_changes": "GITHUB_FIRST_VISUAL_SOURCE_AND_OVERLAY_CSS_VERIFIED",
+  "post_proof_changes": "GITHUB_FIRST_SOURCE_VISUAL_FIXTURE_TESTED",
   "design_review_queue": [
     "LC-NOSTROMO-SEMANTIC-BRIDGE"
   ],
@@ -168,10 +168,10 @@
     }
   },
   "last_confirmed_ci": {
-    "head": "3d0d7cb8981b2f5ab5bfc1cba077d9f867721993",
-    "workflow_run": 37997966900,
+    "head": "6364f4211ec971b92da9126aa55bdc115edf1285",
+    "workflow_run": 37998515362,
     "conclusion": "SUCCESS",
-    "applicability": "SOURCE_CODE_AND_OVERLAY_EXACT_HEAD"
+    "applicability": "SOURCE_AND_OVERLAY_EXACT_HEAD"
   },
   "continuity": {
     "policy_id": "LC-CONTINUITY-NO-STOP",
@@ -188,20 +188,20 @@
   },
   "github_first_quality": {
     "phase": "SOURCE_QA_BEFORE_INSTALLATION",
-    "code_head_verified": "3d0d7cb8981b2f5ab5bfc1cba077d9f867721993",
-    "source_ci_run_id": 37997966900,
-    "visual_fixture_ci_run_id": 37997966956,
+    "code_head_verified": "6364f4211ec971b92da9126aa55bdc115edf1285",
+    "source_ci_run_id": 37998515362,
+    "visual_fixture_ci_run_id": 37998515395,
     "visual_fixture_result": "SUCCESS",
-    "visual_artifact_id": 11648201561,
+    "visual_artifact_id": 11648386603,
     "desktop_mobile_chromium": "PASS_SOURCE_FIXTURE_ONLY",
     "upstream_overlay_compile": "PASS",
     "upstream_mounted_browser_e2e": "NOT_RUN",
     "accessibility_full_audit": "NOT_RUN",
-    "visual_human_review": "PENDING",
+    "visual_human_review": "PENDING_TECHNICAL_LABELS_AND_PRODUCT_UX",
     "actual_host_installation": "DEFERRED_TO_MANOJOS3",
     "active_live_gates_closed": 0,
     "material_verified": false,
     "authority": false,
-    "next_action": "UPSTREAM_MOUNTED_BROWSER_E2E_AND_VISUAL_REVIEW_THEN_RELEASE_FREEZE"
+    "next_action": "UPSTREAM_MOUNTED_BROWSER_E2E_AND_ACCESSIBILITY_THEN_PRODUCT_UX_REVIEW"
   }
 }

@@ -28,9 +28,9 @@ No reabrir desarrollo SOURCE cerrado sin regresión demostrada.
 
 Estado: PARCIAL — no confundir compilación SOURCE con producto completo.
 
-Ya probado con HEAD de código 3d0d7cb8981b2f5ab5bfc1cba077d9f867721993:
-- source-check 37997966900 SUCCESS (contratos, canarios SOURCE, build-test y overlay-smoke).
-- visual-source-smoke 37997966956 SUCCESS: Chromium desktop/mobile, navegación scope, autoridad falsa, acciones materiales bloqueadas, artefacto con capturas y JSON.
+Ya probado con HEAD de código 6364f4211ec971b92da9126aa55bdc115edf1285:
+- source-check 37998515362 SUCCESS (contratos, canarios SOURCE, build-test y overlay-smoke).
+- visual-source-smoke 37998515395 SUCCESS: Chromium desktop/mobile, navegación scope, autoridad falsa, acciones materiales bloqueadas, artefacto con capturas y JSON. Fixture ya sin paneles duplicados; diseño de etiquetas técnicas todavía pendiente de aceptación UX.
 - CSS responsive y low-motion cargado desde el overlay reversible.
 
 Falta antes de afirmar SOURCE RELEASE READY:
