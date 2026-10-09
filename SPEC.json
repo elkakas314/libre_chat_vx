@@ -1605,7 +1605,7 @@
     },
     {
       "id": "LC-DISC-TRANSPORT-RESOURCE-001",
-      "estado": "ABIERTA",
+      "estado": "CERRADA",
       "bloqueante": true,
       "ubicacion": [
         "contracts/transport-resource.schema.json#/properties/status",
@@ -1623,7 +1623,9 @@
         "topology_git_blob_sha": "201b4c81e0870b69329309d6a7a155d9f2bfbfa2",
         "method": "Contraste de required/properties y enum kind contra 8 recursos activos; comparación por id de status de registry con estado_runtime y evidencia_runtime de TOPOLOGY; revisión de SPEC.meta.estado_runtime_enum.",
         "runtime": "NO_DEPLOYMENT_EVIDENCE"
-      }
+      },
+      "resolucion": "58a711fbdefcf7b8ffa4c28455e8d30dd8bab982",
+      "evidencia": 37956849329
     },
     {
       "id": "LC-DISC-MANOJOS3-ENTRYPOINT-001",
