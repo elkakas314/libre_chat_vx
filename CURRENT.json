@@ -3,10 +3,10 @@
   "status": "SOURCE_CORE_AND_TRANSPORT_CANON_COMPLETE_LIVE_BINDINGS_PENDING",
   "repository": "elkakas314/libre_chat_vx",
   "branch": "handoff_current_bootstrps",
-  "source_evidence_cutoff_head": "9ae2ba122b7bd13be91e447d731f3d73d33ea9ed",
+  "source_evidence_cutoff_head": "3d0d7cb8981b2f5ab5bfc1cba077d9f867721993",
   "source_ci": {
     "workflow": "source-check",
-    "run_id": 37725889650,
+    "run_id": 37997966900,
     "conclusion": "SUCCESS"
   },
   "upstream": {
@@ -144,7 +144,7 @@
     "map": "40",
     "refs": "operating/DRIVE_REFS_CURRENT.json"
   },
-  "post_proof_changes": "CONTINUITY_AND_DRIVE_READBACK_ONLY",
+  "post_proof_changes": "GITHUB_FIRST_VISUAL_SOURCE_AND_OVERLAY_CSS_VERIFIED",
   "design_review_queue": [
     "LC-NOSTROMO-SEMANTIC-BRIDGE"
   ],
@@ -168,10 +168,10 @@
     }
   },
   "last_confirmed_ci": {
-    "head": "9ae2ba122b7bd13be91e447d731f3d73d33ea9ed",
-    "workflow_run": 37725889650,
+    "head": "3d0d7cb8981b2f5ab5bfc1cba077d9f867721993",
+    "workflow_run": 37997966900,
     "conclusion": "SUCCESS",
-    "applicability": "PROVEN_SOURCE_HEAD"
+    "applicability": "SOURCE_CODE_AND_OVERLAY_EXACT_HEAD"
   },
   "continuity": {
     "policy_id": "LC-CONTINUITY-NO-STOP",
@@ -185,5 +185,23 @@
     "source_guard": "OWNED_WITHOUT_FREE_IS_RECONCILE_REQUIRED",
     "source_ci_run": 37725106400,
     "source_test_count": 114
+  },
+  "github_first_quality": {
+    "phase": "SOURCE_QA_BEFORE_INSTALLATION",
+    "code_head_verified": "3d0d7cb8981b2f5ab5bfc1cba077d9f867721993",
+    "source_ci_run_id": 37997966900,
+    "visual_fixture_ci_run_id": 37997966956,
+    "visual_fixture_result": "SUCCESS",
+    "visual_artifact_id": 11648201561,
+    "desktop_mobile_chromium": "PASS_SOURCE_FIXTURE_ONLY",
+    "upstream_overlay_compile": "PASS",
+    "upstream_mounted_browser_e2e": "NOT_RUN",
+    "accessibility_full_audit": "NOT_RUN",
+    "visual_human_review": "PENDING",
+    "actual_host_installation": "DEFERRED_TO_MANOJOS3",
+    "active_live_gates_closed": 0,
+    "material_verified": false,
+    "authority": false,
+    "next_action": "UPSTREAM_MOUNTED_BROWSER_E2E_AND_VISUAL_REVIEW_THEN_RELEASE_FREEZE"
   }
 }

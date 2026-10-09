@@ -14,7 +14,7 @@ Checks:
 
 A PASS in this workflow establishes only SOURCE React browser rendering and interaction of the fixture. It does not establish production LibreChat frontend E2E, upstream native panel priority in runtime, accessibility conformance, native login/ACL, target binding, inference, chat, mobile reconnect, host CPU/RAM, or visual design acceptance by a human.
 
-The screenshot fixture has simple test-only CSS; this is NOT the final product skin. Review the screenshots before considering the UX design approved. Remaining visual closure needs actual upstream-mounted interactive E2E on CI, accessibility audit, design review and mobile behavior. Avoid claims of full visual product completion.
+The screenshot fixture uses the scoped overlay CSS plus test-only wrapper layout; screenshots still require human UX review and native app E2E before product-skin approval. Review the screenshots before considering the UX design approved. Remaining visual closure needs actual upstream-mounted interactive E2E on CI, accessibility audit, design review and mobile behavior. Avoid claims of full visual product completion.
 
 No active_live gate in SPEC.json is closed by this test. No host, credentials, accounts, MANOJOS3, or VX13 accessed or modified.
 

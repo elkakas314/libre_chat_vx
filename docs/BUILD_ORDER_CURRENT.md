@@ -24,7 +24,26 @@ Mantener alineados:
 
 No reabrir desarrollo SOURCE cerrado sin regresión demostrada.
 
+## A1 — Cierre exclusivo GitHub (prioridad vigente; instalación posterior)
+
+Estado: PARCIAL — no confundir compilación SOURCE con producto completo.
+
+Ya probado con HEAD de código 3d0d7cb8981b2f5ab5bfc1cba077d9f867721993:
+- source-check 37997966900 SUCCESS (contratos, canarios SOURCE, build-test y overlay-smoke).
+- visual-source-smoke 37997966956 SUCCESS: Chromium desktop/mobile, navegación scope, autoridad falsa, acciones materiales bloqueadas, artefacto con capturas y JSON.
+- CSS responsive y low-motion cargado desde el overlay reversible.
+
+Falta antes de afirmar SOURCE RELEASE READY:
+1. Test de navegador del frontend LibreChat upstream realmente montado (al menos modo offline/mock, sin depender del Lenovo), incluyendo prioridad de panel nativo y feature flag.
+2. Accesibilidad visual/teclado/lector de pantalla automatizada y revisión manual de capturas (no confundir fixture con UI final).
+3. Cobertura negativa de rutas UI (ACL, STALE, backpressure, mobile/reconnect, browser isolation) y trazabilidad de todos los requisitos hacia pruebas ejecutadas.
+4. Auditoría de release: no secretos, dependencias, rollback overlay, packaging reproducible y artefactos/evidencias referidas a HEAD exacto.
+5. Reconciliar CURRENT/HANDOFF/SPEC sin promocionar source a LIVE y decidir explícitamente la integración de la rama de trabajo en main, con CI verde posterior.
+
+Los pasos B–I quedan para fase de instalación/binding real gobernada por MANOJOS3, sin inventar PASS. El bloque A1 es independiente y se puede seguir completando sólo con GitHub.
+
 ## B — Cloudflare AI Gateway + Model Registry LIVE
+
 
 Estado: `NEXT`.
 
