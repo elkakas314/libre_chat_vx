@@ -21,7 +21,7 @@ jq -e '([..|objects|.AllowFunnel? // empty]|map(if type=="object" then [.[]]|any
 # Loopback HTTP only, a single GET; never contact any target/MCP/host-control port.
 code="$(curl --noproxy '*' --silent --show-error --connect-timeout 5 --max-time 12 \
  --request GET --output "$TM_DIR/01-local-response" --write-out '%{http_code}' \
- 'http://127.0.0.1:3080/') " || tm_fail "LibreChat loopback backend is unreachable"
+ 'http://127.0.0.1:3080/')" || tm_fail "LibreChat loopback backend is unreachable"
 [[ "$code" == 200 || "$code" == 301 || "$code" == 302 || "$code" == 303 || "$code" == 401 ]] ||
  tm_fail "Unexpected local LibreChat backend HTTP=$code"
 chmod 600 -- "$TM_DIR/01-local-response"
