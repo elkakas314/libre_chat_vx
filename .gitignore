@@ -13,5 +13,6 @@ var/
 *.p12
 *.pfx
 receipts/private/
+visual-evidence/
 .DS_Store
 Thumbs.db
