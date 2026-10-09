@@ -46,6 +46,105 @@ export interface Manojos3McpTransport {
   verifyMutation?(operationId: string): Promise<VerificationResult>;
 }
 
+// Contract 6: JSON Schema wire names are snake_case, in-process types camelCase.
+// This is representation-only. The grouped MANOJOS3 MCP index is a separate ADR-09 scope.
+const capabilityWireKeys = new Set([
+  'target_id', 'capability_id', 'provider', 'risk', 'effect_class',
+  'availability', 'policy_authority_ref', 'execution_authority_ref',
+  'verification_authority_ref', 'required_scopes', 'source_revision',
+  'observed_at', 'expires_at', 'evidence_refs',
+]);
+
+function capabilityRecord(value: unknown): value is Record<string, unknown> {
+  return value !== null && typeof value === 'object' && !Array.isArray(value);
+}
+
+function nullableCapabilityString(value: unknown): boolean {
+  return value === undefined || value === null || typeof value === 'string';
+}
+
+export function parseTargetCapabilityProjectionWire(
+  value: unknown,
+): TargetCapabilityProjection | null {
+  if (!capabilityRecord(value) || Object.keys(value).some((k) => !capabilityWireKeys.has(k))) {
+    return null;
+  }
+  const x = value;
+  const targetId = x.target_id;
+  const risk = x.risk;
+  const effectClass = x.effect_class;
+  if (
+    (targetId !== 'MANOJOS3' && targetId !== 'VX13') ||
+    typeof x.capability_id !== 'string' || x.capability_id.length === 0 ||
+    (risk !== 'R0' && risk !== 'R1' && risk !== 'R2' && risk !== 'R3') ||
+    (effectClass !== 'READ_ONLY' && effectClass !== 'EPHEMERAL' &&
+      effectClass !== 'MATERIAL' && effectClass !== 'DESTRUCTIVE') ||
+    typeof x.availability !== 'string' ||
+    typeof x.policy_authority_ref !== 'string' || x.policy_authority_ref.length === 0 ||
+    typeof x.source_revision !== 'string' || typeof x.observed_at !== 'string' ||
+    !Array.isArray(x.required_scopes) ||
+    !x.required_scopes.every((scope: unknown) => typeof scope === 'string') ||
+    !Array.isArray(x.evidence_refs) ||
+    !x.evidence_refs.every((ref: unknown) => typeof ref === 'string') ||
+    !(x.provider === undefined || typeof x.provider === 'string') ||
+    !nullableCapabilityString(x.execution_authority_ref) ||
+    !nullableCapabilityString(x.verification_authority_ref) ||
+    !nullableCapabilityString(x.expires_at)
+  ) {
+    return null;
+  }
+  // Explicit null -> absent for optional in-process authority refs (never authority creation).
+  // Other wire-only optional data are retained as camelCase properties on the object.
+  const projection = {
+    targetId: targetId as TargetCapabilityProjection['targetId'],
+    capabilityId: x.capability_id,
+    ...(x.provider !== undefined && { provider: x.provider }),
+    risk: risk as TargetCapabilityProjection['risk'],
+    effectClass: effectClass as TargetCapabilityProjection['effectClass'],
+    availability: x.availability,
+    policyAuthorityRef: x.policy_authority_ref,
+    ...(typeof x.execution_authority_ref === 'string' && {
+      executionAuthorityRef: x.execution_authority_ref,
+    }),
+    ...(typeof x.verification_authority_ref === 'string' && {
+      verificationAuthorityRef: x.verification_authority_ref,
+    }),
+    requiredScopes: x.required_scopes as string[],
+    sourceRevision: x.source_revision,
+    observedAt: x.observed_at,
+    ...(x.expires_at !== undefined && { expiresAt: x.expires_at as string | null }),
+    evidenceRefs: x.evidence_refs as string[],
+  };
+  return projection;
+}
+
+/** Legacy in-process values are checked against the same wire contract, not trusted blindly. */
+function normalizeCapabilityProjection(value: unknown): TargetCapabilityProjection | null {
+  if (!capabilityRecord(value)) return null;
+  if ('target_id' in value) return parseTargetCapabilityProjectionWire(value);
+  const x = value;
+  return parseTargetCapabilityProjectionWire({
+    target_id: x.targetId,
+    capability_id: x.capabilityId,
+    ...(x.provider !== undefined && { provider: x.provider }),
+    risk: x.risk,
+    effect_class: x.effectClass,
+    availability: x.availability,
+    policy_authority_ref: x.policyAuthorityRef,
+    ...(x.executionAuthorityRef !== undefined && {
+      execution_authority_ref: x.executionAuthorityRef,
+    }),
+    ...(x.verificationAuthorityRef !== undefined && {
+      verification_authority_ref: x.verificationAuthorityRef,
+    }),
+    required_scopes: x.requiredScopes,
+    source_revision: x.sourceRevision,
+    observed_at: x.observedAt,
+    ...(x.expiresAt !== undefined && { expires_at: x.expiresAt }),
+    evidence_refs: x.evidenceRefs,
+  });
+}
+
 export class Manojos3McpTargetAdapter implements TargetAdapter {
   constructor(
     private readonly transport: Manojos3McpTransport,
@@ -76,7 +175,10 @@ export class Manojos3McpTargetAdapter implements TargetAdapter {
   async discoverCapabilities(): Promise<TargetCapabilityProjection[]> {
     const readback = await this.transport.capabilities();
     if (readback.status !== 'OK' || !Array.isArray(readback.value)) return [];
-    return readback.value.filter((item) => item.targetId === 'MANOJOS3');
+    return readback.value.flatMap((value) => {
+      const projection = normalizeCapabilityProjection(value);
+      return projection?.targetId === 'MANOJOS3' ? [projection] : [];
+    });
   }
 
   async read<T = unknown>(request: ReadRequest): Promise<ReadResult<T>> {
