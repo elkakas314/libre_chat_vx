@@ -1,0 +1,19 @@
+{
+  "schema": "libre-chat-vx.tailscale-revocation-proof.v1",
+  "observed_at_utc": null,
+  "authenticated_tailnet_admin_readback": false,
+  "revoked_identity_deny_verified": false,
+  "non_tailnet_access_denied": false,
+  "funnel_off_after": false,
+  "host_reserved_resources_unchanged": false,
+  "rollback_observed_authenticated": false,
+  "rollback_restored_previous_serve_config": false,
+  "previous_serve_config_sha256": null,
+  "restored_serve_config_sha256": null,
+  "acl_revoke_readback_ref": null,
+  "denied_access_observation_ref": null,
+  "previous_config_snapshot_ref": null,
+  "rollback_readback_ref": null,
+  "other_services_unchanged_proof_ref": null,
+  "warning": "SYNTHETIC TEMPLATE ONLY; material ACL/Serve rollback belongs to authorized operator outside canary."
+}

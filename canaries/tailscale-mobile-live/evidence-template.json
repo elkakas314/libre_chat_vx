@@ -1,0 +1,54 @@
+{
+  "schema": "libre-chat-vx.tailscale-mobile-evidence.v1",
+  "gate_id": "LC-TAILSCALE-MOBILE-LIVE",
+  "gate_state": "OPEN",
+  "runtime_status": "NO_DEPLOYMENT_EVIDENCE",
+  "source": {
+    "git_commit_sha": null,
+    "git_tree_sha": null
+  },
+  "host": {
+    "observed_at_utc": null,
+    "node_id_ref": null,
+    "magicdns_hostname_ref": null,
+    "backend_3080_readback_ref": null,
+    "serve_json_snapshot_ref": null,
+    "funnel_disabled_verified": false
+  },
+  "client": {
+    "tailnet_identity_readback_ref": null,
+    "https_magicdns_readback_ref": null,
+    "librechat_session_readback_ref": null
+  },
+  "mobile": {
+    "wifi_proof_ref": null,
+    "data_proof_ref": null,
+    "desktop_mobile_handoff_ref": null,
+    "offline_mutation_fence_verified": false
+  },
+  "acl": {
+    "allowed_readback_ref": null,
+    "revocation_denied_readback_ref": null,
+    "tailnet_policy_readback_ref": null
+  },
+  "rollback": {
+    "pre_snapshot_sha256": null,
+    "post_restore_snapshot_sha256": null,
+    "readback_ref": null,
+    "manojos3_routes_untouched_verified": false
+  },
+  "steps": {
+    "self_test": "NOT_RUN",
+    "host_serve": "NOT_RUN",
+    "private_route": "NOT_RUN",
+    "mobile_continuity": "NOT_RUN",
+    "revocation_rollback": "NOT_RUN"
+  },
+  "result": {
+    "gate_closed": false,
+    "live_verified": false,
+    "material_verified": false,
+    "reviewed_at_utc": null,
+    "reviewed_by": null
+  }
+}

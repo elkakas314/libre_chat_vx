@@ -1,0 +1,10 @@
+# SINTÉTICO; NO implica ejecución LIVE
+PASS 00-tailscale-source-sanity (SOURCE only)
+READ host tailnet+Serve+Funnel; LibreChat loopback present; NO configuration modified
+PASS 01-host-serve-readback (READ_ONLY; LIVE gate OPEN)
+READ authorized tailnet-client MagicDNS/HTTPS and authenticated LibreChat session
+PASS 02-private-route-and-acl (READ_ONLY; LIVE gate OPEN)
+CHECKED mobile handoff/Wi-Fi/data/offline evidence STRUCTURE; operator authentication still required
+PASS 03-mobile-continuity (READ_ONLY; LIVE gate OPEN)
+CHECKED revocation/rollback evidence STRUCTURE; no ACL/Serve/Funnel mutation
+PASS 04-revocation-and-rollback (READ_ONLY; LIVE gate OPEN)
