@@ -9,8 +9,11 @@
       "purpose": "Local browser/app access",
       "exposure": "LOCAL",
       "target": "http://127.0.0.1:3080",
-      "status": "SOURCE_DEFINED",
-      "rollback": "N/A"
+      "rollback": "N/A",
+      "sourceStatus": "SOURCE_DEFINED",
+      "runtimeStatus": "NO_DEPLOYMENT_EVIDENCE",
+      "runtimeEvidenceRefs": [],
+      "authority": false
     },
     {
       "id": "lc-tailserve",
@@ -19,8 +22,11 @@
       "purpose": "Private mobile/PC remote access",
       "exposure": "TAILNET",
       "target": "http://127.0.0.1:3080",
-      "status": "NOT_DEPLOYED",
-      "rollback": "tailscale serve off/reset"
+      "rollback": "tailscale serve off/reset",
+      "sourceStatus": "DECLARED_NOT_DEPLOYED",
+      "runtimeStatus": "NO_DEPLOYMENT_EVIDENCE",
+      "runtimeEvidenceRefs": [],
+      "authority": false
     },
     {
       "id": "lc-cf-web",
@@ -29,8 +35,11 @@
       "purpose": "Optional browser/API public edge",
       "exposure": "PUBLIC_BEHIND_ACCESS",
       "target": "http://127.0.0.1:3080",
-      "status": "NOT_DEPLOYED",
-      "rollback": "disable route/tunnel"
+      "rollback": "disable route/tunnel",
+      "sourceStatus": "DECLARED_NOT_DEPLOYED",
+      "runtimeStatus": "NO_DEPLOYMENT_EVIDENCE",
+      "runtimeEvidenceRefs": [],
+      "authority": false
     },
     {
       "id": "lc-cf-access",
@@ -38,8 +47,11 @@
       "owner": "LIBRECHAT_VX",
       "purpose": "Identity gate for optional public edge",
       "exposure": "PUBLIC_IDENTITY_GATE",
-      "status": "NOT_DEPLOYED",
-      "rollback": "disable app/policy"
+      "rollback": "disable app/policy",
+      "sourceStatus": "DECLARED_NOT_DEPLOYED",
+      "runtimeStatus": "NO_DEPLOYMENT_EVIDENCE",
+      "runtimeEvidenceRefs": [],
+      "authority": false
     },
     {
       "id": "lc-aig",
@@ -47,8 +59,11 @@
       "owner": "LIBRECHAT_VX",
       "purpose": "LLM inference routing",
       "exposure": "OUTBOUND_API",
-      "status": "LIVE_NOT_VERIFIED",
-      "rollback": "deploy prior route version"
+      "rollback": "deploy prior route version",
+      "sourceStatus": "DECLARED_LIVE_UNVERIFIED",
+      "runtimeStatus": "NO_DEPLOYMENT_EVIDENCE",
+      "runtimeEvidenceRefs": [],
+      "authority": false
     },
     {
       "id": "lc-skill-sync",
@@ -56,8 +71,11 @@
       "owner": "LIBRECHAT_VX",
       "purpose": "Read-only Skills distribution",
       "exposure": "OUTBOUND_HTTPS",
-      "status": "LIVE_NOT_VERIFIED",
-      "rollback": "disable skillSync"
+      "rollback": "disable skillSync",
+      "sourceStatus": "DECLARED_LIVE_UNVERIFIED",
+      "runtimeStatus": "NO_DEPLOYMENT_EVIDENCE",
+      "runtimeEvidenceRefs": [],
+      "authority": false
     },
     {
       "id": "lc-agent-events",
@@ -65,8 +83,11 @@
       "owner": "LIBRECHAT_VX",
       "purpose": "Authenticated inbound notifications",
       "exposure": "APP_API",
-      "status": "LIVE_NOT_VERIFIED",
-      "rollback": "disable remoteAgents/events"
+      "rollback": "disable remoteAgents/events",
+      "sourceStatus": "DECLARED_LIVE_UNVERIFIED",
+      "runtimeStatus": "NO_DEPLOYMENT_EVIDENCE",
+      "runtimeEvidenceRefs": [],
+      "authority": false
     },
     {
       "id": "lc-recovery-ssh",
@@ -74,8 +95,11 @@
       "owner": "HOST",
       "purpose": "Out-of-band recovery",
       "exposure": "TAILNET_ADMIN",
-      "status": "NOT_DEPLOYED",
-      "rollback": "disable SSH policy"
+      "rollback": "disable SSH policy",
+      "sourceStatus": "DECLARED_NOT_DEPLOYED",
+      "runtimeStatus": "NO_DEPLOYMENT_EVIDENCE",
+      "runtimeEvidenceRefs": [],
+      "authority": false
     }
   ],
   "deferred": [
