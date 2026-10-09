@@ -12,12 +12,12 @@ ss_get "$SS_BASE_URL/api/admin/skills/sync/status" "$SS_DIR/03-admin-status.json
 count="$(if [[ "$LC_SKILL_STAGE" == "1" ]]; then echo 12; else echo 10; fi)"
 tenant="${LC_EXPECTED_TENANT_ID:-}"
 jq -e --arg source "$LC_SKILL_SOURCE_ID" --arg tenant "$tenant" --arg ref "$SS_REF" \
- --argjson stage "$LC_SKILL_STAGE" --argjson count "$count" --slurpfile inv "$SS_DIR/02-inventory.json" '
+ --arg owner "$LC_SKILL_REPO_OWNER" --arg repo "$LC_SKILL_REPO_NAME" --argjson stage "$LC_SKILL_STAGE" --argjson count "$count" --slurpfile inv "$SS_DIR/02-inventory.json" '
  .enabled==true and .runOnStartup==false and (.sources|type=="array") and
  ([.sources[]|select(.sourceId==$source)]|length)==1 and
- ([.sources[]|select(.sourceId!=$source and .owner=="elkakas314" and .repo=="libre_chat_vx")]|length)==0 and
+ ([.sources[]|select(.sourceId!=$source and .owner==$owner and .repo==$repo)]|length)==0 and
  ([.sources[]|select(.sourceId==$source)][0] as $s |
- $s.provider=="github" and $s.owner=="elkakas314" and $s.repo=="libre_chat_vx" and
+ $s.provider=="github" and $s.owner==$owner and $s.repo==$repo and
  $s.ref==$ref and ($s.tenantId // "")==$tenant and $s.credentialPresent==true and
  $s.status=="succeeded" and $s.syncedSkillCount==$count and
  $s.skippedSkillCount==0 and $s.skippedFileCount==0 and

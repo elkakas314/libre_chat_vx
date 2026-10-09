@@ -15,8 +15,8 @@ jq -e --arg sha "$tree" '.sha==$sha and .truncated==false and (.tree|type=="arra
  ss_fail "Tree mismatched/truncated"
 ss_get "$SS_API/git/ref/heads/$SS_REF" "$SS_DIR/01-ref-after.json" "$GITHUB_SKILLS_TOKEN"
 [[ "$(jq -r '.object.sha' "$SS_DIR/01-ref-after.json")" == "$commit" ]] || ss_fail "Branch moved during probe"
-jq -n --arg ref "$SS_REF" --arg commit "$commit" --arg tree "$tree" --arg now "$(date -u +%FT%TZ)" '
- {schema:"libre-chat-vx.skill-sync-source.v1",repository:"elkakas314/libre_chat_vx",ref:$ref,
+jq -n --arg ref "$SS_REF" --arg repo "$LC_SKILL_REPO_OWNER/$LC_SKILL_REPO_NAME" --arg commit "$commit" --arg tree "$tree" --arg now "$(date -u +%FT%TZ)" '
+ {schema:"libre-chat-vx.skill-sync-source.v1",repository:$repo,ref:$ref,
  git_commit_sha:$commit,git_tree_sha:$tree,observed_at_utc:$now,
  authenticated_private_repo_readback:true,token_readonly_scope_verified:false}' > "$SS_DIR/01-source.json"
 chmod 600 -- "$SS_DIR/01-source.json"

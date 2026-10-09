@@ -18,7 +18,9 @@ Host autorizado: Bash, curl, jq, base64, date, HTTPS, JWT de administrador Libre
 | Variable | Uso |
 |---|---|
 | `GITHUB_SKILLS_TOKEN` | Solo lectura GitHub Contents/Metadata; verificar alcance fuera del script. |
-| `LC_SKILL_SOURCE_REF` | Opcional; `handoff_current_bootstrps` por defecto. |
+| `LC_SKILL_REPO_OWNER` | Propietario del repo observado en configuración SOURCE, no embebido en scripts. |
+| `LC_SKILL_REPO_NAME` | Nombre de repo observado en configuración SOURCE, no embebido en scripts. |
+| `LC_SKILL_SOURCE_REF` | Obligatoria: rama observada en el YAML staged y leída de GitHub, no se inventa. |
 | `LC_SKILL_EVIDENCE_DIR` | Opcional; evidencia privada `${XDG_RUNTIME_DIR:-/tmp}/lc-skill-sync-$(id -u)`. |
 | `LC_BASE_URL` | Base HTTPS de LibreChat real; sin path/query. |
 | `LC_ADMIN_JWT` | JWT admin con lectura de status, no se guarda en evidencia. |
@@ -33,6 +35,9 @@ Los readbacks se almacenan con permisos 600 en un directorio 700 **fuera del rep
 ## Ejecución en el host, no en este hilo
 
 ```bash
+export LC_SKILL_REPO_OWNER='OWNER_DEL_YAML_SOURCE'
+export LC_SKILL_REPO_NAME='REPO_DEL_YAML_SOURCE'
+export LC_SKILL_SOURCE_REF='RAMA_DEL_YAML_SOURCE'
 bash canaries/skill-sync-live/00-source-sanity.sh
 bash canaries/skill-sync-live/01-authenticated-source-readback.sh
 bash canaries/skill-sync-live/02-inventory-12-skills.sh

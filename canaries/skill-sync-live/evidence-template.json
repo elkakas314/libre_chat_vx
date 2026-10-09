@@ -4,7 +4,7 @@
   "gate_state": "OPEN",
   "runtime_status": "NO_DEPLOYMENT_EVIDENCE",
   "source": {
-    "ref": "handoff_current_bootstrps",
+    "ref": null,
     "git_commit_sha": null,
     "git_tree_sha": null,
     "catalog_git_blob_sha": null,
