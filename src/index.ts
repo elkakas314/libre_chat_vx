@@ -132,7 +132,8 @@ export { mayReplayInBackground, timeoutAfterPossibleEffect } from './recovery/ba
 export { postTimeoutOutcome } from './browser/browserView';
 export { exposeTool, deferBulkSchemas } from './cockpit/targetToolGate';
 export { providerBindingReady, materiallyReady } from './contracts/readinessTruth';
-export { combineTargetReads } from './discovery/crossTargetRead';
+export { combineTargetReads, parseCrossTargetTruthWire, serializeCrossTargetTruthWire } from './discovery/crossTargetRead';
+export type { CrossTargetTruthWire, NormalizedCrossTargetTruthEnvelope } from './discovery/crossTargetRead';
 export { EventDeduper, requiresResync } from './recovery/snapshotResync';
 export { rendererMode } from './cockpit/rendererFailureIsolation';
 export { canUseResource } from './files/externalResourceRef';
