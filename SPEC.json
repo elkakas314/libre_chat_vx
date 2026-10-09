@@ -1627,7 +1627,7 @@
     },
     {
       "id": "LC-DISC-MANOJOS3-ENTRYPOINT-001",
-      "estado": "ABIERTA",
+      "estado": "CERRADA",
       "bloqueante": true,
       "ubicacion": [
         "contracts/manojos3-entrypoint.schema.json#/properties/kind/enum",
@@ -1646,7 +1646,9 @@
         "test_git_blob_sha": "52e3c5565c31efbb2bf9880fcf55e38d6114d7f2",
         "method": "Comparación directa de enum kind/state y nombres de campo del JSON Schema frente a los tres literales de MANOJOS3_ENTRYPOINTS y tests existentes.",
         "runtime": "NO_DEPLOYMENT_EVIDENCE"
-      }
+      },
+      "resolucion": "c7ef218c0d5a52713663153ae838ef20f3bf1b54",
+      "evidencia": 37937326304
     }
   ],
   "frontend": {
