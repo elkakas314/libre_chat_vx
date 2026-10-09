@@ -1380,7 +1380,7 @@
     },
     {
       "id": "LC-DISC-TARGET-CAPABILITY-PROJECTION-001",
-      "estado": "ABIERTA",
+      "estado": "CERRADA",
       "bloqueante": true,
       "ubicacion": [
         "contracts/target-capability-projection.schema.json",
@@ -1395,11 +1395,13 @@
         "types_git_blob_sha": "b8036c4f35fcae157d60a3ff4e898ae998e27829",
         "manojos3_adapter_git_blob_sha": "fb08050d12562fb909f255e0d5dbb803aac67848"
       },
-      "commit_deteccion": "571844964757bf5a13109fcd8e0ac2686ee526a9"
+      "commit_deteccion": "571844964757bf5a13109fcd8e0ac2686ee526a9",
+      "resolucion": "f2e074c9bffcaa1b3396a3b844ea29674de5e91b",
+      "evidencia": 37929079719
     },
     {
       "id": "LC-DISC-BACKGROUND-MUTATION-FENCE-001",
-      "estado": "ABIERTA",
+      "estado": "CERRADA",
       "bloqueante": true,
       "ubicacion": [
         "contracts/background-mutation-fence.schema.json#/required",
@@ -1416,11 +1418,13 @@
         "consumer": "src/recovery/backgroundMutationFence.ts#BackgroundMutationFence",
         "metodo": "Comparación de required/properties/enum y nombres de campos del JSON Schema con interfaz y funciones TypeScript; no se identificó transformación en el consumidor.",
         "runtime": "NO_DEPLOYMENT_EVIDENCE"
-      }
+      },
+      "resolucion": "3151a54070e2984a71b0e5a035f61136525bb678",
+      "evidencia": 37928505081
     },
     {
       "id": "LC-DISC-CROSS-TARGET-TRUTH-ENVELOPE-001",
-      "estado": "ABIERTA",
+      "estado": "CERRADA",
       "bloqueante": true,
       "ubicacion": [
         "contracts/cross-target-truth-envelope.schema.json#/required",
@@ -1439,7 +1443,9 @@
         "cross_target_read_git_blob_sha": "43c17d71e6c4eff2997c96a4a697024e95841546",
         "metodo": "Contraste de propiedades required/enum del JSON Schema frente a CrossTargetTruthEnvelope y objeto truth emitido en Manojos3McpTargetAdapter.toReadResult; sin conversión snake_case en productor.",
         "runtime": "NO_DEPLOYMENT_EVIDENCE"
-      }
+      },
+      "resolucion": "604a3b47ed945933156f216384581c179ea982af",
+      "evidencia": 37929693294
     },
     {
       "id": "LC-DISC-MOBILE-ACCESS-001",
