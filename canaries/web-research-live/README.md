@@ -60,3 +60,48 @@ Todos los scripts terminan con `PASS`, `FAIL` o `SKIP` y un motivo para SKIP/FAI
 **Rollback:** `06-rollback.md` — no hay rollback porque ninguno de los scripts cambia configuración.
 
 Referencias: https://www.librechat.ai/docs/features/web_search ; https://docs.keenable.ai/api-reference/search ; https://docs.keenable.ai/api-reference/fetch
+
+## 06 — Comprobaciones de seguridad restauradas
+
+El script `06-restore-lost-checks.sh` recupera las comprobaciones
+críticas del antiguo `04-citations-security-cost.sh`:
+
+- Detección de proveedores pagados configurados.
+- Excepciones SSRF y overrides de endpoints.
+- Evidencias de facturación y cuotas.
+- Evidencias de protección frente a instrucciones web hostiles.
+
+Las pruebas relativas a proveedores, facturación y seguridad
+externa requieren readbacks verificables.
+
+Un PASS estructural no acredita seguridad LIVE.
+
+## Comprobaciones expresamente excluidas
+
+- Correspondencia entre resultados de búsqueda y fetch.
+- Validación de citas y atribuciones.
+
+Ambas quedan excluidas por decisión explícita del propietario.
+
+## Procedencia del código recuperado
+
+Referencia histórica:
+commit `9f8b31861f0324e9b0157209b625603763402168`
+
+Archivo original:
+`canaries/web-research-live/04-citations-security-cost.sh`
+
+No se restaura el archivo original ni se sustituyen
+los scripts 01 a 05.
+
+## Ejecución adicional
+
+```bash
+bash canaries/web-research-live/06-restore-lost-checks.sh
+```
+
+Variable adicional:
+`WEB_RESEARCH_SECURITY_PROOF_FILE`
+
+Ruta privada al JSON de evidencias de seguridad,
+facturación, cuotas y tratamiento de contenido hostil.
