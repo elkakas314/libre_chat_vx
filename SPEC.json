@@ -1581,7 +1581,7 @@
     },
     {
       "id": "LC-DISC-MOBILE-ACCESS-001",
-      "estado": "ABIERTA",
+      "estado": "CERRADA",
       "bloqueante": true,
       "ubicacion": [
         "contracts/mobile-access.schema.json#/properties/mode/enum",
@@ -1601,7 +1601,9 @@
         "tests_git_blob_sha": "7854300cbbb8f8bd04b4ecbc199af56ef0a96cfc",
         "metodo": "Contraste de required y enum en JSON Schema con campos y ramas retornadas por chooseRemoteAccess(), inspección de config CURRENT y tests de acceso. No existe equivalencia 1:1 demostrada.",
         "runtime": "NO_DEPLOYMENT_EVIDENCE"
-      }
+      },
+      "resolucion": "626b2b3fd5b62cd281b4a75ac1b1b7790ce6b16c",
+      "evidencia": 37957781119
     },
     {
       "id": "LC-DISC-TRANSPORT-RESOURCE-001",
