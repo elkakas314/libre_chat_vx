@@ -92,3 +92,23 @@ jobs:
         if: always()
         working-directory: vx
         run: npm run verify:upstream -- ../upstream
+
+  canary-self-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Offline canary library and fixture self-tests (under 30 seconds)
+        shell: bash
+        run: |
+          set -euo pipefail
+          command -v jq
+          started="$(date +%s)"
+          timeout 25s bash -euo pipefail -c '
+            bash canaries/cf-aig-binding/00-source-sanity.sh
+            bash canaries/skill-sync-live/00-source-sanity.sh
+          '
+          elapsed="$(( $(date +%s) - started ))"
+          test "$elapsed" -lt 30
+          echo "PASS canary-self-test elapsed_seconds=$elapsed; offline SOURCE only"
