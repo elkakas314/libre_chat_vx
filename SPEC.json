@@ -277,7 +277,7 @@
         ]
       },
       "plan_cierre_contratos_6_12": {
-        "estado": "PLAN_ACTUALIZADO_CORRECCION_7_EN_PREPARACION",
+        "estado": "PLAN_RECONCILIADO_DOS_PR_CORRECCION_EN_PREPARACION",
         "objetivo": "Cerrar 6 discrepancias funcionales abiertas de 6,7,8,9,10,12 y clasificar documentalmente contrato 11 huérfano con intención; siete hallazgos 6–12 en plan explícito.",
         "secuencia": [
           {
@@ -295,7 +295,7 @@
           },
           {
             "orden": 1,
-            "pr": "PR futura dedicada contrato 6",
+            "pr": "PR #8 — contrato 6 (pendiente apertura)",
             "adr": [
               "ADR-10"
             ],
@@ -305,18 +305,18 @@
           },
           {
             "orden": 2,
-            "pr": "PR #7 — contrato 7",
+            "pr": "PR #7 — contrato 7 (CI verde, draft; requiere integración ADR-10 primero)",
             "adr": [
               "ADR-10"
             ],
             "discrepancia": "LC-DISC-BACKGROUND-MUTATION-FENCE-001",
             "accion": "Normalizar explícitamente schema snake_case ⇄ TS camelCase en frontera existente; sincronizar campos obligatorios sin nuevos ejecutores ni replay; fixtures válidas e inválidas.",
             "gate": "fixtures schema→consumer + tests negativos + CI",
-            "estado": "PROGRAMADA_PARA_CORRECCION_SOURCE_EN_ESTE_TURNO"
+            "estado": "OPEN_DRAFT_CI_PASS"
           },
           {
             "orden": 3,
-            "pr": "PR futura dedicada contrato 8",
+            "pr": "PR #9 — contrato 8 (pendiente apertura)",
             "adr": [
               "ADR-10"
             ],
@@ -327,11 +327,13 @@
           {
             "orden": 4,
             "pr": "PR futura dedicada contrato 9",
-            "adr": [],
+            "adr": [
+              "ADR-12 OBLIGATORIO — proponer en PR documental dedicada"
+            ],
             "discrepancia": "LC-DISC-MOBILE-ACCESS-001",
-            "accion": "En PR propia, alinear schema al resultado completo RemoteAccessDecision (incluido UNAVAILABLE) y mantener los gates Tailscale/Cloudflare y ausencia de replay; no tratar input de signals como output.",
+            "accion": "Tras aprobación ADR-12, PR dedicada al schema mobile-access y tests validadores de las cuatro rutas; no cambiar el runtime selector.",
             "gate": "tests de DENY/autenticación/UNAVAILABLE + CI",
-            "decision_concreta": "Representación del resultado RemoteAccessDecision: incluir UNAVAILABLE en enum del schema; NO eliminar UNAVAILABLE de chooseRemoteAccess(). El esquema modelará salida de decisión con required mode, requiresFreshSession, materialReplayAllowed=false y reason; backendReachable/authenticated salen de required del resultado y permanecen comprobaciones/señales internas de autorización existentes."
+            "decision_concreta": "Conservar UNAVAILABLE y no alterar chooseRemoteAccess. ADR-12 requiere definir mobile-access.schema.json como contrato de SALIDA RemoteAccessDecision: mode incluye UNAVAILABLE; required son mode/requiresFreshSession/materialReplayAllowed/reason; retirar backendReachable/authenticated de required y de la salida (siguen señales/gates internos). authority=false, no replay y el acceso público exige identidad."
           },
           {
             "orden": 5,
@@ -359,31 +361,50 @@
             "orden": 7,
             "pr": "PR futura dedicada contrato 12",
             "tipo": "CORRECCION_CONTRATO",
-            "adr": [
-              "No ADR-09 ni ADR-10 salvo decisión específica sobre enum público"
-            ],
+            "adr": [],
             "discrepancia": "LC-DISC-MANOJOS3-ENTRYPOINT-001",
             "estado": "PLANIFICADO_EN_PARALELO",
             "paralelo_con": [
               "Contrato 9",
               "Contrato 10"
             ],
-            "accion": "Alinear enum de entrypoint de inferencia interna con tipo LibreChat (INTERNAL_ADVISORY_LITELLM), mapear endpoint_env/deploymentEnv y establecer identity/provenance; tests de los tres entrypoints.",
-            "gate": "Contrato + fixture descriptor + CI, sin cambios MANOJOS3 ni afirmación LIVE"
+            "accion": "PR separada contrato 12: schema-first alineado al descriptor TS local (enum INTERNAL_ADVISORY_LITELLM, deploymentEnv camelCase e id obligatorio), con validación de los tres descriptores; sin normalizador extra, sin tocar MANOJOS3.",
+            "gate": "Contrato + fixture descriptor + CI, sin cambios MANOJOS3 ni afirmación LIVE",
+            "decision_concreta": {
+              "fuente_canonica": "src/manojos3/entrypoints.ts como descriptor SOURCE local; no API externa normalizada.",
+              "enum": "Corregir contrato schema: reemplazar INFERENCE_OPENAI_COMPATIBLE por INTERNAL_ADVISORY_LITELLM; no cambiar el literal TS.",
+              "variable": "Alinear schema a deploymentEnv camelCase (no endpoint_env); no aplicar ADR-10 porque no existe wire snake_case externo ni adapter de conversión justificados.",
+              "identidad": "id obligatorio y string no vacío en el schema como TS; requerir transport; hacer comprobables sourcePins y notes del descriptor.",
+              "autoridad": "authority=false; SOURCE_INTERNAL_ONLY para LiteLLM, nunca tratar endpoint documentado como LIVE."
+            }
           }
         ],
         "gate_cierre": "Para cada PR: diff exacto → CI del HEAD exacto → merge específico autorizado → CI del commit integrado → registro de cierre individual con git_commit_sha y CI; runtime sigue NO_DEPLOYMENT_EVIDENCE salvo readback LIVE real.",
         "regla_scope": "Orden de dependencias como arriba; la opción B permite preparar scopes independientes sin esperar una PR ajena. Máximo una corrección por contrato y no se solapan archivos gobernados sin reconciliación.",
         "adr_pendientes": [
-          "ADR-09 PROPUESTA preexistente",
-          "ADR-10 PROPUESTA en PR #6; aún no integrada"
+          "ADR-09 — sólo índice semántico MCP, separado",
+          "ADR-10 — PR #6 PROPUESTA: snake_case→camelCase 6/7/8",
+          "ADR-11 — obligatorio por cambio de taxonomía contrato 10, a proponer",
+          "ADR-12 — obligatorio por cambio de enum y required contrato 9, a proponer en PR documental separada"
         ],
         "dependencias_adr": {
           "ADR-09": "Sólo normalización semántica MCP capability-index; fuera de las correcciones del contrato 6, separada de ADR-10.",
           "ADR-10": "Sólo normalización snake_case (wire) ↔ camelCase (TS) en contratos 6,7,8; PROPUESTA en PR #6.",
-          "ADR-11": "Obligatorio y pendiente, contrato 10: taxonomías status SOURCE/runtime."
+          "ADR-11": "Obligatorio y pendiente, contrato 10: taxonomías status SOURCE/runtime.",
+          "ADR-12": "Obligatorio antes de modificar contrato 9: decisión contrato salida RemoteAccessDecision, UNAVAILABLE y required."
         },
-        "nota_ejecucion": "Contrato 12 puede tramitarse paralelo a 9 y 10 con scopes independientes (regla B); contrato 11 huérfano permanece registro documental, sin PR de código hasta instancia."
+        "nota_ejecucion": "Contrato 12 puede tramitarse paralelo a 9 y 10 con scopes independientes (regla B); contrato 11 huérfano permanece registro documental, sin PR de código hasta instancia.",
+        "plan_merge_propuesto": [
+          "1 PR #6 ADR-10 aprobado, merge con CI integrada",
+          "2 Reintegrar PR #7 sobre HEAD que ya contiene #6, CI y merge individual autorizado",
+          "3 PR #8 contrato 6, rebase/CI/merge individual",
+          "4 PR #9 contrato 8, rebase/CI/merge individual",
+          "5 Registrar/aprobar ADR-11 en PR documental propia, después PR contrato 10 y merge tras CI",
+          "6 Registrar/aprobar ADR-12 en PR documental propia, después PR contrato 9 y merge tras CI",
+          "7 PR contrato 12 (independiente, paralela a documentos ADR-11/12, siempre merge con autorización)",
+          "8 Regularizar HUÉRFANO documental contrato 11 sin PR funcional hasta necesidad demostrada"
+        ],
+        "estimacion_turnos_cierre": "6–9 turnos de revisión/merge como escenario, NO es garantía ni estimación temporal; condicionado a autorizaciones individuales, CI y ausencia de conflictos."
       }
     },
     "deferred_external": [
