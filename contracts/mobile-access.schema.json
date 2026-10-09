@@ -4,31 +4,28 @@
   "type": "object",
   "required": [
     "mode",
-    "backendReachable",
-    "authenticated"
+    "requiresFreshSession",
+    "materialReplayAllowed",
+    "reason"
   ],
   "properties": {
     "mode": {
       "enum": [
         "LOCAL",
         "TAILSCALE_PRIVATE",
-        "CLOUDFLARE_ACCESS_PUBLIC"
+        "CLOUDFLARE_ACCESS_PUBLIC",
+        "UNAVAILABLE"
       ]
     },
-    "backendReachable": {
+    "requiresFreshSession": {
       "type": "boolean"
     },
-    "authenticated": {
-      "type": "boolean"
+    "materialReplayAllowed": {
+      "const": false
     },
-    "accessIdentityVerified": {
-      "type": "boolean"
-    },
-    "tailnetAuthorized": {
-      "type": "boolean"
-    },
-    "publicEdgeEnabled": {
-      "type": "boolean"
+    "reason": {
+      "type": "string",
+      "minLength": 1
     }
   },
   "additionalProperties": false
