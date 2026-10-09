@@ -1127,9 +1127,9 @@
     },
     {
       "id": "ADR-10",
-      "estado": "PROPUESTA",
+      "estado": "APROBADA",
       "titulo": "Normalización explícita de contratos JSON de frontera (snake_case) a consumidores TypeScript (camelCase)",
-      "decision": "Opción C PROPUESTA: mantener los JSON Schema como contratos de representación externa en snake_case y convertir explícitamente a tipos internos TypeScript camelCase en las fronteras/adaptadores ya existentes. Cada campo exigido por el consumidor deberá estar respaldado por evidencia o rechazo fail-closed; los adaptadores no conceden authority material ni promueven SOURCE a LIVE/VERIFIED.",
+      "decision": "Opción C APROBADA: mantener los JSON Schema como contratos de representación externa en snake_case y convertir explícitamente a tipos internos TypeScript camelCase en las fronteras/adaptadores ya existentes. Cada campo exigido por el consumidor deberá estar respaldado por evidencia o rechazo fail-closed; los adaptadores no conceden authority material ni promueven SOURCE a LIVE/VERIFIED.",
       "alternativas": [
         {
           "opcion": "A",
@@ -1194,8 +1194,10 @@
         "background_consumer_git_blob_sha": "35904e73cfc34515c61d2f338f714be253900eae",
         "adapter_git_blob_sha": "fb08050d12562fb909f255e0d5dbb803aac67848"
       },
-      "resultado": "PROPUESTA",
-      "runtime": "NO_DEPLOYMENT_EVIDENCE"
+      "resultado": "APROBADA",
+      "runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "aplicabilidad": "ADR-10 aplica cuando existe frontera entre schema y consumidor externo. Contratos sin frontera externa corrigen el schema directamente.",
+      "excepcion_contrato_12": "contracts/manojos3-entrypoint.schema.json: descriptor TS local sin frontera externa. Alinear schema a INTERNAL_ADVISORY_LITELLM, deploymentEnv e id obligatorio; no crear normalizador ADR-10."
     }
   ],
   "despliegue": {
