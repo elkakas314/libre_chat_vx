@@ -2145,7 +2145,18 @@
       "transport-resource",
       "extension-package",
       "manojos3-entrypoint"
-    ]
+    ],
+    "reglas_evidencia_runtime": {
+      "health_200_servicio_externo": "DEPLOYED_UNVERIFIED",
+      "regla": "Health 200 de un servicio externo = DEPLOYED_UNVERIFIED. LIVE solo con readback autenticado + permisos + alcance.",
+      "live_requiere": [
+        "readback_autenticado_del_servicio_real",
+        "permisos_verificados",
+        "alcance_verificado"
+      ],
+      "health_200_no_demuestra": "LIVE_VERIFIED",
+      "fuente": "Corrección operativa Bloque 2; un health HTTP 200 nunca acredita por sí solo un gate LIVE."
+    }
   },
   "objetivos": {
     "negocio": [
