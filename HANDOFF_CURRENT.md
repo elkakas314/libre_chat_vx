@@ -1,5 +1,15 @@
 # LIBRECHAT HANDOFF CURRENT
 
+## 2026-11-05 — UI NOSTROMO / GitHub-first, PR #15 (DRAFT)
+- Feature UX: feat/nostromo-chat-first-ux-20261105. Último commit de código: a5e5bad71a2b4f21e9058de5bb2aded2675dc9d3. No merge todavía.
+- Evidencia real navegador con upstream LibreChat fijado y backend E2E mock: source-check 41999106330 SUCCESS; visual-source-smoke 41999106461 SUCCESS; vx-native-visual-prerequisite 41999106407 SUCCESS; capturas/JSON artefacto 13402026570.
+- Cuatro rondas visuales R1/R2/R3/R4 documentadas en docs/NOSTROMO_UX_ITERATIONS_EVIDENCE_20261105.md y wireframes en docs/NOSTROMO_WIREFRAMES_R0_20261105.md.
+- El launcher Contexto no abre panel por defecto. Flag OFF no reserva espacio, móvil vuelve al chat; Escape/Enter, foco y recarga comprobados. Artifacts/Subagents siguen con prioridad nativa.
+- MANOJOS3 «No enlazado» significa puente LibreChat NO CONFIGURADO, no runtime MANOJOS3 caído; VX13 permanece diseño/NO LIVE y exige Tentáculo Link.
+- Arquitectura de itinerancia PC/móvil, conexión MANOJOS3/VX13 sin segundo núcleo: docs/NOSTROMO_UX_ITINERANCIA_TARGETS_DESIGN_DELTA_20261105.md. Leídos Maestro VX13 v0.9.33 y anexos A-54 en Drive.
+- Gate pendiente: E2E con Artifact/Subagent activo y accesibilidad profesional + aprobación visual humana. Ningún LIVE gate SPEC promovido, ninguna instalación host; MANOJOS3 y VX13 intactos.
+- NEXT_ACTION: inspeccionar capturas R4, confirmar preferencia visual, E2E conviviencia con Artifacts/Subagents, integración del PR cuando esté revisado; después, y sólo después, instalación local gobernada por MANOJOS3.
+
 ## GitHub-first — nuevo criterio de cierre (10 octubre 2026)
 
 - Prioridad: completar código y QA SOURCE en GitHub antes de instalación; el Lenovo y gates LIVE quedan para MANOJOS3.
