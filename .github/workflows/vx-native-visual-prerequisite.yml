@@ -41,7 +41,6 @@ jobs:
         working-directory: upstream
         run: npx playwright install --with-deps chromium
       - name: Build unmodified LibreChat native frontend
-        if: github.event_name != 'pull_request'
         working-directory: upstream
         run: npm run frontend
       - name: Run upstream authentic native screenshot pilot
