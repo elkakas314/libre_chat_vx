@@ -5,7 +5,7 @@ on:
     branches: [handoff_current_bootstrps]
     paths:
       - '.github/workflows/vx-native-visual-prerequisite.yml'
-      - 'tests/visual/native-overlay-prereq.spec.ts'
+      - 'ci/fixtures/native-overlay-prereq.spec.ts'
 permissions:
   contents: read
 jobs:
@@ -68,7 +68,7 @@ jobs:
           npm run frontend:ci
       - name: Install screenshot instrumentation in ephemeral worktree
         run: |
-          cp vx/tests/visual/native-overlay-prereq.spec.ts upstream/e2e/screenshots/vx-prereq.spec.ts
+          cp vx/ci/fixtures/native-overlay-prereq.spec.ts upstream/e2e/screenshots/vx-prereq.spec.ts
           python3 - <<'PY'
           from pathlib import Path
           p=Path('upstream/e2e/screenshots/playwright.config.ts')
