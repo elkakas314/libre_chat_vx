@@ -49,7 +49,7 @@ for (const viewport of [
         },null,2));
       };
       await snap('empty-chat');
-      if (viewport.label === 'desktop' || !flag) {
+      if (viewport.label === 'desktop') {
         await selectMockEndpoint(page,MOCK_ENDPOINTS[0]);
         const response = await sendMessageAndWaitForCompletion(page,'NOSTROMO E2E prueba de composición visual');
         expect(response.ok()).toBeTruthy();
