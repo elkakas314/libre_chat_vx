@@ -56,8 +56,38 @@ const panelAnchor = 'const panelElement = artifactsElement ?? subagentElement;';
 if (!presentation.includes(panelAnchor)) throw new Error('PRESENTATION_PANEL_ANCHOR_MISSING');
 presentation = presentation.replace(
   panelAnchor,
-  "const vxCockpitElement = <VXCockpitBridge />;\n  const panelElement = artifactsElement ?? subagentElement ?? vxCockpitElement;"
+  [
+    "const vxEnabled = typeof window !== 'undefined' && window.localStorage.getItem('librechat-vx-cockpit') === '1';",
+    "  const [vxContextOpen, setVxContextOpen] = useState(false);",
+    "  const vxCockpitElement = vxEnabled && vxContextOpen",
+    "    ? <VXCockpitBridge onClose={() => setVxContextOpen(false)} />",
+    "    : null;",
+    "  const panelElement = artifactsElement ?? subagentElement ?? vxCockpitElement;",
+  ].join('\n')
 );
+const reactImportAnchor = "import { lazy, Suspense, useCallback, useEffect, useMemo, useRef } from 'react';";
+if (!presentation.includes(reactImportAnchor)) throw new Error('PRESENTATION_REACT_HOOKS_ANCHOR_MISSING');
+presentation = presentation.replace(reactImportAnchor,
+  "import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';"
+);
+
+const mainAnchor = '<main className="flex h-full flex-col overflow-y-auto" role="main">';
+if (!presentation.includes(mainAnchor)) throw new Error('PRESENTATION_MAIN_ANCHOR_MISSING');
+presentation = presentation.replace(
+  mainAnchor,
+  [
+    '<main className="relative flex h-full flex-col overflow-y-auto" role="main">',
+    '  {vxEnabled ? (',
+    '    <button type="button" className="vx-context-launcher"',
+    '      aria-label={vxContextOpen ? "Contexto NOSTROMO abierto" : "Abrir contexto NOSTROMO"}',
+    '      aria-expanded={vxContextOpen} aria-controls="vx-context-panel"',
+    '      onClick={() => setVxContextOpen((current) => !current)}>',
+    '      Contexto',
+    '    </button>',
+    '  ) : null}',
+  ].join('\n')
+);
+
 writeFileSync(presentationPath, presentation);
 
 writeFileSync(
