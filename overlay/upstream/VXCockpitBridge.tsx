@@ -61,7 +61,7 @@ export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
                   <small>Automatización y ejecución gobernada</small>
                 </div>
               </div>
-              <span className="vx-target-state"><span aria-hidden="true" className="vx-target-dot"/>Sin conexión</span>
+              <span className="vx-target-state"><span aria-hidden="true" className="vx-target-dot"/>No enlazado</span>
             </li>
             <li className="vx-target-item">
               <div className="vx-target-identity">
@@ -77,7 +77,7 @@ export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
         </section>
 
         <p className="vx-context-note" role="note">
-          El estado se actualizará cuando exista una conexión autenticada y comprobada.
+          Este es el estado del enlace con NOSTROMO, no la salud de cada sistema. Se actualizará tras una lectura autenticada.
         </p>
 
         <div className="vx-context-disclosure">

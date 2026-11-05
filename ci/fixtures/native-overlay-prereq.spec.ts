@@ -52,7 +52,10 @@ for (const viewport of [
       const launcher = page.getByRole('button', { name:'Abrir contexto NOSTROMO' });
       const context = page.getByTestId('vx-context-surface');
       await expect(context).toHaveCount(0);
-      if (flag) await expect(launcher).toBeVisible();
+      if (flag) {
+        await expect(launcher).toBeVisible();
+        await expect(launcher).toBeEnabled();
+      }
       else await expect(launcher).toHaveCount(0);
       const mainWidth = await page.getByRole('main').evaluate(el => el.getBoundingClientRect().width);
       expect(mainWidth).toBeGreaterThan(viewport.label === 'desktop' ? 600 : 300);
@@ -68,6 +71,7 @@ for (const viewport of [
         await launcher.click();
         await expect(context).toBeVisible();
         await expect(context.getByText('MANOJOS3')).toBeVisible();
+        await expect(context.getByText('No enlazado')).toBeVisible();
         await expect(context.getByText('VX13')).toBeVisible();
         await snap('context-open');
         await context.getByRole('button', { name:'Ver detalles técnicos' }).click();

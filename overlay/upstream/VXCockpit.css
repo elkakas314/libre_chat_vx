@@ -225,3 +225,9 @@ html.light .vx-context-note { border-left-color: #56839c; }
 @media (prefers-reduced-motion: reduce) {
   .vx-context-root *, .vx-context-launcher { animation: none !important; transition: none !important; }
 }
+
+/* Native Artifacts/Subagents always retain the shared slot. */
+.vx-context-launcher:disabled {
+  cursor: not-allowed;
+  opacity: .46;
+}
