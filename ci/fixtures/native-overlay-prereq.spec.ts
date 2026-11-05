@@ -36,9 +36,9 @@ for (const viewport of [
         const metrics = await page.evaluate(() => ({
           width:window.innerWidth,
           documentWidth:document.documentElement.scrollWidth,
-          cockpitCount:document.querySelectorAll('[data-testid="vx-nostromo-cockpit"]').length,
-          cockpitVisible:!!document.querySelector('[data-testid="vx-nostromo-cockpit"]') &&
-            getComputedStyle(document.querySelector('[data-testid="vx-nostromo-cockpit"]')!).display !== 'none',
+          contextCount:document.querySelectorAll('[data-testid="vx-context-surface"]').length,
+          launcherCount:document.querySelectorAll('.vx-context-launcher').length,
+          mainWidth:document.querySelector('main[role="main"]')?.getBoundingClientRect().width ?? 0,
         }));
         screenshots.push({file,metrics});
         writeFileSync(path.join(output,prefix + '-metrics.json'),JSON.stringify({
@@ -48,6 +48,13 @@ for (const viewport of [
           test_profile:'UPSTREAM_E2E_MOCK_MODEL'
         },null,2));
       };
+      const launcher = page.getByRole('button', { name:'Abrir contexto NOSTROMO' });
+      const context = page.getByTestId('vx-context-surface');
+      await expect(context).toHaveCount(0);
+      if (flag) await expect(launcher).toBeVisible();
+      else await expect(launcher).toHaveCount(0);
+      const mainWidth = await page.getByRole('main').evaluate(el => el.getBoundingClientRect().width);
+      expect(mainWidth).toBeGreaterThan(viewport.label === 'desktop' ? 600 : 300);
       await snap('empty-chat');
       if (viewport.label === 'desktop') {
         await selectMockEndpoint(page,MOCK_ENDPOINTS[0]);
@@ -56,7 +63,16 @@ for (const viewport of [
         await expect(mockReply(page)).toBeVisible();
         await snap('chat-with-response');
       }
-      if (flag) expect(await page.locator('[data-testid="vx-nostromo-cockpit"]').count()).toBeGreaterThan(0);
+      if (flag) {
+        await launcher.click();
+        await expect(context).toBeVisible();
+        await expect(context.getByText('MANOJOS3')).toBeVisible();
+        await expect(context.getByText('VX13')).toBeVisible();
+        await snap('context-open');
+        await context.getByRole('button',{name:'Cerrar contexto NOSTROMO'}).click();
+        await expect(context).toHaveCount(0);
+        await snap('context-closed');
+      }
       expect(errors).toEqual([]);
     });
   });

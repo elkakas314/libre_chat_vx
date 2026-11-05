@@ -1,6 +1,13 @@
 name: vx-native-visual-prerequisite
 on:
   workflow_dispatch:
+  pull_request:
+    branches: [handoff_current_bootstrps]
+    paths:
+      - 'overlay/upstream/**'
+      - 'scripts/install-as-workspace.mjs'
+      - 'ci/fixtures/native-overlay-prereq.spec.ts'
+      - '.github/workflows/vx-native-visual-prerequisite.yml'
   push:
     branches: [handoff_current_bootstrps]
     paths:
@@ -34,9 +41,11 @@ jobs:
         working-directory: upstream
         run: npx playwright install --with-deps chromium
       - name: Build unmodified LibreChat native frontend
+        if: github.event_name != 'pull_request'
         working-directory: upstream
         run: npm run frontend
       - name: Run upstream authentic native screenshot pilot
+        if: github.event_name != 'pull_request'
         working-directory: upstream
         env:
           E2E_USE_MEMORY_MONGO: 'true'
@@ -47,7 +56,7 @@ jobs:
           export E2E_CAPTURE_SHA="$(git rev-parse HEAD)"
           npx playwright test --config=e2e/screenshots/playwright.config.ts
       - name: Preserve native capture
-        if: always()
+        if: github.event_name != 'pull_request' && always()
         uses: actions/upload-artifact@v4
         with:
           name: librechat-native-before
