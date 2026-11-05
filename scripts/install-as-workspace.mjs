@@ -59,8 +59,13 @@ presentation = presentation.replace(
   [
     "const vxEnabled = typeof window !== 'undefined' && window.localStorage.getItem('librechat-vx-cockpit') === '1';",
     "  const [vxContextOpen, setVxContextOpen] = useState(false);",
+    "  const vxContextButtonRef = useRef<HTMLButtonElement>(null);",
+    "  const closeVxContext = useCallback(() => {",
+    "    setVxContextOpen(false);",
+    "    requestAnimationFrame(() => vxContextButtonRef.current?.focus());",
+    "  }, []);",
     "  const vxCockpitElement = vxEnabled && vxContextOpen",
-    "    ? <VXCockpitBridge onClose={() => setVxContextOpen(false)} />",
+    "    ? <VXCockpitBridge onClose={closeVxContext} />",
     "    : null;",
     "  const panelElement = artifactsElement ?? subagentElement ?? vxCockpitElement;",
   ].join('\n')
@@ -78,7 +83,7 @@ presentation = presentation.replace(
   [
     '<main className="relative flex h-full flex-col overflow-y-auto" role="main">',
     '  {vxEnabled ? (',
-    '    <button type="button" className="vx-context-launcher"',
+    '    <button ref={vxContextButtonRef} type="button" className="vx-context-launcher"',
     '      aria-label={vxContextOpen ? "Contexto NOSTROMO abierto" : "Abrir contexto NOSTROMO"}',
     '      aria-expanded={vxContextOpen} aria-controls="vx-context-panel"',
     '      onClick={() => setVxContextOpen((current) => !current)}>',

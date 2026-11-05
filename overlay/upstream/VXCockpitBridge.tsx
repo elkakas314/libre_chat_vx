@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   MANOJOS3_LIBRECHAT_INTEGRATION,
   VX13_LIBRECHAT_INTEGRATION,
@@ -12,6 +12,9 @@ export interface VXCockpitBridgeProps {
 /** One requested contextual view inside LibreChat's own panel. No target authority. */
 export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
   const [showTechnical, setShowTechnical] = useState(false);
+  const returnButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => { returnButtonRef.current?.focus(); }, []);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -28,7 +31,7 @@ export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
           <span className="vx-context-kicker">NOSTROMO / CONTEXTO</span>
           <h2 id="vx-context-title">Tu cabina</h2>
         </div>
-        <button type="button" className="vx-context-close" aria-label="Cerrar contexto NOSTROMO" onClick={onClose}>
+        <button ref={returnButtonRef} type="button" className="vx-context-close" aria-label="Cerrar contexto NOSTROMO" onClick={onClose}>
           <span className="vx-context-back" aria-hidden="true">←</span>
           <span>Volver</span>
         </button>

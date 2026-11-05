@@ -40,6 +40,7 @@ for (const viewport of [
           launcherCount:document.querySelectorAll('.vx-context-launcher').length,
           mainWidth:document.querySelector('main[role="main"]')?.getBoundingClientRect().width ?? 0,
         }));
+        expect(metrics.documentWidth).toBeLessThanOrEqual(metrics.width + 2);
         screenshots.push({file,metrics});
         writeFileSync(path.join(output,prefix + '-metrics.json'),JSON.stringify({
           schema:'libre-chat-vx.native-visual-inspection.v1',
@@ -84,9 +85,21 @@ for (const viewport of [
             document.documentElement.classList.add('dark');
           });
         }
+        await page.keyboard.press('Escape');
+        await expect(context).toHaveCount(0);
+        await expect(launcher).toBeFocused();
+        await snap('escape-return');
+        await launcher.press('Enter');
+        await expect(context).toBeVisible();
         await context.getByRole('button',{name:'Cerrar contexto NOSTROMO'}).click();
         await expect(context).toHaveCount(0);
+        await expect(launcher).toBeFocused();
         await snap('context-closed');
+        await page.reload({ waitUntil: 'domcontentloaded' });
+        await page.getByRole('textbox', { name:'Message input' }).waitFor({state:'attached'});
+        await expect(page.getByTestId('vx-context-surface')).toHaveCount(0);
+        await expect(page.getByRole('button', {name:'Abrir contexto NOSTROMO'})).toBeVisible();
+        await snap('reloaded-chat');
       }
       expect(errors).toEqual([]);
     });
