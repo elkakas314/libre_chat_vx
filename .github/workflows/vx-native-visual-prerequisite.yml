@@ -87,6 +87,7 @@ jobs:
           E2E_BASE_URL: http://127.0.0.1:3333
           VX_COCKPIT_FLAG: '0'
           VX_SOURCE_SHA: ${{ github.sha }}
+          E2E_CAPTURE_DIR: ${{ runner.temp }}/overlay-disabled
           VX_CAPTURE_DIR: ${{ runner.temp }}/overlay-disabled
         run: |
           export E2E_CAPTURE_SHA="$(git rev-parse HEAD)"
@@ -99,6 +100,7 @@ jobs:
           E2E_BASE_URL: http://127.0.0.1:3333
           VX_COCKPIT_FLAG: '1'
           VX_SOURCE_SHA: ${{ github.sha }}
+          E2E_CAPTURE_DIR: ${{ runner.temp }}/overlay-enabled
           VX_CAPTURE_DIR: ${{ runner.temp }}/overlay-enabled
         run: |
           export E2E_CAPTURE_SHA="$(git rev-parse HEAD)"
