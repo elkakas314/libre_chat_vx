@@ -9,12 +9,10 @@ export interface VXCockpitBridgeProps {
   onClose?: () => void;
 }
 
-/**
- * A requested contextual view in LibreChat's existing shared panel.
- * Does not own target state, generate permissions, execute mutations, or claim LIVE.
- */
+/** One requested contextual view inside LibreChat's own panel. No target authority. */
 export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
   const [showTechnical, setShowTechnical] = useState(false);
+
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') onClose?.();
@@ -24,60 +22,79 @@ export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
   }, [onClose]);
 
   return (
-    <section id="vx-context-panel" className="vx-context-root" data-testid="vx-context-surface" aria-label="Contexto NOSTROMO">
+    <section id="vx-context-panel" className="vx-context-root" data-testid="vx-context-surface" aria-labelledby="vx-context-title">
       <header className="vx-context-header">
         <div className="vx-context-heading">
-          <span className="vx-context-kicker">NOSTROMO</span>
-          <h2>Contexto</h2>
+          <span className="vx-context-kicker">NOSTROMO / CONTEXTO</span>
+          <h2 id="vx-context-title">Tu cabina</h2>
         </div>
         <button type="button" className="vx-context-close" aria-label="Cerrar contexto NOSTROMO" onClick={onClose}>
-          <span aria-hidden="true">←</span>
-          <span>Volver al chat</span>
+          <span className="vx-context-back" aria-hidden="true">←</span>
+          <span>Volver</span>
         </button>
       </header>
+
       <div className="vx-context-body">
-        <p className="vx-context-overline">Tus sistemas</p>
-        <h3>Todo en su lugar</h3>
-        <p className="vx-context-intro">
-          Esta cabina podrá reunir el estado de tus proyectos, sin convertir el chat en un panel técnico.
+        <div className="vx-context-intro-block">
+          <span className="vx-context-mark" aria-hidden="true">◇</span>
+          <p className="vx-context-overline">CONEXIONES BAJO CONTROL</p>
+          <h3>Todo conectado, cuando esté listo.</h3>
+          <p className="vx-context-intro">
+            Consulta tus sistemas desde la conversación. Aquí sólo aparecen datos confirmados.
+          </p>
+        </div>
+
+        <section className="vx-context-systems" aria-labelledby="vx-systems-heading">
+          <div className="vx-context-section-heading">
+            <h3 id="vx-systems-heading">Sistemas</h3>
+            <span>2 destinos</span>
+          </div>
+          <ul className="vx-target-list" aria-label="Destinos de NOSTROMO">
+            <li className="vx-target-item">
+              <div className="vx-target-identity">
+                <span className="vx-target-icon" aria-hidden="true">M</span>
+                <div>
+                  <strong>MANOJOS3</strong>
+                  <small>Automatización y ejecución gobernada</small>
+                </div>
+              </div>
+              <span className="vx-target-state"><span aria-hidden="true" className="vx-target-dot"/>Sin conexión</span>
+            </li>
+            <li className="vx-target-item">
+              <div className="vx-target-identity">
+                <span className="vx-target-icon" aria-hidden="true">V</span>
+                <div>
+                  <strong>VX13</strong>
+                  <small>Plataforma de agentes</small>
+                </div>
+              </div>
+              <span className="vx-target-state"><span aria-hidden="true" className="vx-target-dot"/>En diseño</span>
+            </li>
+          </ul>
+        </section>
+
+        <p className="vx-context-note" role="note">
+          El estado se actualizará cuando exista una conexión autenticada y comprobada.
         </p>
-        <ul className="vx-target-list" aria-label="Destinos de NOSTROMO">
-          <li className="vx-target-item">
-            <div className="vx-target-name">
-              <span className="vx-target-indicator" aria-hidden="true" />
-              <strong>MANOJOS3</strong>
-            </div>
-            <span className="vx-target-state">Pendiente de conexión</span>
-          </li>
-          <li className="vx-target-item">
-            <div className="vx-target-name">
-              <span className="vx-target-indicator" aria-hidden="true" />
-              <strong>VX13</strong>
-            </div>
-            <span className="vx-target-state">En diseño</span>
-          </li>
-        </ul>
-        <p className="vx-context-note">
-          La disponibilidad se confirmará mediante una lectura real. Ningún destino se declara listo por su documentación.
-        </p>
+
         <div className="vx-context-disclosure">
           <button type="button" className="vx-context-detail-toggle"
             onClick={() => setShowTechnical((value) => !value)}
             aria-expanded={showTechnical} aria-controls="vx-technical-details">
             {showTechnical ? 'Ocultar detalles técnicos' : 'Ver detalles técnicos'}
-            <span aria-hidden="true">{showTechnical ? '−' : '+'}</span>
+            <span className="vx-context-detail-symbol" aria-hidden="true">{showTechnical ? '−' : '+'}</span>
           </button>
           {showTechnical ? (
             <div id="vx-technical-details" className="vx-context-technical">
               <p>MANOJOS3 · {MANOJOS3_LIBRECHAT_INTEGRATION.bindingState}</p>
               <p>VX13 · {VX13_LIBRECHAT_INTEGRATION.bindingState}</p>
               <p>Observaciones LIVE: no verificadas.</p>
-              <p>Esta superficie no autoriza acciones materiales.</p>
+              <p>El panel no autoriza acciones materiales.</p>
             </div>
           ) : null}
         </div>
       </div>
-      <footer className="vx-context-footer">NOSTROMO · Superficie informativa</footer>
+      <footer className="vx-context-footer">NOSTROMO <span aria-hidden="true">·</span> Información con origen verificable</footer>
     </section>
   );
 }

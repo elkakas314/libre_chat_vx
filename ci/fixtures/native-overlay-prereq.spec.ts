@@ -69,6 +69,21 @@ for (const viewport of [
         await expect(context.getByText('MANOJOS3')).toBeVisible();
         await expect(context.getByText('VX13')).toBeVisible();
         await snap('context-open');
+        await context.getByRole('button', { name:'Ver detalles técnicos' }).click();
+        await expect(context.getByText('Observaciones LIVE: no verificadas.')).toBeVisible();
+        await snap('technical-details');
+        await context.getByRole('button', { name:'Ocultar detalles técnicos' }).click();
+        if (viewport.label === 'desktop') {
+          await page.evaluate(() => {
+            document.documentElement.classList.remove('dark');
+            document.documentElement.classList.add('light');
+          });
+          await snap('context-light');
+          await page.evaluate(() => {
+            document.documentElement.classList.remove('light');
+            document.documentElement.classList.add('dark');
+          });
+        }
         await context.getByRole('button',{name:'Cerrar contexto NOSTROMO'}).click();
         await expect(context).toHaveCount(0);
         await snap('context-closed');
