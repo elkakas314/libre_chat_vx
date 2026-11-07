@@ -1,0 +1,11 @@
+# ORÁCULO y VX13 en NOSTROMO — consumidor sin segundo núcleo
+2026-11-07 · SOURCE/CANDIDATE. No instalados ni enlazados en LibreChat; ORÁCULO sí tiene mTLS LIVE para MANOJOS3, no para LibreChat.
+
+ORÁCULO: contrato read-only en src/adapters/oraculoAdvisoryBridge.ts; operaciones admitidas solo ORACULO_HEALTH, ORACULO_READINESS y ORACULO_QUERY. Una abstracción inyectada enlaza más tarde al plano USO/CONSULTA existente, preferentemente vía MANOJOS3 mTLS ya probado. Sin endpoint público, sin reusar credenciales MANOJOS3, sin retries tras efecto, sin TOOLS mutantes. Un mensaje externo solo puede figurar VERIFIED_READ si identidad mTLS, verificador, fecha fresca y referencias de evidencia resultan coherentes; no se verifica sólo por HTTP 200. La rama ORÁCULO OWNED no recibe commits aquí.
+VX13: consumidor previsto según CURRENT A-88 del 2026-11-07 y anexo LINK 78 SOURCE IDs; solo frontdoor Link externo (enlace sin runtime acreditado), Switch semántica, Madre owner Policy/Auth/Ledger/Power/Verifier, Manifestator PLAN_ONLY, Spawner/hija efecto, Link/UiProjection retorno. NOSTROMO lee/propone pero no suplanta Madre. Los acuerdos deben pasar por matriz A87 y owner review; no congelar FZ sin decisión.
+MANOJOS3: adapter existente manojos3McpAdapter se conserva; runtime LIVE/READY externo, pero canal librechat_configured=false al corte. No duplicar semántica ni Kernel en NOSTROMO.
+ORÁCULO posee dos planos de confianza USO y MANTENIMIENTO; la sincronización GitHub/Drive no comparte tokens mTLS ni tiene permisos para operar su release. Omitir infraestructura de segundo gateway sin evidencia de necesidad.
+Pruebas: TS sin secretos para solicitud R0 permitida, rechazo de ORACULO_TOOL_REQUEST, verificador negativo, timestamp stale, mTLS falso, ausencia de evidencias, degraded sin reclasificación y no retry.
+Estado de vínculo posterior: INSTALL_GATE_OPEN / VX13_LINK_DESIGN_ONLY / ORACULO_LIBRECHAT_BINDING_NOT_CONFIGURED. SOURCE PASS nunca implica enlace LIVE.
+
+Fuentes: VX13 maestro v0.9.38, CURRENT A-88 y A54 UI/transversal; ORÁCULO main f7bf0e1c..., contracts/oraculo_manojos3_advisory_ingress.v1.json y docs/ORACULO_TWO_PLANES_GATEWAY_ARCHITECTURE_20261105.md; GitHub LibreChat branch de integración.
