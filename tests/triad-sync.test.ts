@@ -71,12 +71,16 @@ test('CI for exact HEAD required before promoting Drive or local',()=>{
   assert.ok(p.drive.reasons.includes('CI_EXACT_HEAD_NOT_VERIFIED'));
 });
 test('write verification is all-or-nothing across GitHub, Docs and filesystem',()=>{
-  const ok=verifyTriadWrite({requestedSha:'x',newGitHubHead:head,actualGitHubHead:head,
+  const ok=verifyTriadWrite({requestedSha:'d'.repeat(40),readbackFileSha:'d'.repeat(40),
+    newGitHubHead:head,actualGitHubHead:head,
     driveExpectedRevision:'r1',driveObservedRevision:'r1',
     localReadbackSha:'b'.repeat(64),localExpectedSha:'b'.repeat(64)});
   assert.equal(ok.complete,true);
-  assert.equal(verifyTriadWrite({requestedSha:'x',newGitHubHead:head,
+  assert.equal(verifyTriadWrite({requestedSha:'d'.repeat(40),readbackFileSha:'d'.repeat(40),newGitHubHead:head,
     actualGitHubHead:head,driveExpectedRevision:'r1',
     driveObservedRevision:'r2',localExpectedSha:'b',localReadbackSha:'b'}).complete,false);
-  assert.equal(verifyTriadWrite({requestedSha:'x'}).complete,false);
+  assert.equal(verifyTriadWrite({requestedSha:'d'.repeat(40)}).complete,false);
+  assert.equal(verifyTriadWrite({requestedSha:'d'.repeat(40),readbackFileSha:'e'.repeat(40),
+    newGitHubHead:head,actualGitHubHead:head,driveExpectedRevision:'r1',driveObservedRevision:'r1',
+    localExpectedSha:'b'.repeat(64),localReadbackSha:'b'.repeat(64)}).github,false);
 });

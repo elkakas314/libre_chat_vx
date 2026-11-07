@@ -94,7 +94,9 @@ export function evaluateTriadSync(o:TriadObservation):TriadSyncPlan {
 }
 /** Never call this on unverified action output: a write is not proof of effect. */
 export interface TriadWriteReadback {
-  requestedSha:string;newGitHubHead?:string;actualGitHubHead?:string;
+  /** Git blob SHA-1 of the intended file, not the branch commit SHA. */
+  requestedSha:string;readbackFileSha?:string;
+  newGitHubHead?:string;actualGitHubHead?:string;
   driveExpectedRevision?:string;driveObservedRevision?:string;
   localReadbackSha?:string;localExpectedSha?:string;
 }
@@ -102,7 +104,8 @@ export function verifyTriadWrite(r:TriadWriteReadback):{
   github:boolean;drive:boolean;local:boolean;complete:boolean;
 }{
   const github=!!r.newGitHubHead&&validSHA(r.newGitHubHead)&&
-    r.newGitHubHead===r.actualGitHubHead;
+    r.newGitHubHead===r.actualGitHubHead&&
+    validSHA(r.requestedSha)&&r.requestedSha===r.readbackFileSha;
   const drive=!!r.driveExpectedRevision&&!!r.driveObservedRevision&&
     r.driveExpectedRevision===r.driveObservedRevision;
   const local=!!r.localExpectedSha&&!!r.localReadbackSha&&
