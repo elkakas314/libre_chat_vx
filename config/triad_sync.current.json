@@ -1,0 +1,66 @@
+{
+  "schema": "libre-chat-vx.triad-sync.v1",
+  "status": "SOURCE_ONLY_NOT_AUTOMATED",
+  "enabled": false,
+  "authority": false,
+  "github": {
+    "repo": "elkakas314/libre_chat_vx",
+    "branch": "feat/triad-sync-gates-20261107",
+    "secret_ref": "github:main",
+    "required_permissions": [
+      "contents:read",
+      "contents:write"
+    ],
+    "required_preflight": [
+      "PAT_SCOPE",
+      "HEAD_CAS",
+      "OWNER",
+      "CI_EXACT_SHA"
+    ],
+    "force_push": false
+  },
+  "local": {
+    "root": "/home/elkakas314/librechat/vx",
+    "overlay_root": "/home/elkakas314/librechat/upstream",
+    "upstream_reference": "/home/elkakas314/upstream",
+    "pin": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
+    "dirty": "UNKNOWN",
+    "untracked": "UNKNOWN",
+    "writes_allowed": false
+  },
+  "drive": {
+    "mode": "DOC_REVISION_CAS_AND_READBACK",
+    "documents": [
+      {
+        "kind": "00",
+        "id": "11e70lpwe5U3k9FMZWd7h-N0eNaidgaINJP9Pwz1bGx8"
+      },
+      {
+        "kind": "10",
+        "id": "1fndkYM-UBmSfacQcbu_oewcDe4JzEClw-qd7K7J9pGg"
+      },
+      {
+        "kind": "20",
+        "id": "1py0BlozuMOjmo4lUEqxuqCmLaN2O3_6wYwXrTwfVcuY"
+      },
+      {
+        "kind": "30",
+        "id": "19_Bm72_3aaxT6gggEAmfkZG0y0N1hXK6tMQrYLR4sDI"
+      },
+      {
+        "kind": "40",
+        "id": "1UD9LnU0eaKdEHrLUkMJyPp-II_6rZPtlD7uzn_sqWCc"
+      }
+    ]
+  },
+  "exclusions": [
+    "MANOJOS3_CORE",
+    "VX13_CANON",
+    "ORACULO_RELEASE",
+    "RAW_TOKENS",
+    "HOST_RESET",
+    "FORCE_PUSH"
+  ],
+  "verification": "SOURCE_SHA_CI_DRIVE_REV_LOCAL_READBACK",
+  "policy": "FAIL_CLOSED_PER_SURFACE_NO_GLOBAL_BLOCK_ON_INDEPENDENT_R0"
+}
