@@ -10,7 +10,7 @@ export interface TriadGitHub {
   ciHead?:string;ciState?:'SUCCESS'|'FAILED'|'PENDING'|'UNOBSERVED';
 }
 export interface TriadLocal {
-  root:string;head?:string;workingTree:'CLEAN'|'DIRTY'|'UNKNOWN';
+  root:string;head?:string;expectedLocalHead?:string;workingTree:'CLEAN'|'DIRTY'|'UNKNOWN';
   untracked:'NONE'|'PRESENT'|'UNKNOWN';backupRef?:string;
   overlayPin?:string;
 }
@@ -70,7 +70,9 @@ export function evaluateTriadSync(o:TriadObservation):TriadSyncPlan {
   if(!safeRoot(o.local.root))loc.push('LOCAL_ROOT_MISMATCH');
   if(o.local.workingTree!=='CLEAN'||o.local.untracked!=='NONE')
     loc.push('LOCAL_UNCOMMITTED_OR_UNOBSERVED');
-  if(!o.local.head||!validSHA(o.local.head))loc.push('LOCAL_GIT_HEAD_NOT_VERIFIED');
+  if(!o.local.head||!validSHA(o.local.head)||
+    !o.local.expectedLocalHead||!validSHA(o.local.expectedLocalHead)||
+    o.local.head!==o.local.expectedLocalHead)loc.push('LOCAL_GIT_HEAD_NOT_VERIFIED');
   if(!o.local.backupRef?.trim())loc.push('ROLLBACK_SNAPSHOT_REQUIRED');
   if(o.local.overlayPin!=='f10b1d91f1eee3a2c82d5247bf620351486b7c1b')
     loc.push('UPSTREAM_PIN_MISMATCH');
@@ -97,7 +99,10 @@ export interface TriadWriteReadback {
   /** Git blob SHA-1 of the intended file, not the branch commit SHA. */
   requestedSha:string;readbackFileSha?:string;
   newGitHubHead?:string;actualGitHubHead?:string;
+  /** Post-write Drive CAS must prove that the expected previous revision was used. */
+  drivePriorRevision?:string;driveAppliedExpectedRevision?:string;
   driveExpectedRevision?:string;driveObservedRevision?:string;
+  expectedDriveMarker?:string;readbackDriveMarker?:string;
   localReadbackSha?:string;localExpectedSha?:string;
 }
 export function verifyTriadWrite(r:TriadWriteReadback):{
@@ -106,9 +111,13 @@ export function verifyTriadWrite(r:TriadWriteReadback):{
   const github=!!r.newGitHubHead&&validSHA(r.newGitHubHead)&&
     r.newGitHubHead===r.actualGitHubHead&&
     validSHA(r.requestedSha)&&r.requestedSha===r.readbackFileSha;
-  const drive=!!r.driveExpectedRevision&&!!r.driveObservedRevision&&
-    r.driveExpectedRevision===r.driveObservedRevision;
-  const local=!!r.localExpectedSha&&!!r.localReadbackSha&&
+  const drive=!!r.drivePriorRevision && !!r.driveAppliedExpectedRevision &&
+    r.driveAppliedExpectedRevision===r.drivePriorRevision &&
+    !!r.driveExpectedRevision && r.driveExpectedRevision!==r.drivePriorRevision &&
+    r.driveExpectedRevision===r.driveObservedRevision &&
+    !!r.expectedDriveMarker && r.expectedDriveMarker===r.readbackDriveMarker;
+  const local=typeof r.localExpectedSha==='string' &&
+    /^[a-f0-9]{64}$/i.test(r.localExpectedSha) &&
     r.localExpectedSha===r.localReadbackSha;
   return {github,drive,local,complete:github&&drive&&local};
 }

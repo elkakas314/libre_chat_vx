@@ -8,7 +8,7 @@ function fixture(overrides:Partial<TriadObservation>={}):TriadObservation {
     github:{repo:'elkakas314/libre_chat_vx',branch:'feat/triad-sync-gates-20261107',
       observedHead:head,expectedHead:head,patRepo:'elkakas314/libre_chat_vx',
       patVerified:true,patCanPush:true,ciHead:head,ciState:'SUCCESS'},
-    local:{root:'/home/elkakas314/librechat/vx',head:'b'.repeat(40),
+    local:{root:'/home/elkakas314/librechat/vx',head:'b'.repeat(40),expectedLocalHead:'b'.repeat(40),
       workingTree:'CLEAN',untracked:'NONE',backupRef:'backup:ready',
       overlayPin:pin},
     drive:[{id:'11e70lpwe5U3k9FMZWd7h-N0eNaidgaINJP9Pwz1bGx8',
@@ -73,14 +73,37 @@ test('CI for exact HEAD required before promoting Drive or local',()=>{
 test('write verification is all-or-nothing across GitHub, Docs and filesystem',()=>{
   const ok=verifyTriadWrite({requestedSha:'d'.repeat(40),readbackFileSha:'d'.repeat(40),
     newGitHubHead:head,actualGitHubHead:head,
+    drivePriorRevision:'r0',driveAppliedExpectedRevision:'r0',
     driveExpectedRevision:'r1',driveObservedRevision:'r1',
+    expectedDriveMarker:'TRIAD-SYNC-READY',readbackDriveMarker:'TRIAD-SYNC-READY',
     localReadbackSha:'b'.repeat(64),localExpectedSha:'b'.repeat(64)});
   assert.equal(ok.complete,true);
   assert.equal(verifyTriadWrite({requestedSha:'d'.repeat(40),readbackFileSha:'d'.repeat(40),newGitHubHead:head,
-    actualGitHubHead:head,driveExpectedRevision:'r1',
-    driveObservedRevision:'r2',localExpectedSha:'b',localReadbackSha:'b'}).complete,false);
+    actualGitHubHead:head,drivePriorRevision:'r0',driveAppliedExpectedRevision:'r0',
+    driveExpectedRevision:'r1',driveObservedRevision:'r2',
+    expectedDriveMarker:'TRIAD-SYNC-READY',readbackDriveMarker:'TRIAD-SYNC-READY',
+    localExpectedSha:'b'.repeat(64),localReadbackSha:'b'.repeat(64)}).complete,false);
   assert.equal(verifyTriadWrite({requestedSha:'d'.repeat(40)}).complete,false);
   assert.equal(verifyTriadWrite({requestedSha:'d'.repeat(40),readbackFileSha:'e'.repeat(40),
-    newGitHubHead:head,actualGitHubHead:head,driveExpectedRevision:'r1',driveObservedRevision:'r1',
+    newGitHubHead:head,actualGitHubHead:head,drivePriorRevision:'r0',driveAppliedExpectedRevision:'r0',
+    driveExpectedRevision:'r1',driveObservedRevision:'r1',
+    expectedDriveMarker:'TRIAD-SYNC-READY',readbackDriveMarker:'TRIAD-SYNC-READY',
     localExpectedSha:'b'.repeat(64),localReadbackSha:'b'.repeat(64)}).github,false);
+});
+
+test('clean local branch still requires exact expected HEAD, no infer from clean',()=>{
+  const a=fixture();
+  const p=evaluateTriadSync(fixture({local:{...a.local,expectedLocalHead:'c'.repeat(40)}}));
+  assert.equal(p.local.gate,'GATE_LOCAL');
+  assert.ok(p.local.reasons.includes('LOCAL_GIT_HEAD_NOT_VERIFIED'));
+});
+test('GitHub success cannot compensate absent Drive CAS or altered content readback',()=>{
+  const a={requestedSha:'d'.repeat(40),readbackFileSha:'d'.repeat(40),newGitHubHead:head,actualGitHubHead:head,
+    drivePriorRevision:'r0',driveAppliedExpectedRevision:'r0',driveExpectedRevision:'r1',driveObservedRevision:'r1',
+    expectedDriveMarker:'mark1',readbackDriveMarker:'mark1',
+    localExpectedSha:'b'.repeat(64),localReadbackSha:'b'.repeat(64)};
+  assert.equal(verifyTriadWrite(a).complete,true);
+  assert.equal(verifyTriadWrite({...a,driveAppliedExpectedRevision:'r_other'}).drive,false);
+  assert.equal(verifyTriadWrite({...a,readbackDriveMarker:'mark2'}).drive,false);
+  assert.equal(verifyTriadWrite({...a,localReadbackSha:'short'}).local,false);
 });
