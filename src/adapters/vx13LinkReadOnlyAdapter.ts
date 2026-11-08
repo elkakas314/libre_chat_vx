@@ -39,13 +39,14 @@ function context(args:Record<string,unknown>|undefined):Vx13ReadContext|null {
 export class Vx13LinkReadOnlyAdapter extends ReadOnlyTargetAdapter {
   readonly authority=false as const;
   constructor(private readonly link:Vx13LinkReadTransport,
-    private readonly now:()=>number=()=>Date.now()) {super();}
+    private readonly now:()=>number=()=>Date.now(),
+    private readonly trustedSession:()=>Vx13ReadContext|null=()=>null) {super();}
   identity():AdapterIdentity {
     return {endpointId:'VX13',endpointKind:'TARGET',adapterId:'vx13-link-readonly-v1',
       authority:false};
   }
-  health():Promise<ReadResult> {return this.read({operation:'health'});}
-  readiness():Promise<ReadResult> {return this.read({operation:'readiness'});}
+  health():Promise<ReadResult> {return this.read({operation:'health',args:this.trustedSession()??undefined});}
+  readiness():Promise<ReadResult> {return this.read({operation:'readiness',args:this.trustedSession()??undefined});}
   async discoverCapabilities():Promise<TargetCapabilityProjection[]> {
     // Never infer capabilities from a SOURCE schema or an unauthenticated list.
     return [];

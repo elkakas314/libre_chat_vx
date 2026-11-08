@@ -48,3 +48,12 @@ test('transport errors are redacted and never retried',async()=>{
   assert.equal(count,1);assert.equal(r.status,'UNAVAILABLE');
   assert.equal(JSON.stringify(r).includes('private-token-here'),false);
 });
+
+test('health and readiness use the trusted per-session Link context without extra ingress',async()=>{
+  const seen:string[]=[];
+  const a=new Vx13LinkReadOnlyAdapter({invoke:async q=>{seen.push(q.operation);return readback;}},
+    ()=>1040000,()=>ctx);
+  assert.equal((await a.health()).status,'OK');
+  assert.equal((await a.readiness()).status,'OK');
+  assert.deepEqual(seen,['health','readiness']);
+});
