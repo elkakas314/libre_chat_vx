@@ -5,7 +5,7 @@ export interface OraculoAdvisoryRequest {
   contextRefs?:readonly string[];
 }
 export interface OraculoAdvisoryReadback {
-  endpointId:'ORACULO';status:'OK'|'DEGRADED'|'UNAVAILABLE'|'ERROR';
+  endpointId:'ORACULO';requestId:string;status:'OK'|'DEGRADED'|'UNAVAILABLE'|'ERROR';
   observedAt?:string;releaseId?:string;sourceRevision?:string;
   evidenceRefs:readonly string[];receiptRef?:string;value?:unknown;
   peerIdentityVerified:boolean;verificationPassed:boolean;
@@ -38,11 +38,12 @@ export function projectOraculoReadback(r:OraculoAdvisoryReadback, nowMs:number=D
   const liveFresh=Number.isFinite(date)&&date<=nowMs&&nowMs-date<=300_000;
   const proofs=Array.isArray(r.evidenceRefs)&&r.evidenceRefs.length>0&&
     r.evidenceRefs.every(x=>typeof x==='string'&&validRef(x));
-  const verified=r.endpointId==='ORACULO'&&r.status==='OK'&&
-    r.peerIdentityVerified===true&&r.verificationPassed===true&&liveFresh&&proofs;
+  const authenticated=r.endpointId==='ORACULO'&&r.peerIdentityVerified===true&&
+    r.verificationPassed===true&&liveFresh&&proofs;
+  const verified=authenticated&&r.status==='OK';
   return {
     endpointId:'ORACULO',kind:'ADVISORY_ONLY',authority:false,
-    status:verified?'VERIFIED_READ':r.status==='DEGRADED'?'DEGRADED':
+    status:verified?'VERIFIED_READ':authenticated&&r.status==='DEGRADED'?'DEGRADED':
       r.status==='UNAVAILABLE'?'UNAVAILABLE':'NO_VERIFICADO',
     evidenceRefs:proofs?r.evidenceRefs:[],
     ...(Number.isFinite(date)&&{observedAt:r.observedAt}),
@@ -60,7 +61,15 @@ export class OraculoAdvisoryBridge {
     if(!validateOraculoRequest(req))throw new Error('ORACULO_ADVISORY_REQUEST_REJECTED');
     if(!this.transport)return {endpointId:'ORACULO',kind:'ADVISORY_ONLY',authority:false,
       status:'UNAVAILABLE',evidenceRefs:[]};
-    const reply=await this.transport.invoke(req); // exactly one read, never material retry
-    return projectOraculoReadback(reply,this.now());
+    try {
+      const reply=await this.transport.invoke(req); // one read, never material retry
+      if(!reply || reply.requestId!==req.requestId || reply.endpointId!=='ORACULO')
+        return {endpointId:'ORACULO',kind:'ADVISORY_ONLY',authority:false,
+          status:'NO_VERIFICADO',evidenceRefs:[]};
+      return projectOraculoReadback(reply,this.now());
+    } catch {
+      return {endpointId:'ORACULO',kind:'ADVISORY_ONLY',authority:false,
+        status:'UNAVAILABLE',evidenceRefs:[]};
+    }
   }
 }
