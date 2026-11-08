@@ -1,6 +1,6 @@
 {
   "schema": "libre-chat-vx.chatgpt-siwc-oss.v1",
-  "status": "SOURCE_PROTOCOL_ONLY_NOT_BOUND",
+  "status": "SOURCE_SERVER_MODULES_TESTED_NOT_BOUND",
   "authority": false,
   "enabled": false,
   "auth_kind": "OPEN_SOURCE_SELF_HOSTED_LOOPBACK_PKCE",
@@ -21,9 +21,9 @@
   "host_id": "OPAQUE_STABLE_PER_HOST_RUNTIME_ONLY",
   "callback": "LOCAL_LOOPBACK_ONE_SHOT",
   "secrets_storage": "SERVER_ONLY_RUNTIME_PROTECTED",
-  "jwks_verification": "REQUIRED_NOT_BOUND",
-  "oauth_listener": "REQUIRED_NOT_BOUND",
-  "refresh_rotation": "REQUIRED_NOT_BOUND",
+  "jwks_verification": "SOURCE_CRYPTO_VERIFIER_TESTED_NOT_RUNTIME_BOUND",
+  "oauth_listener": "SOURCE_LOOPBACK_ONE_SHOT_TESTED_NOT_DEPLOYED",
+  "refresh_rotation": "SOURCE_CONTRACT_TESTED_NO_HOST_HTTP_BINDING",
   "model_catalog": "REQUIRED_LIVE_DISCOVERY",
   "request_preview": {
     "store": false,
@@ -32,5 +32,8 @@
   },
   "route_state": "DISABLED_UNTIL_OAUTH_CONSENT_AND_LIVE_CANARY",
   "chatgpt_history_access": false,
-  "personal_api_key_required": false
+  "personal_api_key_required": false,
+  "credential_vault": "SOURCE_UNIX_OWNER_ONLY_CAS_NOT_PROVISIONED",
+  "responses_client": "SOURCE_SSE_COMPLETION_TESTED_NO_OAUTH_LIVE",
+  "provider_binding": "UNCONFIGURED"
 }
