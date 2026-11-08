@@ -45,8 +45,12 @@ export class Vx13LinkReadOnlyAdapter extends ReadOnlyTargetAdapter {
     return {endpointId:'VX13',endpointKind:'TARGET',adapterId:'vx13-link-readonly-v1',
       authority:false};
   }
-  health():Promise<ReadResult> {return this.read({operation:'health',args:this.trustedSession()??undefined});}
-  readiness():Promise<ReadResult> {return this.read({operation:'readiness',args:this.trustedSession()??undefined});}
+  private trustedSessionArgs():Record<string,unknown>|undefined {
+    const ctx=this.trustedSession();
+    return ctx?{...ctx}:undefined;
+  }
+  health():Promise<ReadResult> {return this.read({operation:'health',args:this.trustedSessionArgs()});}
+  readiness():Promise<ReadResult> {return this.read({operation:'readiness',args:this.trustedSessionArgs()});}
   async discoverCapabilities():Promise<TargetCapabilityProjection[]> {
     // Never infer capabilities from a SOURCE schema or an unauthenticated list.
     return [];
