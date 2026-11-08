@@ -42,7 +42,7 @@ export class SiwcResponsesClient {
     messages:readonly SiwcMessage[];
   }):Promise<SiwcTextReply>{
     const bearer=this.assert(record);
-    const body=siwcResponseBody({...args,grant:permission(record,this.now())});
+    const body=siwcResponseBody({model:args.model,liveCatalog:args.catalog,messages:args.messages,grant:permission(record,this.now())});
     const reply=await this.transport(CHATGPT_RESPONSES,{
       method:'POST',headers:{
         Authorization:'Bearer '+bearer,
