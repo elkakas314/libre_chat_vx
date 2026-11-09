@@ -66,22 +66,22 @@ test('server catalog readback binds tenant, ACL, timestamp and owner before prop
     goal:'Explain verified evidence',owner:'LIBRECHAT_VX' as const,target:'LIBRECHAT_VX' as const};
   const identity={principalRef:'principal_alpha',tenantRef:'tenant_alpha',owner:'LIBRECHAT_VX'};
   const baseline={origin:'LIBRECHAT_NATIVE_CATALOG' as const,...identity,
-    authenticated:true,aclVerified:true,observedAtMs:100000,
+    authenticated:true,aclVerified:true,observedAtMs:1_000_000,
     revision:'r1-verified',evidenceRef:'receipt:catalog-001',
     items:[{kind:'SKILL' as const,slug:'nostromo-core',owner:'LIBRECHAT_VX'}]};
   const reader={readCatalog:async()=>baseline};
-  const ok=await proposeExtensionFromTrustedCatalog(request,identity,reader,110000);
+  const ok=await proposeExtensionFromTrustedCatalog(request,identity,reader,1_100_000);
   assert.equal(ok.state,'PREPARED');
   assert.equal(ok.installEnabled,false);
   for(const patch of [{aclVerified:false},{authenticated:false},{tenantRef:'wrong'},
-    {principalRef:'other'},{observedAtMs:1000},{observedAtMs:120000},
+    {principalRef:'other'},{observedAtMs:1000},{observedAtMs:1_200_000},
     {evidenceRef:''}]){
     const result=await proposeExtensionFromTrustedCatalog(request,identity,
-      {readCatalog:async()=>({...baseline,...patch})},110000);
+      {readCatalog:async()=>({...baseline,...patch})},1_100_000);
     assert.equal(result.state,'REJECTED');
   }
-  assert.equal((await proposeExtensionFromTrustedCatalog(request,identity,null,110000)).state,'REJECTED');
-  assert.equal((await proposeExtensionFromTrustedCatalog({...request,owner:'OTHER'},identity,reader,110000)).state,'REJECTED');
-  const collisions=await proposeExtensionFromTrustedCatalog({...request,slug:'nostromo-core'},identity,reader,110000);
+  assert.equal((await proposeExtensionFromTrustedCatalog(request,identity,null,1_100_000)).state,'REJECTED');
+  assert.equal((await proposeExtensionFromTrustedCatalog({...request,owner:'OTHER'},identity,reader,1_100_000)).state,'REJECTED');
+  const collisions=await proposeExtensionFromTrustedCatalog({...request,slug:'nostromo-core'},identity,reader,1_100_000);
   assert.equal(collisions.state,'REUSE_EXISTING');
 });
