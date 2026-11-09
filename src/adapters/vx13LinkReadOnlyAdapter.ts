@@ -60,6 +60,16 @@ export class Vx13LinkReadOnlyAdapter extends ReadOnlyTargetAdapter {
     if(!OPERATIONS.includes(op))return this.unavailable('VX13_LINK_OPERATION_DENIED');
     const ctx=context(request.args);
     if(!ctx)return this.unavailable('VX13_LINK_AUTH_CONTEXT_REQUIRED');
+    // Caller-provided context never establishes identity. It must match
+    // the host-owned authenticated session, including the request fence.
+    const admitted=context(this.trustedSessionArgs());
+    if(!admitted ||
+       ctx.principalRef!==admitted.principalRef ||
+       ctx.tenantRef!==admitted.tenantRef ||
+       ctx.sessionRef!==admitted.sessionRef ||
+       ctx.expectedEpoch!==admitted.expectedEpoch ||
+       ctx.requestId!==admitted.requestId)
+      return this.unavailable('VX13_LINK_TRUSTED_SESSION_MISMATCH');
     const args:Record<string,unknown>={...request.args};
     for(const key of ['principalRef','tenantRef','sessionRef','requestId','expectedEpoch'])delete args[key];
     if(op!=='ui.snapshot'&&Object.keys(args).length) return this.unavailable('VX13_LINK_EXTRA_ARGS');
