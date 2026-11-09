@@ -1,6 +1,6 @@
 {
   "schema": "libre-chat-vx.current.v2",
-  "status": "SOURCE_CONSOLIDATED_MAIN_LIVE_GATED",
+  "status": "SOURCE_CONSOLIDATED_MAIN_WITH_NOSTROMO_EXTERNAL_FOCUS_LIVE_GATED",
   "repository": "elkakas314/libre_chat_vx",
   "branch": "main",
   "source_evidence_cutoff_head": "8a341487f5694997744e8012c36056d705ca5138",
@@ -96,7 +96,10 @@
     "chatgpt_vault": "SOURCE_AES_256_GCM_HOST_KEY_REQUIRED",
     "extension_creator": "SOURCE_CANDIDATE_NOT_INSTALLED",
     "tentaculo_hud": "SOURCE_ORGANIC_FOCUS_NOT_MOUNTED_LIVE",
-    "nostromo_chat_first": "SOURCE_MERGED_FEATURE_GATED"
+    "nostromo_chat_first": "SOURCE_MERGED_FEATURE_GATED",
+    "nostromo_external_focus": "SOURCE_MERGED_FEATURE_GATED",
+    "oraculo_contextual_projection": "SOURCE_UI_UNBOUND",
+    "vx13_link_cross_target_contract": "VX13_PR3_PROPOSAL_NOT_FZ"
   },
   "transport": {
     "local_web": "127.0.0.1:3080",
@@ -197,21 +200,21 @@
   },
   "github_first_quality": {
     "phase": "SOURCE_QA_BEFORE_INSTALLATION",
-    "code_head_verified": "8a341487f5694997744e8012c36056d705ca5138",
-    "source_ci_run_id": 42706466259,
-    "visual_fixture_ci_run_id": 42706466405,
+    "code_head_verified": "09f8ba161ab476e03ce4fe5f6cdcd23873ee80b4",
+    "source_ci_run_id": 42711412354,
+    "visual_fixture_ci_run_id": 42711412227,
     "visual_fixture_result": "SUCCESS",
     "visual_artifact_id": 11648386603,
     "desktop_mobile_chromium": "PASS_SOURCE_MOCK_PR15_R4_ONLY",
     "upstream_overlay_compile": "PASS",
-    "upstream_mounted_browser_e2e": "PASS_SOURCE_MOCK_PR15_NO_ACTIVE_ARTIFACT_SUBAGENT_CANARY",
+    "upstream_mounted_browser_e2e": "PASS_SOURCE_MOCK_PR21_NO_LIVE_TARGET",
     "accessibility_full_audit": "NOT_RUN",
     "visual_human_review": "OPEN",
     "actual_host_installation": "DEFERRED_TO_MANOJOS3",
     "active_live_gates_closed": 0,
     "material_verified": false,
     "authority": false,
-    "next_action": "LOCAL_READBACK_AND_NATIVE_LIVE_E2E_AND_UX_REVIEW"
+    "next_action": "LOCAL_LINK_READBACK_AND_ARTIFACT_SUBAGENT_ACTIVE_CANARY"
   },
   "current_release": {
     "release": "NOSTROMO_SOURCE_CONSOLIDATION_20261109",
@@ -238,5 +241,25 @@
     "material_verified": false,
     "vx13_current": true,
     "vx11": "LEGACY"
+  },
+  "post_release_interop": {
+    "id": "NOSTROMO_EXTERNAL_FOCUS_RELEASE_20261109",
+    "release_pr": 21,
+    "feature_head": "09f8ba161ab476e03ce4fe5f6cdcd23873ee80b4",
+    "merged_main": "3495d3633db5ab74bc4ff457d60e22c9ceac39e4",
+    "source_check_run": 42711412354,
+    "visual_run": 42711412227,
+    "native_visual_run": 42711412216,
+    "CI": "SUCCESS_SOURCE_MOCK_ONLY",
+    "vx13_contract_pr": "https://github.com/elkakas314/vx13/pull/3",
+    "vx13_contract_status": "DRAFT_PROPOSAL_NOT_FZ",
+    "vx13_inbox": "https://docs.google.com/document/d/1rqpJ5IL2-_P48M6CXIqVCX9pCCHCWQOYV5l4qoSdV8U/edit",
+    "ap_ids": [
+      "AP-LCVX-008",
+      "AP-LCVX-009",
+      "AP-LCVX-010"
+    ],
+    "host": "NO_VERIFICADO",
+    "material_verified": false
   }
 }
