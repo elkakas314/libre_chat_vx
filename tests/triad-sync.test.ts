@@ -32,7 +32,7 @@ test('uninspected local worktree is a gate, but remote and Drive continue',()=>{
   assert.equal(p.drive.gate,'READY');
   assert.equal(p.local.gate,'GATE_LOCAL');
   assert.ok(p.local.reasons.includes('LOCAL_UNCOMMITTED_OR_UNOBSERVED'));
-  assert.equal(p.nextAction,'UPDATE_DRIVE_WITH_REQUIRED_REVISION_AND_READBACK');
+  assert.equal(p.nextAction,'PRESERVE_LOCAL_AND_RECHECK_INDEPENDENT_SCOPES');
 });
 test('mismatched Git head or PAT scope prevents publication and Drive promotion',()=>{
   const a=fixture();
