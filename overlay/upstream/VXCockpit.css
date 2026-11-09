@@ -231,3 +231,13 @@ html.light .vx-context-note { border-left-color: #56839c; }
   cursor: not-allowed;
   opacity: .46;
 }
+
+/* User-requested focus: no additional dashboard or long-lived listeners. */
+.vx-target-focus-button {
+  border: 1px solid var(--vx-border);border-radius: 9px;
+  background: transparent;color: var(--vx-text);
+  cursor: pointer;padding: 7px 9px;min-height: 34px;
+  font-size: 12px;white-space: nowrap;
+}
+.vx-target-focus-button:hover {border-color:var(--vx-primary);}
+.vx-target-focus-button:focus-visible {outline:3px solid #f5c86a;outline-offset:2px;}

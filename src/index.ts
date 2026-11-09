@@ -141,4 +141,7 @@ export { safePrivacyMode } from './cockpit/privacyPresentation';
 export { validateDraftForApply } from './cockpit/controlDraft';
 export { acceptVisualAction } from './security/trustedSurfaceHost';
 
+export { projectTentaculoHud, createTentaculoHubTree, hubAgentCandidate } from './hud/tentaculoHud';
+export type { HudSystem, HudObservation, HudProjection } from './hud/tentaculoHud';
+
 export * from './ui';
