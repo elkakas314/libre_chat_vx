@@ -89,7 +89,7 @@ export function evaluateTriadSync(o:TriadObservation):TriadSyncPlan {
     publishProof:'REQUIRES_CI_EXACT_SHA_AND_PROVIDER_READBACK',
     nextAction:githubGate!=='READY'?'RECONCILE_REMOTE_AND_PAT':
       driveGate==='READY'&&localGate==='READY'?'ALLOW_GOVERNED_SYNC_PROPOSAL':
-      driveGate==='READY'?'UPDATE_DRIVE_WITH_REQUIRED_REVISION_AND_READBACK':
+      driveGate==='READY'?'PRESERVE_LOCAL_AND_RECHECK_INDEPENDENT_SCOPES':
       localGate==='READY'?'RECONCILE_DRIVE_REVISION':
       'PRESERVE_LOCAL_AND_RECHECK_INDEPENDENT_SCOPES',
   };
