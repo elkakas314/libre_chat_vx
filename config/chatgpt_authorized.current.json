@@ -33,7 +33,7 @@
   "route_state": "DISABLED_UNTIL_OAUTH_CONSENT_AND_LIVE_CANARY",
   "chatgpt_history_access": false,
   "personal_api_key_required": false,
-  "credential_vault": "SOURCE_UNIX_OWNER_ONLY_CAS_NOT_PROVISIONED",
+  "credential_vault": "SOURCE_AES_256_GCM_HOST_SECRET_REQUIRED_NOT_PROVISIONED",
   "responses_client": "SOURCE_SSE_COMPLETION_TESTED_NO_OAUTH_LIVE",
   "provider_binding": "UNCONFIGURED"
 }
