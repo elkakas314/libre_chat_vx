@@ -36,10 +36,11 @@ for (const viewport of [
         const metrics = await page.evaluate(() => ({
           width:window.innerWidth,
           documentWidth:document.documentElement.scrollWidth,
-          cockpitCount:document.querySelectorAll('[data-testid="vx-nostromo-cockpit"]').length,
-          cockpitVisible:!!document.querySelector('[data-testid="vx-nostromo-cockpit"]') &&
-            getComputedStyle(document.querySelector('[data-testid="vx-nostromo-cockpit"]')!).display !== 'none',
+          contextCount:document.querySelectorAll('[data-testid="vx-context-surface"]').length,
+          launcherCount:document.querySelectorAll('.vx-context-launcher').length,
+          mainWidth:document.querySelector('main[role="main"]')?.getBoundingClientRect().width ?? 0,
         }));
+        expect(metrics.documentWidth).toBeLessThanOrEqual(metrics.width + 2);
         screenshots.push({file,metrics});
         writeFileSync(path.join(output,prefix + '-metrics.json'),JSON.stringify({
           schema:'libre-chat-vx.native-visual-inspection.v1',
@@ -48,6 +49,16 @@ for (const viewport of [
           test_profile:'UPSTREAM_E2E_MOCK_MODEL'
         },null,2));
       };
+      const launcher = page.getByRole('button', { name:'Abrir contexto NOSTROMO' });
+      const context = page.getByTestId('vx-context-surface');
+      await expect(context).toHaveCount(0);
+      if (flag) {
+        await expect(launcher).toBeVisible();
+        await expect(launcher).toBeEnabled();
+      }
+      else await expect(launcher).toHaveCount(0);
+      const mainWidth = await page.getByRole('main').evaluate(el => el.getBoundingClientRect().width);
+      expect(mainWidth).toBeGreaterThan(viewport.label === 'desktop' ? 600 : 300);
       await snap('empty-chat');
       if (viewport.label === 'desktop') {
         await selectMockEndpoint(page,MOCK_ENDPOINTS[0]);
@@ -56,7 +67,45 @@ for (const viewport of [
         await expect(mockReply(page)).toBeVisible();
         await snap('chat-with-response');
       }
-      if (flag) expect(await page.locator('[data-testid="vx-nostromo-cockpit"]').count()).toBeGreaterThan(0);
+      if (flag) {
+        await launcher.click();
+        await expect(context).toBeVisible();
+        await expect(context.getByText('MANOJOS',{exact:true})).toBeVisible();
+        await expect(context.getByText(/Control actual: MANOJOS3/)).toBeVisible();
+        await expect(context.getByText('No enlazado')).toBeVisible();
+        await expect(context.getByText('VX13')).toBeVisible();
+        await snap('context-open');
+        await context.getByRole('button', { name:'Ver detalles técnicos' }).click();
+        await expect(context.getByText('Observaciones LIVE: no verificadas.')).toBeVisible();
+        await snap('technical-details');
+        await context.getByRole('button', { name:'Ocultar detalles técnicos' }).click();
+        if (viewport.label === 'desktop') {
+          await page.evaluate(() => {
+            document.documentElement.classList.remove('dark');
+            document.documentElement.classList.add('light');
+          });
+          await snap('context-light');
+          await page.evaluate(() => {
+            document.documentElement.classList.remove('light');
+            document.documentElement.classList.add('dark');
+          });
+        }
+        await page.keyboard.press('Escape');
+        await expect(context).toHaveCount(0);
+        await expect(launcher).toBeFocused();
+        await snap('escape-return');
+        await launcher.press('Enter');
+        await expect(context).toBeVisible();
+        await context.getByRole('button',{name:'Cerrar contexto NOSTROMO'}).click();
+        await expect(context).toHaveCount(0);
+        await expect(launcher).toBeFocused();
+        await snap('context-closed');
+        await page.reload({ waitUntil: 'domcontentloaded' });
+        await page.getByRole('textbox', { name:'Message input' }).waitFor({state:'attached'});
+        await expect(page.getByTestId('vx-context-surface')).toHaveCount(0);
+        await expect(page.getByRole('button', {name:'Abrir contexto NOSTROMO'})).toBeVisible();
+        await snap('reloaded-chat');
+      }
       expect(errors).toEqual([]);
     });
   });
