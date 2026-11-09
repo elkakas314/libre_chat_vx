@@ -199,3 +199,19 @@ Snapshot: NOSTROMO interpretation/visual cockpit; parallel transport canon (1 AI
 ## Política transversal de continuidad del hilo — LC-CONTINUITY-NO-STOP
 
 Aplica el contrato en `operating/LIBRECHAT_OPERATING_CANON.md` y el procedimiento de la plantilla viva 20. No detener un objetivo por el primer bloqueo: clasificar su scope y seguir con otro `next_eligible` independiente, con cambios estrechos `CHANGE → TEST → READBACK → VERIFY → REFRESH`. Conservar el mismo run para efectos inciertos; no blind retry ni autorización inferida de conversación. Tras hitos, actualizar evidencias, CURRENT/HANDOFF/Drive 30. Un hilo nuevo recupera el último checkpoint y no reinicia discovery válido. El objetivo de continuidad no crea ejecución persistente fuera de la sesión ni altera `authority=false`.
+
+## LCVX_GITHUB_DRIVE_RECONCILE_20261109 — corte conservador y PR de noviembre
+
+Fecha: 2026-11-09. Inspección GitHub y Docs vivos Google Drive 00/10/20/30/40. VX11=LEGACY; VX13 es el único target actual. No fusión entre dominios ni instalacion autorizada.
+Fuentes canónicas: GitHub SOURCE elkakas314/libre_chat_vx; Docs Drive (00) 11e70lpwe5U3k9FMZWd7h-N0eNaidgaINJP9Pwz1bGx8; (30) 19_Bm72_3aaxT6gggEAmfkZG0y0N1hXK6tMQrYLR4sDI.
+DAG confirmado antes de este apéndice: main@ebbd17573d9f3f0e8599728a3540a3ce05ee72ca; handoff_current_bootstrps@aff692fb9707a29e7e741a038fcdb1c2d03efeb8 = 296 commits ahead of main, 0 behind.
+Cinco PR OPEN/DRAFT, mergeable técnico true, ninguna fusionada, ninguna aprobada para activación LIVE:
+- #15 UX chat-first @aaa8bd796d7b13ea8c3b0155a97af43e460af0ee; CI source-check 42407268547, visual 42407268548, native-prerequisite 42407268559 = SUCCESS. Human UX y E2E Artifact/Subagent ACTIVO abiertos.
+- #16 SIWC ChatGPT @1b2c6cfc5d4a22bc3b2a10732e12d18d6dfb3f4d; CI source-check 42487396033, visual 42487395410 = SUCCESS. Listener loopback, verificador JWKS inyectado, vault y refresh SOURCE; falta binding HTTP/tenant, OIDC real, consentimiento/canario; disabled.
+- #17 Triad Sync @9ab6653aa2bc4ecf27b6aac003a8cba70ac3f77a; CI source-check 42485289278, visual 42485289193 = SUCCESS. PAT GitHub R2 anterior limitado a rama feature; LOCAL dirty/untracked, backup, 3080 siguen UNKNOWN/NO_VERIFICADO; disabled.
+- #18 VX13/ORACULO READ @c37908cda3d87451e3b01e3e4a3e1998be4165f1; CI source-check 42487282831, visual 42487282815 = SUCCESS. Adapter SOURCE, no Link/ORÁCULO binding LIVE.
+- #19 Extension Creator/HUD @89d80d8fe26d163fc3b1e6b4a8246225543bb240; CI source-check 42694578620, visual 42694578913 = SUCCESS. Agent candidate not installed; catálogo de fiabilidad no sellada; componente HUD grid no acepta todavía UX orgánica; no montaje LIVE.
+No solapamiento de rutas de archivo entre las cinco PR según listado GitHub actual, pero integrabilidad de código y revisión de seguridad no equivale a aprobación de merge ni a despliegue.
+Comparación inter-superficie: Drive vivo refleja decisiones hasta #19, pero sus referencias intermedias de PR #16-#18 son anteriores a estos HEADs. Se sincroniza este handoff como referencia de código sin alterar PR ni ramas ajenas. Docs no replican bytes Git; conservar matriz/historial/procedencia en Drive. Main no se promueve 296 commits ni se fuerza deploy.
+Acción siguiente: valorar #17/#18 y #16 como SOURCE-only tras revisión de contratos y gates, #15/#19 necesitan UX/catálogos reales; revalidar CI sobre HEAD integrado antes de merge; después revisión local dirty/untracked/health y canarios LIVE bajo autoridad target.
+MATERIAL_VERIFIED_LIBRECHAT=false. LIVE_FRONTEND=NO_VERIFICADO. Local no tocado por esta operación.
