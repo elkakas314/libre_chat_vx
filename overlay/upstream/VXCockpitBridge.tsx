@@ -57,8 +57,8 @@ export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
               <div className="vx-target-identity">
                 <span className="vx-target-icon" aria-hidden="true">M</span>
                 <div>
-                  <strong>MANOJOS3</strong>
-                  <small>Automatización y ejecución gobernada</small>
+                  <strong>MANOJOS</strong>
+                  <small>Control actual: MANOJOS3; nuevo runtime no acreditado</small>
                 </div>
               </div>
               <span className="vx-target-state"><span aria-hidden="true" className="vx-target-dot"/>No enlazado</span>
