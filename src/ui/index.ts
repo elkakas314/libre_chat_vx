@@ -8,6 +8,7 @@ export * from './DomainLensView';
 export * from './TargetParityView';
 export * from './TargetNavigator';
 export * from './TentacleHud';
+export * from './TentaculoHud';
 export * from './MinimalTruthView';
 export * from './ContextInspectorView';
 export * from './ControlDeckView';
