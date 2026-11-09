@@ -13,7 +13,7 @@ export class SiwcProtectedFileVault implements SiwcCredentialVault {
   private readonly root:string;
   private readonly key:Buffer;
   constructor(root:string,masterKey:Buffer) {
-    if(!isAbsolute(root)||root.includes('\\0'))throw Error('SIWC_VAULT_PATH_INVALID');
+    if(!isAbsolute(root)||root.includes('\0'))throw Error('SIWC_VAULT_PATH_INVALID');
     if(!Buffer.isBuffer(masterKey)||masterKey.length!==32)
       throw Error('SIWC_VAULT_ENCRYPTION_KEY_REQUIRED');
     this.root=resolve(root);
