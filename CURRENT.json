@@ -276,6 +276,19 @@
     "owner_ack": "PENDING",
     "canonical_freeze": "NOT_APPROVED",
     "link_live": "NO_VERIFICADO",
-    "material_verified": false
+    "material_verified": false,
+    "vx13_readme_test_receipt_commit": "c94be6410b0efaae8d76f7df143ca13fb27d7a9f",
+    "offline_test_verification": {
+      "status": "PASS",
+      "scope": "SOURCE_OFFLINE_ONLY",
+      "python": "3.13.5",
+      "test_count": 4,
+      "actual_count_passed": 4,
+      "schema_blob": "e3e03a2a1ff75e3db9cb283cf0471d2e0e7e36c7",
+      "test_blob": "2e798c004d610d90359658b44e2cd6756d5aa6c5",
+      "hash_identity": "GIT_HASH_OBJECT_MATCH_REMOTE_MAIN",
+      "host_binding": "NO_VERIFICADO",
+      "material_verified": false
+    }
   }
 }
