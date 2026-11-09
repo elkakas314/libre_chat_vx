@@ -70,7 +70,8 @@ for (const viewport of [
       if (flag) {
         await launcher.click();
         await expect(context).toBeVisible();
-        await expect(context.getByText('MANOJOS3')).toBeVisible();
+        await expect(context.getByText('MANOJOS',{exact:true})).toBeVisible();
+        await expect(context.getByText(/Control actual: MANOJOS3/)).toBeVisible();
         await expect(context.getByText('No enlazado')).toBeVisible();
         await expect(context.getByText('VX13')).toBeVisible();
         await snap('context-open');
