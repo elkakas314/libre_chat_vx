@@ -1,6 +1,6 @@
 {
   "schema": "libre-chat-vx.official-component-catalog.v1",
-  "observed_at": "2026-10-03",
+  "observed_at": "2026-10-06",
   "native": [
     "agents",
     "artifacts",
@@ -8,18 +8,27 @@
     "mcp_ui_resources",
     "tool_approval",
     "skills",
+    "github_skill_sync",
     "subagents",
     "background_tool_calls",
     "resumable_streams",
     "files",
     "file_context",
     "file_search",
+    "projects",
     "speech",
     "acl_permissions",
     "web_search",
     "ocr",
     "memory",
+    "ask_user_question",
+    "model_specs",
     "custom_endpoints"
+  ],
+  "experimental_or_beta": [
+    "agent_plugins",
+    "agent_chains",
+    "scheduled_chats"
   ],
   "official_repositories": [
     {
@@ -49,13 +58,16 @@
     }
   ],
   "extension_mechanisms": [
-    "AGENT_PLUGINS_EXPERIMENTAL",
+    "CONFIG_YAML",
+    "GITHUB_SKILL_SYNC",
     "DEPLOYMENT_SKILLS",
     "MCP",
     "OPENAPI_ACTIONS",
     "MODEL_SPECS",
-    "CUSTOM_ENDPOINTS"
+    "CUSTOM_ENDPOINTS",
+    "AGENT_PLUGINS_EXPERIMENTAL",
+    "MINIMAL_OVERLAY"
   ],
-  "admission_rule": "NATIVE_THEN_OFFICIAL_COMPANION_THEN_PLUGIN_SKILL_MCP_THEN_MINIMAL_OVERLAY",
+  "admission_rule": "NATIVE_OR_CONFIG_THEN_SKILL_THEN_MCP_OR_ACTION_THEN_AGENT_PLUGIN_THEN_THIN_WRAPPER_THEN_CUSTOM_CODE",
   "authority": false
 }

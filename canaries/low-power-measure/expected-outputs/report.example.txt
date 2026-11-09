@@ -1,0 +1,13 @@
+# LibreChat VX — low-power host benchmark (GATE_HUMAN)
+Synthetic illustrative report ONLY, not measured on a real host.
+State: MEASUREMENTS ONLY; human decision required; NO LIVE gate closed.
+
+| Scenario | CPU peak (%) | RAM peak (MiB) | Disk used peak (%) | RX bytes | TX bytes | Latency (ms) |
+|---|---:|---:|---:|---:|---:|---:|
+| IDLE | 13.2 | 1750 | 43 | 0 | 0 | N/A |
+| STARTUP | NO_DATA | NO_DATA | NO_DATA | NO_DATA | NO_DATA | NO_DATA |
+| SINGLE_CHAT | NO_DATA | NO_DATA | NO_DATA | NO_DATA | NO_DATA | NO_DATA |
+| STREAMING | NO_DATA | NO_DATA | NO_DATA | NO_DATA | NO_DATA | NO_DATA |
+
+SPEC reference thresholds: null (not inferred).
+Final decision: HUMAN_PENDING. These values are illustrative; do not treat as evidence.

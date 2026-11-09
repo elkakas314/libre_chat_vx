@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "libre-chat-vx.mobile-access.schema.json",
+  "type": "object",
+  "required": [
+    "mode",
+    "requiresFreshSession",
+    "materialReplayAllowed",
+    "reason"
+  ],
+  "properties": {
+    "mode": {
+      "enum": [
+        "LOCAL",
+        "TAILSCALE_PRIVATE",
+        "CLOUDFLARE_ACCESS_PUBLIC",
+        "UNAVAILABLE"
+      ]
+    },
+    "requiresFreshSession": {
+      "type": "boolean"
+    },
+    "materialReplayAllowed": {
+      "const": false
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "additionalProperties": false
+}

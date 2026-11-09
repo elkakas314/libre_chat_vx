@@ -1,0 +1,52 @@
+{
+  "schema": "libre-chat-vx.tentaculo-hud.v1",
+  "status": "SOURCE_PROJECTION_NOT_INSTALLED",
+  "authority": false,
+  "mode": "CONTEXT_ONLY_CHAT_FIRST",
+  "defaultOpen": false,
+  "targetCards": [
+    {
+      "system": "MANOJOS",
+      "legacyObservedIdentity": "MANOJOS3",
+      "operations": [
+        "health",
+        "readiness",
+        "capabilities",
+        "receipts"
+      ],
+      "access": "EXTERNAL_POLICY"
+    },
+    {
+      "system": "VX13",
+      "routing": "TENTACULO_LINK",
+      "operations": [
+        "health",
+        "UiProjection",
+        "moduleIndex"
+      ],
+      "access": "DESIGN_UNTIL_LINK_LIVE"
+    },
+    {
+      "system": "ORACULO",
+      "routing": "ADVISORY_READ",
+      "operations": [
+        "health",
+        "readiness",
+        "query"
+      ],
+      "access": "READ_ONLY"
+    }
+  ],
+  "hub": {
+    "view": "SYSTEM_MODULE_CAPABILITY_RESOURCE_TREE",
+    "agentProfiles": "CANDIDATE_ONLY",
+    "lazy": true
+  },
+  "rules": [
+    "NO_SECOND_LINK_OR_KERNEL",
+    "SOURCE_NOT_LIVE",
+    "NO_CROSS_TARGET_GRANTS",
+    "EVIDENCE_FRESHNESS_5_MINUTES",
+    "NATIVE_ARTIFACTS_AND_SUBAGENTS_PRIORITY"
+  ]
+}

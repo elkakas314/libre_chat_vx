@@ -1,0 +1,12 @@
+# SINTÉTICO; NO implica evidencia de ausencia de deployment
+DETAIL: No exact LibreChat VX Serve proxy to loopback 127.0.0.1:3080
+FAIL 01-host-serve-readback (exit=1)
+# O
+DETAIL: Client and host tailnets disagree
+FAIL 02-private-route-and-acl (exit=1)
+# O
+DETAIL: Mobile Wi-Fi/data/history/reconnect or mutation-fence proof missing
+FAIL 03-mobile-continuity (exit=1)
+# O
+DETAIL: Revocation, Funnel-disabled, no-collision or rollback proof incomplete
+FAIL 04-revocation-and-rollback (exit=1)

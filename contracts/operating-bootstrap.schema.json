@@ -2,22 +2,384 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "operating-bootstrap.schema.json",
   "type": "object",
-  "required": ["canon", "target_version", "snapshot_id", "mode", "git", "proofs", "ownership", "closeout"],
+  "required": [
+    "canon",
+    "target_version",
+    "snapshot_id",
+    "mode",
+    "evidence_cutoff_head",
+    "git",
+    "runtime",
+    "proofs",
+    "ownership",
+    "delta",
+    "living_plan",
+    "eligible_source_only",
+    "blocked_live",
+    "do_not_touch",
+    "closeout"
+  ],
   "properties": {
-    "canon": {"const": "LIBRECHAT_OPERATING_CANON"},
-    "target_version": {"type": "integer", "minimum": 1},
-    "snapshot_id": {"type": "string", "minLength": 1},
-    "evidence_cutoff_head": {"type": "string"},
-    "mode": {"enum": ["SOURCE_ONLY", "LIVE_BOUND"]},
-    "git": {"type": "object"},
-    "runtime": {"type": "object"},
-    "proofs": {"type": "object"},
-    "ownership": {"type": "object"},
-    "eligible_source_only": {"type": "array", "items": {"type": "string"}},
-    "blocked_live": {"type": "array", "items": {"type": "string"}},
-    "do_not_touch": {"type": "array", "items": {"type": "string"}},
-    "closeout": {"enum": ["COMPLETE", "INCOMPLETE"]},
-    "next_action": {"type": "string"}
+    "canon": {
+      "const": "LIBRECHAT_OPERATING_CANON"
+    },
+    "target_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "snapshot_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evidence_cutoff_head": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mode": {
+      "enum": [
+        "SOURCE_ONLY",
+        "LIVE_BOUND"
+      ]
+    },
+    "git": {
+      "type": "object",
+      "properties": {
+        "head": {
+          "type": "string"
+        },
+        "origin_main": {
+          "type": "string"
+        },
+        "clean": {
+          "type": "boolean"
+        },
+        "status": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "runtime": {
+      "type": "object",
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "NO_DEPLOYMENT_EVIDENCE",
+            "DEPLOYED_UNVERIFIED",
+            "LIVE_VERIFIED",
+            "MATERIAL_VERIFIED"
+          ]
+        },
+        "librechat": {
+          "enum": [
+            "NO_DEPLOYMENT_EVIDENCE",
+            "NOT_DEPLOYED",
+            "DEPLOYED_UNVERIFIED",
+            "LIVE_VERIFIED",
+            "MATERIAL_VERIFIED"
+          ]
+        },
+        "cloudflare_gateway": {
+          "enum": [
+            "NO_DEPLOYMENT_EVIDENCE",
+            "NOT_DEPLOYED",
+            "DEPLOYED_UNVERIFIED",
+            "LIVE_VERIFIED",
+            "MATERIAL_VERIFIED"
+          ]
+        },
+        "skill_sync": {
+          "enum": [
+            "NO_DEPLOYMENT_EVIDENCE",
+            "NOT_DEPLOYED",
+            "DEPLOYED_UNVERIFIED",
+            "LIVE_VERIFIED",
+            "MATERIAL_VERIFIED"
+          ]
+        },
+        "events": {
+          "enum": [
+            "NO_DEPLOYMENT_EVIDENCE",
+            "NOT_DEPLOYED",
+            "DEPLOYED_UNVERIFIED",
+            "LIVE_VERIFIED",
+            "MATERIAL_VERIFIED"
+          ]
+        },
+        "tailscale_serve": {
+          "enum": [
+            "NO_DEPLOYMENT_EVIDENCE",
+            "NOT_DEPLOYED",
+            "DEPLOYED_UNVERIFIED",
+            "LIVE_VERIFIED",
+            "MATERIAL_VERIFIED"
+          ]
+        },
+        "targets": {
+          "enum": [
+            "GATED",
+            "PASS",
+            "OPEN",
+            "STALE_PROOF",
+            "OWNED",
+            "WAITING_INTERNAL",
+            "RECONCILE_REQUIRED",
+            "GATE_EXTERNAL",
+            "GATE_HUMAN",
+            "BLOCKED_DEPENDENCY",
+            "NOT_TESTED"
+          ]
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "proofs": {
+      "type": "object",
+      "required": [
+        "valid",
+        "stale",
+        "missing",
+        "unavailable"
+      ],
+      "properties": {
+        "valid": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "stale": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "missing": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "unavailable": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "ownership": {
+      "type": "object",
+      "required": [
+        "owned",
+        "stale_claims",
+        "free",
+        "unobserved"
+      ],
+      "properties": {
+        "owned": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "stale_claims": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "free": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "unobserved": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "delta": {
+      "type": "object",
+      "required": [
+        "pass",
+        "open",
+        "stale_proof",
+        "reconcile_required",
+        "not_tested",
+        "owned",
+        "blocked_dependency",
+        "external_gates",
+        "human_gates",
+        "blocked_live"
+      ],
+      "properties": {
+        "pass": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "open": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "stale_proof": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "reconcile_required": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "not_tested": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "owned": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "blocked_dependency": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "external_gates": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "human_gates": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "blocked_live": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "living_plan": {
+      "type": "object",
+      "required": [
+        "eligible",
+        "blocked_live",
+        "owned_ready",
+        "waiting_internal"
+      ],
+      "properties": {
+        "eligible": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "blocked_live": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "owned_ready": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "waiting_internal": {
+          "type": "boolean"
+        },
+        "next_eligible": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "eligible_source_only": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "blocked_live": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "do_not_touch": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "closeout": {
+      "enum": [
+        "COMPLETE",
+        "INCOMPLETE"
+      ]
+    },
+    "next_action": {
+      "type": "string"
+    },
+    "schema": {
+      "const": "libre-chat-vx.operating-bootstrap.v2"
+    },
+    "baseline_ci": {
+      "type": "object",
+      "required": [
+        "github_actions_run",
+        "conclusion"
+      ],
+      "properties": {
+        "github_actions_run": {
+          "type": "integer"
+        },
+        "conclusion": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "design_review_queue": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "semantic_note": {
+      "type": "string"
+    }
   },
-  "additionalProperties": true
+  "additionalProperties": false
 }

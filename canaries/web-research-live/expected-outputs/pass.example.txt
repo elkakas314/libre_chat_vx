@@ -1,0 +1,12 @@
+# SINTÉTICO, NO prueba LIVE
+PASS 00-web-research-source-sanity (offline SOURCE)
+READ host YAML: Keenable/none/safeSearch=1; no configuration changed
+PASS 01-read-search-config (SOURCE/LIVE probe only; gate OPEN)
+READ Keenable keyless search: HTTP 200, 3 results; no config mutation
+PASS 02-verify-search-provider (SOURCE/LIVE probe only; gate OPEN)
+READ Keenable keyless fetch: HTTP 200, 120 text chars; no config mutation
+PASS 03-verify-scraper-provider (SOURCE/LIVE probe only; gate OPEN)
+READ existing authenticated pipeline search evidence; no new generation
+PASS 04-canary-search-query (SOURCE/LIVE probe only; gate OPEN)
+READ existing authenticated pipeline fetch evidence; no new generation
+PASS 05-canary-fetch (SOURCE/LIVE probe only; gate OPEN)

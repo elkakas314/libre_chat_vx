@@ -1,0 +1,27 @@
+# SOURCE EXAMPLE ONLY — do not merge blindly into an existing librechat.yaml.
+# LibreChat GitHub Skill Sync: stage 2; private repo, token injected only at host runtime.
+skillSync:
+  github:
+    enabled: true
+    intervalMinutes: 1440
+    runOnStartup: false
+    sources:
+      - id: nostromo-vx-skills
+        owner: elkakas314
+        repo: libre_chat_vx
+        ref: handoff_current_bootstrps
+        paths:
+          - skills/nostromo-core
+          - skills/nostromo-visualization
+          - skills/nostromo-research
+          - skills/nostromo-event-triage
+          - skills/nostromo-evidence-first
+          - skills/nostromo-resource-navigation
+          - skills/manojos3-nostromo
+          - skills/vx13-nostromo
+          - skills/cross-target-read
+          - skills/nostromo-extension-review
+        skillDiscoveryDepth: 0
+        token: '${GITHUB_SKILLS_TOKEN}'
+
+# No LIVE deployment or credential is implied by this example.

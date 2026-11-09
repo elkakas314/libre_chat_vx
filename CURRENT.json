@@ -1,41 +1,207 @@
 {
-  "schema": "libre-chat-vx.current.v1",
-  "status": "SOURCE_ONLY_CLOSEOUT_COMPLETE_NOSTROMO_HYBRID_PENDING_LIVE_REVALIDATION",
+  "schema": "libre-chat-vx.current.v2",
+  "status": "SOURCE_CORE_AND_TRANSPORT_CANON_COMPLETE_LIVE_BINDINGS_PENDING",
   "repository": "elkakas314/libre_chat_vx",
-  "operating_canon": "LIBRECHAT_OPERATING_CANON_V1",
-  "operating_mode": "SOURCE_ONLY",
-  "operating_snapshot": "source-2026-10-03-a54b1f66",
-  "active_llm_architecture": "NOSTROMO_HYBRID",
-  "active_llm_architecture_count": 1,
-  "local_voice": {
-    "alias": "nostromo-voice-local",
-    "size_target": "1-2GB",
-    "lifecycle": "LIBRECHAT_COUPLED_ON_DEMAND",
-    "model_selection": "DEPLOYMENT_BENCHMARK_REQUIRED"
+  "branch": "handoff_current_bootstrps",
+  "source_evidence_cutoff_head": "6364f4211ec971b92da9126aa55bdc115edf1285",
+  "source_ci": {
+    "workflow": "source-check",
+    "run_id": 37998515362,
+    "conclusion": "SUCCESS"
   },
-  "reasoning": {
-    "owner": "MANOJOS3_LITELLM",
+  "upstream": {
+    "repository": "LibreChat-AI/LibreChat",
+    "commit": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
+    "overlay_validation": "PASS"
+  },
+  "product_role": {
+    "identity": "NOSTROMO",
+    "purpose": "CONVERSATION_INTENT_INTERPRETATION_VISUALIZATION_RESEARCH_COORDINATION",
+    "coding_specialist": false,
+    "authority": false
+  },
+  "inference": {
+    "gateway": "CLOUDFLARE_AI_GATEWAY",
+    "gateway_count": 1,
+    "semantic_profiles": [
+      "RAPIDO",
+      "NORMAL",
+      "PENSAR",
+      "INVESTIGAR",
+      "VISUALIZAR",
+      "CONTEXTO_LARGO",
+      "VISION"
+    ],
+    "semantic_route_count": 7,
+    "model_registry": "IMPLEMENTED_SOURCE",
+    "provider_bootstrap": [
+      "CLOUDFLARE_WORKERS_AI",
+      "GROQ",
+      "GOOGLE_AI_STUDIO_GEMINI"
+    ],
+    "provider_reserve": [
+      "MISTRAL",
+      "OPENROUTER_FREE"
+    ],
     "paid_fallback_allowed": false,
-    "live_status": "SOURCE_CONFLICT_REQUIRES_LIVE_READBACK"
+    "live_status": "NO_VERIFICADO"
   },
-  "action_plane": {
-    "owner": "MANOJOS3_MCP",
-    "deployment_env": "MANOJOS3_MCP_URL",
-    "live_status": "PREPARED_UNCONFIGURED"
+  "target_gateway": {
+    "name": "NOSTROMO_TARGET_GATEWAY",
+    "kind": "IN_PROCESS_FACADE",
+    "authority": false,
+    "source_state": "IMPLEMENTED_SOURCE",
+    "production_binding": false,
+    "adapters": {
+      "MANOJOS3": "IMPLEMENTED_SOURCE_UNCONFIGURED",
+      "VX13": "DESIGNED_GATED",
+      "ORACULO": "ADVISORY"
+    }
   },
-  "manojos3_semantic_bridge": "IMPLEMENTED_SOURCE_AND_DRIVE_SYNCED",
-  "tentacle_hud": {
-    "local_voice_required": false,
-    "free_reasoner_required": false,
-    "source_of_truth": "STRUCTURED_TARGET_READBACK"
+  "capabilities": {
+    "matrix_total": 119,
+    "idea_lc_traced": 112,
+    "idea_lc_unmapped": 0,
+    "developed_source": 69,
+    "reuse_upstream": 39,
+    "deferred": 11,
+    "missing_development": 0
   },
-  "previous_llm_topology_matrix": "SUPERSEDED",
-  "last_material_tested_commit": "94c632762f7afee7d9fa9d0f0c23c80d7494d2d2",
-  "last_material_test_result": "26_PASS",
-  "current_commit_tests": "NOT_RUN_GITHUB_ONLY",
-  "live": "NO_VERIFICADO",
+  "source_features": {
+    "intent_interpreter": "IMPLEMENTED_SOURCE",
+    "presentation_planner": "IMPLEMENTED_SOURCE",
+    "tentaculo_companion": "IMPLEMENTED_SOURCE",
+    "resource_tree": "IMPLEMENTED_SOURCE",
+    "agent_events_envelope": "IMPLEMENTED_SOURCE",
+    "github_skill_catalog": "IMPLEMENTED_SOURCE",
+    "canonical_skills": 10,
+    "agent_plugin": "EXPERIMENTAL_OPTIONAL",
+    "parallel_transport": "SOURCE_CANON_COMPLETE",
+    "transport_registry": "IMPLEMENTED_SOURCE",
+    "mobile_remote_access": "IMPLEMENTED_SOURCE",
+    "extension_registry": "IMPLEMENTED_SOURCE",
+    "llm_bootstrap": "IMPLEMENTED_SOURCE",
+    "legacy_skills_on_disk": 2,
+    "extension_review_skill": "IMPLEMENTED_SOURCE",
+    "operating_canon": "RECONCILED_V8",
+    "legacy_skill_aliases_on_disk": 2,
+    "semantic_capability_crosswalk": "DESIGN_REVIEW_PENDING",
+    "skill_sync_stage_canary": "SOURCE_TWO_STAGE_12_PHYSICAL_THEN_10_ACTIVE_LIVE_NOT_VERIFIED",
+    "inference_readback_freshness": "SOURCE_GUARD_TESTED_LIVE_NOT_VERIFIED"
+  },
+  "transport": {
+    "local_web": "127.0.0.1:3080",
+    "cloudflare_ai_gateways": 1,
+    "dynamic_routes": 7,
+    "cloudflare_workers_required": 0,
+    "cloudflare_workers_optional_max_without_review": 1,
+    "cloudflare_tunnels_required": 0,
+    "cloudflare_tunnel_optional_public": 1,
+    "tailscale_serve_private_routes": 1,
+    "tailscale_services_required": 0,
+    "tailscale_funnel": 0,
+    "private_remote": "TAILSCALE_SERVE_NOT_DEPLOYED",
+    "public_remote_optional": "CLOUDFLARE_TUNNEL_ACCESS_NOT_DEPLOYED",
+    "skill_sync": "SOURCE_CONFIG_READY_LIVE_NOT_VERIFIED",
+    "agent_events": "SOURCE_READY_LIVE_NOT_VERIFIED",
+    "manojos3_transport_migration": "DEFERRED_DO_NOT_TOUCH_NOW"
+  },
+  "live": {
+    "overall": "NO_VERIFICADO",
+    "cloudflare_ai_gateway": "NO_VERIFICADO",
+    "tailscale_serve": "NOT_DEPLOYED",
+    "cloudflare_tunnel_access": "NOT_DEPLOYED",
+    "web_research": "NO_VERIFICADO",
+    "agent_events": "NO_VERIFICADO",
+    "target_bindings": "GATED",
+    "skill_sync": "NO_VERIFICADO"
+  },
   "material_verified": false,
   "authority": false,
-  "local_touched_by_current_work": false,
-  "next_action": "WAIT_FOR_LOCAL_REVALIDATION_PERMISSION_OR_LIVE_BINDING"
+  "next_order": [
+    "CLOUDFLARE_AI_GATEWAY_PROVIDER_PROBES_DYNAMIC_ROUTES_CANARY_ROLLBACK",
+    "GITHUB_SKILL_SYNC_LIVE",
+    "TAILSCALE_SERVE_MOBILE_RECONNECT",
+    "WEB_RESEARCH_CANARY",
+    "AGENT_EVENTS_CANARY",
+    "RECOVERY_OUT_OF_BAND",
+    "TARGET_R0_BINDINGS",
+    "FIRST_GOVERNED_MATERIAL_CANARY"
+  ],
+  "semantic_review": {
+    "id": "LC-NOSTROMO-SEMANTIC-BRIDGE",
+    "status": "DESIGN_REVIEW_PENDING",
+    "priority": "HIGH",
+    "approach": "NATIVE_INTENT_INTERPRETER_FIRST_THIN_TARGET_CROSSWALK_IF_NEEDED",
+    "second_engine": false,
+    "authority": false
+  },
+  "living_docs": {
+    "entry": "00",
+    "design": "10",
+    "operation": "20",
+    "closeout": "30",
+    "map": "40",
+    "refs": "operating/DRIVE_REFS_CURRENT.json"
+  },
+  "post_proof_changes": "GITHUB_FIRST_SOURCE_VISUAL_FIXTURE_TESTED",
+  "design_review_queue": [
+    "LC-NOSTROMO-SEMANTIC-BRIDGE"
+  ],
+  "checkpoint": {
+    "path": "handoff/LIBRECHAT_VX_CHECKPOINT_RELEVO_20261008.md",
+    "created_commit": "cb767e69eb8acea36cf0b844e7fe5b657f21a767",
+    "status": "SUCCESSOR_VALIDATED_SOURCE_CI_LIVE_PENDING",
+    "handoff_instruction": "NEXT_OPERATOR_MUST_CHECK_EXACT_HEAD_CI_BEFORE_SOURCE_CLOSEOUT",
+    "final_validation_done_by_predecessor": false,
+    "successor_source_validation": {
+      "head": "874d7e0a49def329973a30416160f076dcf2fc05",
+      "github_actions_run": 37724142946,
+      "build_test": "SUCCESS_110_PASS_0_FAIL",
+      "overlay_smoke": "SUCCESS"
+    },
+    "last_verified_source": {
+      "head": "9ae2ba122b7bd13be91e447d731f3d73d33ea9ed",
+      "run_id": 37725889650,
+      "build_test": "SUCCESS_117_PASS_0_FAIL",
+      "overlay_smoke": "SUCCESS"
+    }
+  },
+  "last_confirmed_ci": {
+    "head": "6364f4211ec971b92da9126aa55bdc115edf1285",
+    "workflow_run": 37998515362,
+    "conclusion": "SUCCESS",
+    "applicability": "SOURCE_AND_OVERLAY_EXACT_HEAD"
+  },
+  "continuity": {
+    "policy_id": "LC-CONTINUITY-NO-STOP",
+    "state": "SOURCE_VERIFIED",
+    "procedure": "operating/LIBRECHAT_OPERATING_CANON.md",
+    "sequence": "BOOTSTRAP_CURRENT_DELTA_NEXT_ELIGIBLE_VERIFY_READBACK_CHECKPOINT_REPEAT",
+    "partial_blocker_stops_only_affected_scope": true,
+    "no_blind_retry": true,
+    "background_service_claim": false,
+    "source_provenance": "elkakas314/manojos3@ff7e2792ab91f5d0883a5a8fc90603687cc10de3",
+    "source_guard": "OWNED_WITHOUT_FREE_IS_RECONCILE_REQUIRED",
+    "source_ci_run": 37725106400,
+    "source_test_count": 114
+  },
+  "github_first_quality": {
+    "phase": "SOURCE_QA_BEFORE_INSTALLATION",
+    "code_head_verified": "6364f4211ec971b92da9126aa55bdc115edf1285",
+    "source_ci_run_id": 37998515362,
+    "visual_fixture_ci_run_id": 37998515395,
+    "visual_fixture_result": "SUCCESS",
+    "visual_artifact_id": 11648386603,
+    "desktop_mobile_chromium": "PASS_SOURCE_FIXTURE_ONLY",
+    "upstream_overlay_compile": "PASS",
+    "upstream_mounted_browser_e2e": "NOT_RUN",
+    "accessibility_full_audit": "NOT_RUN",
+    "visual_human_review": "PENDING_TECHNICAL_LABELS_AND_PRODUCT_UX",
+    "actual_host_installation": "DEFERRED_TO_MANOJOS3",
+    "active_live_gates_closed": 0,
+    "material_verified": false,
+    "authority": false,
+    "next_action": "UPSTREAM_MOUNTED_BROWSER_E2E_AND_ACCESSIBILITY_THEN_PRODUCT_UX_REVIEW"
+  }
 }

@@ -1,0 +1,54 @@
+{
+  "schema": "libre-chat-vx.web-research-live-evidence.v2",
+  "gate_id": "LC-WEB-RESEARCH-LIVE",
+  "gate_state": "OPEN",
+  "runtime_status": "NO_DEPLOYMENT_EVIDENCE",
+  "source": {
+    "spec_pointer": "SPEC.json#/configuracion/librechat_yaml/webSearch",
+    "git_commit_sha": null,
+    "git_tree_sha": null
+  },
+  "host": {
+    "yaml_readback_ref": null,
+    "yaml_sha256": null,
+    "searchProvider": null,
+    "scraperProvider": null,
+    "rerankerType": null,
+    "safeSearch": null
+  },
+  "keenable": {
+    "search": {
+      "http_code": null,
+      "keyless": true,
+      "result_count": null,
+      "safe_search_provider_parameter_verified": false
+    },
+    "fetch": {
+      "http_code": null,
+      "keyless": true,
+      "content_chars": null,
+      "content_sha256": null
+    }
+  },
+  "librechat_pipeline": {
+    "search_status": "NOT_RUN",
+    "fetch_status": "NOT_RUN",
+    "readback_ref": null,
+    "independent_authentication_verified": false
+  },
+  "checks": {
+    "source_self_test": "NOT_RUN",
+    "yaml_config": "NOT_RUN",
+    "keenable_search": "NOT_RUN",
+    "keenable_scraper": "NOT_RUN",
+    "native_pipeline_search": "NOT_RUN",
+    "native_pipeline_fetch": "NOT_RUN"
+  },
+  "result": {
+    "gate_closed": false,
+    "live_verified": false,
+    "material_verified": false,
+    "reviewed_by": null,
+    "reviewed_at_utc": null
+  }
+}

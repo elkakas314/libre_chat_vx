@@ -1,0 +1,58 @@
+{
+  "schema": "libre-chat-vx.skill-sync-live-evidence.v1",
+  "gate_id": "LC-SKILL-SYNC-LIVE",
+  "gate_state": "OPEN",
+  "runtime_status": "NO_DEPLOYMENT_EVIDENCE",
+  "source": {
+    "git_commit_sha": null,
+    "git_tree_sha": null,
+    "catalog_git_blob_sha": null,
+    "origin_ref_readback_ref": null
+  },
+  "admin": {
+    "source_id": null,
+    "tenant_id": null,
+    "paths": null,
+    "readback_ref": null,
+    "authenticated": false
+  },
+  "inventory": {
+    "physical": null,
+    "active": null,
+    "legacy": null,
+    "readback_ref": null
+  },
+  "content": {
+    "stage": null,
+    "mirrored_skills": null,
+    "sha256_match": false,
+    "git_blob_sha_match": false,
+    "readback_ref": null
+  },
+  "acl": {
+    "allowed_role": null,
+    "denied_role": null,
+    "role_readback_refs": [],
+    "visibility_positive": false,
+    "visibility_negative": false,
+    "full_acl_export_verified": false
+  },
+  "rollback": {
+    "prior_snapshot_ref": null,
+    "prior_mirror_readback_ref": null,
+    "post_readback_ref": null
+  },
+  "checks": {
+    "admin_status": "NOT_RUN",
+    "physical_inventory": "NOT_RUN",
+    "content_hashes": "NOT_RUN",
+    "role_visibility": "NOT_RUN"
+  },
+  "result": {
+    "gate_closed": false,
+    "live_verified": false,
+    "material_verified": false,
+    "reviewed_by": null,
+    "reviewed_at_utc": null
+  }
+}

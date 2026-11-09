@@ -1,0 +1,1220 @@
+{
+  "aislamiento_manojos3": {
+    "migracion": "DEFERRED_DO_NOT_TOUCH_NOW",
+    "no_reutilizar": [
+      "túneles",
+      "Workers",
+      "hostnames",
+      "puertos",
+      "tokens",
+      "MCP como autoridad"
+    ],
+    "nota": "Puertos reservados según contrato SOURCE de LibreChat; no son un escaneo LIVE de MANOJOS3 ni prueban puertos activos.",
+    "puertos_reservados_en_fuente": [
+      8787,
+      8790,
+      8791,
+      4000,
+      8931,
+      9223
+    ],
+    "target_binding": "R0_DEFERRED"
+  },
+  "continuidad_seguridad": {
+    "no_permitido": [
+      "Replay de mutation target",
+      "Queue de autorizaciones",
+      "Autoenvío tras reconnect",
+      "Tratar HTTP 200 o commit como receipt material"
+    ],
+    "offline": [
+      "Caché lectura con ACL y expiración",
+      "Borrador local de texto únicamente"
+    ],
+    "operador": "LC-CONTINUITY-NO-STOP: bloquear sólo scope inseguro; continuar trabajo independiente elegible",
+    "unknown_outcome": "READBACK_DEL_MISMO_TARGET_RUN_RECEIPT_ANTES_DE_RETRY"
+  },
+  "cuentas_canónicas_source": {
+    "alias_legacy_en_git": 2,
+    "cloudflare_ai_gateways": 1,
+    "cloudflare_tunnels_web_obligatorios": 0,
+    "cloudflare_tunnels_web_opcionales_maximo": 1,
+    "cloudflare_workers_normalizador_opcional_maximo": 1,
+    "cloudflare_workers_obligatorios": 0,
+    "instancias_librechat_base": 1,
+    "openai_secure_mcp_tunnels_librechat": 0,
+    "rutas_dinamicas_inferencia": 7,
+    "skills_activas_source": 10,
+    "tailscale_funnel": 0,
+    "tailscale_serve_privadas_previstas": 1,
+    "tailscale_services_obligatorios": 0
+  },
+  "datos_live_no_observados": [
+    "ID real de túnel Cloudflare y hostname",
+    "Access App y Policies reales",
+    "Cuenta/Gateway Cloudflare y Versiones de Dynamic Routes",
+    "Modelo/proveedor/cuota/coste real de cada ruta",
+    "Tailscale tailnet/node/MagicDNS/Serve/ACL",
+    "Instancia LibreChat/PID/unit/DB/sesiones",
+    "EndPoints públicos reales y registros DNS",
+    "Credenciales runtime (NO deben copiarse)",
+    "Servicio de recuperación host",
+    "Binding MCP MANOJOS3 y frontdoor VX13 (fuera de alcance ahora)"
+  ],
+  "diferencias_documentales": [
+    {
+      "detalle": "config/librechat-vx.example.yaml es un ejemplo antiguo, actualmente disabled con source id librechat-vx-skills, path skills, depth 2 y runOnStartup true. Los nuevos dos fragmentos prefieren id nostromo-vx-skills y runOnStartup false, etapa 1 depth 1 y etapa 2 depth 0.",
+      "resolucion": "No combinar ambos sin inspección del host/estado mirror; usar canario autorizado y mantener source id real estable.",
+      "tema": "Skill Sync fuente general frente a canario nuevo"
+    },
+    {
+      "detalle": "Sólo operating/GAPS_CURRENT.json determina prioridad. El túnel Cloudflare+Access web es opcional, nunca prerequisito para el AI Gateway.",
+      "resolucion": "Usar dependencia real por gate; nunca leer diagrama de transportes como prueba LIVE.",
+      "tema": "Orden de activación de transportes"
+    }
+  ],
+  "enlaces": [
+    {
+      "autenticacion": "LibreChat sesión",
+      "declaracion_documental_previa": "NO_VERIFICADO",
+      "destino": "lc-local-web",
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "evidencia_runtime": [],
+      "id": "e01",
+      "observaciones": [],
+      "origen": "browser_host",
+      "proposito": "Acceso web host loopback",
+      "requerido": true,
+      "transporte": "HTTP loopback"
+    },
+    {
+      "autenticacion": "Tailnet identity + ACL",
+      "declaracion_documental_previa": "NOT_DEPLOYED_SEGUN_CURRENT",
+      "destino": "lc-tailserve",
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "evidencia_runtime": [],
+      "id": "e02",
+      "observaciones": [],
+      "origen": "tailnet_device",
+      "proposito": "Acceso web móvil/PC privado",
+      "requerido": true,
+      "transporte": "TAILSCALE_SERVE"
+    },
+    {
+      "autenticacion": "Tailscale Serve + sesión LibreChat",
+      "declaracion_documental_previa": "NOT_DEPLOYED_SEGUN_CURRENT",
+      "destino": "lc-local-web",
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "evidencia_runtime": [],
+      "id": "e03",
+      "observaciones": [],
+      "origen": "lc-tailserve",
+      "proposito": "Proxy privado a origen",
+      "requerido": true,
+      "transporte": "HTTP_LOOPBACK"
+    },
+    {
+      "autenticacion": "Access identity",
+      "declaracion_documental_previa": "NOT_DEPLOYED_SEGUN_CURRENT",
+      "destino": "lc-cf-access",
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "evidencia_runtime": [],
+      "id": "e04",
+      "observaciones": [],
+      "origen": "browser_publico",
+      "proposito": "Control de acceso opcional",
+      "requerido": false,
+      "transporte": "HTTPS"
+    },
+    {
+      "autenticacion": "Access policy",
+      "declaracion_documental_previa": "NOT_DEPLOYED_SEGUN_CURRENT",
+      "destino": "lc-cf-web",
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "evidencia_runtime": [],
+      "id": "e05",
+      "observaciones": [],
+      "origen": "lc-cf-access",
+      "proposito": "Solo usuarios públicos autorizados",
+      "requerido": false,
+      "transporte": "CF_TUNNEL"
+    },
+    {
+      "autenticacion": "Access + auth app",
+      "declaracion_documental_previa": "NOT_DEPLOYED_SEGUN_CURRENT",
+      "destino": "lc-local-web",
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "evidencia_runtime": [],
+      "id": "e06",
+      "observaciones": [],
+      "origen": "lc-cf-web",
+      "proposito": "Origen web HTTPS público opcional",
+      "requerido": false,
+      "transporte": "HTTP_LOOPBACK"
+    },
+    {
+      "autenticacion": "API bearer token + BYOK",
+      "declaracion_documental_previa": "LIVE_NO_VERIFICADO",
+      "destino": "lc-aig",
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "evidencia_runtime": [],
+      "id": "e07",
+      "observaciones": [],
+      "origen": "librechat_backend",
+      "proposito": "LLM cognition siete perfiles",
+      "requerido": true,
+      "transporte": "HTTPS_OUTBOUND"
+    },
+    {
+      "autenticacion": "Credenciales BYOK y Cloudflare policy",
+      "declaracion_documental_previa": "LIVE_NO_VERIFICADO",
+      "destino": "provider_models",
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "evidencia_runtime": [],
+      "id": "e08",
+      "observaciones": [],
+      "origen": "lc-aig",
+      "proposito": "Proveedor/modelo gratuito admitido",
+      "requerido": true,
+      "transporte": "CLOUDFLARE_DYNAMIC_ROUTE"
+    },
+    {
+      "autenticacion": "GitHub readonly token",
+      "declaracion_documental_previa": "LIVE_NO_VERIFICADO",
+      "destino": "lc-skill-sync",
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "evidencia_runtime": [],
+      "id": "e09",
+      "observaciones": [],
+      "origen": "librechat_backend",
+      "proposito": "Distribución de Skills",
+      "requerido": true,
+      "transporte": "HTTPS_OUTBOUND_SIN_TUNEL"
+    },
+    {
+      "autenticacion": "Idp/source auth; LIVE PENDIENTE",
+      "declaracion_documental_previa": "LIVE_NO_VERIFICADO",
+      "destino": "lc-agent-events",
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "evidencia_runtime": [],
+      "id": "e10",
+      "observaciones": [],
+      "origen": "external_event_source",
+      "proposito": "Evento autenticado + idempotencia",
+      "requerido": true,
+      "transporte": "APP_API"
+    },
+    {
+      "autenticacion": "authority=false",
+      "declaracion_documental_previa": "IMPLEMENTED_SOURCE_LIVE_GATED",
+      "destino": "lc-target-gateway",
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "evidencia_runtime": [],
+      "id": "e11",
+      "observaciones": [],
+      "origen": "nostromo_intent",
+      "proposito": "Preparación/proyección targets",
+      "requerido": true,
+      "transporte": "IN_PROCESS"
+    },
+    {
+      "autenticacion": "MANOJOS3 Policy/Kernel",
+      "declaracion_documental_previa": "PRODUCTION_BINDING_OFF",
+      "destino": "lc-manojos3-mcp-futuro",
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "evidencia_runtime": [],
+      "id": "e12",
+      "observaciones": [],
+      "origen": "lc-target-gateway",
+      "proposito": "READ/objetivo gobernado futuro",
+      "requerido": false,
+      "transporte": "MCP_EXTERNAL_FUTURE"
+    },
+    {
+      "autenticacion": "VX13 Madre/Spawner",
+      "declaracion_documental_previa": "GATE_EXTERNAL",
+      "destino": "lc-vx13-frontdoor-futuro",
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "evidencia_runtime": [],
+      "id": "e13",
+      "observaciones": [],
+      "origen": "lc-target-gateway",
+      "proposito": "Read/proyección futuros",
+      "requerido": false,
+      "transporte": "EXTERNAL_FRONTDOOR_FUTURE"
+    },
+    {
+      "autenticacion": "Tailnet SSH policy",
+      "declaracion_documental_previa": "NOT_DEPLOYED_SEGUN_CURRENT",
+      "destino": "lc-recovery-ssh",
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "evidencia_runtime": [],
+      "id": "e14",
+      "observaciones": [],
+      "origen": "host_operator",
+      "proposito": "Recuperación independiente del backend",
+      "requerido": true,
+      "transporte": "TAILSCALE_SSH"
+    },
+    {
+      "autenticacion": "PENDIENTE",
+      "declaracion_documental_previa": "NOT_PROVISIONED",
+      "destino": "lc-event-worker-opcional",
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "evidencia_runtime": [],
+      "id": "e15",
+      "observaciones": [],
+      "origen": "external_event_source",
+      "proposito": "Normalizador sólo si no hay evento directo",
+      "requerido": false,
+      "transporte": "CLOUDFLARE_WORKER"
+    }
+  ],
+  "fronteras_de_confianza": [
+    {
+      "desde": "Usuarios locales",
+      "hasta": "LibreChat loopback",
+      "regla": "Autenticación aplicación; localhost del móvil NO equivale al del host"
+    },
+    {
+      "desde": "Dispositivo tailnet",
+      "hasta": "Tailscale Serve",
+      "regla": "Identidad/ACL tailnet, luego autenticación LibreChat"
+    },
+    {
+      "desde": "Internet público",
+      "hasta": "Cloudflare Access",
+      "regla": "NO habilitar sin Access y controles API de máquina; protección del origen"
+    },
+    {
+      "desde": "LibreChat backend",
+      "hasta": "Cloudflare AI Gateway",
+      "regla": "Secretos en runtime; modelo no autoriza acciones; pago automático prohibido"
+    },
+    {
+      "desde": "NOSTROMO",
+      "hasta": "MANOJOS3/VX13",
+      "regla": "ConcreteTargetId; autorización target-owned; readback/verifier/receipt; AUTO/BOTH sólo lectura"
+    }
+  ],
+  "fuente_ci": "https://github.com/elkakas314/libre_chat_vx/actions/runs/37726226657",
+  "fuentes_verificadas": [
+    {
+      "path": "config/parallel_transport.current.json",
+      "url": "https://github.com/elkakas314/libre_chat_vx/blob/94954512312ce2b1b478c1bc19c3d01c5b52b2d2/config/parallel_transport.current.json"
+    },
+    {
+      "path": "config/transport_registry.current.json",
+      "url": "https://github.com/elkakas314/libre_chat_vx/blob/94954512312ce2b1b478c1bc19c3d01c5b52b2d2/config/transport_registry.current.json"
+    },
+    {
+      "path": "config/cloudflare_ai_gateway.current.json",
+      "url": "https://github.com/elkakas314/libre_chat_vx/blob/94954512312ce2b1b478c1bc19c3d01c5b52b2d2/config/cloudflare_ai_gateway.current.json"
+    },
+    {
+      "path": "config/mobile_access.current.json",
+      "url": "https://github.com/elkakas314/libre_chat_vx/blob/94954512312ce2b1b478c1bc19c3d01c5b52b2d2/config/mobile_access.current.json"
+    },
+    {
+      "path": "config/agent_events.current.json",
+      "url": "https://github.com/elkakas314/libre_chat_vx/blob/94954512312ce2b1b478c1bc19c3d01c5b52b2d2/config/agent_events.current.json"
+    },
+    {
+      "path": "config/skills.current.json",
+      "url": "https://github.com/elkakas314/libre_chat_vx/blob/94954512312ce2b1b478c1bc19c3d01c5b52b2d2/config/skills.current.json"
+    },
+    {
+      "path": "config/targets.example.yaml",
+      "url": "https://github.com/elkakas314/libre_chat_vx/blob/94954512312ce2b1b478c1bc19c3d01c5b52b2d2/config/targets.example.yaml"
+    },
+    {
+      "path": "deployment/parallel-transport/README.md",
+      "url": "https://github.com/elkakas314/libre_chat_vx/blob/94954512312ce2b1b478c1bc19c3d01c5b52b2d2/deployment/parallel-transport/README.md"
+    },
+    {
+      "path": "deployment/parallel-transport/tailscale-serve.librechat-vx.md",
+      "url": "https://github.com/elkakas314/libre_chat_vx/blob/94954512312ce2b1b478c1bc19c3d01c5b52b2d2/deployment/parallel-transport/tailscale-serve.librechat-vx.md"
+    },
+    {
+      "path": "deployment/parallel-transport/cloudflared.librechat-vx.example.yml",
+      "url": "https://github.com/elkakas314/libre_chat_vx/blob/94954512312ce2b1b478c1bc19c3d01c5b52b2d2/deployment/parallel-transport/cloudflared.librechat-vx.example.yml"
+    },
+    {
+      "path": "deployment/skill-sync/README.md",
+      "url": "https://github.com/elkakas314/libre_chat_vx/blob/94954512312ce2b1b478c1bc19c3d01c5b52b2d2/deployment/skill-sync/README.md"
+    },
+    {
+      "path": "operating/GAPS_CURRENT.json",
+      "url": "https://github.com/elkakas314/libre_chat_vx/blob/94954512312ce2b1b478c1bc19c3d01c5b52b2d2/operating/GAPS_CURRENT.json"
+    }
+  ],
+  "gates_live": [
+    {
+      "estado_gate": "OPEN",
+      "evidencia_que_falta": [
+        "Readback Cloudflare account/gateway autenticado",
+        "7 rutas Dynamic existentes, modelos, precios/cuotas reales y fallback",
+        "Canario stream y rollback"
+      ],
+      "id": "LC-CF-AIG-BINDING",
+      "prioridad": 10
+    },
+    {
+      "estado_gate": "OPEN",
+      "evidencia_que_falta": [
+        "Readback servidor LibreChat de GitHub Skill Sync",
+        "Canario 12 físicas",
+        "Canario 10 activas manteniendo dos alias Git, rollback"
+      ],
+      "id": "LC-SKILL-SYNC-LIVE",
+      "prioridad": 20
+    },
+    {
+      "estado_gate": "OPEN",
+      "evidencia_que_falta": [
+        "Host LibreChat salud en 3080",
+        "Estado Tailscale Serve/ACL y DNS reales",
+        "Móvil Wi-Fi/datos, revoke/reconnect, rollback"
+      ],
+      "id": "LC-TAILSCALE-MOBILE-LIVE",
+      "prioridad": 30
+    },
+    {
+      "estado_gate": "OPEN",
+      "evidencia_que_falta": [
+        "Canario native Web Search/scraper real"
+      ],
+      "id": "LC-WEB-RESEARCH-LIVE",
+      "prioridad": 40
+    },
+    {
+      "estado_gate": "OPEN",
+      "evidencia_que_falta": [
+        "Evento autenticado, idempotencia, notificación y rechazo por ACL"
+      ],
+      "id": "LC-AGENT-EVENTS-LIVE",
+      "prioridad": 50
+    },
+    {
+      "estado_gate": "OPEN",
+      "evidencia_que_falta": [
+        "Servicio de host y Tailscale SSH fuera de banda verificados"
+      ],
+      "id": "LC-RECOVERY-LIVE",
+      "prioridad": 60
+    },
+    {
+      "estado_gate": "GATE_HUMAN",
+      "evidencia_que_falta": [
+        "Benchmark real CPU/RAM Lenovo inactivo y activo, navegador y streams"
+      ],
+      "id": "LC-LOW-POWER-MEASURE",
+      "prioridad": 70
+    }
+  ],
+  "instrucciones_uso": "Este inventario es de referencia/planeamiento; antes de aplicar un recurso se requiere inspección LIVE de la cuenta y host con autorización propia, canario, readback y rollback. No compartir secretos; no ejecutar resets globales.",
+  "meta": {
+    "autoridad_material": false,
+    "env_catalogo_ref": "./SPEC.json#/configuracion/env",
+    "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+    "estado_runtime_enum": [
+      "NO_DEPLOYMENT_EVIDENCE",
+      "NOT_DEPLOYED",
+      "DEPLOYED_UNVERIFIED",
+      "LIVE_VERIFIED",
+      "MATERIAL_VERIFIED"
+    ],
+    "explicacion": "La plantilla SOURCE no prueba presencia ni ausencia del recurso en la cuenta o en el host; cada recurso necesita readback.",
+    "fecha_corte_fuentes": "2026-10-08",
+    "github_actions": {
+      "alcance": "SOURCE_UNICAMENTE",
+      "overlay_smoke": "SUCCESS",
+      "resultado": "SUCCESS",
+      "run_id": 37726226657,
+      "tests": 117,
+      "tests_fallidos": 0,
+      "workflow": "source-check"
+    },
+    "head_verificado": "94954512312ce2b1b478c1bc19c3d01c5b52b2d2",
+    "id": "LIBRECHAT_VX_TRANSPORT_TOPOLOGY_CURRENT",
+    "nota": "Inventario del diseño/Source canónico, NO inventario autenticado de Cloudflare/Tailscale/Linux LIVE; ninguna credencial real se incluye.",
+    "rama": "handoff_current_bootstrps",
+    "regla_de_lectura": "Estado runtime NO_DEPLOYMENT_EVIDENCE no implica NOT_DEPLOYED; nunca convertir fuente SOURCE en readback LIVE.",
+    "repositorio": "elkakas314/libre_chat_vx",
+    "schema": "libre-chat-vx.transport-topology.v2",
+    "titulo": "Topología de túneles, transportes, rutas y fronteras — LibreChat VX / NOSTROMO",
+    "version_documento": "2.0.0-canon-consolidado"
+  },
+  "recursos": [
+    {
+      "autenticacion": "LibreChat native session/auth; LIVE NO_VERIFICADO",
+      "canario": [
+        "Readback proceso/escucha TCP y health nativo, no asumir por config",
+        "Autenticación real y acceso local",
+        "Detener y restaurar servicio sin alterar otros"
+      ],
+      "correccion": "La salud de servidor local no prueba Cloudflare AI Gateway; requiere canario independiente.",
+      "declaracion_documental_previa": "NO_VERIFICADO",
+      "destino": "http://127.0.0.1:3080",
+      "env_source_of_truth": {
+        "$ref": "./SPEC.json#/configuracion/env",
+        "seleccionar_por_campo": "nombre"
+      },
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "estado_source_declarado": "SOURCE_DEFINED",
+      "evidencia_runtime": [],
+      "exposicion": "LOOPBACK_SOLO_HOST",
+      "fuentes": [
+        {
+          "path": "config/parallel_transport.current.json",
+          "url": "https://github.com/elkakas314/libre_chat_vx/blob/94954512312ce2b1b478c1bc19c3d01c5b52b2d2/config/parallel_transport.current.json"
+        },
+        {
+          "path": "config/transport_registry.current.json",
+          "url": "https://github.com/elkakas314/libre_chat_vx/blob/94954512312ce2b1b478c1bc19c3d01c5b52b2d2/config/transport_registry.current.json"
+        }
+      ],
+      "gap": null,
+      "gap_original_erroneo": "LC-CF-AIG-BINDING",
+      "id": "lc-local-web",
+      "identificadores_live": {
+        "health_url": null,
+        "pid": null,
+        "unit": null
+      },
+      "obligatorio": true,
+      "origen": "Navegador en el propio host / proceso LibreChat",
+      "plano": "acceso_web_local",
+      "precondicion_de": [
+        "LC-TAILSCALE-MOBILE-LIVE",
+        "LC-AGENT-EVENTS-LIVE"
+      ],
+      "prerrequisitos": [
+        "Servidor LibreChat realmente instalado/arrancado",
+        "Puerto 3080 disponible y sin colisión"
+      ],
+      "puertos": [
+        3080
+      ],
+      "rollback": "Detener sólo la instancia LibreChat VX desplegada, según evidencia del servicio real",
+      "tipo": "APP_ORIGIN_LOOPBACK",
+      "titular": "LIBRECHAT_VX",
+      "variables_entorno_nombres": []
+    },
+    {
+      "autenticacion": "Identidad Tailscale + ACL/SSH policy de tailnet (LIVE NO_VERIFICADO)",
+      "canario": [
+        "Lectura Serve JSON/config previa",
+        "Navegación móvil en Wi-Fi y datos por nombre tailnet real",
+        "Acceso revocado DENY",
+        "Reconexión conserva sesión y no repite efectos materiales",
+        "Rollback y readback del estado anterior"
+      ],
+      "declaracion_documental_previa": "NOT_DEPLOYED_SEGUN_CURRENT_SIN_READBACK_HOST",
+      "destino": "LibreChat VX http://127.0.0.1:3080 vía Serve",
+      "env_source_of_truth": {
+        "$ref": "./SPEC.json#/configuracion/env",
+        "seleccionar_por_campo": "nombre"
+      },
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "estado_source_declarado": "SOURCE_TEMPLATE",
+      "evidencia_runtime": [],
+      "exposicion": "TAILNET_PRIVADO",
+      "fuentes": [
+        {
+          "path": "deployment/parallel-transport/tailscale-serve.librechat-vx.md",
+          "url": "https://github.com/elkakas314/libre_chat_vx/blob/94954512312ce2b1b478c1bc19c3d01c5b52b2d2/deployment/parallel-transport/tailscale-serve.librechat-vx.md"
+        },
+        {
+          "path": "config/mobile_access.current.json",
+          "url": "https://github.com/elkakas314/libre_chat_vx/blob/94954512312ce2b1b478c1bc19c3d01c5b52b2d2/config/mobile_access.current.json"
+        }
+      ],
+      "gap": "LC-TAILSCALE-MOBILE-LIVE",
+      "id": "lc-tailserve",
+      "identificadores_live": {
+        "https_port": null,
+        "magicdns_hostname": null,
+        "node_id": null,
+        "serve_config": null,
+        "tailnet_name": null
+      },
+      "obligatorio": true,
+      "origen": "PC/móvil autenticado en tailnet",
+      "plano": "acceso_web_privado",
+      "prerrequisitos": [
+        "LibreChat local saludable",
+        "Tailscale en host y cliente",
+        "Inspeccionar Serve actual y evitar sobrescribir configuración ajena",
+        "ACL específica probada"
+      ],
+      "puertos": [
+        3080
+      ],
+      "rollback": "Revertir exclusivamente la ruta LibreChat VX previa lectura del estado; no usar reset global si hay otros servicios",
+      "tipo": "TAILSCALE_SERVE",
+      "titular": "LIBRECHAT_VX",
+      "variables_entorno_nombres": []
+    },
+    {
+      "autenticacion": "Cloudflare Access obligatoria; no exponer admin sin control",
+      "canario": [
+        "Cloudflare cuenta: túnel y hostname reales",
+        "Access: permitido/denegado con identidades de prueba",
+        "Origen loopback responde únicamente bajo identidad",
+        "Rollback ruta/Access y readback"
+      ],
+      "declaracion_documental_previa": "NOT_DEPLOYED_SEGUN_CURRENT_SIN_READBACK_CUENTA",
+      "destino": "http://127.0.0.1:3080",
+      "env_source_of_truth": {
+        "$ref": "./SPEC.json#/configuracion/env",
+        "seleccionar_por_campo": "nombre"
+      },
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "estado_source_declarado": "SOURCE_TEMPLATE",
+      "evidencia_runtime": [],
+      "exposicion": "PUBLIC_EDGE_WITH_ACCESS_ONLY",
+      "fuentes": [
+        {
+          "path": "deployment/parallel-transport/cloudflared.librechat-vx.example.yml",
+          "url": "https://github.com/elkakas314/libre_chat_vx/blob/94954512312ce2b1b478c1bc19c3d01c5b52b2d2/deployment/parallel-transport/cloudflared.librechat-vx.example.yml"
+        },
+        {
+          "path": "config/parallel_transport.current.json",
+          "url": "https://github.com/elkakas314/libre_chat_vx/blob/94954512312ce2b1b478c1bc19c3d01c5b52b2d2/config/parallel_transport.current.json"
+        }
+      ],
+      "gap": "OPTIONAL_REENTRY",
+      "id": "lc-cf-web",
+      "identificadores_live": {
+        "cloudflare_account_id": null,
+        "dns_record": null,
+        "hostname": null,
+        "tunnel_id": null,
+        "tunnel_token": null
+      },
+      "obligatorio": false,
+      "origen": "Navegador HTTPS público tras Cloudflare Access",
+      "plano": "acceso_web_publico_opcional",
+      "prerrequisitos": [
+        "Necesidad real de acceso sin tailnet",
+        "Cuenta/túnel/hostname propios de LibreChat VX",
+        "Access policy probada ANTES del tráfico",
+        "No reutilizar túnel/hostname/puertos MANOJOS3"
+      ],
+      "puertos": [
+        3080
+      ],
+      "rollback": "Deshabilitar solamente la ruta del túnel y comprobar política/hostname; nunca retirar túneles de MANOJOS3",
+      "tipo": "CLOUDFLARE_TUNNEL",
+      "titular": "LIBRECHAT_VX",
+      "variables_entorno_nombres": [
+        "LIBRECHAT_VX_CF_TUNNEL_TOKEN",
+        "LIBRECHAT_VX_TUNNEL_ID",
+        "LIBRECHAT_VX_TUNNEL_CREDENTIALS_FILE",
+        "LIBRECHAT_VX_PUBLIC_HOSTNAME"
+      ]
+    },
+    {
+      "autenticacion": "Access identity; para API máquina-a-máquina Service Token o equivalente validado",
+      "canario": [
+        "Usuario permitido PASS y no permitido DENY",
+        "Ruta administrativa sin exposición pública",
+        "Sesión revocada rechazada"
+      ],
+      "declaracion_documental_previa": "NOT_DEPLOYED_SEGUN_CURRENT_SIN_READBACK_CUENTA",
+      "destino": "Aplicación Access asociada a hostname LibreChat",
+      "env_source_of_truth": {
+        "$ref": "./SPEC.json#/configuracion/env",
+        "seleccionar_por_campo": "nombre"
+      },
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "estado_source_declarado": "SOURCE_DECLARED",
+      "evidencia_runtime": [],
+      "exposicion": "EDGE_IDENTITY_GATE",
+      "fuentes": [
+        {
+          "path": "config/parallel_transport.current.json",
+          "url": "https://github.com/elkakas314/libre_chat_vx/blob/94954512312ce2b1b478c1bc19c3d01c5b52b2d2/config/parallel_transport.current.json"
+        },
+        {
+          "path": "config/transport_registry.current.json",
+          "url": "https://github.com/elkakas314/libre_chat_vx/blob/94954512312ce2b1b478c1bc19c3d01c5b52b2d2/config/transport_registry.current.json"
+        }
+      ],
+      "gap": "OPTIONAL_REENTRY",
+      "id": "lc-cf-access",
+      "identificadores_live": {
+        "access_application_id": null,
+        "audience": null,
+        "policy_ids": null
+      },
+      "obligatorio": false,
+      "origen": "Cliente que utiliza lc-cf-web",
+      "plano": "identidad_perimetral_opcional",
+      "prerrequisitos": [
+        "Túnel público opcional justificado",
+        "Políticas usuario/servicio de mínimo privilegio"
+      ],
+      "puertos": [],
+      "rollback": "Desactivar acceso público manteniendo aislamiento de origen",
+      "tipo": "CLOUDFLARE_ACCESS",
+      "titular": "LIBRECHAT_VX",
+      "variables_entorno_nombres": [
+        "LIBRECHAT_VX_PUBLIC_HOSTNAME",
+        "LIBRECHAT_VX_EVENTS_HOSTNAME"
+      ]
+    },
+    {
+      "autenticacion": "Bearer secret de runtime y cf-aig-gateway-id; BYOK-only exigido en diseño",
+      "canario": [
+        "Readback account/gateway, rutas y versiones existentes",
+        "Para cada ruta verificar modelo, salud, cuota, coste real, privacidad y fallback gratuito",
+        "Petición con cabecera cf-aig-no-wholesale=true y stream",
+        "Failover únicamente hacia rutas gratis verificadas",
+        "Simular agotamiento de cuotas sin escalada de pago",
+        "Rollback a versión anterior y readback"
+      ],
+      "declaracion_documental_previa": "LIVE_NO_VERIFICADO",
+      "destino": "https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/ai/v1/chat/completions",
+      "env_source_of_truth": {
+        "$ref": "./SPEC.json#/configuracion/env",
+        "seleccionar_por_campo": "nombre"
+      },
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "estado_source_declarado": "SOURCE_CLIENT_AND_POLICY",
+      "evidencia_runtime": [],
+      "exposicion": "HTTPS_SALIENTE",
+      "fuentes": [
+        {
+          "path": "config/cloudflare_ai_gateway.current.json",
+          "url": "https://github.com/elkakas314/libre_chat_vx/blob/94954512312ce2b1b478c1bc19c3d01c5b52b2d2/config/cloudflare_ai_gateway.current.json"
+        },
+        {
+          "path": "config/model_registry.current.json",
+          "url": "https://github.com/elkakas314/libre_chat_vx/blob/94954512312ce2b1b478c1bc19c3d01c5b52b2d2/config/model_registry.current.json"
+        },
+        {
+          "path": "src/llm/cloudflareAiGateway.ts",
+          "url": "https://github.com/elkakas314/libre_chat_vx/blob/94954512312ce2b1b478c1bc19c3d01c5b52b2d2/src/llm/cloudflareAiGateway.ts"
+        }
+      ],
+      "gap": "LC-CF-AIG-BINDING",
+      "id": "lc-aig",
+      "identificadores_live": {
+        "cloudflare_account_id": null,
+        "gateway_id": null,
+        "provider_models": [],
+        "quota_proof": null,
+        "route_versions": {}
+      },
+      "obligatorio": true,
+      "origen": "Backend LibreChat/NostromoInferenceGateway",
+      "plano": "inferencia_saliente",
+      "prerrequisitos": [
+        "Credenciales gestionadas fuera de Git/Docs/chat",
+        "7 Dynamic Routes realmente existentes con proveedores/marcas permitidas y cuota gratuita comprobada",
+        "Gateway autenticado; no wholesale por petición",
+        "Versionado y versión previa para rollback"
+      ],
+      "puertos": [],
+      "rollback": "Reinstaurar versión previa de Dynamic Route tras canario; no usar un fallback pagado o MANOJOS3 LiteLLM automáticamente",
+      "tipo": "CLOUDFLARE_AI_GATEWAY",
+      "titular": "LIBRECHAT_VX",
+      "variables_entorno_nombres": [
+        "CLOUDFLARE_ACCOUNT_ID",
+        "CLOUDFLARE_AI_GATEWAY_ID",
+        "CLOUDFLARE_API_TOKEN",
+        "CLOUDFLARE_AIG_BYOK_ONLY_REQUIRED"
+      ]
+    },
+    {
+      "autenticacion": "GITHUB_SKILLS_TOKEN en secreto de host; lectura mínima del repositorio",
+      "canario": [
+        "GET /api/admin/skills/sync/status readback autenticado",
+        "POST /api/admin/skills/sync/run controlado solo en instancia autorizada",
+        "12 físicas y permisos/tenant correctos",
+        "Después 10 activas con 2 alias intactos en Git",
+        "Rollback del espejo anterior ante discrepancias"
+      ],
+      "declaracion_documental_previa": "LIVE_NO_VERIFICADO",
+      "destino": "https://github.com/elkakas314/libre_chat_vx/tree/handoff_current_bootstrps/skills",
+      "env_source_of_truth": {
+        "$ref": "./SPEC.json#/configuracion/env",
+        "seleccionar_por_campo": "nombre"
+      },
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "estado_source_declarado": "SOURCE_TWO_STAGE_CONFIG",
+      "evidencia_runtime": [],
+      "exposicion": "HTTPS_SALIENTE_SIN_TUNEL",
+      "fuentes": [
+        {
+          "path": "deployment/skill-sync/README.md",
+          "url": "https://github.com/elkakas314/libre_chat_vx/blob/94954512312ce2b1b478c1bc19c3d01c5b52b2d2/deployment/skill-sync/README.md"
+        },
+        {
+          "path": "config/skills.current.json",
+          "url": "https://github.com/elkakas314/libre_chat_vx/blob/94954512312ce2b1b478c1bc19c3d01c5b52b2d2/config/skills.current.json"
+        }
+      ],
+      "gap": "LC-SKILL-SYNC-LIVE",
+      "id": "lc-skill-sync",
+      "identificadores_live": {
+        "last_sync_run": null,
+        "mirror_hashes": null,
+        "runtime_source_id": null,
+        "source_id": "nostromo-vx-skills (PROPUESTO)"
+      },
+      "obligatorio": true,
+      "origen": "Backend LibreChat (HTTPS a GitHub)",
+      "plano": "distribucion_skills_saliente",
+      "prerrequisitos": [
+        "Servidor LibreChat y API admin autenticados",
+        "Backup del espejo anterior",
+        "Fase1: 12 Skills físicas; Fase2: 10 catalogadas después de canario LIVE"
+      ],
+      "puertos": [],
+      "rollback": "Restaurar fragmento previo y espejo comprobado; nunca borrar dos alias Git antes de confirmación",
+      "tipo": "GITHUB_SKILL_SYNC",
+      "titular": "LIBRECHAT_VX",
+      "variables_entorno_nombres": [
+        "GITHUB_SKILLS_TOKEN"
+      ]
+    },
+    {
+      "autenticacion": "Autenticación de origen más autenticación LibreChat; detalle LIVE PENDIENTE",
+      "canario": [
+        "Evento de prueba autenticado y readback",
+        "Repetición mismo idempotencyKey no duplica",
+        "Evento no autorizado rechazado",
+        "Reanudación/ruta móvil avisa con payload opaco y fresh fetch"
+      ],
+      "declaracion_documental_previa": "LIVE_NO_VERIFICADO",
+      "destino": "/api/agents/v1/events",
+      "env_source_of_truth": {
+        "$ref": "./SPEC.json#/configuracion/env",
+        "seleccionar_por_campo": "nombre"
+      },
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "estado_source_declarado": "SOURCE_CONTRACT",
+      "evidencia_runtime": [],
+      "exposicion": "APP_API_LOCAL_O_TAILNET_Y_PUBLICA_SOLO_CON_ACCESS",
+      "fuentes": [
+        {
+          "path": "config/agent_events.current.json",
+          "url": "https://github.com/elkakas314/libre_chat_vx/blob/94954512312ce2b1b478c1bc19c3d01c5b52b2d2/config/agent_events.current.json"
+        },
+        {
+          "path": "src/events/agentEvents.ts",
+          "url": "https://github.com/elkakas314/libre_chat_vx/blob/94954512312ce2b1b478c1bc19c3d01c5b52b2d2/src/events/agentEvents.ts"
+        }
+      ],
+      "gap": "LC-AGENT-EVENTS-LIVE",
+      "id": "lc-agent-events",
+      "identificadores_live": {
+        "runtime_receipts": null,
+        "webhook_event_source_ids": null
+      },
+      "obligatorio": true,
+      "origen": "MANOJOS3/VX13/ORÁCULO u originador interno, sólo cuando esté autorizado",
+      "plano": "eventos_entrantes",
+      "prerrequisitos": [
+        "Backend y permisos nativos",
+        "Eventos modo fire, idempotencyKey y orderingKey cuando corresponda",
+        "Contenido saneado sin secretos",
+        "Origen público siempre detrás de Access y gate máquina-a-máquina"
+      ],
+      "puertos": [],
+      "rollback": "Desactivar binding/consumidor del evento LibreChat VX sin mutar targets",
+      "tipo": "LIBRECHAT_AGENT_EVENTS",
+      "titular": "LIBRECHAT_VX",
+      "variables_entorno_nombres": [
+        "LIBRECHAT_VX_EVENTS_HOSTNAME"
+      ]
+    },
+    {
+      "autenticacion": "Tailscale SSH policy/identidad; LIVE PENDIENTE",
+      "canario": [
+        "Caída controlada LibreChat sin pérdida de canal host",
+        "Reinicio servicio administrado desde fuera",
+        "Comprobación health y no duplicación de trabajos"
+      ],
+      "declaracion_documental_previa": "NOT_DEPLOYED_SEGUN_CURRENT_SIN_READBACK_HOST",
+      "destino": "Host Linux LibreChat VX",
+      "env_source_of_truth": {
+        "$ref": "./SPEC.json#/configuracion/env",
+        "seleccionar_por_campo": "nombre"
+      },
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "estado_source_declarado": "PLANNED",
+      "evidencia_runtime": [],
+      "exposicion": "TAILNET_ADMIN",
+      "fuentes": [
+        {
+          "path": "config/parallel_transport.current.json",
+          "url": "https://github.com/elkakas314/libre_chat_vx/blob/94954512312ce2b1b478c1bc19c3d01c5b52b2d2/config/parallel_transport.current.json"
+        },
+        {
+          "path": "config/transport_registry.current.json",
+          "url": "https://github.com/elkakas314/libre_chat_vx/blob/94954512312ce2b1b478c1bc19c3d01c5b52b2d2/config/transport_registry.current.json"
+        }
+      ],
+      "gap": "LC-RECOVERY-LIVE",
+      "id": "lc-recovery-ssh",
+      "identificadores_live": {
+        "host_unit_name": null,
+        "tailscale_ssh_policy": null
+      },
+      "obligatorio": true,
+      "origen": "Operador autorizado fuera de LibreChat",
+      "plano": "recuperacion_fuera_de_banda",
+      "prerrequisitos": [
+        "Servicio LibreChat con arranque/parada aislados y health",
+        "Ruta de recuperación que funcione con LibreChat caído",
+        "Reglas exactas de SSH y cuenta del host verificadas"
+      ],
+      "puertos": [],
+      "rollback": "Revertir únicamente servicio/SSH policy nueva, no tocar servicios de MANOJOS3",
+      "tipo": "TAILSCALE_SSH_RECOVERY",
+      "titular": "HOST",
+      "variables_entorno_nombres": []
+    },
+    {
+      "autenticacion": "No concede autorización de target",
+      "canario": [
+        "Lectura R0 real y readback sólo después de gates",
+        "No mutar desde AUTO/BOTH",
+        "No repetición material tras reconexión"
+      ],
+      "declaracion_documental_previa": "TARGET_BINDINGS_GATED",
+      "destino": "Adapters concretos MANOJOS3/VX13; sólo cuando existan",
+      "env_source_of_truth": {
+        "$ref": "./SPEC.json#/configuracion/env",
+        "seleccionar_por_campo": "nombre"
+      },
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "estado_source_declarado": "IMPLEMENTED_SOURCE",
+      "evidencia_runtime": [],
+      "exposicion": "IN_PROCESS",
+      "fuentes": [
+        {
+          "path": "src/targets/targetGateway.ts",
+          "url": "https://github.com/elkakas314/libre_chat_vx/blob/94954512312ce2b1b478c1bc19c3d01c5b52b2d2/src/targets/targetGateway.ts"
+        },
+        {
+          "path": "config/targets.example.yaml",
+          "url": "https://github.com/elkakas314/libre_chat_vx/blob/94954512312ce2b1b478c1bc19c3d01c5b52b2d2/config/targets.example.yaml"
+        }
+      ],
+      "gap": "TARGET_LATER",
+      "id": "lc-target-gateway",
+      "identificadores_live": {
+        "manojos3_binding_id": null,
+        "vx13_frontdoor_id": null
+      },
+      "obligatorio": true,
+      "origen": "IntentInterpreter/NOSTROMO backend",
+      "plano": "proyeccion_targets",
+      "prerrequisitos": [
+        "ConcreteTargetId para operación material",
+        "Binding LIVE autenticado y target-owned Policy/Kernel",
+        "UNKNOWN_OUTCOME exige readback del target"
+      ],
+      "puertos": [],
+      "rollback": "Deshabilitar adapters no verificados; no hay tunel público TargetGateway",
+      "tipo": "IN_PROCESS_FACADE_NO_TUNNEL",
+      "titular": "LIBRECHAT_VX",
+      "variables_entorno_nombres": []
+    },
+    {
+      "autenticacion": "Governor/Policy/Kernel/Verifier/Receipt de MANOJOS3; MCP transporte sólo",
+      "canario": [
+        "health/readiness/capabilities R0",
+        "un único objetivo R0 gobernado y receipt/readback",
+        "No tocar túneles preexistentes"
+      ],
+      "declaracion_documental_previa": "PRODUCTION_BINDING_OFF",
+      "destino": "MANOJOS3 MCP externo cuando se autorice",
+      "env_source_of_truth": {
+        "$ref": "./SPEC.json#/configuracion/env",
+        "seleccionar_por_campo": "nombre"
+      },
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "estado_source_declarado": "ADAPTER_IMPLEMENTED_SOURCE_UNCONFIGURED",
+      "evidencia_runtime": [],
+      "exposicion": "TARGET_OWNED_UNDETERMINED",
+      "fuentes": [
+        {
+          "path": "config/targets.example.yaml",
+          "url": "https://github.com/elkakas314/libre_chat_vx/blob/94954512312ce2b1b478c1bc19c3d01c5b52b2d2/config/targets.example.yaml"
+        },
+        {
+          "path": "operating/GAPS_CURRENT.json",
+          "url": "https://github.com/elkakas314/libre_chat_vx/blob/94954512312ce2b1b478c1bc19c3d01c5b52b2d2/operating/GAPS_CURRENT.json"
+        }
+      ],
+      "gap": "LC-M3-R0-BINDING",
+      "id": "lc-manojos3-mcp-futuro",
+      "identificadores_live": {
+        "hostname": null,
+        "live_mcp_endpoint": null,
+        "tunnel_id": null
+      },
+      "obligatorio": false,
+      "origen": "NostromoTargetGateway",
+      "plano": "target_externo",
+      "prerrequisitos": [
+        "Cierre de stack paralelo LibreChat",
+        "MANOJOS3 R0 gobernado real, autorización y receipts",
+        "Aprobación separada de convergencia de túneles"
+      ],
+      "puertos": [],
+      "rollback": "Deshabilitar integración LibreChat, nunca modificar MANOJOS3 por inferencia",
+      "tipo": "EXTERNAL_MCP_TARGET_DEFERRED",
+      "titular": "MANOJOS3",
+      "variables_entorno_nombres": [
+        "MANOJOS3_MCP_URL"
+      ]
+    },
+    {
+      "autenticacion": "MADRE/Spawner-hijas gobiernan VX13",
+      "canario": [
+        "Readback contrato/ruta real",
+        "Prueba READ antes de cualquier material"
+      ],
+      "declaracion_documental_previa": "GATE_EXTERNAL",
+      "destino": "Tentáculo Link / frontdoor canónico VX13",
+      "env_source_of_truth": {
+        "$ref": "./SPEC.json#/configuracion/env",
+        "seleccionar_por_campo": "nombre"
+      },
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "estado_source_declarado": "DESIGN_GATED",
+      "evidencia_runtime": [],
+      "exposicion": "UNDEFINED_UNTIL_VX13_READY",
+      "fuentes": [
+        {
+          "path": "operating/TARGET_CANON.json",
+          "url": "https://github.com/elkakas314/libre_chat_vx/blob/94954512312ce2b1b478c1bc19c3d01c5b52b2d2/operating/TARGET_CANON.json"
+        },
+        {
+          "path": "config/targets.example.yaml",
+          "url": "https://github.com/elkakas314/libre_chat_vx/blob/94954512312ce2b1b478c1bc19c3d01c5b52b2d2/config/targets.example.yaml"
+        }
+      ],
+      "gap": "LC-VX13-BINDING",
+      "id": "lc-vx13-frontdoor-futuro",
+      "identificadores_live": {
+        "frontdoor_url": null,
+        "protocol": null
+      },
+      "obligatorio": false,
+      "origen": "NostromoTargetGateway",
+      "plano": "target_externo",
+      "prerrequisitos": [
+        "Contrato frontdoor VX13 real",
+        "No duplicar autoridad ni confundir Tentáculo HUD con Link"
+      ],
+      "puertos": [],
+      "rollback": "Mantener VX13 sin configurar desde LibreChat",
+      "tipo": "EXTERNAL_FRONTDOOR_DEFERRED",
+      "titular": "VX13",
+      "variables_entorno_nombres": [
+        "VX13_LINK_URL"
+      ]
+    },
+    {
+      "autenticacion": "Sólo canal aprobado; authority=false",
+      "canario": [
+        "Consulta de asesoría sin ejecutar target"
+      ],
+      "declaracion_documental_previa": "NO_VERIFICADO",
+      "destino": "ORÁCULO por ruta aprobada; sin endpoint actual en SOURCE",
+      "env_source_of_truth": {
+        "$ref": "./SPEC.json#/configuracion/env",
+        "seleccionar_por_campo": "nombre"
+      },
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "estado_source_declarado": "ADVISORY_CONTRACT_SOURCE",
+      "evidencia_runtime": [],
+      "exposicion": "PENDIENTE",
+      "fuentes": [
+        {
+          "path": "config/targets.example.yaml",
+          "url": "https://github.com/elkakas314/libre_chat_vx/blob/94954512312ce2b1b478c1bc19c3d01c5b52b2d2/config/targets.example.yaml"
+        },
+        {
+          "path": "operating/TARGET_CANON.json",
+          "url": "https://github.com/elkakas314/libre_chat_vx/blob/94954512312ce2b1b478c1bc19c3d01c5b52b2d2/operating/TARGET_CANON.json"
+        }
+      ],
+      "gap": "TARGET_LATER",
+      "id": "lc-oraculo-advisory",
+      "identificadores_live": {
+        "route": null
+      },
+      "obligatorio": false,
+      "origen": "NostromoTargetGateway/consulta gobernada si se habilita",
+      "plano": "razonamiento_asesor",
+      "prerrequisitos": [
+        "Ruta de consulta real y acotada",
+        "Respuesta nunca equivale a receipt"
+      ],
+      "puertos": [],
+      "rollback": "Desactivar ruta asesoría",
+      "tipo": "ADVISORY_PROVIDER_DEFERRED",
+      "titular": "ORACULO",
+      "variables_entorno_nombres": []
+    },
+    {
+      "autenticacion": "Autenticación y firma de origen + gate destino, a definir",
+      "canario": [
+        "Normalización input mínimo y rechazos",
+        "No administración AI Gateway ni ejecución material"
+      ],
+      "declaracion_documental_previa": "NOT_PROVISIONED_SEGUN_CURRENT",
+      "destino": "Eventos LibreChat autenticados",
+      "env_source_of_truth": {
+        "$ref": "./SPEC.json#/configuracion/env",
+        "seleccionar_por_campo": "nombre"
+      },
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "estado_source_declarado": "OPTIONAL_DESIGN",
+      "evidencia_runtime": [],
+      "exposicion": "PENDIENTE_SOLO_CASO_MEDIDO",
+      "fuentes": [
+        {
+          "path": "config/parallel_transport.current.json",
+          "url": "https://github.com/elkakas314/libre_chat_vx/blob/94954512312ce2b1b478c1bc19c3d01c5b52b2d2/config/parallel_transport.current.json"
+        }
+      ],
+      "gap": "OPTIONAL_REENTRY",
+      "id": "lc-event-worker-opcional",
+      "identificadores_live": {
+        "worker_id": null
+      },
+      "obligatorio": false,
+      "origen": "Fuente externa sin soporte de eventos nativos",
+      "plano": "eventos_opcionales",
+      "prerrequisitos": [
+        "Prueba de imposibilidad de Agent Events directo",
+        "Security review y ausencia de otro Worker requerido"
+      ],
+      "puertos": [],
+      "rollback": "Deshabilitar Worker y retornar ruta directa",
+      "tipo": "CLOUDFLARE_WORKER_EVENT_NORMALIZER",
+      "titular": "LIBRECHAT_VX",
+      "variables_entorno_nombres": []
+    }
+  ],
+  "resumen": {
+    "distinguir": [
+      "Cloudflare AI Gateway = API de inferencia; NO es un túnel web",
+      "Cloudflare Tunnel + Access = borde web público OPCIONAL y NO desplegado",
+      "Tailscale Serve = acceso web privado previsto, distinto de Tailscale SSH de recuperación",
+      "GitHub Skill Sync = salida HTTPS directa sin túnel",
+      "NostromoTargetGateway = fachada in-process, NO router HTTP ni segundo MCP"
+    ],
+    "objetivo": "Un backend LibreChat VX para PC/móvil con acceso local y privado, inferencia Cloudflare AI Gateway, Skills HTTPS y eventos; recursos externos MANOJOS3/VX13 segregados.",
+    "regla": "Transportes y túneles no conceden autoridad material."
+  },
+  "rutas_inferencia": [
+    {
+      "coste_y_cuota_verificado": false,
+      "costo_y_cuota_cuenta": "PENDIENTE_READBACK",
+      "declaracion_documental_previa": "NO_VERIFICADO",
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "evidencia_runtime": [],
+      "modelo_proveedor_real": null,
+      "modelo_ruta": "dynamic/nostromo-rapido",
+      "perfil": "RAPIDO",
+      "tipo": "CLOUDFLARE_AI_GATEWAY_DYNAMIC_ROUTE",
+      "version_activa": null,
+      "version_anterior_rollback": null
+    },
+    {
+      "coste_y_cuota_verificado": false,
+      "costo_y_cuota_cuenta": "PENDIENTE_READBACK",
+      "declaracion_documental_previa": "NO_VERIFICADO",
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "evidencia_runtime": [],
+      "modelo_proveedor_real": null,
+      "modelo_ruta": "dynamic/nostromo-normal",
+      "perfil": "NORMAL",
+      "tipo": "CLOUDFLARE_AI_GATEWAY_DYNAMIC_ROUTE",
+      "version_activa": null,
+      "version_anterior_rollback": null
+    },
+    {
+      "coste_y_cuota_verificado": false,
+      "costo_y_cuota_cuenta": "PENDIENTE_READBACK",
+      "declaracion_documental_previa": "NO_VERIFICADO",
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "evidencia_runtime": [],
+      "modelo_proveedor_real": null,
+      "modelo_ruta": "dynamic/nostromo-pensar",
+      "perfil": "PENSAR",
+      "tipo": "CLOUDFLARE_AI_GATEWAY_DYNAMIC_ROUTE",
+      "version_activa": null,
+      "version_anterior_rollback": null
+    },
+    {
+      "coste_y_cuota_verificado": false,
+      "costo_y_cuota_cuenta": "PENDIENTE_READBACK",
+      "declaracion_documental_previa": "NO_VERIFICADO",
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "evidencia_runtime": [],
+      "modelo_proveedor_real": null,
+      "modelo_ruta": "dynamic/nostromo-investigar",
+      "perfil": "INVESTIGAR",
+      "tipo": "CLOUDFLARE_AI_GATEWAY_DYNAMIC_ROUTE",
+      "version_activa": null,
+      "version_anterior_rollback": null
+    },
+    {
+      "coste_y_cuota_verificado": false,
+      "costo_y_cuota_cuenta": "PENDIENTE_READBACK",
+      "declaracion_documental_previa": "NO_VERIFICADO",
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "evidencia_runtime": [],
+      "modelo_proveedor_real": null,
+      "modelo_ruta": "dynamic/nostromo-visualizar",
+      "perfil": "VISUALIZAR",
+      "tipo": "CLOUDFLARE_AI_GATEWAY_DYNAMIC_ROUTE",
+      "version_activa": null,
+      "version_anterior_rollback": null
+    },
+    {
+      "coste_y_cuota_verificado": false,
+      "costo_y_cuota_cuenta": "PENDIENTE_READBACK",
+      "declaracion_documental_previa": "NO_VERIFICADO",
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "evidencia_runtime": [],
+      "modelo_proveedor_real": null,
+      "modelo_ruta": "dynamic/nostromo-contexto-largo",
+      "perfil": "CONTEXTO_LARGO",
+      "tipo": "CLOUDFLARE_AI_GATEWAY_DYNAMIC_ROUTE",
+      "version_activa": null,
+      "version_anterior_rollback": null
+    },
+    {
+      "coste_y_cuota_verificado": false,
+      "costo_y_cuota_cuenta": "PENDIENTE_READBACK",
+      "declaracion_documental_previa": "NO_VERIFICADO",
+      "estado_runtime": "NO_DEPLOYMENT_EVIDENCE",
+      "evidencia_runtime": [],
+      "modelo_proveedor_real": null,
+      "modelo_ruta": "dynamic/nostromo-vision",
+      "perfil": "VISION",
+      "tipo": "CLOUDFLARE_AI_GATEWAY_DYNAMIC_ROUTE",
+      "version_activa": null,
+      "version_anterior_rollback": null
+    }
+  ],
+  "variables_entorno": {
+    "$ref": "./SPEC.json#/configuracion/env",
+    "tipo": "referencia_logica",
+    "total": 21,
+    "unica_fuente": "SPEC.json"
+  }
+}

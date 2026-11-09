@@ -1,0 +1,9 @@
+# SINTÉTICO / NO CONSTITUYE EVIDENCIA LIVE
+READ authenticated admin status with source_id and paths; HTTP 200 is not LIVE_VERIFIED
+PASS 01-authenticated-readback (READ_ONLY; gate OPEN)
+READ source folders: 12 physical, 10 active, 2 legacy retained
+PASS 02-inventory-skills (READ_ONLY; gate OPEN)
+READ exact GitHub ref and mirrored body/metadata; sha256 and git_blob_sha match
+PASS 03-verify-sync-content (READ_ONLY; gate OPEN)
+READ role-based visibility PASS; complete ACL provenance and rollback still require authenticated admin review
+PASS 04-permissions-and-visibility (READ_ONLY; gate OPEN)

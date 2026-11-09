@@ -1,0 +1,7 @@
+# Solo ejemplo SINTÉTICO. Un PASS estructural NO prueba LIVE.
+PASS 00-recovery-source-sanity (offline SOURCE)
+PASS 01-read-host-service-state (partial check; LC-RECOVERY-LIVE OPEN)
+PASS 02-read-tailscale-ssh-policy (partial check; LC-RECOVERY-LIVE OPEN)
+PASS 03-canary-service-restart (partial check; LC-RECOVERY-LIVE OPEN)
+PASS 04-evidence-freshness (partial check; LC-RECOVERY-LIVE OPEN)
+# Todas las verificaciones externas siguen requiriendo readback auténtico independiente.

@@ -10,23 +10,83 @@
     "availability",
     "policy_authority_ref",
     "source_revision",
-    "observed_at"
+    "observed_at",
+    "required_scopes",
+    "evidence_refs"
   ],
   "properties": {
-    "target_id": {"enum": ["VX13", "MANOJOS3"]},
-    "capability_id": {"type": "string", "minLength": 1},
-    "provider": {"type": "string"},
-    "risk": {"enum": ["R0", "R1", "R2", "R3"]},
-    "effect_class": {"enum": ["READ_ONLY", "EPHEMERAL", "MATERIAL", "DESTRUCTIVE"]},
-    "availability": {"type": "string"},
-    "policy_authority_ref": {"type": "string", "minLength": 1},
-    "execution_authority_ref": {"type": ["string", "null"]},
-    "verification_authority_ref": {"type": ["string", "null"]},
-    "required_scopes": {"type": "array", "items": {"type": "string"}},
-    "source_revision": {"type": "string"},
-    "observed_at": {"type": "string"},
-    "expires_at": {"type": ["string", "null"]},
-    "evidence_refs": {"type": "array", "items": {"type": "string"}}
+    "target_id": {
+      "enum": [
+        "VX13",
+        "MANOJOS3"
+      ]
+    },
+    "capability_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "provider": {
+      "type": "string"
+    },
+    "risk": {
+      "enum": [
+        "R0",
+        "R1",
+        "R2",
+        "R3"
+      ]
+    },
+    "effect_class": {
+      "enum": [
+        "READ_ONLY",
+        "EPHEMERAL",
+        "MATERIAL",
+        "DESTRUCTIVE"
+      ]
+    },
+    "availability": {
+      "type": "string"
+    },
+    "policy_authority_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "execution_authority_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "verification_authority_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "required_scopes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "source_revision": {
+      "type": "string"
+    },
+    "observed_at": {
+      "type": "string"
+    },
+    "expires_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
   },
   "additionalProperties": false
 }

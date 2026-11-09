@@ -1,46 +1,74 @@
 {
-  "schema": "libre-chat-vx.operating-current.v1",
-  "snapshot_id": "source-2026-10-03-9267b1c9",
+  "schema": "libre-chat-vx.operating-current.v2",
+  "snapshot_id": "source-2026-10-08-criba",
   "mode": "SOURCE_ONLY",
-  "evidence_cutoff_head": "9267b1c9c5ffe567c067294719c0bc3aee5ddc61",
-  "remote_main_at_cutoff": "9267b1c9c5ffe567c067294719c0bc3aee5ddc61",
-  "upstream_pin": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
-  "source_only_closeout": "COMPLETE_WITH_LLM_PLANE",
-  "source_state": {
-    "semantic_model": "RECONCILED_V2",
-    "nostromo_source": "IMPLEMENTED",
-    "manojos3_interflow_projection": "IMPLEMENTED_SOURCE_AND_DRIVE_SYNCED",
-    "native_surface_binding": "IMPLEMENTED_SOURCE_AND_DRIVE_SYNCED",
-    "mobile_recovery": "IMPLEMENTED_SOURCE_AND_DRIVE_SYNCED",
-    "llm_plane_topologies": "IMPLEMENTED_SOURCE_AND_DRIVE_SYNCED",
-    "manojos3_entrypoints": "IMPLEMENTED_SOURCE_AND_DRIVE_SYNCED",
-    "operating_canon": "SOURCE_AND_DRIVE_SYNCED"
+  "evidence_cutoff_head": "9ae2ba122b7bd13be91e447d731f3d73d33ea9ed",
+  "evidence_cutoff_ci": {
+    "github_actions_run": 37725889650,
+    "conclusion": "SUCCESS"
   },
-  "llm_plane": {
-    "topology_count": 5,
-    "paid_fallback_allowed": false,
-    "action_plane": "MANOJOS3_MCP",
-    "manojos3_action_source_endpoint": "http://127.0.0.1:8790/mcp",
-    "manojos3_action_deployment_env": "MANOJOS3_MCP_URL",
-    "manojos3_inference_source_endpoint": "http://127.0.0.1:4000/v1",
-    "manojos3_inference_deployment_env": "MANOJOS3_LLM_BASE_URL",
-    "free_model_source_status": "CONFLICT_REQUIRES_LIVE_READBACK"
+  "source_changes_after_cutoff": "CONTINUITY_DOC_ONLY_AFTER_VERIFIED_SOURCE_HEAD",
+  "upstream_pin": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
+  "active_llm_architecture": "NOSTROMO_INTERPRETER_CF_AI_GATEWAY",
+  "source_state": {
+    "intent_interpreter": "IMPLEMENTED_SOURCE",
+    "research_and_presentation": "IMPLEMENTED_SOURCE",
+    "manojos3_semantic_projection": "IMPLEMENTED_SOURCE_NOT_LIVE",
+    "nostromo_capability_semantics": "PARTIAL_REVIEW_QUEUED",
+    "nostromo_semantic_crosswalk": "DESIGN_REVIEW_PENDING",
+    "target_gateway": "IMPLEMENTED_SOURCE_PROD_BINDING_OFF",
+    "native_surface_binding": "IMPLEMENTED_SOURCE",
+    "mobile_remote_access": "IMPLEMENTED_SOURCE_NOT_DEPLOYED",
+    "parallel_transport": "CANON_SOURCE_PASS",
+    "operating_canon": "RECONCILED_SOURCE_PASS",
+    "skills": "10_ACTIVE_CATALOG_2_PHYSICAL_LEGACY_ALIASES_SYNC_NOT_VERIFIED",
+    "continuity_no_stop": "SOURCE_CANON_AND_TEST_VERIFIED_DRIVE_READBACK",
+    "continuity_ownership_guard": "IMPLEMENTED_SOURCE_TESTED",
+    "skill_sync_staged": "SOURCE_TWO_PHASE_CONFIG_NO_DEPLOYMENT",
+    "inference_temporal_guard": "IMPLEMENTED_SOURCE_LIVE_NOT_VERIFIED"
+  },
+  "inference": {
+    "primary": "CLOUDFLARE_AI_GATEWAY",
+    "routes": [
+      "RAPIDO",
+      "NORMAL",
+      "PENSAR",
+      "INVESTIGAR",
+      "VISUALIZAR",
+      "CONTEXTO_LARGO",
+      "VISION"
+    ],
+    "free_cost_policy": "ZERO_COST_FRESH_FAIL_CLOSED",
+    "cloudflare_live": "NO_VERIFICADO",
+    "manojos3_litellm": "EXTERNAL_INTERNAL_COMPAT_NOT_LIBRECHAT_PRIMARY"
   },
   "runtime_state": {
     "librechat": "NO_VERIFICADO",
-    "manojos3_binding": "PREPARED_UNCONFIGURED",
-    "manojos3_llm_binding": "SOURCE_DISCOVERED_LIVE_UNVERIFIED",
-    "vx13_binding": "UNCONFIGURED",
-    "oraculo": "ADVISORY_NOT_LIVE_VERIFIED"
+    "cloudflare_ai_gateway": "NO_VERIFICADO",
+    "tailscale_serve": "NOT_DEPLOYED",
+    "skill_sync": "NO_VERIFICADO",
+    "agent_events": "NO_VERIFICADO",
+    "manojos3_binding": "GATED",
+    "vx13_binding": "GATE_EXTERNAL",
+    "material_verified": false
   },
   "tests": {
-    "last_material_tested_head": "94c632762f7afee7d9fa9d0f0c23c80d7494d2d2",
-    "last_result": "26_PASS",
-    "current_head": "NOT_RUN",
-    "proof_state_for_changed_dependencies": "STALE_PROOF"
+    "baseline_run_id": 37725889650,
+    "baseline_result": "SUCCESS",
+    "current_skill_refactor": "PASS_BUILD_TEST_AND_OVERLAY",
+    "operating_contracts": "CAMELCASE_GAP_PROOF_AND_BOOTSTRAP_SCHEMAS_TESTED",
+    "continuity_nonblocking": "SOURCE_CI_112_TESTS_PASS",
+    "ownership_reconciliation": "SOURCE_CI_114_TESTS_PASS",
+    "skill_sync_canary": "SOURCE_12_THEN_10_TEST_PASS",
+    "inference_temporal_admission": "SOURCE_MISSING_FUTURE_STALE_REJECT_TEST_PASS"
+  },
+  "ownership": {
+    "state": "UNOBSERVED",
+    "reason": "NO_LIVE_COORDINATION_READBACK_DO_NOT_ASSUME_FREE"
   },
   "local": {
     "touched_by_current_work": false,
-    "workspace_state": "NOT_READ_BY_USER_CONSTRAINT"
-  }
+    "workspace_state": "NOT_READ"
+  },
+  "history_previous_snapshot": "source-2026-10-03-5f6d0c10"
 }

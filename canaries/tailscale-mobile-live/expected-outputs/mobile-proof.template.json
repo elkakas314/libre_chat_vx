@@ -1,0 +1,44 @@
+{
+  "schema": "libre-chat-vx.tailscale-mobile-proof.v1",
+  "authenticated_device_observations": false,
+  "server_origin": null,
+  "observed_at_utc": null,
+  "desktop": {
+    "conversation_sha256": null,
+    "same_backend_verified": false
+  },
+  "mobile_wifi": {
+    "conversation_sha256": null,
+    "authenticated": false,
+    "tailnet_connected": false
+  },
+  "mobile_data": {
+    "conversation_sha256": null,
+    "authenticated": false,
+    "tailnet_connected": false,
+    "reconnect_after_wifi": false
+  },
+  "handoff": {
+    "desktop_to_mobile_verified": false,
+    "mobile_to_desktop_verified": false
+  },
+  "stream": {
+    "device_switch_resume_checked": false
+  },
+  "offline": {
+    "local_text_draft_retained": false,
+    "queued_target_mutations": null,
+    "queued_authorizations": null,
+    "material_replay_occurred": null
+  },
+  "reconnect": {
+    "session_refreshed": false,
+    "acl_refreshed": false,
+    "target_readback_required_for_possible_effect": false
+  },
+  "backend_down": {
+    "ui_unavailable_explicit": false
+  },
+  "evidence_refs": [],
+  "warning": "SYNTHETIC TEMPLATE ONLY; fill privately from authenticated desktop/mobile tests. Do not commit private evidence."
+}

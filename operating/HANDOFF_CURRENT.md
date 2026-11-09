@@ -1,172 +1,59 @@
-# LIBRECHAT HANDOFF CURRENT
+# Operating Handoff — LibreChat VX v8
 
-Mode: `SOURCE_ONLY`.
+**Mode:** SOURCE_ONLY / LIVE_NO_VERIFICADO / MATERIAL_VERIFIED=false.  
+**Authority:** false.  
+**Baseline source evidence cutoff:** `77ceb1a9fe72dd70db9f968b28b0370c831115ff`, GitHub Actions run `37706857454` SUCCESS.  
+**Current SOURCE proof (continuity):** `32e304584788e16a59c3a65248d9f513b81d1140` · run `37724764673` SUCCESS, 112 tests PASS, overlay-smoke PASS; Drive 00/10/20/30/40 revisions confirmed. LIVE_NO_VERIFICADO; MATERIAL_VERIFIED=false.
+**Historical prior SOURCE proof:** `874d7e0a49def329973a30416160f076dcf2fc05` · run `37724142946` SUCCESS (build-test 110 PASS, overlay-smoke SUCCESS). Historical baseline above retained. LIVE_NO_VERIFICADO; MATERIAL_VERIFIED=false.
 
-## Active architecture
+## First read and precedence
 
-`NOSTROMO_HYBRID`
+Root `CURRENT.json` → root `HANDOFF_CURRENT.md` → `operating/TARGET_CANON.json` (desired v8) → `operating/GAPS_CURRENT.json` (active vs deferred classes) → `operating/BOOTSTRAP_CURRENT.json` (derived) → relevant focused docs.
 
-There is one active LLM architecture, not five.
+Drive 00 is entry; 10 Design, 20 Operations, 30 Closeout/Pending, 40 Map each owns one responsibility. Proof and source readbacks beat copied historical statements.
 
-```text
-LibreChat
-→ Nostromo local voice (~1–2 GB)
-   ├─ MANOJOS3 LiteLLM free reasoning when needed
-   └─ MANOJOS3 MCP for governed actions
-→ same personality to user
-```
+## Current operating choices
 
-## MANOJOS3 GPT semantics imported
+- NOSTROMO: natural-language intent interpreter, contextual companion, research and visual cockpit; not a coding worker.
+- LLM: 1 Cloudflare AI Gateway, 7 semantic routes RAPIDO/NORMAL/PENSAR/INVESTIGAR/VISUALIZAR/CONTEXTO_LARGO/VISION, no paid fallback.
+- Transport: localhost:3080; one Tailscale Serve route baseline for private mobile; 1 optional Cloudflare Tunnel+Access, 0 required Workers, 0 Funnel.
+- Skills: 10 active catalog entries (including on-demand `nostromo-extension-review`); 2 old alias files remain physically present until LIVE GitHub Skill Sync compatibility readback.
+- TargetGateway remains in-process, authority=false; MANOJOS3 production binding OFF; VX13 external frontdoor GATED; ORÁCULO advisory.
+- Everything LIVE remains NO_VERIFICADO or NOT_DEPLOYED until real service canaries.
 
-Bootstrap is read-only:
-`manojos_gpt_migration_profile → status → capabilities → skills → optional attach`.
+## Backlog and criba
 
-Do not submit an objective just to acquire context.
+Active LIVE: Cloudflare AI Gateway provider/routing canary → Skill Sync → Tailscale/móvil → Web Research → Agent Events → out-of-band recovery; host low-power measurement is a human gate.
 
-Human input is a natural objective. Capabilities are internal drivers.
+TARGET_LATER: MANOJOS3 R0, ORÁCULO advisory, VX13 frontdoor, first material canary.
+DEFERRED_EXTERNAL: MANOJOS3 transport/drift/LiteLLM internals and future transport migration.
+OPTIONAL_REENTRY: SearXNG, Firecrawl, Router Steward, local models, public Cloudflare access, Tailscale Services, etc.
+CLOSED_SOURCE: only historical evidence, not actionable gaps.
 
-Technical slots are resolved/inferred when possible. Ask the user only for true semantic ambiguity, real risk/authorization, irreversible choice or unavailable required data.
+High-priority design-review idea `LC-NOSTROMO-SEMANTIC-BRIDGE`: map NOSTROMO-owned semantic intents/capabilities and safe contracts into MANOJOS3 Intent Flows/Interflows/drivers without creating a second MANOJOS3 semantic engine. Existing `src/intent/intentInterpreter.ts` already classifies CONVERSATION/RESEARCH/VISUALIZE/EXPLAIN/TARGET_READ/TARGET_COMMAND/CLARIFY. Coverage and vocabulary are to be audited, not assumed absent. No MANOJOS3 mutation.
 
-MCP and LLM routing have `authority=false`.
+## Safety
 
-Material success requires verified receipt + current evidence + readback.
+No MANOJOS3/VX13 repo or transport edits. Technical slots inferred internally; clarification only for real semantic ambiguity or human risk choice. No UI/Skill/LLM authorization, no automatic material replay on reconnect/failover, and UNKNOWN_OUTCOME requires readback. No branch/commit implies live ownership: UNOBSERVED stays UNOBSERVED.
 
-Ambiguous effects require readback/reconcile before retry.
+## Exact continuity files
 
-## Tentáculo HUD
+- `config/skills.current.json` active catalog and compatibility aliases.
+- `docs/BACKLOG_CRIBA_CURRENT.md` anti-monolith classes.
+- `docs/SKILL_REDUNDANCY_AUDIT_CURRENT.md` Skill fusion.
+- `operating/CURRENT_SOURCE_SNAPSHOT.json` evidence cutoff and runtime truth.
+- `operating/PROOFS_CURRENT.json` dependency-based evidence history.
+- `operating/DRIVE_REFS_CURRENT.json` living docs.
 
-HUD state is model-independent.
+## Último source proof de continuidad
 
-It derives from structured target state:
-status/capabilities/skills/Interflow/run/authorization/receipt/readback.
+- HEAD SOURCE `73d4da310c980d78104c3aebc8ef90c92b38d233`, CI `37725106400` SUCCESS, 114 PASS, overlay-smoke SUCCESS. Ownership unclear ⇒ RECONCILE_REQUIRED, not OPEN; FREE exacto ⇒ puede reabrir. El scope no bloquea otros gaps elegibles.
+- Plantilla 30 Drive revisión reciente registra esta evidencia. No hay LIVE Cloudflare/Skill Sync/Tailscale ni material receipt.
 
-Therefore a small local model does not reduce HUD correctness.
+## Regla viva: LC-CONTINUITY-NO-STOP
 
-## Native LibreChat surfaces / visor
+El operador no concluye al encontrar el primer bloqueo o completar un comando: vuelve a `buildLivingPlan()/next_eligible` y continúa por cualquier gap independiente que sea seguro en la sesión. `GATE_EXTERNAL/GATE_HUMAN/CONFIG_GAP/SECURITY_BOUNDARY/UNAVAILABLE_TOOL` bloquean solo ese scope; `UNKNOWN/PARTIAL` impiden retry material hasta readback, no impiden trabajo ajeno. CURRENT/HANDOFF derivados deben llevar HEAD probado, alcance/owner, bloques cerrados, bloque activo, recibos, `NEXT_ELIGIBLE` y `NEXT_ACTION`. No crear scheduler, daemon, ejecutor ni autoridad alternativa. Ante ausencia de ruta elegible, checkpoint preciso sin declarar LIVE.
 
-Pinned upstream:
-`LibreChat-AI/LibreChat@f10b1d91f1eee3a2c82d5247bf620351486b7c1b`.
+## Último SOURCE proof: Skill Sync e inferencia (2026-10-08)
 
-Current source bindings:
-
-| Surface | Mode | Source state | Role |
-|---|---|---|---|
-| SIDE_PANEL | WRAP_NATIVE | SOURCE_WRAPPER_IMPLEMENTED | One shared native side panel; Artifact > Subagent > Nostromo |
-| ARTIFACTS | WRAP_NATIVE | SOURCE_PINNED | Native artifact/interactive presentation; no direct target effect |
-| TOOL_APPROVAL | EVENT_BRIDGE | SOURCE_WRAPPER_IMPLEMENTED | Native approve/reject/edit/respond UI; never mints target authorization |
-| MCP_UI | WRAP_NATIVE | SOURCE_PINNED | Native sandboxed HTML visor/renderer below TrustedSurfaceHost gates |
-| TOOLS_DROPDOWN | PROJECTION_ONLY | SOURCE_WRAPPER_IMPLEMENTED | Native LibreChat permission AND target capability/binding gate |
-| FILES | WRAP_NATIVE | SOURCE_PINNED | Native file listing/view; edit/delete/move stay separately governed |
-| SUBAGENTS | EVENT_BRIDGE | SOURCE_PINNED | Cognitive child-task projection only; not MANOJOS3 workers |
-| BACKGROUND_TASKS | EVENT_BRIDGE | SOURCE_PINNED | LibreChat background task projection; not TargetRun proof |
-| RESUMABLE_STREAMS | EVENT_BRIDGE | SOURCE_WRAPPER_IMPLEMENTED | Conversation/tool/subagent resume; never replays target material effects |
-
-Additional VX source views already exist:
-- ArtifactDockView;
-- InteractiveArtifactView;
-- ModuleIndexView;
-- NativeSurfaceStatusView;
-- FilesPanelView;
-- BrowserPanelView;
-- AudioPanelView;
-- BuildPanelView;
-- BackgroundTasksView;
-- TargetRunView;
-- InterflowLensView;
-- CapabilityLensView;
-- DecisionInboxView;
-- ContextInspectorView;
-- MinimalTruthView;
-- TentacleHud;
-- NostromoHybridView.
-
-Important truth boundary:
-`SOURCE_BINDINGS_IMPLEMENTED_RUNTIME_UNVERIFIED`.
-
-The current overlay has not been revalidated after the latest source changes.
-
-## Who moves each part
-
-The local voice LLM does **not** move the HUD, panels or target state.
-
-```text
-USER TEXT
-   │
-   ├─ simple conversation ──> Nostromo local voice
-   │
-   ├─ deep/coding/long-context ──> MANOJOS3 LiteLLM free advisor
-   │
-   └─ action objective ──> MANOJOS3 MCP
-                              │
-                              ▼
-                    Semantic/Intent/Interflow
-                              │
-                    Governor/Policy/Kernel
-                              │
-                       driver + readback
-                              │
-                     Verifier / Receipt
-```
-
-UI movement/ownership:
-
-- `windowRouter.ts` derives the focus domain and chooses which Nostromo windows are visible.
-- `NostromoCockpit.tsx` composes those windows.
-- Native LibreChat owns native Artifact/Files/ToolApproval/Subagent/Background/SSE lifecycle.
-- MANOJOS3 structured readbacks feed TargetRun, Interflow, authorization, evidence and Tentáculo HUD.
-- `InteractiveArtifactView` emits UI intents/previews only; it never performs a direct target mutation.
-- `ArtifactDock` presents artifacts/evidence/receipts and enforces local ACL freshness for UI operations.
-- Local Nostromo voice turns structured state/results into one stable conversational personality.
-- MANOJOS3 LiteLLM supplies reasoning only.
-- MANOJOS3 Policy/Kernel remain the material authority/executor path.
-
-## Information flow
-
-There are five separate information lanes:
-
-1. **Conversation lane**  
-   User → local Nostromo voice → optional free reasoner → answer.
-
-2. **Objective/action lane**  
-   Natural objective → MANOJOS3 MCP → Semantic/Intent/Interflow → Policy/Kernel → readback/receipt.
-
-3. **Projection/HUD lane**  
-   MANOJOS3 status/capabilities/skills/run/authorization/receipt → structured projection → Tentáculo HUD / TargetRun / Interflow / Capability lenses.
-
-4. **Native LibreChat lane**  
-   Native events/state → Artifacts / MCP UI / Files / ToolApproval / Subagents / Background Tasks / resumable streams.
-
-5. **Evidence lane**  
-   receipts + readback + artifacts + evidence refs → ArtifactDock / Evidence views.
-
-A viewer, artifact or button may display/prepare a request, but does not become target authority.
-
-## Runtime degradation
-
-- `FULL`: local voice + free reasoner + MANOJOS3 MCP.
-- `LOCAL_PLUS_ACTIONS`: local voice + MCP; reduced deep reasoning.
-- `LOCAL_ONLY`: conversation only; no live MANOJOS3 actions/HUD.
-- `HUD_ONLY`: local voice unavailable but structured MCP read model still available.
-- `UNAVAILABLE`: LibreChat shell unavailable.
-
-## Drive CURRENT
-
-- Start Here: `10sokDQr6eFQGSceTl0KYwfVinmF8ixTUz-XG0e8RyjQ`
-- Nostromo Hybrid: `1PqXk7nM8M_arbI472RU5n4T0rFQI1Yt-MH54VSapYc8`
-- MANOJOS3 GPT Semantic Bridge: `1gAbtU0XISM4GWuspp-6wWEZACAycWtZBqzMrEJUu6y0`
-- MANOJOS3 entrypoints: `19WZ2DM3pXyIe9-mhyq_3oVXQ63QmvDBf7i720mGW1N4`
-- VX13 parity: `1i_sw3ZYXdu3-wFrmAxTw42PppT6wxMOK8G2jKI4onF8`
-
-The old five-topology Drive documents are marked SUPERSEDED.
-
-## Proof boundary
-
-Current source tests: `NOT_RUN / STALE_PROOF`.
-
-Last material proof remains `26 PASS @ 94c632762f7afee7d9fa9d0f0c23c80d7494d2d2`.
-
-No local host was touched.
-
-## Next boundary
-
-`WAIT_FOR_LOCAL_REVALIDATION_PERMISSION_OR_LIVE_BINDING`
+Commit `9ae2ba122b7bd13be91e447d731f3d73d33ea9ed`, CI run `37725889650` SUCCESS (117 tests PASS, overlay-smoke SUCCESS). Stage1 12 físicas; stage2 10 activas sólo tras canary LIVE. Selector de modelos: observación temporal ausente/futura/stale = REJECT. La plantilla 20 tiene el procedimiento y 30 la evidencia. No habilita ningún binding Cloudflare/SkillSync ni cambia los gates LIVE.

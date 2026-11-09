@@ -1,0 +1,131 @@
+{
+  "schema": "librechat-vx.cf-aig-binding-evidence.v1",
+  "gate_id": "LC-CF-AIG-BINDING",
+  "gate_state": "OPEN",
+  "runtime_status": "NO_DEPLOYMENT_EVIDENCE",
+  "auth_readback": {
+    "observed_at_utc": null,
+    "identity_verified": false,
+    "permissions_verified": false,
+    "scope_verified": false,
+    "account_readback_ref": null,
+    "gateway_readback_ref": null,
+    "gateway_auth_enabled": null,
+    "gateway_byok_only": null
+  },
+  "routes": [
+    {
+      "profile": "rapido",
+      "route": "dynamic/nostromo-rapido",
+      "route_id": null,
+      "version_id": null,
+      "deployment_readback_ref": null,
+      "model_nodes": [],
+      "provider_quota_readback_refs": [],
+      "zero_cost_verified": false,
+      "stream_completed": false,
+      "gateway_log_readback_ref": null,
+      "provider_billing_after_readback_ref": null,
+      "rollback_previous_version_ref": null
+    },
+    {
+      "profile": "normal",
+      "route": "dynamic/nostromo-normal",
+      "route_id": null,
+      "version_id": null,
+      "deployment_readback_ref": null,
+      "model_nodes": [],
+      "provider_quota_readback_refs": [],
+      "zero_cost_verified": false,
+      "stream_completed": false,
+      "gateway_log_readback_ref": null,
+      "provider_billing_after_readback_ref": null,
+      "rollback_previous_version_ref": null
+    },
+    {
+      "profile": "pensar",
+      "route": "dynamic/nostromo-pensar",
+      "route_id": null,
+      "version_id": null,
+      "deployment_readback_ref": null,
+      "model_nodes": [],
+      "provider_quota_readback_refs": [],
+      "zero_cost_verified": false,
+      "stream_completed": false,
+      "gateway_log_readback_ref": null,
+      "provider_billing_after_readback_ref": null,
+      "rollback_previous_version_ref": null
+    },
+    {
+      "profile": "investigar",
+      "route": "dynamic/nostromo-investigar",
+      "route_id": null,
+      "version_id": null,
+      "deployment_readback_ref": null,
+      "model_nodes": [],
+      "provider_quota_readback_refs": [],
+      "zero_cost_verified": false,
+      "stream_completed": false,
+      "gateway_log_readback_ref": null,
+      "provider_billing_after_readback_ref": null,
+      "rollback_previous_version_ref": null
+    },
+    {
+      "profile": "visualizar",
+      "route": "dynamic/nostromo-visualizar",
+      "route_id": null,
+      "version_id": null,
+      "deployment_readback_ref": null,
+      "model_nodes": [],
+      "provider_quota_readback_refs": [],
+      "zero_cost_verified": false,
+      "stream_completed": false,
+      "gateway_log_readback_ref": null,
+      "provider_billing_after_readback_ref": null,
+      "rollback_previous_version_ref": null
+    },
+    {
+      "profile": "contexto-largo",
+      "route": "dynamic/nostromo-contexto-largo",
+      "route_id": null,
+      "version_id": null,
+      "deployment_readback_ref": null,
+      "model_nodes": [],
+      "provider_quota_readback_refs": [],
+      "zero_cost_verified": false,
+      "stream_completed": false,
+      "gateway_log_readback_ref": null,
+      "provider_billing_after_readback_ref": null,
+      "rollback_previous_version_ref": null
+    },
+    {
+      "profile": "vision",
+      "route": "dynamic/nostromo-vision",
+      "route_id": null,
+      "version_id": null,
+      "deployment_readback_ref": null,
+      "model_nodes": [],
+      "provider_quota_readback_refs": [],
+      "zero_cost_verified": false,
+      "stream_completed": false,
+      "gateway_log_readback_ref": null,
+      "provider_billing_after_readback_ref": null,
+      "rollback_previous_version_ref": null
+    }
+  ],
+  "checks": {
+    "read_account_and_routes": "NOT_RUN",
+    "verify_routes_content": "NOT_RUN",
+    "quota_and_cost": "NOT_RUN",
+    "canary_inference": "NOT_RUN",
+    "post_canary_provider_quota_readback": "NOT_RUN",
+    "rollback_readback": "NOT_RUN"
+  },
+  "result": {
+    "gate_closed": false,
+    "reviewed_by": null,
+    "reviewed_at_utc": null,
+    "evidence_store": "EXTERNAL_PRIVATE_ONLY",
+    "notes": "A successful SOURCE CI or HTTP 200 alone is not LIVE."
+  }
+}

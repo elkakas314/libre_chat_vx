@@ -2,20 +2,70 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "operating-gap.schema.json",
   "type": "object",
-  "required": ["gap_id", "summary", "state", "priority", "scope", "requires_live", "dependencies"],
+  "required": [
+    "gapId",
+    "summary",
+    "state",
+    "priority",
+    "scope",
+    "requiresLive",
+    "dependencies"
+  ],
   "properties": {
-    "gap_id": {"type": "string", "minLength": 1},
-    "summary": {"type": "string", "minLength": 1},
-    "state": {
-      "enum": ["PASS", "OPEN", "STALE_PROOF", "OWNED", "WAITING_INTERNAL", "RECONCILE_REQUIRED", "GATE_EXTERNAL", "GATE_HUMAN", "BLOCKED_DEPENDENCY", "NOT_TESTED"]
+    "summary": {
+      "type": "string",
+      "minLength": 1
     },
-    "priority": {"type": "integer", "minimum": 0},
-    "scope": {"type": "string", "minLength": 1},
-    "requires_live": {"type": "boolean"},
-    "dependencies": {"type": "array", "items": {"type": "string"}},
-    "preferred_route": {"type": "string"},
-    "owner_ref": {"type": ["string", "null"]},
-    "evidence_refs": {"type": "array", "items": {"type": "string"}}
+    "state": {
+      "enum": [
+        "PASS",
+        "OPEN",
+        "STALE_PROOF",
+        "OWNED",
+        "WAITING_INTERNAL",
+        "RECONCILE_REQUIRED",
+        "GATE_EXTERNAL",
+        "GATE_HUMAN",
+        "BLOCKED_DEPENDENCY",
+        "NOT_TESTED"
+      ]
+    },
+    "priority": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "scope": {
+      "type": "string",
+      "minLength": 1
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "gapId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "requiresLive": {
+      "type": "boolean"
+    },
+    "preferredRoute": {
+      "type": "string"
+    },
+    "ownerRef": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "evidenceRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
   },
   "additionalProperties": false
 }

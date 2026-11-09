@@ -1,42 +1,44 @@
 # NOSTROMO_HYBRID overlay contract.
-# This is consumed by @librechat/vx integration code, not by upstream LibreChat natively.
-# No secret values belong in source.
+# No secret values belong in source. Provider keys should live in Cloudflare BYOK/Secrets Store.
 
 nostromoHybrid:
   enabled: true
   architecture: NOSTROMO_HYBRID
 
+  inference:
+    owner: CLOUDFLARE_AI_GATEWAY
+    baseURL: "https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/ai/v1"
+    gatewayId: "${CLOUDFLARE_AI_GATEWAY_ID}"
+    apiToken: "${CLOUDFLARE_API_TOKEN}"
+    requireProviderCredentials: true
+    noWholesalePerRequest: true
+    unifiedBillingRequired: false
+    paidFallbackAllowed: false
+    semanticRoutes:
+      rapido: dynamic/nostromo-rapido
+      normal: dynamic/nostromo-normal
+      pensar: dynamic/nostromo-pensar
+      codigo: dynamic/nostromo-codigo
+      contextoLargo: dynamic/nostromo-contexto-largo
+      vision: dynamic/nostromo-vision
+
   localVoice:
+    required: false
     alias: nostromo-voice-local
     baseURL: "${NOSTROMO_LOCAL_MODEL_BASE_URL}"
     model: "${NOSTROMO_LOCAL_MODEL}"
-    lifecycle: librechat-coupled-on-demand
+    lifecycle: optional-on-demand
     idleUnload: true
 
-  reasoning:
-    baseURL: "${MANOJOS3_LLM_BASE_URL}"
-    apiKey: "${MANOJOS3_LLM_API_KEY}"
-    paidFallbackAllowed: false
-    aliases:
-      general: manojos-general-free
-      reasoning: manojos-reasoning-free
-      coding: manojos-coding-free
-      fast: manojos-fast-free
-      longContext: manojos-long-context-free
+  manojos3LiteLlm:
+    role: INTERNAL_ADVISORY_COMPATIBILITY
+    primaryForLibreChat: false
 
   actions:
     mcpURL: "${MANOJOS3_MCP_URL}"
     directControlPlaneCalls: false
 
-  semantics:
-    source: MANOJOS3_GPT_SEMANTIC_BRIDGE
-    submitForContextOnly: false
-    technicalSlotsAskedToUser: 0
-    successRequires:
-      - verified-receipt
-      - current-evidence
-      - readback
-
   hud:
     modelIndependent: true
-    sourceOfTruth: structured-target-readback
+    inferenceProjection: provider-status-view
+    sourceOfMaterialTruth: structured-target-readback

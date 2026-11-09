@@ -1,0 +1,40 @@
+name: visual-source-smoke
+
+on:
+  push:
+    branches:
+      - handoff_current_bootstrps
+      - main
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  chromium-visual:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install source tooling
+        run: |
+          npm install --no-audit --no-fund
+          npm install --no-save --no-package-lock esbuild@0.25.9 playwright@1.55.0
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Exercise React source UI in browser
+        run: node tests/visual/visual-smoke.cjs
+      - name: Upload browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: librechat-vx-source-visual
+          path: visual-evidence/
+          retention-days: 14
+          if-no-files-found: warn

@@ -1,92 +1,264 @@
 {
-  "schema": "libre-chat-vx.operating-proofs.v1",
-  "snapshot_id": "source-2026-10-03-a54b1f66",
+  "schema": "libre-chat-vx.operating-proofs.v2",
+  "snapshot_id": "source-2026-10-08-criba",
   "proofs": [
     {
-      "proof_id": "nostromo-hybrid-source-drive",
       "subject": "Single NOSTROMO_HYBRID source architecture + Drive readback",
-      "proof_class": "DRIVE_READBACK",
       "state": "VALID",
       "verified_at_source_head": "a54b1f66327f0b4279f7024c92e70183b51cee14",
-      "dependency_fingerprint": "lc:a54b1f66|drive:1PqXk7nM|m3:cb772cca",
       "dependencies": [
         "src/llm/nostromoHybrid.ts",
         "src/llm/responseContract.ts",
         "config/nostromo_hybrid.current.json",
         "docs/NOSTROMO_HYBRID_CURRENT.md"
       ],
-      "evidence_refs": [
+      "history_classification": "HISTORICAL_PRESERVED",
+      "proofId": "nostromo-hybrid-source-drive",
+      "proofClass": "DRIVE_READBACK",
+      "dependencyFingerprint": "lc:a54b1f66|drive:1PqXk7nM|m3:cb772cca",
+      "evidenceRefs": [
         "commit:a54b1f66327f0b4279f7024c92e70183b51cee14",
         "drive:1PqXk7nM8M_arbI472RU5n4T0rFQI1Yt-MH54VSapYc8"
       ]
     },
     {
-      "proof_id": "m3-gpt-semantic-bridge-source-drive",
       "subject": "MANOJOS3 GPT/controller semantic contract imported into Nostromo",
-      "proof_class": "DRIVE_READBACK",
       "state": "VALID",
       "verified_at_source_head": "a54b1f66327f0b4279f7024c92e70183b51cee14",
-      "dependency_fingerprint": "lc:a54b1f66|mcp:fc21e6bf|m3canon:79fe2eff|m3:cb772cca",
       "dependencies": [
         "src/manojos3/gptSemanticBridge.ts",
         "src/manojos3/hudBridge.ts",
         "docs/MANOJOS3_GPT_SEMANTIC_BRIDGE_CURRENT.md"
       ],
-      "evidence_refs": [
+      "history_classification": "HISTORICAL_PRESERVED",
+      "proofId": "m3-gpt-semantic-bridge-source-drive",
+      "proofClass": "DRIVE_READBACK",
+      "dependencyFingerprint": "lc:a54b1f66|mcp:fc21e6bf|m3canon:79fe2eff|m3:cb772cca",
+      "evidenceRefs": [
         "commit:a54b1f66327f0b4279f7024c92e70183b51cee14",
         "drive:1gAbtU0XISM4GWuspp-6wWEZACAycWtZBqzMrEJUu6y0"
       ]
     },
     {
-      "proof_id": "tentacle-hud-model-independence",
       "subject": "Tentáculo HUD state depends on structured target readback, not local/reasoning LLM prose",
-      "proof_class": "SOURCE_READBACK",
       "state": "VALID",
       "verified_at_source_head": "a54b1f66327f0b4279f7024c92e70183b51cee14",
-      "dependency_fingerprint": "hud:8b7ac8a5|bridge:a54b1f66",
       "dependencies": [
         "src/cockpit/tentacleHud.ts",
         "src/manojos3/hudBridge.ts",
         "src/llm/nostromoHybrid.ts"
       ],
-      "evidence_refs": [
+      "history_classification": "HISTORICAL_PRESERVED",
+      "proofId": "tentacle-hud-model-independence",
+      "proofClass": "SOURCE_READBACK",
+      "dependencyFingerprint": "hud:8b7ac8a5|bridge:a54b1f66",
+      "evidenceRefs": [
         "commit:a54b1f66327f0b4279f7024c92e70183b51cee14"
       ]
     },
     {
-      "proof_id": "nostromo-material-test",
       "subject": "compiled core/UI tests",
-      "proof_class": "TEST",
       "state": "STALE",
       "verified_at_source_head": "94c632762f7afee7d9fa9d0f0c23c80d7494d2d2",
-      "dependency_fingerprint": "STALE_RELEVANT_SOURCE_CHANGED_AFTER_TEST",
       "dependencies": [
         "src/llm/nostromoHybrid.ts",
         "src/manojos3/gptSemanticBridge.ts",
         "src/ui/NostromoCockpit.tsx",
         "tests/nostromo-hybrid.test.ts"
       ],
-      "evidence_refs": [
+      "history_classification": "HISTORICAL_PRESERVED",
+      "proofId": "nostromo-material-test",
+      "proofClass": "TEST",
+      "dependencyFingerprint": "STALE_RELEVANT_SOURCE_CHANGED_AFTER_TEST",
+      "evidenceRefs": [
         "test:26_PASS@94c632762f7afee7d9fa9d0f0c23c80d7494d2d2"
       ]
     },
     {
-      "proof_id": "m3-live-binding",
       "subject": "MANOJOS3 MCP live binding from LibreChat",
-      "proof_class": "RUNTIME_READBACK",
       "state": "UNAVAILABLE",
-      "dependency_fingerprint": "DEPLOYMENT_UNBOUND",
       "dependencies": [],
-      "evidence_refs": []
+      "history_classification": "HISTORICAL_PRESERVED",
+      "proofId": "m3-live-binding",
+      "proofClass": "RUNTIME_READBACK",
+      "dependencyFingerprint": "DEPLOYMENT_UNBOUND",
+      "evidenceRefs": []
     },
     {
-      "proof_id": "m3-free-reasoner-live",
       "subject": "MANOJOS3 LiteLLM free aliases live verification",
-      "proof_class": "RUNTIME_READBACK",
       "state": "UNAVAILABLE",
-      "dependency_fingerprint": "SOURCE_CONFLICT_REQUIRES_LIVE_READBACK",
       "dependencies": [],
-      "evidence_refs": []
+      "history_classification": "HISTORICAL_PRESERVED",
+      "proofId": "m3-free-reasoner-live",
+      "proofClass": "RUNTIME_READBACK",
+      "dependencyFingerprint": "SOURCE_CONFLICT_REQUIRES_LIVE_READBACK",
+      "evidenceRefs": []
+    },
+    {
+      "subject": "LibreChat VX source and overlay exact-head PASS before Skills consolidation",
+      "state": "VALID",
+      "history_classification": "BASELINE_VERIFIED",
+      "verified_at_source_head": "77ceb1a9fe72dd70db9f968b28b0370c831115ff",
+      "dependencies": [
+        "scripts/validate-parallel-transport.mjs",
+        "config/parallel_transport.current.json",
+        "overlay",
+        "tests"
+      ],
+      "proofId": "transport-and-source-ci-20261008",
+      "proofClass": "TEST",
+      "dependencyFingerprint": "head:77ceb1a9|ci:37706857454|upstream:f10b1d91",
+      "evidenceRefs": [
+        "commit:77ceb1a9fe72dd70db9f968b28b0370c831115ff",
+        "github_actions_run:37706857454",
+        "upstream:f10b1d91f1eee3a2c82d5247bf620351486b7c1b"
+      ]
+    },
+    {
+      "subject": "Consolidated Skills + operating docs exact-head validation",
+      "state": "VALID",
+      "history_classification": "BASELINE_VERIFIED",
+      "dependencies": [
+        "skills/nostromo-core/SKILL.md",
+        "config/skills.current.json",
+        "operating/TARGET_CANON.json",
+        "operating/GAPS_CURRENT.json"
+      ],
+      "proofId": "skill-criba-exact-head-ci",
+      "proofClass": "TEST",
+      "dependencyFingerprint": "head:409d3f47|ci:37708437853|upstream:f10b1d91",
+      "evidenceRefs": [
+        "commit:409d3f47bf196f4a2eee469d6a1abe29851c0387",
+        "github_actions_run:37708437853"
+      ],
+      "verified_at_source_head": "409d3f47bf196f4a2eee469d6a1abe29851c0387"
+    },
+    {
+      "proofId": "operating-contracts-source-ci-20261008",
+      "subject": "Typed CURRENT operating schemas and material-target intent fence verified on exact source head",
+      "proofClass": "TEST",
+      "state": "VALID",
+      "verified_at_source_head": "874d7e0a49def329973a30416160f076dcf2fc05",
+      "dependencies": [
+        "src/intent/intentInterpreter.ts",
+        "tests/intent-presentation-events.test.ts",
+        "contracts/operating-gap.schema.json",
+        "contracts/operating-proof.schema.json",
+        "contracts/operating-bootstrap.schema.json",
+        "tests/operating-current-data.test.ts"
+      ],
+      "history_classification": "EXACT_SOURCE_HEAD_VERIFIED",
+      "dependencyFingerprint": "head:874d7e0a|ci:37724142946|upstream:f10b1d91",
+      "evidenceRefs": [
+        "commit:874d7e0a49def329973a30416160f076dcf2fc05",
+        "github_actions_run:37724142946",
+        "job:build-test:110_PASS_0_FAIL",
+        "job:overlay-smoke:SUCCESS"
+      ]
+    },
+    {
+      "proofId": "continuity-no-stop-exact-head-ci",
+      "subject": "Scoped nonblocking continuity inherited from MANOJOS3 source discipline",
+      "proofClass": "TEST",
+      "state": "VALID",
+      "verified_at_source_head": "32e304584788e16a59c3a65248d9f513b81d1140",
+      "dependencies": [
+        "src/operating/reconcile.ts",
+        "tests/operating-canon.test.ts",
+        "operating/LIBRECHAT_OPERATING_CANON.md",
+        "operating/START_HERE_GPT.md"
+      ],
+      "history_classification": "SOURCE_VERIFIED",
+      "dependencyFingerprint": "head:32e30458|ci:37724764673",
+      "evidenceRefs": [
+        "commit:32e304584788e16a59c3a65248d9f513b81d1140",
+        "github_actions_run:37724764673",
+        "job:build-test:112_PASS_0_FAIL",
+        "job:overlay-smoke:SUCCESS"
+      ]
+    },
+    {
+      "proofId": "continuity-no-stop-living-drive",
+      "subject": "Continuity rule added to 00/10/20/30/40 and read back from all five live Google Docs",
+      "proofClass": "DRIVE_READBACK",
+      "state": "VALID",
+      "dependencies": [
+        "operating/DRIVE_REFS_CURRENT.json",
+        "operating/LIBRECHAT_OPERATING_CANON.md"
+      ],
+      "history_classification": "DRIVE_REVISION_READBACK",
+      "dependencyFingerprint": "drive:00/10/20/30/40:continuity:20261008",
+      "evidenceRefs": [
+        "drive:11e70lpwe5U3k9FMZWd7h-N0eNaidgaINJP9Pwz1bGx8",
+        "drive:1fndkYM-UBmSfacQcbu_oewcDe4JzEClw-qd7K7J9pGg",
+        "drive:1py0BlozuMOjmo4lUEqxuqCmLaN2O3_6wYwXrTwfVcuY",
+        "drive:19_Bm72_3aaxT6gggEAmfkZG0y0N1hXK6tMQrYLR4sDI",
+        "drive:1UD9LnU0eaKdEHrLUkMJyPp-II_6rZPtlD7uzn_sqWCc"
+      ]
+    },
+    {
+      "proofId": "ownership-claim-reconcile-source-ci-20261008",
+      "subject": "OWNED/WAITING_INTERNAL cannot become OPEN without explicit FREE; stale ownership requires reconciliation and independent scopes keep progressing",
+      "proofClass": "TEST",
+      "state": "VALID",
+      "verified_at_source_head": "73d4da310c980d78104c3aebc8ef90c92b38d233",
+      "dependencies": [
+        "src/operating/reconcile.ts",
+        "tests/operating-canon.test.ts"
+      ],
+      "history_classification": "SOURCE_VERIFIED",
+      "dependencyFingerprint": "head:73d4da31|ci:37725106400",
+      "evidenceRefs": [
+        "commit:73d4da310c980d78104c3aebc8ef90c92b38d233",
+        "github_actions_run:37725106400",
+        "job:build-test:114_PASS_0_FAIL",
+        "job:overlay-smoke:SUCCESS"
+      ]
+    },
+    {
+      "proofId": "skill-sync-two-phase-source-ci-20261008",
+      "subject": "GitHub Skill Sync stage1 12 physical then stage2 10 active source canary, using pinned upstream path/depth discovery",
+      "proofClass": "TEST",
+      "state": "VALID",
+      "verified_at_source_head": "9ae2ba122b7bd13be91e447d731f3d73d33ea9ed",
+      "dependencies": [
+        "deployment/skill-sync/librechat.skill-sync-stage1.example.yaml",
+        "deployment/skill-sync/librechat.skill-sync-stage2.example.yaml",
+        "deployment/skill-sync/README.md",
+        "config/skills.current.json",
+        "tests/operating-current-data.test.ts"
+      ],
+      "history_classification": "SOURCE_ONLY_LIVE_SYNC_UNVERIFIED",
+      "dependencyFingerprint": "source:9ae2ba12|ci:37725889650|skill:2stage",
+      "evidenceRefs": [
+        "commit:9ae2ba122b7bd13be91e447d731f3d73d33ea9ed",
+        "github_actions_run:37725889650",
+        "test:Skill_Sync_two_stage:PASS",
+        "job:overlay-smoke:SUCCESS"
+      ]
+    },
+    {
+      "proofId": "inference-temporal-admission-source-ci-20261008",
+      "subject": "Zero-cost model and route admission reject absent, invalid, future and stale temporal evidence",
+      "proofClass": "TEST",
+      "state": "VALID",
+      "verified_at_source_head": "9ae2ba122b7bd13be91e447d731f3d73d33ea9ed",
+      "dependencies": [
+        "src/llm/inferenceGateway.ts",
+        "src/llm/modelRegistry.ts",
+        "tests/inference-gateway.test.ts",
+        "tests/model-registry.test.ts"
+      ],
+      "history_classification": "SOURCE_ONLY_CLOUDFLARE_LIVE_UNVERIFIED",
+      "dependencyFingerprint": "source:9ae2ba12|ci:37725889650|temporal",
+      "evidenceRefs": [
+        "commit:9ae2ba122b7bd13be91e447d731f3d73d33ea9ed",
+        "github_actions_run:37725889650",
+        "test:route_admission_fails_closed:PASS",
+        "test:model_candidate_admission:PASS",
+        "job:build-test:117_PASS_0_FAIL"
+      ]
     }
-  ]
+  ],
+  "source_evidence_cutoff_head": "9ae2ba122b7bd13be91e447d731f3d73d33ea9ed"
 }

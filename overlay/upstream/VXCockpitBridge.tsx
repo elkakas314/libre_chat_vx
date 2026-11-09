@@ -1,56 +1,103 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   MANOJOS3_LIBRECHAT_INTEGRATION,
-  MANOJOS3_PARITY_DESCRIPTOR,
   VX13_LIBRECHAT_INTEGRATION,
-  VX13_PARITY_DESCRIPTOR,
-  deriveFocusDomain,
-  moveTentacleHudScope,
-  reconcileTargetParity,
-  windowsForDomain,
-  NostromoCockpit,
-  type TargetScope,
 } from '@librechat/vx';
+import './VXCockpit.css';
 
-const KEY = 'librechat-vx-cockpit';
+export interface VXCockpitBridgeProps {
+  onClose?: () => void;
+}
 
-export default function VXCockpitBridge() {
-  const enabled = typeof window !== 'undefined' && window.localStorage.getItem(KEY) === '1';
-  const [scope, setScope] = useState<TargetScope>('AUTO');
-  const [focusText] = useState('overview');
+/** One requested contextual view inside LibreChat's own panel. No target authority. */
+export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
+  const [showTechnical, setShowTechnical] = useState(false);
+  const returnButtonRef = useRef<HTMLButtonElement>(null);
 
-  const m3 = useMemo(
-    () => reconcileTargetParity(MANOJOS3_PARITY_DESCRIPTOR, MANOJOS3_LIBRECHAT_INTEGRATION),
-    [],
-  );
-  const vx13 = useMemo(
-    () => reconcileTargetParity(VX13_PARITY_DESCRIPTOR, VX13_LIBRECHAT_INTEGRATION),
-    [],
-  );
+  useEffect(() => { returnButtonRef.current?.focus(); }, []);
 
-  const activeTruth = scope === 'MANOJOS3' ? m3 : scope === 'VX13' ? vx13 : undefined;
-  const domain = deriveFocusDomain(focusText);
-  const windows = windowsForDomain(domain);
-
-  const hud = moveTentacleHudScope({
-    scope: 'AUTO',
-    presentation: 'UNKNOWN',
-    focusLabel: domain,
-    windows,
-    evidenceFresh: false,
-    authority: false,
-  }, scope);
-
-  if (!enabled) return null;
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose?.();
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [onClose]);
 
   return (
-    <NostromoCockpit
-      scope={scope}
-      onScopeChange={setScope}
-      hud={hud}
-      targetTruth={[m3, vx13]}
-      activeTruth={activeTruth}
-      windows={windows}
-    />
+    <section id="vx-context-panel" className="vx-context-root" data-testid="vx-context-surface" aria-labelledby="vx-context-title">
+      <header className="vx-context-header">
+        <div className="vx-context-heading">
+          <span className="vx-context-kicker">NOSTROMO / CONTEXTO</span>
+          <h2 id="vx-context-title">Tu cabina</h2>
+        </div>
+        <button ref={returnButtonRef} type="button" className="vx-context-close" aria-label="Cerrar contexto NOSTROMO" onClick={onClose}>
+          <span className="vx-context-back" aria-hidden="true">←</span>
+          <span>Volver</span>
+        </button>
+      </header>
+
+      <div className="vx-context-body">
+        <div className="vx-context-intro-block">
+          <span className="vx-context-mark" aria-hidden="true">◇</span>
+          <p className="vx-context-overline">CONEXIONES BAJO CONTROL</p>
+          <h3>Todo conectado, cuando esté listo.</h3>
+          <p className="vx-context-intro">
+            Consulta tus sistemas desde la conversación. Aquí sólo aparecen datos confirmados.
+          </p>
+        </div>
+
+        <section className="vx-context-systems" aria-labelledby="vx-systems-heading">
+          <div className="vx-context-section-heading">
+            <h3 id="vx-systems-heading">Sistemas</h3>
+            <span>2 destinos</span>
+          </div>
+          <ul className="vx-target-list" aria-label="Destinos de NOSTROMO">
+            <li className="vx-target-item">
+              <div className="vx-target-identity">
+                <span className="vx-target-icon" aria-hidden="true">M</span>
+                <div>
+                  <strong>MANOJOS</strong>
+                  <small>Control actual: MANOJOS3; nuevo runtime no acreditado</small>
+                </div>
+              </div>
+              <span className="vx-target-state"><span aria-hidden="true" className="vx-target-dot"/>No enlazado</span>
+            </li>
+            <li className="vx-target-item">
+              <div className="vx-target-identity">
+                <span className="vx-target-icon" aria-hidden="true">V</span>
+                <div>
+                  <strong>VX13</strong>
+                  <small>Plataforma de agentes</small>
+                </div>
+              </div>
+              <span className="vx-target-state"><span aria-hidden="true" className="vx-target-dot"/>En diseño</span>
+            </li>
+          </ul>
+        </section>
+
+        <p className="vx-context-note" role="note">
+          Este es el estado del enlace con NOSTROMO, no la salud de cada sistema. Se actualizará tras una lectura autenticada.
+        </p>
+
+        <div className="vx-context-disclosure">
+          <button type="button" className="vx-context-detail-toggle"
+            onClick={() => setShowTechnical((value) => !value)}
+            aria-expanded={showTechnical} aria-controls="vx-technical-details">
+            {showTechnical ? 'Ocultar detalles técnicos' : 'Ver detalles técnicos'}
+            <span className="vx-context-detail-symbol" aria-hidden="true">{showTechnical ? '−' : '+'}</span>
+          </button>
+          {showTechnical ? (
+            <div id="vx-technical-details" className="vx-context-technical">
+              <p>MANOJOS3 · {MANOJOS3_LIBRECHAT_INTEGRATION.bindingState}</p>
+              <p>VX13 · {VX13_LIBRECHAT_INTEGRATION.bindingState}</p>
+              <p>Observaciones LIVE: no verificadas.</p>
+              <p>El panel no autoriza acciones materiales.</p>
+            </div>
+          ) : null}
+        </div>
+      </div>
+      <footer className="vx-context-footer">NOSTROMO <span aria-hidden="true">·</span> Información con origen verificable</footer>
+    </section>
   );
 }

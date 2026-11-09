@@ -1,0 +1,40 @@
+{
+  "schema": "libre-chat-vx.cloudflare-ai-gateway.v2",
+  "status": "SOURCE_CONFIG_LIVE_NOT_VERIFIED",
+  "authority": false,
+  "purpose": "Conversational comprehension, intent interpretation, research, visual composition and summarization for NOSTROMO. Not coding execution and not target authority.",
+  "transport": {
+    "kind": "CLOUDFLARE_REST_OPENAI_COMPAT",
+    "base_url_template": "https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/ai/v1",
+    "gateway_id_env": "CLOUDFLARE_AI_GATEWAY_ID",
+    "gateway_header": "cf-aig-gateway-id",
+    "api_token_env": "CLOUDFLARE_API_TOKEN",
+    "request_no_wholesale": true,
+    "gateway_byok_only_required": true
+  },
+  "semantic_routes": {
+    "RAPIDO": "dynamic/nostromo-rapido",
+    "NORMAL": "dynamic/nostromo-normal",
+    "PENSAR": "dynamic/nostromo-pensar",
+    "INVESTIGAR": "dynamic/nostromo-investigar",
+    "VISUALIZAR": "dynamic/nostromo-visualizar",
+    "CONTEXTO_LARGO": "dynamic/nostromo-contexto-largo",
+    "VISION": "dynamic/nostromo-vision"
+  },
+  "model_pool": {
+    "registry": "config/model_registry.current.json",
+    "active_target_per_profile": 6,
+    "reserve_pool": "ALL_ADMITTED_NOT_ACTIVE",
+    "route_versioning_required": true,
+    "canary_before_deploy": true,
+    "rollback_to_previous_version": true
+  },
+  "provider_credentials": "CLOUDFLARE_BYOK_OR_REQUEST_SECRET_REFERENCE",
+  "unified_billing_required": false,
+  "paid_fallback_allowed": false,
+  "zero_cost_admission": "LIVE_READBACK_REQUIRED",
+  "provider_brands_hardcoded": false,
+  "secrets_persisted_in_repo": false,
+  "local_model_required": false,
+  "live": "NO_VERIFICADO"
+}

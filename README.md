@@ -4,13 +4,19 @@ Repositorio independiente para construir la capa LibreChat de VX13/MANOJOS3/ORÁ
 
 ## Estado
 
-`DOCUMENTED_SOURCE_BOOTSTRAP`
+`SOURCE_CORE_COMPLETE / GITHUB_FIRST_QA_IN_PROGRESS`
 
+- `GITHUB_CI_SOURCE=SUCCESS` (código HEAD 6364f4211ec971b92da9126aa55bdc115edf1285; run 37998515362)
+- `VISUAL_SOURCE_FIXTURE=SUCCESS` (Chromium escritorio+móvil; run 37998515395, artefacto 11648386603)
+- `UPSTREAM_MOUNTED_BROWSER_E2E=NOT_RUN` (pendiente, no equivale a pruebas en host)
+- `INSTALLATION=DEFERRED_TO_MANOJOS3`
 - `LIVE=NO_VERIFICADO`
 - `MATERIAL_VERIFIED=NO`
 - Upstream fijado: `LibreChat-AI/LibreChat@f10b1d91f1eee3a2c82d5247bf620351486b7c1b`
 - Upstream package observado: `v0.8.8`
 - Config schema observado: `1.3.17`
+
+El objetivo vigente es cerrar en GitHub las pruebas SOURCE, interfaz visual e integración reversible; la instalación y los canarios LIVE se realizarán después, mediante MANOJOS3. Estado y orden: `CURRENT.json`, `docs/BUILD_ORDER_CURRENT.md` y `docs/GITHUB_FIRST_VISUAL_VALIDATION.md`.
 
 ## Principios
 
@@ -21,13 +27,17 @@ Repositorio independiente para construir la capa LibreChat de VX13/MANOJOS3/ORÁ
 5. No secretos, no force-push, no duplicación de executors/MCP/routers.
 6. Timeout tras posible efecto => `UNKNOWN_OUTCOME` => readback/reconcile antes de retry.
 7. Polling fijo no es baseline: usar event-driven + lazy views + backpressure/coalescing + snapshot/resync.
+8. Extensión: native/config → Skill → MCP/Action → Agent Plugin → wrapper fino → código propio.
+9. Un recurso nuevo no implica un módulo nuevo: usar Resource Tree/renderers/adapters genéricos cuando sea suficiente.
 
 ## Estructura
 
 ```text
 contracts/   contratos de proyección/acciones/fencing
-config/      ejemplos sin secretos
-docs/        arquitectura, seguridad, roadmap y auditoría
+config/      ejemplos sin secretos + catálogo/sync de Skills
+docs/        arquitectura, seguridad, roadmap, Resource Tree y auditorías
+skills/      Skills canónicas versionadas para GitHub Skill Sync/deployment
+plugins/     paquetes Agent Plugin opcionales/experimentales
 src/
   adapters/  fronteras por target
   cockpit/   UI/focus/projection, sin autoridad material

@@ -1,0 +1,7 @@
+# SINTÉTICO, NO prueba LIVE ni NOT_DEPLOYED
+SKIP 01-read-search-config: LIBRECHAT_ACTIVE_YAML unavailable: no authenticated host-mounted config
+FAIL 01-read-search-config (exit=1) — Real YAML differs from SPEC.json required Keenable/none/safeSearch=1
+SKIP 02-verify-search-provider: Keenable HTTP 429 without key; keyless is supported but this request was NOT verified
+FAIL 02-verify-search-provider (exit=1) — HTTP 200 but Keenable results lack HTTPS URLs/titles/snippets
+SKIP 04-canary-search-query: No authenticated read-only native pipeline output; pinned LibreChat has no safe GET query invocation
+SKIP 05-canary-fetch: No authenticated read-only pipeline fetch evidence; no safe GET tool invocation

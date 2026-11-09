@@ -1,0 +1,20 @@
+{
+  "schema": "libre-chat-vx.recovery-live-evidence.v1",
+  "gate_id": "LC-RECOVERY-LIVE",
+  "gate_state": "OPEN",
+  "runtime_status": "NO_DEPLOYMENT_EVIDENCE",
+  "git_commit_sha": null,
+  "host_service_readback_ref": null,
+  "ssh_policy_readback_ref": null,
+  "restart_attempt_readback_ref": null,
+  "external_oob_ssh_readback_ref": null,
+  "external_job_deduplication_readback_ref": null,
+  "source_sanity": "NOT_RUN",
+  "host_service_status": "SKIP",
+  "ssh_policy_status": "SKIP",
+  "controlled_restart_status": "SKIP",
+  "proof_freshness_status": "SKIP",
+  "effect_authorized": false,
+  "independent_authentication_verified": false,
+  "gate_closed": false
+}

@@ -53,10 +53,41 @@ export interface OwnershipRecord {
   observedAt?: string;
 }
 
+export interface OperatingGitObservation {
+  head?: string;
+  originMain?: string;
+  clean?: boolean;
+  status?: string;
+}
+
+export interface OperatingDelta {
+  pass: string[];
+  open: string[];
+  staleProof: string[];
+  reconcileRequired: string[];
+  notTested: string[];
+  owned: string[];
+  blockedDependency: string[];
+  externalGates: string[];
+  humanGates: string[];
+  blockedLive: string[];
+}
+
+export interface LivingPlan {
+  eligible: string[];
+  blockedLive: string[];
+  ownedReady: string[];
+  waitingInternal: boolean;
+  nextEligible?: string;
+}
+
 export interface OperatingSnapshot {
   snapshotId: string;
   mode: OperatingMode;
   evidenceCutoffHead: string;
+  targetVersion?: number;
+  git?: OperatingGitObservation;
+  runtime?: Record<string, unknown>;
   gaps: OperatingGap[];
   proofs: OperatingProof[];
   ownership: OwnershipRecord[];

@@ -1,0 +1,11 @@
+{
+  "schema": "libre-chat-vx.skill-sync-mirror-ids.v1",
+  "source_id": null,
+  "skills": [
+    {
+      "name": null,
+      "id": null
+    }
+  ],
+  "note": "SYNTHETIC TEMPLATE ONLY. Do not commit real IDs. Populate from authenticated admin mirror state; stage1 12 entries; stage2 10 entries."
+}

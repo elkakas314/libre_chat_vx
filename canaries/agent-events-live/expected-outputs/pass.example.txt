@@ -1,0 +1,7 @@
+# Example (SYNTHETIC), does not prove LIVE execution
+PASS 00-agent-events-source-sanity (SOURCE only)
+# node --test 01-local-delivery.test.cjs -> 3/3 passed in CI build-test
+PASS 02-read-inbound-evidence (READ_ONLY; LC-AGENT-EVENTS-LIVE remains OPEN)
+PASS 03-idempotency-readback (READ_ONLY; LC-AGENT-EVENTS-LIVE remains OPEN)
+PASS 04-triage-notifications (READ_ONLY; LC-AGENT-EVENTS-LIVE remains OPEN)
+SKIP 05-manojos3-external: LC-M3-GAP-001 BLOQUEADO: no verified MANOJOS3 GET /v1/events, stream or subscription; cannot close gate

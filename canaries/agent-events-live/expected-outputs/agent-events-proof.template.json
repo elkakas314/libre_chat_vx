@@ -1,0 +1,40 @@
+{
+  "schema": "libre-chat-vx.agent-events-host-proof.v1",
+  "source": "LIBRECHAT_INTERNAL",
+  "endpoint": "/api/agents/v1/events",
+  "authenticated_backend_readback": false,
+  "operator_authenticated_evidence": false,
+  "observed_at_utc": null,
+  "source_readback_ref": null,
+  "authority": false,
+  "inbound": {
+    "server_receipt_observed": false,
+    "server_receipt_ref": null,
+    "librechat_session_authenticated": false,
+    "event_payload_sanitized": false,
+    "authority_transferred": false,
+    "material_effect_observed": false,
+    "webhook_posted_by_canary": false
+  },
+  "idempotency": {
+    "two_deliveries_same_event_key": false,
+    "idempotency_key": null,
+    "server_received_attempts": null,
+    "unique_server_effects": null,
+    "duplicate_was_suppressed": false,
+    "readback_ref": null,
+    "material_effect_replayed": false
+  },
+  "triage": {
+    "severity": null,
+    "provenance_source": null,
+    "attention_classified": false,
+    "notification_opaque_reference_only": false,
+    "notification_authorizes_nothing": false,
+    "fresh_authenticated_fetch_on_open": false,
+    "event_readback_ref": null,
+    "notification_readback_ref": null,
+    "secrets_in_notification": null
+  },
+  "warning": "SYNTHETIC TEMPLATE, NOT LIVE EVIDENCE; keep authenticated readbacks private"
+}

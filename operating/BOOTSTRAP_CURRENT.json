@@ -1,45 +1,126 @@
 {
-  "schema": "libre-chat-vx.operating-bootstrap.v1",
+  "schema": "libre-chat-vx.operating-bootstrap.v2",
   "canon": "LIBRECHAT_OPERATING_CANON",
-  "target_version": 1,
-  "snapshot_id": "source-2026-10-03-a54b1f66",
-  "evidence_cutoff_head": "a54b1f66327f0b4279f7024c92e70183b51cee14",
+  "target_version": 8,
+  "snapshot_id": "source-2026-10-08-criba",
   "mode": "SOURCE_ONLY",
-  "source_only_closeout": "COMPLETE_NOSTROMO_HYBRID",
-  "active_llm_architecture": "NOSTROMO_HYBRID",
-  "active_llm_architecture_count": 1,
+  "evidence_cutoff_head": "9ae2ba122b7bd13be91e447d731f3d73d33ea9ed",
+  "baseline_ci": {
+    "github_actions_run": 37725889650,
+    "conclusion": "SUCCESS"
+  },
+  "git": {
+    "head": "9ae2ba122b7bd13be91e447d731f3d73d33ea9ed",
+    "status": "SOURCE_EVIDENCE_CUTOFF_DOCS_FOLLOW",
+    "origin_main": "NOT_READ_LIVE"
+  },
   "runtime": {
-    "librechat": "NO_VERIFICADO",
-    "local_voice": "UNCONFIGURED",
-    "manojos3_mcp": "PREPARED_UNCONFIGURED",
-    "manojos3_free_reasoner": "SOURCE_CONFLICT_REQUIRES_LIVE_READBACK",
-    "vx13_binding": "UNCONFIGURED"
+    "status": "NO_DEPLOYMENT_EVIDENCE",
+    "librechat": "NO_DEPLOYMENT_EVIDENCE",
+    "cloudflare_gateway": "NO_DEPLOYMENT_EVIDENCE",
+    "tailscale_serve": "NO_DEPLOYMENT_EVIDENCE",
+    "skill_sync": "NO_DEPLOYMENT_EVIDENCE",
+    "events": "NO_DEPLOYMENT_EVIDENCE",
+    "targets": "GATED"
   },
-  "drive": {
-    "start_here_current": "10sokDQr6eFQGSceTl0KYwfVinmF8ixTUz-XG0e8RyjQ",
-    "nostromo_hybrid": "1PqXk7nM8M_arbI472RU5n4T0rFQI1Yt-MH54VSapYc8",
-    "manojos3_gpt_semantic_bridge": "1gAbtU0XISM4GWuspp-6wWEZACAycWtZBqzMrEJUu6y0",
-    "manojos3_entrypoints": "19WZ2DM3pXyIe9-mhyq_3oVXQ63QmvDBf7i720mGW1N4",
-    "vx13_hybrid_parity": "1i_sw3ZYXdu3-wFrmAxTw42PppT6wxMOK8G2jKI4onF8",
-    "readback": "PASS"
+  "proofs": {
+    "valid": [
+      "nostromo-hybrid-source-drive",
+      "m3-gpt-semantic-bridge-source-drive",
+      "tentacle-hud-model-independence",
+      "transport-and-source-ci-20261008",
+      "skill-criba-exact-head-ci",
+      "operating-contracts-source-ci-20261008",
+      "continuity-no-stop-exact-head-ci",
+      "continuity-no-stop-living-drive",
+      "ownership-claim-reconcile-source-ci-20261008",
+      "skill-sync-two-phase-source-ci-20261008",
+      "inference-temporal-admission-source-ci-20261008"
+    ],
+    "stale": [
+      "nostromo-material-test"
+    ],
+    "missing": [],
+    "unavailable": [
+      "m3-live-binding",
+      "m3-free-reasoner-live"
+    ]
   },
+  "ownership": {
+    "owned": [],
+    "stale_claims": [],
+    "free": [],
+    "unobserved": [
+      "INFERENCE_LIVE",
+      "SKILLS_LIVE",
+      "MOBILE_LIVE",
+      "RESEARCH_LIVE",
+      "EVENTS_LIVE",
+      "RECOVERY_LIVE",
+      "HOST_MEASUREMENT",
+      "TARGET_BINDINGS"
+    ]
+  },
+  "delta": {
+    "pass": [],
+    "open": [
+      "LC-CF-AIG-BINDING",
+      "LC-SKILL-SYNC-LIVE",
+      "LC-TAILSCALE-MOBILE-LIVE",
+      "LC-WEB-RESEARCH-LIVE",
+      "LC-AGENT-EVENTS-LIVE",
+      "LC-RECOVERY-LIVE"
+    ],
+    "stale_proof": [],
+    "reconcile_required": [],
+    "not_tested": [],
+    "owned": [],
+    "blocked_dependency": [],
+    "external_gates": [],
+    "human_gates": [
+      "LC-LOW-POWER-MEASURE"
+    ],
+    "blocked_live": [
+      "LC-CF-AIG-BINDING",
+      "LC-SKILL-SYNC-LIVE",
+      "LC-TAILSCALE-MOBILE-LIVE",
+      "LC-WEB-RESEARCH-LIVE",
+      "LC-AGENT-EVENTS-LIVE",
+      "LC-RECOVERY-LIVE"
+    ]
+  },
+  "living_plan": {
+    "eligible": [],
+    "blocked_live": [
+      "LC-CF-AIG-BINDING",
+      "LC-SKILL-SYNC-LIVE",
+      "LC-TAILSCALE-MOBILE-LIVE",
+      "LC-WEB-RESEARCH-LIVE",
+      "LC-AGENT-EVENTS-LIVE",
+      "LC-RECOVERY-LIVE"
+    ],
+    "owned_ready": [],
+    "waiting_internal": false
+  },
+  "design_review_queue": [
+    "LC-NOSTROMO-SEMANTIC-BRIDGE"
+  ],
   "eligible_source_only": [],
-  "blocked_or_gated": [
-    "LC-CURRENT-HEAD-TESTS",
-    "LC-M3-R0-BINDING",
-    "LC-M3-LLM-LIVE-READBACK",
-    "LC-UPSTREAM-OVERLAY-REVALIDATE",
-    "LC-VX13-BINDING",
-    "LC-FIRST-R2",
-    "LC-LOW-POWER-MEASURE"
+  "blocked_live": [
+    "LC-CF-AIG-BINDING",
+    "LC-SKILL-SYNC-LIVE",
+    "LC-TAILSCALE-MOBILE-LIVE",
+    "LC-WEB-RESEARCH-LIVE",
+    "LC-AGENT-EVENTS-LIVE",
+    "LC-RECOVERY-LIVE"
   ],
   "do_not_touch": [
-    "local host while user restriction remains",
-    "MANOJOS3 repository",
-    "VX13 repository",
-    "secrets",
-    "target authority internals"
+    "MANOJOS3 repository/runtime/tunnels",
+    "VX13 repository/runtime",
+    "host material state without explicit approved target authority",
+    "secrets"
   ],
   "closeout": "INCOMPLETE",
-  "next_action": "WAIT_FOR_LOCAL_REVALIDATION_PERMISSION_OR_LIVE_BINDING"
+  "next_action": "BIND_LIVE_AND_REVALIDATE",
+  "semantic_note": "INTENT_INTERPRETER_SOURCE_EXISTS; NEW_VOCABULARY_CROSSWALK_DESIGN_REVIEW_QUEUED_NOT_IMPLEMENTED"
 }

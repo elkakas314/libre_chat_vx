@@ -1,0 +1,26 @@
+{
+  "schema": "libre-chat-vx.agent-events.v1",
+  "status": "SOURCE_READY_LIVE_NOT_VERIFIED",
+  "authority": false,
+  "purpose": "Bidirectional notification and attention flow without making LibreChat an execution authority.",
+  "inbound": {
+    "endpoint": "/api/agents/v1/events",
+    "sources": ["MANOJOS3", "VX13", "ORACULO", "LIBRECHAT_INTERNAL"],
+    "modes_allowed": ["fire"],
+    "idempotency_required": true,
+    "ordering_key_recommended": true,
+    "payload_policy": "SANITIZED_SUMMARY_AND_REFERENCES_ONLY",
+    "credentials_in_payload_forbidden": true
+  },
+  "outbound": {
+    "path": "NostromoTargetGateway",
+    "material_execution_owned_by_target": true,
+    "automatic_material_retry": false
+  },
+  "transport": {
+    "same_host": "loopback LibreChat backend",
+    "tailnet": "Tailscale Serve/private service",
+    "public_remote": "Cloudflare Access protected LibreChat endpoint only when explicitly enabled"
+  },
+  "live": "NO_VERIFICADO"
+}

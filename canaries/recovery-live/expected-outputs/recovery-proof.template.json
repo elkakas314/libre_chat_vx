@@ -1,0 +1,20 @@
+{
+  "schema": "libre-chat-vx.recovery-proof.v1",
+  "synthetic_template_only": true,
+  "external_operator_authentication_asserted": false,
+  "independent_client": false,
+  "librechat_down_observed": false,
+  "tailscale_ssh_authenticated_while_librechat_down": false,
+  "ssh_separate_from_librechat_service": false,
+  "service_recovers_after_restart": false,
+  "no_duplicate_jobs_verified_by_target_readback": false,
+  "ssh_readback_ref": null,
+  "service_down_readback_ref": null,
+  "job_idempotence_readback_ref": null,
+  "observed_at_utc": null,
+  "ssh_observed_at_utc": null,
+  "librechat_down_observed_at_utc": null,
+  "credential_or_real_id_in_source": false,
+  "gate_closed": false,
+  "note": "Fill ONLY with authenticated private operator evidence from independent client and target-owned job readback; no synthetic PASS."
+}

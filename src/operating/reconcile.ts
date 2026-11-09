@@ -1,5 +1,7 @@
 import type {
   GapState,
+  LivingPlan,
+  OperatingDelta,
   OperatingGap,
   OperatingMode,
   OperatingProof,
@@ -28,17 +30,146 @@ export function scopeOwned(
   return ownership.some((record) => record.scope === scope && record.state === 'OWNED');
 }
 
+export function effectiveGapState(
+  gap: OperatingGap,
+  gaps: OperatingGap[],
+  ownership: OwnershipRecord[],
+): GapState {
+  if (gap.state === 'PASS' || gap.state === 'GATE_EXTERNAL' || gap.state === 'GATE_HUMAN') {
+    return gap.state;
+  }
+
+  if (!dependenciesSatisfied(gap, gaps)) {
+    return 'BLOCKED_DEPENDENCY';
+  }
+
+  if (scopeOwned(gap.scope, ownership)) {
+    return 'OWNED';
+  }
+
+  if (gap.state === 'OWNED' || gap.state === 'WAITING_INTERNAL') {
+    // Absence of a live ownership claim is not evidence that the scope is FREE.
+    const scopeRecord = ownership.find((record) => record.scope === gap.scope);
+    if (scopeRecord?.state === 'FREE') return 'OPEN';
+    if (scopeRecord?.state === 'OWNED') return 'OWNED';
+    // Unknown/stale release: inspect claims, leases and effects before any work.
+    return 'RECONCILE_REQUIRED';
+  }
+
+  if (gap.state === 'BLOCKED_DEPENDENCY') {
+    return 'OPEN';
+  }
+
+  return gap.state;
+}
+
 export function eligibleGaps(
   mode: OperatingMode,
   gaps: OperatingGap[],
   ownership: OwnershipRecord[],
 ): OperatingGap[] {
   return gaps
-    .filter((gap) => ACTIONABLE.has(gap.state))
+    .filter((gap) => ACTIONABLE.has(effectiveGapState(gap, gaps, ownership)))
     .filter((gap) => mode === 'LIVE_BOUND' || !gap.requiresLive)
-    .filter((gap) => dependenciesSatisfied(gap, gaps))
-    .filter((gap) => !scopeOwned(gap.scope, ownership))
     .sort((a, b) => a.priority - b.priority);
+}
+
+export function buildDelta(
+  mode: OperatingMode,
+  gaps: OperatingGap[],
+  ownership: OwnershipRecord[],
+): OperatingDelta {
+  const delta: OperatingDelta = {
+    pass: [],
+    open: [],
+    staleProof: [],
+    reconcileRequired: [],
+    notTested: [],
+    owned: [],
+    blockedDependency: [],
+    externalGates: [],
+    humanGates: [],
+    blockedLive: [],
+  };
+
+  for (const gap of gaps) {
+    const state = effectiveGapState(gap, gaps, ownership);
+
+    if (mode === 'SOURCE_ONLY' && gap.requiresLive && ACTIONABLE.has(state)) {
+      delta.blockedLive.push(gap.gapId);
+    }
+
+    switch (state) {
+      case 'PASS':
+        delta.pass.push(gap.gapId);
+        break;
+      case 'OPEN':
+        delta.open.push(gap.gapId);
+        break;
+      case 'STALE_PROOF':
+        delta.staleProof.push(gap.gapId);
+        break;
+      case 'RECONCILE_REQUIRED':
+        delta.reconcileRequired.push(gap.gapId);
+        break;
+      case 'NOT_TESTED':
+        delta.notTested.push(gap.gapId);
+        break;
+      case 'OWNED':
+        delta.owned.push(gap.gapId);
+        break;
+      case 'BLOCKED_DEPENDENCY':
+      case 'WAITING_INTERNAL':
+        delta.blockedDependency.push(gap.gapId);
+        break;
+      case 'GATE_EXTERNAL':
+        delta.externalGates.push(gap.gapId);
+        break;
+      case 'GATE_HUMAN':
+        delta.humanGates.push(gap.gapId);
+        break;
+    }
+  }
+
+  return delta;
+}
+
+export function buildLivingPlan(
+  mode: OperatingMode,
+  gaps: OperatingGap[],
+  ownership: OwnershipRecord[],
+): LivingPlan {
+  const eligible = eligibleGaps(mode, gaps, ownership);
+
+  const dependencyReady = gaps
+    .filter((gap) => dependenciesSatisfied(gap, gaps))
+    .filter((gap) => mode === 'LIVE_BOUND' || !gap.requiresLive)
+    .filter((gap) => {
+      const state = effectiveGapState(gap, gaps, ownership);
+      return ACTIONABLE.has(state) || state === 'OWNED';
+    });
+
+  const ownedReady = dependencyReady
+    .filter((gap) => scopeOwned(gap.scope, ownership))
+    .map((gap) => gap.gapId);
+
+  const blockedLive = mode === 'SOURCE_ONLY'
+    ? gaps
+        .filter((gap) => gap.requiresLive)
+        .filter((gap) => ACTIONABLE.has(effectiveGapState(gap, gaps, ownership)))
+        .map((gap) => gap.gapId)
+    : [];
+
+  return {
+    eligible: eligible.map((gap) => gap.gapId),
+    blockedLive,
+    ownedReady,
+    waitingInternal:
+      eligible.length === 0 &&
+      dependencyReady.length > 0 &&
+      ownedReady.length === dependencyReady.length,
+    nextEligible: eligible[0]?.gapId,
+  };
 }
 
 export function proofNeedsRevalidation(

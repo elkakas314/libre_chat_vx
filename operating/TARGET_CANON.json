@@ -1,23 +1,196 @@
 {
   "schema": "libre-chat-vx.operating-target.v1",
   "canon": "LIBRECHAT_OPERATING_CANON",
-  "target_version": 1,
+  "target_version": 8,
   "authority": false,
   "product_role": "EXTERNAL_CONVERSATION_UI_COCKPIT",
   "desired": {
     "single_conversation_experience": true,
     "nostromo_shell": true,
     "tentaculo_hud": true,
-    "target_scopes": ["AUTO", "BOTH", "MANOJOS3", "VX13"],
-    "concrete_targets": ["MANOJOS3", "VX13"],
-    "manojos3_priority": "FIRST",
+    "target_scopes": [
+      "AUTO",
+      "BOTH",
+      "MANOJOS3",
+      "VX13"
+    ],
+    "concrete_targets": [
+      "MANOJOS3",
+      "VX13"
+    ],
+    "manojos3_priority": "R0_AFTER_LIBRECHAT_PARALLEL_STACK_FREEZE",
     "vx13_parity": "SAME_EXTERNAL_SLOTS_DISTINCT_AUTHORITY",
     "oraculo": "ADVISORY_PROVIDER",
     "native_librechat_reuse_first": true,
     "interactive_artifacts": "UI_INTENT_ONLY_UNTIL_GOVERNED_SUBMISSION",
     "mobile_continuity": "SAME_BACKEND_HISTORY",
     "offline_mutation_replay": false,
-    "event_model": "EVENT_DRIVEN_LAZY_BACKPRESSURE_SNAPSHOT_RESYNC"
+    "event_model": "EVENT_DRIVEN_LAZY_BACKPRESSURE_SNAPSHOT_RESYNC",
+    "provider_mesh": {
+      "architecture": "REMOTE_FREE_CAPABLE_LOCAL_OPTIONAL_PROVIDER_AGNOSTIC_UI",
+      "preferred_gateway": "CLOUDFLARE_AI_GATEWAY",
+      "authority": false,
+      "paid_fallback_allowed": false,
+      "cognitive_failover_only": true,
+      "material_replay_on_provider_failover": false,
+      "semantic_profiles": {
+        "RAPIDO": "dynamic/nostromo-rapido",
+        "NORMAL": "dynamic/nostromo-normal",
+        "PENSAR": "dynamic/nostromo-pensar",
+        "INVESTIGAR": "dynamic/nostromo-investigar",
+        "VISUALIZAR": "dynamic/nostromo-visualizar",
+        "CONTEXTO_LARGO": "dynamic/nostromo-contexto-largo",
+        "VISION": "dynamic/nostromo-vision"
+      },
+      "provider_capabilities": [
+        "TEXT",
+        "VISION",
+        "AUDIO",
+        "STRUCTURED_OUTPUT",
+        "TOOLS",
+        "LONG_CONTEXT"
+      ],
+      "provider_deployments": "INTERCHANGEABLE_BEHIND_CLOUDFLARE_DYNAMIC_ROUTES",
+      "provider_admission": [
+        "LIVE_REACHABLE",
+        "HEALTH_READY",
+        "QUOTA_AVAILABLE",
+        "CAPABILITY_READBACK",
+        "CONTEXT_FIT",
+        "PRIVACY_ALLOWED",
+        "ZERO_COST_ACCOUNT_ROUTE_VERIFIED",
+        "NO_AUTOMATIC_PAID_FALLBACK",
+        "FRESH_READBACK"
+      ],
+      "provider_brand_in_ui_contract": false,
+      "local_model": "OPTIONAL_NOT_A_PROMOTION_PREREQUISITE"
+    },
+    "tentaculo_hud_contract": {
+      "mode": "READ_ONLY_DERIVED_PROJECTION",
+      "core_minimum": [
+        "TARGET",
+        "CONNECTION",
+        "READINESS",
+        "WORK",
+        "EVIDENCE",
+        "AUTH",
+        "PROVIDER",
+        "FRESHNESS"
+      ],
+      "read_models": [
+        "TargetStatusView",
+        "ProviderStatusView",
+        "ActiveRunView",
+        "DecisionInboxView",
+        "EvidenceView",
+        "ContextUsageView",
+        "ToolSkillView",
+        "ConversationTraceView"
+      ],
+      "truth_owner": "TARGET_PROVIDER_OWNERS",
+      "cache_policy": "REUSE_NATIVE_OR_EXISTING_FIRST_NO_HUD_DATABASE",
+      "event_recovery": "CURSOR_DEDUPE_GAP_SNAPSHOT_RESYNC",
+      "unknown_outcome_retry": "READBACK_RECONCILE_THEN_DECIDE"
+    },
+    "native_capability_policy": "VERIFY_UPSTREAM_SOURCE_BEFORE_BINDING_NO_PARALLEL_REIMPLEMENTATION",
+    "nostromo_identity": {
+      "owner": "LIBRECHAT_NOSTROMO",
+      "mechanism": "MODEL_SPECS_PROMPT_PREFIX_OR_AGENT_INSTRUCTIONS",
+      "versioned_profile": true,
+      "litellm_global_persona": false,
+      "prompt_is_security_boundary": false,
+      "target_truth": "STRUCTURED_PROJECTIONS_ONLY"
+    },
+    "context_policy": "TARGETED_READS_THEN_RAG_COMPACT_THEN_LONG_CONTEXT_IF_NEEDED",
+    "structured_output_policy": "UNTRUSTED_UNTIL_SCHEMA_AND_SEMANTIC_VALIDATED",
+    "multimodal_policy": "CAPABILITY_ROUTED_COGNITIVE_ONLY_NEVER_MATERIAL_EVIDENCE",
+    "inference_gateway": {
+      "primary_for_librechat": "CLOUDFLARE_AI_GATEWAY",
+      "authority": false,
+      "authentication": "REQUIRED",
+      "routing": "VERSIONED_DYNAMIC_ROUTES_BY_SEMANTIC_PROFILE",
+      "provider_keys": "BYOK_SECRETREF_ONLY",
+      "unified_billing_default": false,
+      "default_route_cost_policy": "ZERO_COST_ACCOUNT_ROUTE_VERIFIED_ONLY",
+      "paid_auto_fallback": false,
+      "provider_web_search": "COGNITIVE_ONLY_NOT_MATERIAL_EVIDENCE",
+      "local_model_required": false
+    },
+    "manojos3_litellm": {
+      "state": "KEEP",
+      "role": [
+        "INTERNAL_ADVISORY",
+        "OPENCODE_COMPATIBILITY",
+        "INTERNAL_REASONING",
+        "OPTIONAL_ROLLBACK_FALLBACK"
+      ],
+      "primary_for_librechat": false,
+      "remove_only_after": "INTERNAL_CONSUMER_CANARY_AND_ROLLBACK_PROVEN",
+      "cloudflare_loop_forbidden": true
+    },
+    "transport_topology": {
+      "baseline": "PARALLEL_LIBRECHAT_VX_ISOLATED_FROM_MANOJOS3",
+      "local_web": "127.0.0.1:3080",
+      "private_mobile": "TAILSCALE_SERVE_SINGLE_ROUTE_TO_3080",
+      "public_web_optional": "ONE_DEDICATED_CF_TUNNEL_ACCESS_TO_3080",
+      "inference_plane": "ONE_CF_AI_GATEWAY_SEVEN_DYNAMIC_ROUTES_NOT_A_WEB_TUNNEL",
+      "worker_baseline_required": 0,
+      "optional_worker": "EVENT_NORMALIZER_ONLY_WHEN_DIRECT_AGENT_EVENTS_IMPOSSIBLE",
+      "skills": "GITHUB_SKILL_SYNC_DIRECT_HTTPS",
+      "inbound_notifications": "NATIVE_LIBRECHAT_AGENT_EVENTS",
+      "tailscale_funnel": false,
+      "tailscale_services": "OPTIONAL_MULTIHOST_ONLY",
+      "openai_secure_mcp_tunnel_for_librechat": false,
+      "manojos3_resource_reuse": false,
+      "manojos3_transport_convergence": "DEFERRED_DO_NOT_TOUCH_NOW",
+      "target_gateway": "IN_PROCESS_ADAPTER_ONLY_NO_PUBLIC_TARGET_CONTROL_SERVER"
+    },
+    "target_gateway": {
+      "name": "NOSTROMO_TARGET_GATEWAY",
+      "kind": "IN_PROCESS_FACADE",
+      "authority": false,
+      "purpose": "DECOUPLE_LIBRECHAT_UI_FROM_TARGET_TRANSPORT_AND_FUTURE_TARGETS",
+      "adapters": {
+        "MANOJOS3": "MANOJOS3_MCP",
+        "VX13": "TENTACULO_LINK_OR_CANONICAL_VX13_FRONTDOOR_FUTURE"
+      },
+      "rules": [
+        "NO_SECOND_MCP",
+        "NO_SECOND_POLICY",
+        "NO_SECOND_KERNEL",
+        "NO_EXECUTION",
+        "NO_RECEIPT_MINTING",
+        "NO_LEDGER",
+        "NO_MATERIAL_REPLAY"
+      ]
+    },
+    "product_intent": "CONVERSATION_CONTEXT_INTERPRETATION_VISUALIZATION_RESEARCH_COORDINATION_NOT_CODE_EXECUTION",
+    "live_promotion_order": [
+      "CF_AI_GATEWAY_ROUTE_PROVIDER_CANARIES",
+      "GITHUB_SKILL_SYNC",
+      "TAILSCALE_SERVE_MOBILE",
+      "WEB_RESEARCH",
+      "AGENT_EVENTS",
+      "OUT_OF_BAND_RECOVERY",
+      "MANOJOS3_R0_AFTER_LIBRECHAT_FREEZE",
+      "VX13_CANONICAL_FRONTDOOR_WHEN_AVAILABLE",
+      "FIRST_GOVERNED_MATERIAL_CANARY"
+    ],
+    "skills": {
+      "active_target_count": 10,
+      "legacy_compatibility_count": 2,
+      "canonical_catalog": "config/skills.current.json",
+      "policy": "NATIVE_CONFIG_EXISTING_SKILL_MCP_ACTION_PLUGIN_THIN_ADAPTER_BEFORE_NEW_CODE",
+      "sync_live_status": "NO_VERIFICADO"
+    },
+    "anti_monolith": {
+      "no_duplicate_router": true,
+      "no_duplicate_executor": true,
+      "no_duplicate_ledger": true,
+      "no_core_host_network_scanner": true,
+      "external_host_network_work": "TARGET_OWNED",
+      "review_skill": "nostromo-extension-review"
+    }
   },
   "authority_boundaries": {
     "librechat": "NONE_MATERIAL",

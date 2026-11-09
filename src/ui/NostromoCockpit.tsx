@@ -12,6 +12,7 @@ import type { DockItem } from '../cockpit/artifactDock';
 import type { DecisionCard } from '../cockpit/decisionInbox';
 import type { ModuleVisualCard } from '../cockpit/moduleVisualCard';
 import type { ExternalResourceRef } from '../files/externalResourceRef';
+import type { ResourceNode } from '../resources/resourceTree';
 import type { AudioPanelProjection } from '../audio/audioPanel';
 import type { BrowserView } from '../browser/browserView';
 import type { BuildPanelItem } from '../build/buildPanel';
@@ -30,6 +31,7 @@ import { NativeSurfaceStatusView } from './NativeSurfaceStatusView';
 import { NostromoHybridView } from './NostromoHybridView';
 import { TargetRunView } from './TargetRunView';
 import { FilesPanelView } from './FilesPanelView';
+import { ResourceTreeView } from './ResourceTreeView';
 import { AudioPanelView } from './AudioPanelView';
 import { BrowserPanelView } from './BrowserPanelView';
 import { BuildPanelView } from './BuildPanelView';
@@ -46,6 +48,9 @@ export interface NostromoCockpitProps {
   decisions?: DecisionCard[];
   artifacts?: DockItem[];
   modules?: ModuleVisualCard[];
+  resources?: readonly ResourceNode[];
+  expandedResourceIds?: ReadonlySet<string>;
+  onResourceToggle?: (node: ResourceNode) => void;
   interflowDomains?: readonly Manojos3InterflowDomain[];
   nativeSurfaceBindings?: readonly NativeSurfaceBindingDescriptor[];
   hybridArchitecture?: NostromoHybridArchitecture;
@@ -73,6 +78,13 @@ export function NostromoCockpit(props: NostromoCockpitProps) {
       {has('DECISION_INBOX') ? <DecisionInboxView decisions={props.decisions ?? []} /> : null}
       {has('ARTIFACT_DOCK') ? <ArtifactDockView items={props.artifacts ?? []} /> : null}
       {has('MODULE_INDEX') ? <ModuleIndexView modules={props.modules ?? []} /> : null}
+      {has('RESOURCE_TREE') ? (
+        <ResourceTreeView
+          nodes={props.resources ?? []}
+          expandedIds={props.expandedResourceIds}
+          onToggle={props.onResourceToggle}
+        />
+      ) : null}
       {has('INTERFLOW_MAP') ? <InterflowLensView domains={props.interflowDomains ?? []} /> : null}
       {has('CONVERSATION_CORE') && props.hybridArchitecture && props.hybridMode
         ? <NostromoHybridView architecture={props.hybridArchitecture} mode={props.hybridMode} />

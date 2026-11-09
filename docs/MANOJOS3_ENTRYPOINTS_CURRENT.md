@@ -1,110 +1,122 @@
 # MANOJOS3 entrypoints for LibreChat — CURRENT
 
-MANOJOS3 source inspected at `cb772cca141f7ae5ae03af9655b3c5186f5826f6`.
+Status: `SOURCE_DESIGN_CONSOLIDATED / LIVE_BINDING_NO_VERIFICADO`
 
-## Entrypoint A — action plane: inbound MCP
+## Application boundary
 
-Canonical source:
+LibreChat must not expose MANOJOS3 MCP as a UI concept.
 
-- `src/manojos3/mcp_gateway.py`
-- source endpoint: `http://127.0.0.1:8790/mcp`
-- transport: streamable HTTP
-- deployment variable: `MANOJOS3_MCP_URL`
-
-The loopback address is not assumed reachable from a LibreChat container.
-
-The MCP server is transport-only and forwards to the existing MANOJOS3 control plane.
-
-### Exposed tool surface
-
-Read/bootstrap:
-
-- `manojos_gpt_migration_profile`
-- `manojos_status`
-- `manojos_capabilities`
-- `manojos_skills`
-- `manojos_attach`
-- `manojos_run`
-- `manojos_authorization_requirement`
-- `manojos_authorization`
-- `manojos_receipt`
-
-Controlled:
-
-- `manojos_submit`
-- `manojos_resume`
-- `manojos_advance`
-- `manojos_pause`
-- `manojos_cancel`
-
-### Objective flow
+Canonical application path:
 
 ```text
-LibreChat Agent
-  -> manojos_submit
-  -> MANOJOS3 builds manojos3.ingress.v1
-  -> POST /v1/objectives/submit inside MANOJOS3 transport
-  -> Intent Router
-  -> Slot Resolver
-  -> Interflow / Operation Compiler
-  -> Governor / Policy
-  -> Kernel / driver
-  -> readback
-  -> Verifier / Receipt
-  -> manojos_run / manojos_receipt
-  -> LibreChat
+LibreChat / NOSTROMO
+ -> NostromoTargetGateway
+ -> Manojos3TargetAdapter
+ -> MANOJOS3 MCP
+ -> MANOJOS3 authority chain
 ```
 
-LibreChat should not call private control-plane HTTP endpoints directly. The MCP gateway is the integration contract.
+`NostromoTargetGateway` is an in-process facade with `authority=false`. It is not another proxy service, MCP, Governor, Policy, Kernel, executor or ledger.
 
-## Entrypoint B — inference/model plane
+Its purpose is only to keep the LibreChat cockpit independent from target-specific transport.
 
-MANOJOS3 source contains `ModelRouterAdapter` and a managed LiteLLM configuration.
+## MANOJOS3 action adapter
 
-Source candidate:
+The Manojos3TargetAdapter speaks the real MANOJOS3 MCP contract.
 
-`http://127.0.0.1:4000/v1`
+Source endpoint currently documented by MANOJOS3:
+- `http://127.0.0.1:8790/mcp`;
+- streamable HTTP;
+- deployment variable `MANOJOS3_MCP_URL`.
 
-This is an OpenAI-compatible inference plane, not the MANOJOS3 action plane.
+The loopback source address is not assumed reachable from a LibreChat container or remote backend.
 
-For LibreChat the deployment contract is:
+Read/bootstrap surface:
+- `manojos_gpt_migration_profile`;
+- `manojos_status`;
+- `manojos_capabilities`;
+- `manojos_skills`;
+- `manojos_attach`;
+- `manojos_run`;
+- `manojos_authorization_requirement`;
+- `manojos_authorization`;
+- `manojos_receipt`.
 
-`MANOJOS3_LLM_BASE_URL`
+Controlled surface:
+- `manojos_submit`;
+- `manojos_resume`;
+- `manojos_advance`;
+- `manojos_pause`;
+- `manojos_cancel`.
 
-plus a secret-managed key reference if required.
-
-The loopback source address must never be copied blindly into a container deployment.
-
-## Entrypoint C — advisory Interflow
-
-If LibreChat is using another primary model, MANOJOS3 can still provide a second opinion.
-
-Do not call internal `llm.*` capability IDs directly from LibreChat.
-
-Use:
+Objective flow:
 
 ```text
-manojos_submit(
-  objective = advisory/review/model objective,
-  risk_ceiling = R0/R1
-)
+LibreChat
+ -> NostromoTargetGateway
+ -> Manojos3TargetAdapter
+ -> manojos_submit
+ -> MANOJOS3 Intent/Interflow
+ -> Governor/Policy
+ -> Kernel/driver
+ -> readback
+ -> Verifier/Receipt
+ -> adapter projection
+ -> LibreChat
 ```
 
-MANOJOS3 routes the objective through `llm.models.intent.plan` / repair advisory and then its internal router as admitted.
+LibreChat never calls private MANOJOS3 control-plane HTTP as its normal contract.
 
-## Non-canonical route
+## Deployment transport profiles
 
-`127.0.0.1:20128/v1` belongs to the OmniRoute candidate matrix and is documented as attempted/not installed. It is not the current canonical inference endpoint.
+The adapter can bind to different transports without changing the LibreChat UX:
 
-## Deployment gates
+### A — same host
+`LibreChat backend -> 127.0.0.1:8790/mcp`
 
-Before either entrypoint becomes LIVE from LibreChat:
+### B — remote private
+`LibreChat backend -> authenticated private/Tailnet MCP path -> 8790`
 
-1. exact network route/readback;
+### C — remote public
+`LibreChat backend -> dedicated authenticated Cloudflare MCP edge -> MANOJOS3_VPC/tunnel -> 8790`
+
+The edge remains transport-only and `authority=false`.
+
+Legacy GPT Action Proxy is not the LibreChat contract.
+
+## Inference is separate
+
+LibreChat primary inference path is:
+
+```text
+LibreChat -> Cloudflare AI Gateway -> admitted provider/model
+```
+
+MANOJOS3 managed LiteLLM remains internal/advisory/compatibility infrastructure.
+
+Do not configure `MANOJOS3_LLM_BASE_URL` as LibreChat's primary inference contract.
+
+## Future VX13
+
+The same LibreChat TargetGateway facade will host another adapter:
+
+```text
+NostromoTargetGateway
+ -> VX13TargetAdapter
+ -> Tentáculo Link
+ -> VX13 authority chain
+```
+
+This is why the product boundary is TargetGateway/TargetAdapter rather than MCP itself.
+
+## Gates before LIVE
+
+1. exact action transport readback;
 2. authentication/ACL boundary;
-3. LibreChat MCP private-address allowlist when applicable;
-4. model route canary;
-5. no-paid fallback verification;
-6. MCP status/capabilities/skills read;
-7. one R0 objective/readback/receipt;
-8. only then material work.
+3. MANOJOS3 MCP initialize/tools/read path;
+4. status/capabilities/skills projection;
+5. one R0 objective + readback + receipt;
+6. no host-control bypass;
+7. no Action Proxy dependency;
+8. Cloudflare inference path remains independent;
+9. only later, one minimal reversible governed mutation.

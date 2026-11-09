@@ -46,6 +46,8 @@ export type {
 
 export { MANOJOS3_FLOW, manojos3Parity } from './adapters/manojos3Contract';
 export { VX13_ADAPTER_STATE, VX13_AUTHORITY_CHAIN, vx13Parity } from './adapters/vx13Contract';
+export * from './adapters/manojos3McpAdapter';
+export * from './targets/targetGateway';
 
 export * from './manojos3/interflowProjection';
 export * from './manojos3/entrypoints';
@@ -55,6 +57,18 @@ export * from './manojos3/hudBridge';
 
 export * from './llm/nostromoHybrid';
 export * from './llm/responseContract';
+export * from './llm/inferenceGateway';
+export * from './llm/cloudflareAiGateway';
+export * from './llm/modelRegistry';
+export * from './llm/nostromoIdentity';
+export * from './llm/structuredOutput';
+export * from './llm/providerStatus';
+
+export * from './intent/intentInterpreter';
+export * from './presentation/presentationPlanner';
+export * from './research/researchPolicy';
+export * from './events/agentEvents';
+export * from './tentacle/companion';
 
 export * from './librechat/nativeSurfaces';
 export * from './librechat/nativeSurfaceBinding';
@@ -68,6 +82,7 @@ export * from './mobile/mobileRecovery';
 export * from './mobile/offlineDraft';
 export * from './mobile/pushRefresh';
 export * from './mobile/resumeSource';
+export * from './mobile/remoteAccess';
 
 export { emptyCockpitState } from './runtime/cockpitState';
 export type { CockpitState, TargetRuntimeState } from './runtime/cockpitState';
@@ -76,10 +91,13 @@ export type { CockpitEvent } from './runtime/eventReducer';
 
 export * from './cockpit/windowRouter';
 export * from './cockpit/tentacleHud';
+export * from './cockpit/providerStatusHud';
 export * from './cockpit/controlDeck';
 export * from './cockpit/capabilityLens';
 export * from './cockpit/targetRun';
 export * from './cockpit/shortMemory';
+export * from './resources/resourceTree';
+export * from './compatibility/adapterCompatibility';
 export * from './artifacts/interactiveArtifact';
 
 export * from './operating/types';
@@ -114,7 +132,8 @@ export { mayReplayInBackground, timeoutAfterPossibleEffect } from './recovery/ba
 export { postTimeoutOutcome } from './browser/browserView';
 export { exposeTool, deferBulkSchemas } from './cockpit/targetToolGate';
 export { providerBindingReady, materiallyReady } from './contracts/readinessTruth';
-export { combineTargetReads } from './discovery/crossTargetRead';
+export { combineTargetReads, parseCrossTargetTruthWire, serializeCrossTargetTruthWire } from './discovery/crossTargetRead';
+export type { CrossTargetTruthWire, NormalizedCrossTargetTruthEnvelope } from './discovery/crossTargetRead';
 export { EventDeduper, requiresResync } from './recovery/snapshotResync';
 export { rendererMode } from './cockpit/rendererFailureIsolation';
 export { canUseResource } from './files/externalResourceRef';

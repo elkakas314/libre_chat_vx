@@ -1,0 +1,20 @@
+{
+  "schema": "librechat-vx.cf-aig-provider-proof.v1",
+  "authenticated_provider_readback": false,
+  "permissions_verified": false,
+  "observed_at_epoch": null,
+  "models": [
+    {
+      "provider": "REPLACE_FROM_AUTHENTICATED_ROUTE_READBACK",
+      "model": "REPLACE_FROM_AUTHENTICATED_ROUTE_READBACK",
+      "zero_cost_verified": false,
+      "paid_fallback_allowed": null,
+      "quota_remaining": null,
+      "unit_cost_usd": null,
+      "scope_verified": false,
+      "observed_at_epoch": null,
+      "source_ref": "REPLACE_WITH_PRIVATE_AUTHENTICATED_PROVIDER_EVIDENCE_REFERENCE"
+    }
+  ],
+  "warning": "NOT VALID LIVE PROOF. Fill externally after authenticated provider account/API readback; never commit real data or secrets."
+}

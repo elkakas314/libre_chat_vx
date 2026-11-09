@@ -17,8 +17,20 @@ test('source-only cockpit never claims live truth', () => {
 test('decision inbox renders only pending decisions', () => {
   const html = renderToStaticMarkup(React.createElement(DecisionInboxView, {
     decisions: [
-      { decisionRef: 'd1', ownerRef: 'madre', targetRef: 'VX13', expiresAtMs: 99, state: 'PENDING' },
-      { decisionRef: 'd2', ownerRef: 'gov', targetRef: 'MANOJOS3', expiresAtMs: 99, state: 'RESOLVED' },
+      {
+        decisionRef: 'd1',
+        authorizationAuthorityRef: 'madre',
+        targetId: 'VX13',
+        expiresAtMs: 99,
+        state: 'PENDING',
+      },
+      {
+        decisionRef: 'd2',
+        authorizationAuthorityRef: 'gov',
+        targetId: 'MANOJOS3',
+        expiresAtMs: 99,
+        state: 'RESOLVED',
+      },
     ],
   }));
   assert.match(html, /VX13/);

@@ -1,0 +1,29 @@
+{
+  "schema": "libre-chat-vx.low-power-evidence.v1",
+  "gate_id": "LC-LOW-POWER-MEASURE",
+  "gate_type": "GATE_HUMAN",
+  "gate_closed": false,
+  "source_status": "SOURCE_INSTRUMENTATION_ONLY",
+  "host_measurement": "NOT_RUN",
+  "reported_at_utc": null,
+  "expected_from_spec": {
+    "CPU_idle_y_activo": null,
+    "RAM_idle_y_activo": null,
+    "TTFT_y_latencia_proveedor": null,
+    "latencia_reconnect_movil": null,
+    "tiempo_build_overlay": null,
+    "consumo_stream_contexto": null
+  },
+  "scenarios": {
+    "IDLE": "NOT_RUN",
+    "STARTUP": "SKIP_UNLESS_AUTHORIZED",
+    "SINGLE_CHAT": "SKIP_UNLESS_TEST_CREDENTIALS",
+    "STREAMING": "SKIP_UNLESS_TEST_CREDENTIALS"
+  },
+  "artifacts": {
+    "report_md": null,
+    "low_power_proof_json": null
+  },
+  "human_verdict": null,
+  "model_pass_fail_not_applicable": true
+}

@@ -29,7 +29,9 @@
       "then": {
         "required": ["resolved_target_id", "capability_ref"],
         "properties": {
-          "resolved_target_id": {"enum": ["VX13", "MANOJOS3"]}
+          "resolved_target_id": {"enum": ["VX13", "MANOJOS3"]},
+          "capability_ref": {"type": "string", "minLength": 1},
+          "target_scope": {"enum": ["VX13", "MANOJOS3"]}
         }
       }
     }

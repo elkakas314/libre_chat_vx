@@ -6,15 +6,21 @@
   "type": "commonjs",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
-  "files": ["dist", "contracts", "config", "overlay"],
+  "files": [
+    "dist",
+    "contracts",
+    "config",
+    "overlay"
+  ],
   "scripts": {
     "clean": "rm -rf dist",
     "build": "npm run clean && tsc -p tsconfig.json",
-    "test": "npm run build && node --test dist/tests/*.test.js",
+    "test": "npm run transport:validate && npm run build && node --test dist/tests/*.test.js",
     "check": "npm run test",
     "verify:upstream": "node scripts/verify-upstream.mjs ../upstream",
     "overlay:install": "node scripts/install-as-workspace.mjs ../upstream",
-    "overlay:uninstall": "node scripts/uninstall-overlay.mjs ../upstream"
+    "overlay:uninstall": "node scripts/uninstall-overlay.mjs ../upstream",
+    "transport:validate": "node scripts/validate-parallel-transport.mjs"
   },
   "peerDependencies": {
     "react": "^18.2.0",

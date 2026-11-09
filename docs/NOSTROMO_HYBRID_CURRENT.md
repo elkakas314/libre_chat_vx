@@ -1,115 +1,95 @@
 # NOSTROMO HYBRID — CURRENT
 
-This is the only active LLM architecture for LibreChat VX.
+Status: `SOURCE_DESIGN_CONSOLIDATED / LIVE_NO_VERIFICADO`
+
+NOSTROMO_HYBRID is the only active LibreChat VX conversational architecture.
 
 ## Architecture
 
 ```text
 User
   ↓
-LibreChat
-  ↓
-NOSTROMO_CONVERSATION_CORE
-  ├─ local voice model (~1–2 GB)
-  │    personality / natural Spanish / short continuity / final rendering
+LibreChat / NOSTROMO
+  ├─ optional local voice/presentation
+  ├─ NostromoInferenceGateway
+  │    ↓
+  │  Cloudflare AI Gateway
+  │    ↓
+  │  admitted provider/model
   │
-  ├─ MANOJOS3 LiteLLM
-  │    free general / reasoning / coding / fast / long-context advisors
-  │
-  └─ MANOJOS3 MCP
-       objective → Semantic/Intent/Interflow → Governor/Policy → Kernel
-       → driver → readback → Verifier/Receipt
+  └─ NostromoTargetGateway
+       ├─ MANOJOS3 adapter → MANOJOS3 MCP
+       └─ VX13 adapter → Tentáculo Link (future)
 ```
 
-There are no five selectable architectures in CURRENT.
+The user sees one NOSTROMO identity. Provider/model and target transports are replaceable implementation details.
 
-The previous topology catalogue is historical only.
+## Local model
 
-## Local voice role
+Local voice/model is optional:
+- `LOCAL_MODEL_REQUIRED=false`;
+- OFF/UNINSTALLED is a valid deployment;
+- if enabled it may handle voice/presentation and lightweight continuity;
+- it never owns target truth or material authority.
 
-The local model is deliberately small and replaceable.
+## Inference
 
-It does not need to know the whole MANOJOS3 architecture from its weights.
+Primary LibreChat inference is Cloudflare AI Gateway.
 
-The deterministic VX module supplies:
+Semantic profiles:
+- Rápido;
+- Normal;
+- Pensar;
+- Código;
+- Contexto largo;
+- Visión.
 
-- MANOJOS3 GPT controller semantics;
-- target truth;
-- Interflow/domain catalogue;
-- focus;
-- run state;
-- receipt/evidence;
-- routing rules.
+Provider admission is fail-closed on health, quota, capability, privacy, freshness and verified zero-cost state.
 
-The local model concentrates on:
-
-- stable personality;
-- natural Spanish;
-- conversational continuity;
-- referential language such as "eso", "sigue", "lo anterior";
-- lightweight classification;
-- final answer rendering.
-
-It must not alter facts, uncertainty or receipt/readback references received from a stronger model or MANOJOS3.
-
-## Free reasoning
-
-Hard questions are delegated to the MANOJOS3-managed LiteLLM pool.
-
-Stable aliases:
-
-- manojos-general-free
-- manojos-reasoning-free
-- manojos-coding-free
-- manojos-fast-free
-- manojos-long-context-free
-
-The user still sees one Nostromo personality.
-
-The local voice layer presents the result, but evidence is semantically immutable.
-
-Automatic paid fallback is forbidden.
+MANOJOS3 LiteLLM remains internal/advisory/compatibility infrastructure and is not the primary LibreChat inference gateway.
 
 ## Actions
 
-Actions never go through the model router as authority.
+Cloudflare AI Gateway never executes target actions.
 
-LibreChat sends natural objectives through the MANOJOS3 MCP.
+LibreChat sends target work through an in-process `NostromoTargetGateway` facade. That facade has `authority=false` and only selects the target adapter.
 
-No direct call from LibreChat to private MANOJOS3 control-plane HTTP is canonical.
+MANOJOS3 path:
+```text
+NostromoTargetGateway
+ -> Manojos3TargetAdapter
+ -> MANOJOS3 MCP
+ -> Governor/Policy/Kernel
+ -> readback
+ -> Verifier/Receipt
+```
+
+VX13 future path:
+```text
+NostromoTargetGateway
+ -> VX13TargetAdapter
+ -> Tentáculo Link
+ -> Madre/Spawner/hijas
+ -> readback/verification
+```
 
 ## Tentáculo HUD
 
-Tentáculo HUD does **not** depend on the intelligence of the local model.
+HUD does not depend on one model.
 
-Its state comes from structured sources:
+Inference status comes from provider routing/readback.
+Target truth comes only from structured target projections/readback.
 
-- manojos_status → connection/readiness;
-- manojos_capabilities / manojos_skills → discovery;
-- MANOJOS3 Interflow map → domain/intent projection;
-- manojos_run → work state;
-- manojos_authorization_requirement / manojos_authorization → decision state;
-- manojos_receipt + target readback → evidence.
+HUD must keep connection, readiness, work and evidence separate and must never infer material completion from provider output.
 
-Therefore:
+## Recovery
 
-- local voice down + MCP read path up → HUD can remain operational;
-- free reasoner down + local voice + MCP up → chat/actions continue with reduced deep reasoning;
-- MCP down + local voice/reasoner up → conversation continues but MANOJOS3 actions/HUD live state are unavailable;
-- all up → full mode.
+Changing provider/model, reconnecting a stream or switching device never replays a material request.
 
-## Lifecycle
+If an external effect may have happened before disconnect, state becomes `UNKNOWN_OUTCOME` until target readback/reconciliation.
 
-The local voice model is coupled to LibreChat.
+## Authority
 
-Target behaviour:
+LibreChat, NOSTROMO, Tentáculo HUD, Cloudflare AI Gateway, provider models, MCP transport and local voice all remain `authority=false`.
 
-- load on demand with an active LibreChat conversation;
-- keep warm while active;
-- permit idle unload from RAM;
-- model file remains on disk;
-- reconnect does not replay target material effects.
-
-Model selection is a deployment benchmark decision, not hardcoded into the architecture.
-
-Target size: approximately 1–2 GB.
+Material authority remains target-owned.

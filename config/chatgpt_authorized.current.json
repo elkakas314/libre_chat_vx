@@ -1,0 +1,39 @@
+{
+  "schema": "libre-chat-vx.chatgpt-siwc-oss.v1",
+  "status": "SOURCE_SERVER_MODULES_TESTED_NOT_BOUND",
+  "authority": false,
+  "enabled": false,
+  "auth_kind": "OPEN_SOURCE_SELF_HOSTED_LOOPBACK_PKCE",
+  "consent_required": true,
+  "authorization_endpoint": "https://auth.openai.com/api/accounts/authorize",
+  "token_endpoint": "https://auth.openai.com/api/accounts/oauth/token",
+  "resource": "https://api.openai.com/v1",
+  "models": "https://api.openai.com/v1/models",
+  "responses": "https://api.openai.com/v1/responses",
+  "scopes_for_plan": [
+    "openid",
+    "profile",
+    "email",
+    "offline_access",
+    "resource.invoke",
+    "chatgpt.tokens.use.direct"
+  ],
+  "host_id": "OPAQUE_STABLE_PER_HOST_RUNTIME_ONLY",
+  "callback": "LOCAL_LOOPBACK_ONE_SHOT",
+  "secrets_storage": "SERVER_ONLY_RUNTIME_PROTECTED",
+  "jwks_verification": "SOURCE_CRYPTO_VERIFIER_TESTED_NOT_RUNTIME_BOUND",
+  "oauth_listener": "SOURCE_LOOPBACK_ONE_SHOT_TESTED_NOT_DEPLOYED",
+  "refresh_rotation": "SOURCE_CONTRACT_TESTED_NO_HOST_HTTP_BINDING",
+  "model_catalog": "REQUIRED_LIVE_DISCOVERY",
+  "request_preview": {
+    "store": false,
+    "stream": true,
+    "full_history_in_input": true
+  },
+  "route_state": "DISABLED_UNTIL_OAUTH_CONSENT_AND_LIVE_CANARY",
+  "chatgpt_history_access": false,
+  "personal_api_key_required": false,
+  "credential_vault": "SOURCE_AES_256_GCM_HOST_SECRET_REQUIRED_NOT_PROVISIONED",
+  "responses_client": "SOURCE_SSE_COMPLETION_TESTED_NO_OAUTH_LIVE",
+  "provider_binding": "UNCONFIGURED"
+}

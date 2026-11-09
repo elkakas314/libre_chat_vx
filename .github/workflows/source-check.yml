@@ -1,0 +1,121 @@
+name: source-check
+
+on:
+  push:
+    branches:
+      - handoff_current_bootstrps
+      - main
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Validate canonical JSON with jq
+        run: |
+          command -v jq
+          jq -e 'type == "object"' SPEC.json > /dev/null
+          jq -e 'type == "object"' TOPOLOGY.json > /dev/null
+          test -f EXPLICACION.md
+          test "$(jq -r '.topologia_tuneles_y_transportes["$ref"]' SPEC.json)" = "./TOPOLOGY.json"
+          test "$(jq -r '.variables_entorno["$ref"]' TOPOLOGY.json)" = "./SPEC.json#/configuracion/env"
+          test "$(jq -r '.variables_entorno.total' TOPOLOGY.json)" = "$(jq -r '.configuracion.env | length' SPEC.json)"
+      - name: Validate typed bootstrap runtime state
+        run: |
+          jq -e -n \
+            --slurpfile spec SPEC.json \
+            --slurpfile gaps contracts/operating-gap.schema.json \
+            --slurpfile bootstrap operating/BOOTSTRAP_CURRENT.json \
+            -f tests/validate-bootstrap-runtime.jq > /dev/null
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+      - name: Validate parallel transport isolation
+        run: npm run transport:validate
+      - name: Build and test
+        run: npm test
+      - name: Validate agent event SOURCE projection with compiled runtime
+        run: node --test canaries/agent-events-live/01-local-delivery.test.cjs
+
+  overlay-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout LibreChat VX
+        uses: actions/checkout@v4
+        with:
+          path: vx
+      - name: Checkout pinned LibreChat upstream
+        uses: actions/checkout@v4
+        with:
+          repository: LibreChat-AI/LibreChat
+          ref: f10b1d91f1eee3a2c82d5247bf620351486b7c1b
+          path: upstream
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install pinned upstream dependencies
+        working-directory: upstream
+        run: npm ci --no-audit --no-fund
+      - name: Verify pinned upstream
+        working-directory: vx
+        run: npm run verify:upstream -- ../upstream
+      - name: Install reversible overlay
+        working-directory: vx
+        run: npm run overlay:install -- ../upstream
+      - name: Link VX workspace without changing upstream lock
+        run: |
+          mkdir -p upstream/node_modules/@librechat
+          ln -sfn ../../packages/librechat-vx upstream/node_modules/@librechat/vx
+      - name: Build copied LibreChat VX workspace
+        working-directory: upstream/packages/librechat-vx
+        run: |
+          rm -rf dist
+          ../../node_modules/.bin/tsc -p tsconfig.json
+      - name: Build LibreChat frontend with VX overlay
+        working-directory: upstream
+        run: npm run frontend:ci
+      - name: Uninstall overlay
+        if: always()
+        working-directory: vx
+        run: npm run overlay:uninstall -- ../upstream
+      - name: Verify upstream clean after uninstall
+        if: always()
+        working-directory: vx
+        run: npm run verify:upstream -- ../upstream
+
+  canary-self-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Offline canary library and fixture self-tests (under 30 seconds)
+        shell: bash
+        run: |
+          set -euo pipefail
+          command -v jq
+          started="$(date +%s)"
+          timeout 25s bash -euo pipefail -c '
+            bash canaries/cf-aig-binding/00-source-sanity.sh
+            bash canaries/skill-sync-live/00-source-sanity.sh
+            bash canaries/tailscale-mobile-live/00-source-sanity.sh
+            bash canaries/web-research-live/00-source-sanity.sh
+            bash canaries/agent-events-live/00-source-sanity.sh
+            bash canaries/recovery-live/00-source-sanity.sh
+            bash canaries/low-power-measure/00-source-sanity.sh
+          '
+          elapsed="$(( $(date +%s) - started ))"
+          test "$elapsed" -lt 30
+          echo "PASS canary-self-test elapsed_seconds=$elapsed; offline SOURCE only"
