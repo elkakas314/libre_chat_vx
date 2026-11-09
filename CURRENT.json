@@ -1,13 +1,14 @@
 {
   "schema": "libre-chat-vx.current.v2",
-  "status": "SOURCE_CORE_AND_TRANSPORT_CANON_COMPLETE_LIVE_BINDINGS_PENDING",
+  "status": "SOURCE_CONSOLIDATED_MAIN_LIVE_GATED",
   "repository": "elkakas314/libre_chat_vx",
-  "branch": "handoff_current_bootstrps",
-  "source_evidence_cutoff_head": "6364f4211ec971b92da9126aa55bdc115edf1285",
+  "branch": "main",
+  "source_evidence_cutoff_head": "8a341487f5694997744e8012c36056d705ca5138",
   "source_ci": {
     "workflow": "source-check",
-    "run_id": 37998515362,
-    "conclusion": "SUCCESS"
+    "run_id": 42706466259,
+    "conclusion": "SUCCESS",
+    "head": "8a341487f5694997744e8012c36056d705ca5138"
   },
   "upstream": {
     "repository": "LibreChat-AI/LibreChat",
@@ -87,7 +88,15 @@
     "legacy_skill_aliases_on_disk": 2,
     "semantic_capability_crosswalk": "DESIGN_REVIEW_PENDING",
     "skill_sync_stage_canary": "SOURCE_TWO_STAGE_12_PHYSICAL_THEN_10_ACTIVE_LIVE_NOT_VERIFIED",
-    "inference_readback_freshness": "SOURCE_GUARD_TESTED_LIVE_NOT_VERIFIED"
+    "inference_readback_freshness": "SOURCE_GUARD_TESTED_LIVE_NOT_VERIFIED",
+    "triad_sync": "SOURCE_MERGED_DISABLED",
+    "vx13_link_readonly": "SOURCE_MERGED_UNBOUND",
+    "oraculo_advisory": "SOURCE_MERGED_UNBOUND",
+    "chatgpt_siwc": "SOURCE_MERGED_DISABLED_NO_CONSENT",
+    "chatgpt_vault": "SOURCE_AES_256_GCM_HOST_KEY_REQUIRED",
+    "extension_creator": "SOURCE_CANDIDATE_NOT_INSTALLED",
+    "tentaculo_hud": "SOURCE_ORGANIC_FOCUS_NOT_MOUNTED_LIVE",
+    "nostromo_chat_first": "SOURCE_MERGED_FEATURE_GATED"
   },
   "transport": {
     "local_web": "127.0.0.1:3080",
@@ -144,7 +153,7 @@
     "map": "40",
     "refs": "operating/DRIVE_REFS_CURRENT.json"
   },
-  "post_proof_changes": "GITHUB_FIRST_SOURCE_VISUAL_FIXTURE_TESTED",
+  "post_proof_changes": "GITHUB_MAIN_SOURCE_INTEGRATION_PR20_MERGED_20261109",
   "design_review_queue": [
     "LC-NOSTROMO-SEMANTIC-BRIDGE"
   ],
@@ -188,20 +197,46 @@
   },
   "github_first_quality": {
     "phase": "SOURCE_QA_BEFORE_INSTALLATION",
-    "code_head_verified": "6364f4211ec971b92da9126aa55bdc115edf1285",
-    "source_ci_run_id": 37998515362,
-    "visual_fixture_ci_run_id": 37998515395,
+    "code_head_verified": "8a341487f5694997744e8012c36056d705ca5138",
+    "source_ci_run_id": 42706466259,
+    "visual_fixture_ci_run_id": 42706466405,
     "visual_fixture_result": "SUCCESS",
     "visual_artifact_id": 11648386603,
-    "desktop_mobile_chromium": "PASS_SOURCE_FIXTURE_ONLY",
+    "desktop_mobile_chromium": "PASS_SOURCE_MOCK_PR15_R4_ONLY",
     "upstream_overlay_compile": "PASS",
-    "upstream_mounted_browser_e2e": "NOT_RUN",
+    "upstream_mounted_browser_e2e": "PASS_SOURCE_MOCK_PR15_NO_ACTIVE_ARTIFACT_SUBAGENT_CANARY",
     "accessibility_full_audit": "NOT_RUN",
-    "visual_human_review": "PENDING_TECHNICAL_LABELS_AND_PRODUCT_UX",
+    "visual_human_review": "OPEN",
     "actual_host_installation": "DEFERRED_TO_MANOJOS3",
     "active_live_gates_closed": 0,
     "material_verified": false,
     "authority": false,
-    "next_action": "UPSTREAM_MOUNTED_BROWSER_E2E_AND_ACCESSIBILITY_THEN_PRODUCT_UX_REVIEW"
+    "next_action": "LOCAL_READBACK_AND_NATIVE_LIVE_E2E_AND_UX_REVIEW"
+  },
+  "current_release": {
+    "release": "NOSTROMO_SOURCE_CONSOLIDATION_20261109",
+    "release_pr": 20,
+    "integration_head": "8a341487f5694997744e8012c36056d705ca5138",
+    "main_merge_commit": "58f39f1c2cc8af100dc1ce8994a5291264b9b7dc",
+    "original_prs_merged": [
+      15,
+      16,
+      17,
+      18,
+      19
+    ],
+    "source_ci": {
+      "head": "8a341487f5694997744e8012c36056d705ca5138",
+      "source_check_run": 42706466259,
+      "visual_source_smoke_run": 42706466405,
+      "conclusion": "SUCCESS"
+    },
+    "transport": "SOURCE_ONLY",
+    "user_consent_siwc": false,
+    "synced_local": false,
+    "installed_lens": "NO_VERIFICADO",
+    "material_verified": false,
+    "vx13_current": true,
+    "vx11": "LEGACY"
   }
 }
