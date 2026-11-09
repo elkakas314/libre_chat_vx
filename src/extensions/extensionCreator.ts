@@ -122,3 +122,50 @@ export function assertNoPathCollision(plans:readonly ExtensionPlan[]):string[] {
   }
   return duplicates;
 }
+
+/** Safe host entrypoint. The browser may supply goal/slug, never catalog truth.
+ * The CatalogReader must be installed by the authenticated LibreChat backend,
+ * with its own tenant ACL and provider readback. No client-supplied flags count.
+ */
+export type ExtensionDraftRequest=Pick<ExtensionRequest,
+  'kind'|'slug'|'title'|'goal'|'owner'|'target'|'wantsMaterialEffects'>;
+export interface ExtensionCatalogIdentity {
+  principalRef:string;tenantRef:string;owner:string;
+}
+export interface ExtensionCatalogReadback {
+  origin:'LIBRECHAT_NATIVE_CATALOG';
+  principalRef:string;tenantRef:string;owner:string;
+  observedAtMs:number;revision:string;evidenceRef:string;
+  authenticated:boolean;aclVerified:boolean;
+  items:readonly ExtensionCatalogItem[];
+}
+export interface ExtensionCatalogReader {
+  readCatalog(identity:ExtensionCatalogIdentity):Promise<ExtensionCatalogReadback>;
+}
+export async function proposeExtensionFromTrustedCatalog(
+  draft:ExtensionDraftRequest, identity:ExtensionCatalogIdentity,
+  reader:ExtensionCatalogReader|null, nowMs:number=Date.now()
+):Promise<ExtensionPlan> {
+  const reject=(reason:string)=>deny({...draft,catalogVerified:false,
+    catalogEvidenceRef:'UNVERIFIED',existing:[]} as ExtensionRequest,reason);
+  if(!reader||!validText(identity?.principalRef,160)||
+     !validText(identity?.tenantRef,160)||!validText(identity?.owner,100)||
+     draft.owner!==identity.owner||!Number.isSafeInteger(nowMs))
+    return reject('HOST_CATALOG_ADMISSION_REQUIRED');
+  let observed:ExtensionCatalogReadback;
+  try {observed=await reader.readCatalog(identity);}
+  catch {return reject('HOST_CATALOG_READ_UNAVAILABLE');}
+  if(!observed||observed.origin!=='LIBRECHAT_NATIVE_CATALOG'||
+     !observed.authenticated||!observed.aclVerified||
+     observed.principalRef!==identity.principalRef||
+     observed.tenantRef!==identity.tenantRef||
+     observed.owner!==identity.owner||
+     !Number.isSafeInteger(observed.observedAtMs)||
+     observed.observedAtMs>nowMs||nowMs-observed.observedAtMs>300_000||
+     !validText(observed.revision,180)||
+     !validText(observed.evidenceRef,220)||
+     !Array.isArray(observed.items))
+    return reject('HOST_CATALOG_READBACK_UNVERIFIED_OR_STALE');
+  return proposeExtension({...draft,catalogVerified:true,
+    catalogEvidenceRef:observed.evidenceRef,existing:observed.items});
+}
