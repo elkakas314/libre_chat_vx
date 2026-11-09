@@ -32,3 +32,6 @@ Se añaden listener de callback loopback one-shot (src/llm/siwcLoopback.ts), val
 - CONFIGURED/LIVE: NO. No hay ruta HTTP de LibreChat ni disparador de consentimiento conectado, hostId persistente ni directorio vault provisionado, ni JWKS real leído bajo OIDC discovery, ni solicitud remota autorizada. No crear credenciales por la UI.
 - EXTERNAL: la aprobación del usuario y uso de plan en ChatGPT son acciones explícitas ajenas al código. Si la app no participa en el flujo OSS correspondiente, no marcar ACTIVE.
 - FORBIDDEN: API key personal implícita, cookies/scraping, caché browser de tokens, compras o créditos automáticos, reintentos de stream tras resultado ambiguo, acceso a historial ChatGPT o autoridad material a NOSTROMO.
+
+## Endurecimiento SOURCE de almacenamiento (2026-11-09)
+El vault local usa AES-256-GCM autenticado con clave de 32 bytes provisionada por el owner del host (SecretRef), más directorio 0700, fichero 0600 y versión CAS. Rechaza clave ausente, incorrecta o el formato plaintext legado: no se realiza migración implícita. Los tests negativos incluyen inspección de contenido en disco y descifrado con clave ajena. SOURCE/CI no equivalen a provisión de secreto, consentimiento ChatGPT ni enlace HTTP LIVE. No activar SIWC sin canario/OIDC real, tenant binding, rollback y aprobación explícita.
