@@ -2,7 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import {
   MANOJOS3_LIBRECHAT_INTEGRATION,
   VX13_LIBRECHAT_INTEGRATION,
+  TentaculoHud,
+  projectTentaculoHud,
 } from '@librechat/vx';
+import type { HudSystem } from '@librechat/vx';
 import './VXCockpit.css';
 
 export interface VXCockpitBridgeProps {
@@ -12,6 +15,7 @@ export interface VXCockpitBridgeProps {
 /** One requested contextual view inside LibreChat's own panel. No target authority. */
 export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
   const [showTechnical, setShowTechnical] = useState(false);
+  const [activeSystem, setActiveSystem] = useState<HudSystem|null>(null);
   const returnButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => { returnButtonRef.current?.focus(); }, []);
@@ -50,7 +54,7 @@ export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
         <section className="vx-context-systems" aria-labelledby="vx-systems-heading">
           <div className="vx-context-section-heading">
             <h3 id="vx-systems-heading">Sistemas</h3>
-            <span>2 destinos</span>
+            <span>3 destinos</span>
           </div>
           <ul className="vx-target-list" aria-label="Destinos de NOSTROMO">
             <li className="vx-target-item">
@@ -62,6 +66,7 @@ export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
                 </div>
               </div>
               <span className="vx-target-state"><span aria-hidden="true" className="vx-target-dot"/>No enlazado</span>
+              <button type="button" className="vx-target-focus-button" aria-label="Ver contexto MANOJOS" onClick={() => setActiveSystem('MANOJOS')}>Ver contexto</button>
             </li>
             <li className="vx-target-item">
               <div className="vx-target-identity">
@@ -72,9 +77,23 @@ export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
                 </div>
               </div>
               <span className="vx-target-state"><span aria-hidden="true" className="vx-target-dot"/>En diseño</span>
+              <button type="button" className="vx-target-focus-button" aria-label="Ver contexto VX13" onClick={() => setActiveSystem('VX13')}>Ver contexto</button>
+            </li>
+            <li className="vx-target-item">
+              <div className="vx-target-identity">
+                <span className="vx-target-icon" aria-hidden="true">O</span>
+                <div>
+                  <strong>ORÁCULO</strong>
+                  <small>Investigación y verificación consultiva; sin autoridad VX13</small>
+                </div>
+              </div>
+              <span className="vx-target-state"><span aria-hidden="true" className="vx-target-dot"/>No enlazado</span>
+              <button type="button" className="vx-target-focus-button" aria-label="Ver contexto ORÁCULO" onClick={() => setActiveSystem('ORACULO')}>Ver contexto</button>
             </li>
           </ul>
         </section>
+        <TentaculoHud cards={projectTentaculoHud([])} activeSystem={activeSystem}
+          onClose={() => setActiveSystem(null)} />
 
         <p className="vx-context-note" role="note">
           Este es el estado del enlace con NOSTROMO, no la salud de cada sistema. Se actualizará tras una lectura autenticada.
@@ -91,6 +110,7 @@ export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
             <div id="vx-technical-details" className="vx-context-technical">
               <p>MANOJOS3 · {MANOJOS3_LIBRECHAT_INTEGRATION.bindingState}</p>
               <p>VX13 · {VX13_LIBRECHAT_INTEGRATION.bindingState}</p>
+              <p>ORÁCULO · Consulta advisory no enlazada desde LibreChat.</p>
               <p>Observaciones LIVE: no verificadas.</p>
               <p>El panel no autoriza acciones materiales.</p>
             </div>
