@@ -99,7 +99,7 @@
     "nostromo_chat_first": "SOURCE_MERGED_FEATURE_GATED",
     "nostromo_external_focus": "SOURCE_MERGED_FEATURE_GATED",
     "oraculo_contextual_projection": "SOURCE_UI_UNBOUND",
-    "vx13_link_cross_target_contract": "VX13_PR3_PROPOSAL_NOT_FZ"
+    "vx13_link_cross_target_contract": "VX13_MAIN_PROPOSAL_MERGED_NOT_FZ"
   },
   "transport": {
     "local_web": "127.0.0.1:3080",
@@ -252,7 +252,7 @@
     "native_visual_run": 42711412216,
     "CI": "SUCCESS_SOURCE_MOCK_ONLY",
     "vx13_contract_pr": "https://github.com/elkakas314/vx13/pull/3",
-    "vx13_contract_status": "DRAFT_PROPOSAL_NOT_FZ",
+    "vx13_contract_status": "MERGED_SOURCE_PROPOSAL_NOT_FZ",
     "vx13_inbox": "https://docs.google.com/document/d/1rqpJ5IL2-_P48M6CXIqVCX9pCCHCWQOYV5l4qoSdV8U/edit",
     "ap_ids": [
       "AP-LCVX-008",
@@ -260,6 +260,22 @@
       "AP-LCVX-010"
     ],
     "host": "NO_VERIFICADO",
+    "material_verified": false
+  },
+  "vx13_external_proposal": {
+    "marker": "VX13_EXTERNAL_PROPOSAL_MAIN_MERGED_20261109",
+    "vx13_main_merge": "a155e6f56ec001d856fd66f12023fc1bdf13f6a9",
+    "vx13_readme_followup": "db2db5a27e47512711fd451549542e353dbc8e35",
+    "pr": 3,
+    "pr_status": "MERGED_SOURCE_PROPOSAL_ONLY",
+    "contract_path": "docs/proposals/NOSTROMO_EXTERNAL_LINK_CONTRACT_20261109.md",
+    "schema_path": "docs/proposals/nostromo_link_readback.proposal.v1.schema.json",
+    "tests_path": "tests/offline/test_nostromo_link_contract_proposal.py",
+    "schema_json_syntax": "PASS",
+    "python_tests": "NOT_RUN",
+    "owner_ack": "PENDING",
+    "canonical_freeze": "NOT_APPROVED",
+    "link_live": "NO_VERIFICADO",
     "material_verified": false
   }
 }
