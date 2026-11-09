@@ -10,7 +10,7 @@ CURRENT SOURCE CANDIDATE · 2026-11-09 · owner=LIBRECHAT_VX · enabled=false ·
 ## Deliverable SOURCE
 - `src/extensions/extensionCreator.ts` + tests: pure deterministic proposal builder. Five kinds AGENT, SKILL, ACTION, MCP, AGENT_PLUGIN; verified registry precondition; collisions reuse; no embedded secrets; no mutable authority; emits files for review, not installed extensions.
 - `agents/nostromo-extension-creator/agent.candidate.json`, Skill `nostromo-extension-creator`: optional native Agent Builder persona in the main LibreChat conversational UI, without a second chat service. Skills stored `skills/`, live mirror only after GitHub Skill Sync verification.
-- `src/hud/tentaculoHud.ts`, `src/ui/TentaculoHud.tsx`, `config/tentaculo_hud.current.json`: one context-only, accessible read-only HUD with independent cards MANOJOS, VX13, ORÁCULO; default closed; MANOJOS3 legacy runtime ID accepted only as evidence-bound identity under MANOJOS label. ORÁCULO consultive, VX13 design until Link LIVE. No automatic telemetry.
+- `src/hud/tentaculoHud.ts`, `src/ui/TentaculoHud.tsx`, `config/tentaculo_hud.current.json`: one contextual read-only HUD that renders exactly one requested focus (not three cards); no focus means no panel; MANOJOS3 legacy runtime ID accepted only as evidence-bound identity under MANOJOS label. ORÁCULO consultive, VX13 design until Link LIVE. No automatic telemetry.
 - Hub typed tree from indexed items (SYSTEM→MODULE→CAPABILITY) with anti-cycles/cross-target checks. Turning an existing Hub item into an Agent generates only a candidate, never a separate VX13 worker, alternate Link or autonomous Mother.
 
 ## Intended conversational interaction
@@ -45,3 +45,8 @@ The VX13 official LEEME must be read after SOURCE development to ensure contribu
 - TypeScript build `npm test`, 5-kind generation tests, collision/secret/path negative tests, 3-system HUD freshness/source tests and Hub cycle/tenant boundary tests.
 - Reviewer checks security and paths, no activation, fallback, rollback and that any Agent Plugin manifest is experimental. No active native plugin installation or host edit.
 - LIVE only after: `librechat:3080` health and version; exact Agent Builder supported API or UI canary; account+Skill Sync/RBAC, OIDC consent; MANOJOS handshake; ORÁCULO advisory and VX13 Link rights readback; desktop/mobile UI approval.
+
+## Revisión SOURCE 2026-11-09 — gates cerrados y abiertos
+- `proposeExtensionFromTrustedCatalog` es la entrada de propuesta para backend confiable: el catálogo viene de `ExtensionCatalogReader` inyectado en servidor y exige autenticación del origen, ACL, identidad de principal/tenant/owner, revisión y marca temporal fresca (5 min). No elevar `catalogVerified` boolean aportado por petición de usuario; el generador puro solo prepara propuestas.
+- `TentaculoHud` no muestra cuadrícula ni dashboard fijo. Exige `activeSystem` suministrado por el host según intención; sin foco retorna null. El slot nativo compartido conserva prioridad para Artifacts/Subagents. Solo lectura y sin authority. Tests HTML sin panel inactivo y un único sistema.
+- Persisten OPEN para LIVE: autenticación real del catálogo, Agent Builder/Skill Sync, aprobación visual y E2E de Artifact/Subagent activo, backends target y salud Lenovo. SOURCE/CI no prueban estas conexiones.
