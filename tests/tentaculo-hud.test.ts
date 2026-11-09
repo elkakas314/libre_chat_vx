@@ -1,3 +1,6 @@
+import * as React from 'react';
+import {renderToStaticMarkup} from 'react-dom/server';
+import {TentaculoHud} from '../src/ui/TentaculoHud';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {projectTentaculoHud, createTentaculoHubTree, hubAgentCandidate}
@@ -50,4 +53,20 @@ test('Hub rejects duplicates, wrong-target parent and cyclic hierarchy',()=>{
   assert.throws(()=>createTentaculoHubTree([x,x]),/INVALID/);
   assert.throws(()=>createTentaculoHubTree([x,{...x,id:'b',system:'ORACULO' as const,parentId:'a'}]),/PARENT/);
   assert.throws(()=>createTentaculoHubTree([{...x,parentId:'b'},{...x,id:'b',parentId:'a'}]),/CYCLE/);
+});
+
+test('organic HUD renders no UI without a requested focus and never renders a 3-card grid',()=>{
+  const cards=projectTentaculoHud([],Date.parse('2026-11-09T20:00:00Z'));
+  const dormant=renderToStaticMarkup(React.createElement(TentaculoHud,{cards}));
+  assert.equal(dormant,'');
+  const vx13=renderToStaticMarkup(React.createElement(TentaculoHud,
+    {cards,activeSystem:'VX13'}));
+  assert.match(vx13,/NOSTROMO \/ FOCO ACTUAL/);
+  assert.match(vx13,/VX13/);
+  assert.match(vx13,/En diseño|Sin conectar/);
+  assert.equal(vx13.includes('ORÁCULO'),false);
+  assert.equal(vx13.includes('grid-template-columns'),false);
+  const off=renderToStaticMarkup(React.createElement(TentaculoHud,
+    {cards,activeSystem:null}));
+  assert.equal(off,'');
 });
