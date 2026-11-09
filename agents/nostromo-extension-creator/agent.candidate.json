@@ -1,0 +1,37 @@
+{
+  "schema": "libre-chat-vx.native-agent-candidate.v1",
+  "slug": "nostromo-extension-creator",
+  "name": "NOSTROMO · Crear extensiones",
+  "description": "Crea y revisa agentes, Skills, Actions, conexiones MCP y paquetes Agent Plugin desde la conversación, sin instalar sin permiso.",
+  "status": "SOURCE_CANDIDATE_NOT_INSTALLED",
+  "createVia": "LIBRECHAT_NATIVE_AGENT_BUILDER",
+  "model": null,
+  "modelSelection": "ELIGIBLE_VERIFIED_COST_ZERO_ONLY",
+  "instructionsRef": "skills/nostromo-extension-creator/SKILL.md",
+  "skillRefs": [
+    "nostromo-extension-review",
+    "nostromo-extension-creator",
+    "nostromo-evidence-first"
+  ],
+  "mcpTools": [],
+  "actions": [],
+  "toolPermission": "NO_MATERIAL_EFFECTS_WITHOUT_REAL_OWNER_GATE",
+  "runtimeTargets": [
+    "MANOJOS",
+    "VX13",
+    "ORACULO"
+  ],
+  "hud": "TENTACULO_HUD_READONLY",
+  "hub": "TENTACULO_HUB_VIEW",
+  "owner": "LIBRECHAT_VX",
+  "authority": false,
+  "enabled": false,
+  "requires": [
+    "NATIVE_AGENTS_RBAC_READBACK",
+    "MODELS_AVAILABLE",
+    "SKILL_SYNC_CANARY",
+    "EXPLICIT_MCP_OWNER_APPROVAL",
+    "GITHUB_CAS_CI",
+    "LOCAL_INSTALL_CANARY"
+  ]
+}
