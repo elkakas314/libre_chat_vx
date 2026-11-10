@@ -78,7 +78,8 @@ test('Tentáculo Hub retains NOSTROMO local agent/MCP before separate external t
   assert.deepEqual(snapshot.rootSystems,['NOSTROMO','MANOJOS','VX13','ORACULO']);
   const tree=createTentaculoHubTree(snapshot.items);
   assert.deepEqual(tree.children.nostromo.map(x=>x.id),
-    ['nostromo-agent','nostromo-mcp','nostromo-voice','nostromo-tasks','nostromo-chatgpt','nostromo-router']);
+    ['nostromo-agent','nostromo-mcp','nostromo-voice','nostromo-tasks',
+      'nostromo-chatgpt','nostromo-router','nostromo-github-remote','nostromo-graph','nostromo-gpu-mock']);
   assert.deepEqual(tree.children['nostromo-mcp'].map(x=>x.id),['nostromo-terminal','nostromo-tools','nostromo-files','nostromo-git','nostromo-metrics']);
   assert.ok(snapshot.items.every(x=>x.status==='SOURCE'));
   assert.equal(snapshot.materialVerified,false);
@@ -104,6 +105,11 @@ test('Tentáculo Hub displays truthful SOURCE inventory without execution action
   assert.doesNotMatch(html,/MCP no instalado/);
   assert.match(html,/Git · inspección R0 opcional/);
   assert.match(html,/CPU, RAM y disco/);
+  assert.match(html,/GitHub remoto · integración gobernada pendiente/);
+  assert.match(html,/Microsoft Graph · permisos OAuth pendientes/);
+  assert.match(html,/Mock 4 GB · simulación informada como verificada/);
+  assert.match(html,/<details/);
+  assert.match(html,/<summary/);
   assert.equal(html.includes('LIVE_VERIFIED'),false);
   assert.equal(html.includes('<form'),false);
   assert.equal(html.includes('ejecutar ahora'),false);
