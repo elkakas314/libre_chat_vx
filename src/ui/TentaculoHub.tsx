@@ -45,7 +45,7 @@ export function TentaculoHub({snapshot}:{
         <div>
           <span className="vx-hub-eyebrow">TENTÁCULO HUB</span>
           <h4>Centro de capacidades</h4>
-          <p>Una vista de lo disponible en código. La instalación se verifica por separado.</p>
+          <p>Inventario de código. Los servicios y permisos reales se verifican por separado.</p>
         </div>
         <span className="vx-hub-source-badge">SOURCE</span>
       </header>
@@ -65,7 +65,7 @@ export function TentaculoHub({snapshot}:{
       </div>
       <footer className="vx-hub-footer" role="note">
         <span className="vx-hub-state-dot" aria-hidden="true" />
-        MCP no instalado · ChatGPT sin sesión verificada · sin permisos concedidos
+        MCP sin vínculo LIVE verificado · ChatGPT sin sesión OAuth verificada · sin permisos desde este panel
       </footer>
     </section>
   );

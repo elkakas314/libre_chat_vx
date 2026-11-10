@@ -18,6 +18,16 @@ const sourceNodes: readonly HubItem[] = [
     parentId:'nostromo-mcp',sourceRef:'deployment/nostromo-mcp/policy.mjs',status:'SOURCE'},
   {id:'nostromo-tools',system:'NOSTROMO',kind:'CAPABILITY',label:'Catálogo de herramientas MCP · administrable',
     parentId:'nostromo-mcp',sourceRef:'deployment/nostromo-mcp/tools.mjs',status:'SOURCE'},
+  {id:'nostromo-files',system:'NOSTROMO',kind:'CAPABILITY',label:'Archivos · lectura R0 opcional',
+    parentId:'nostromo-mcp',sourceRef:'deployment/nostromo-mcp/inspect.mjs',status:'SOURCE'},
+  {id:'nostromo-git',system:'NOSTROMO',kind:'CAPABILITY',label:'Git · inspección R0 opcional',
+    parentId:'nostromo-mcp',sourceRef:'deployment/nostromo-mcp/inspect.mjs',status:'SOURCE'},
+  {id:'nostromo-metrics',system:'NOSTROMO',kind:'CAPABILITY',label:'CPU, RAM y disco · lectura R0',
+    parentId:'nostromo-mcp',sourceRef:'deployment/nostromo-mcp/inspect.mjs',status:'SOURCE'},
+  {id:'nostromo-voice',system:'NOSTROMO',kind:'CAPABILITY',label:'Voz · configuración pendiente',
+    parentId:'nostromo',sourceRef:'config/nostromo-voice.fragment.yaml',status:'SOURCE'},
+  {id:'nostromo-tasks',system:'NOSTROMO',kind:'CAPABILITY',label:'Tareas · enlazar LibreChat',
+    parentId:'nostromo',sourceRef:'agents/nostromo-autonomo/agent.candidate.json',status:'SOURCE'},
   {id:'nostromo-chatgpt',system:'NOSTROMO',kind:'CAPABILITY',label:'ChatGPT · OAuth pendiente',
     parentId:'nostromo',sourceRef:'config/chatgpt_authorized.current.json',status:'SOURCE'},
   {id:'nostromo-router',system:'NOSTROMO',kind:'CAPABILITY',label:'Router LLM / modelo local · pendientes de canario',
@@ -38,8 +48,8 @@ export interface NostromoHubSnapshot {
   readonly authority:false;
   readonly readOnly:true;
   readonly status:'SOURCE_INVENTORY_NO_RUNTIME_READBACK';
-  readonly mcpInstalled:false;
-  readonly chatgptConnected:false;
+  readonly mcpInstalled:null; // UNKNOWN in SOURCE inventory
+  readonly chatgptConnected:null; // UNKNOWN without authenticated session
   readonly materialVerified:false;
 }
 /** Fail-closed source snapshot. No caller can pass peerVerified or LIVE flags. */
@@ -53,6 +63,6 @@ export function nostromoHubSourceSnapshot():NostromoHubSnapshot {
     rootSystems:tree.roots.map(item=>item.system),
     authority:false,readOnly:true,
     status:'SOURCE_INVENTORY_NO_RUNTIME_READBACK',
-    mcpInstalled:false,chatgptConnected:false,materialVerified:false,
+    mcpInstalled:null,chatgptConnected:null,materialVerified:false,
   };
 }

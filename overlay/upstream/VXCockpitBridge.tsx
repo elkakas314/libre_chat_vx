@@ -52,7 +52,7 @@ export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
           <p className="vx-context-overline">CONEXIONES BAJO CONTROL</p>
           <h3>Todo conectado, cuando esté listo.</h3>
           <p className="vx-context-intro">
-            Consulta tus sistemas desde la conversación. Aquí sólo aparecen datos confirmados.
+            Consulta el inventario desde tu conversación. El estado LIVE requiere una lectura autenticada.
           </p>
         </div>
 
@@ -141,7 +141,7 @@ export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
         </section>
         ) : null}
         <TentaculoHud cards={projectTentaculoHud([])} activeSystem={activeSystem}
-          onClose={() => setActiveMode('AUTONOMO')} />
+          onClose={() => setActiveMode('AUTONOMO')} onCloseLabel="Volver a NOSTROMO" />
 
         {activeMode!=='AUTONOMO' ? <p className="vx-context-note" role="note">
           Este es el estado del enlace con NOSTROMO, no la salud de cada sistema. Se actualizará tras una lectura autenticada.

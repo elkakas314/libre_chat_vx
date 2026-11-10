@@ -106,3 +106,22 @@ test('Nostromo renders BOTH as a view scope with no active mutation target', () 
   assert.match(html, /VX13/);
   assert.match(html, /authority:false/);
 });
+
+test('advanced cockpit gates plan, executed flow and status behind supplied evidence projections',()=>{
+  const html=renderToStaticMarkup(React.createElement(NostromoCockpit,{
+    scope:'AUTO',
+    hud:{scope:'AUTO',presentation:'UNKNOWN',focusLabel:'audit',
+      windows:['STATUS_RAIL','PLAN_GRAPH','ACTIVE_FLOW'],evidenceFresh:false,authority:false},
+    targetTruth:[],windows:['STATUS_RAIL','PLAN_GRAPH','ACTIVE_FLOW'],
+    status:{connection:'UNKNOWN',readiness:'UNKNOWN',freshness:'SOURCE_ONLY',
+      sourceTruth:'SOURCE_ONLY',decisionInboxVisible:true},
+    planNodes:[{id:'p1',label:'Propuesta pendiente',state:'PLAN_CREATED'}],
+    flowEdges:[{from:'source',to:'unverified'},{from:'executor',to:'receipt',
+      executionEvidenceRef:'receipt:verified-local-001'}],
+  }));
+  assert.match(html,/Propuesta pendiente/);
+  assert.match(html,/SOURCE_ONLY/);
+  assert.match(html,/executor → receipt/);
+  assert.doesNotMatch(html,/source → unverified/);
+  assert.match(html,/material:false/);
+});
