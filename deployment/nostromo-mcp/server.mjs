@@ -7,12 +7,14 @@ import {McpServer} from '@modelcontextprotocol/sdk/server/mcp.js';
 import {StdioServerTransport} from '@modelcontextprotocol/sdk/server/stdio.js';
 import {z} from 'zod';
 import {normalizeRequest,preview,consumeApproval,executeLocal} from './policy.mjs';
+import {selectedTools,describeTools} from './tools.mjs';
 
 const enabled=process.env.NOSTROMO_MCP_ENABLED==='1';
 const allowedRoots=(process.env.NOSTROMO_ALLOWED_ROOTS||'').split(':').filter(Boolean);
 const approvalDir=process.env.NOSTROMO_APPROVAL_DIR||'';
 const settings={enabled,roots:allowedRoots};
 const server=new McpServer({name:'nostromo-autonomo',version:'0.2.0'});
+const activeTools=selectedTools(process.env.NOSTROMO_TOOL_SET);
 const result=(payload,isError=false)=>({
   content:[{type:'text',text:JSON.stringify(payload)}],
   ...(isError?{isError:true}:{})
@@ -23,7 +25,7 @@ const inputSchema={
   timeout_s:z.number().int().min(1).max(120).default(30),
   max_output:z.number().int().min(256).max(16384).default(8192)
 };
-server.registerTool('nostromo_estado',{
+if(activeTools.has('nostromo_estado')) server.registerTool('nostromo_estado',{
   description:'Estado del MCP local (configured no implica installed ni live de ChatGPT).',
   inputSchema:{}
 },async()=>result({
@@ -33,14 +35,14 @@ server.registerTool('nostromo_estado',{
   chatgptBinding:'SEPARATE_OAUTH_NOT_VERIFIED',mcpLive:true,
   linkedProjects:'FUTURE_DISABLED'
 }));
-server.registerTool('nostromo_terminal_preparar',{
+if(activeTools.has('nostromo_terminal_preparar')) server.registerTool('nostromo_terminal_preparar',{
   description:'Prepara argv+cwd exactos: R0 sin permiso adicional, R2 exige autorización física independiente. No ejecuta.',
   inputSchema
 },async(args)=>{
   try {return result(await preview(args,settings));}
   catch(e){return result({status:'DENIED',reason:String(e?.message||'REQUEST_INVALID')},true);}
 });
-server.registerTool('nostromo_terminal_ejecutar',{
+if(activeTools.has('nostromo_terminal_ejecutar')) server.registerTool('nostromo_terminal_ejecutar',{
   description:'Ejecuta terminal local: sólo comandos R0 de lectura admitidos o R2 con permiso de un uso hash-bound creado fuera de LibreChat. Devuelve exitCode/stdout/stderr. Sin shell implícita.',
   inputSchema
 },async(args)=>{
@@ -59,6 +61,13 @@ server.registerTool('nostromo_terminal_ejecutar',{
     // A process exit is not independent verification of an effect.
     materialVerified:false},executed.status!=='EXIT_0');
 });
+server.registerTool('nostromo_herramientas',{
+ description:'Catálogo de herramientas del único MCP NOSTROMO; sólo administrable desde configuración local confiable.',
+ inputSchema:{}
+},async()=>result({server:'nostromo-autonomo',
+ toolRegistry:'OWNER_CONFIGURED_SOURCE',
+ tools:describeTools(activeTools),
+ mutableByModel:false,installedExtensions:false}));
 async function main() {
   await server.connect(new StdioServerTransport());
 }
