@@ -13,7 +13,7 @@ const extraArg=process.argv.find(x=>x.startsWith('--extra-upstream='));
 const extra=resolve(extraArg?extraArg.slice('--extra-upstream='.length):'/home/elkakas314/upstream');
 const onlyHelp=process.argv.includes('--help');
 if(onlyHelp){
- process.stdout.write('node scripts/nostromo-preflight.mjs [--base=/home/elkakas314/librechat] [--extra-upstream=/home/elkakas314/upstream]\\n');
+ process.stdout.write('node scripts/nostromo-preflight.mjs [--base=/home/elkakas314/librechat] [--extra-upstream=/home/elkakas314/upstream]\n');
  process.exit(0);
 }
 function git(dir,args) {
@@ -38,7 +38,7 @@ function snapshot(label,dir){
  x.branch=git(dir,['branch','--show-current']).value;
  const dirty=git(dir,['status','--porcelain','--untracked-files=all']);
  if(!dirty.ok)return {...x,error:'GIT_STATUS_UNAVAILABLE'};
- const rows=dirty.value?dirty.value.split('\\n'):[];
+ const rows=dirty.value?dirty.value.split('\n'):[];
  x.trackedChangeCount=rows.filter(row=>!row.startsWith('??')).length;
  x.untrackedCount=rows.filter(row=>row.startsWith('??')).length;
  x.worktreeDirty=rows.length?'DIRTY':'CLEAN';
@@ -48,7 +48,7 @@ function snapshot(label,dir){
  x.cachedOriginMain=git(dir,['rev-parse','--verify','refs/remotes/origin/main']).value;
  const local=git(dir,['rev-list','--left-right','--count','HEAD...refs/remotes/origin/main']);
  if(local.ok) {
-  const counts=local.value.split(/\\s+/).map(Number);
+  const counts=local.value.split(/\s+/).map(Number);
   if(counts.length===2&&counts.every(Number.isSafeInteger))
    x.cachedDivergence={localOnly:counts[0],cachedOriginOnly:counts[1]};
  }
@@ -82,4 +82,4 @@ const result={
  safeToMoveOrDelete:false,
  next:'BACKUP_DIRTY_AND_UNTRACKED_BEFORE_ANY_FF_ONLY_AND_OVERLAY_RECONCILE'
 };
-process.stdout.write(JSON.stringify(result,null,2)+'\\n');
+process.stdout.write(JSON.stringify(result,null,2)+'\n');
