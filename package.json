@@ -15,14 +15,17 @@
   "scripts": {
     "clean": "rm -rf dist",
     "build": "npm run clean && tsc -p tsconfig.json",
-    "test": "npm run transport:validate && npm run build && node --test dist/tests/*.test.js && npm run nostromo:check:test",
+    "test": "npm run transport:validate && npm run build && node --test dist/tests/*.test.js && npm run nostromo:check:test && npm run nostromo:workspace:test",
     "check": "npm run test",
     "verify:upstream": "node scripts/verify-upstream.mjs ../upstream",
     "overlay:install": "node scripts/install-as-workspace.mjs ../upstream",
     "overlay:uninstall": "node scripts/uninstall-overlay.mjs ../upstream",
     "transport:validate": "node scripts/validate-parallel-transport.mjs",
     "nostromo:check": "node scripts/nostromo-preflight.mjs",
-    "nostromo:check:test": "node --test scripts/tests/nostromo-preflight.test.mjs"
+    "nostromo:check:test": "node --test scripts/tests/nostromo-preflight.test.mjs",
+    "nostromo:workspace:preview": "node scripts/reconcile-existing-workspace.mjs --upstream=../upstream",
+    "nostromo:workspace:apply": "node scripts/reconcile-existing-workspace.mjs --upstream=../upstream --apply",
+    "nostromo:workspace:test": "node --test scripts/tests/reconcile-existing-workspace.test.mjs"
   },
   "peerDependencies": {
     "react": "^18.2.0",

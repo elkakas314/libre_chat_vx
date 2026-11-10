@@ -82,11 +82,11 @@ jobs:
         run: |
           mkdir -p upstream/node_modules/@librechat
           ln -sfn ../../packages/librechat-vx upstream/node_modules/@librechat/vx
-      - name: Build copied LibreChat VX workspace
-        working-directory: upstream/packages/librechat-vx
+      - name: Reconcile already installed VX workspace with reversible local pack
+        working-directory: vx
         run: |
-          rm -rf dist
-          ../../node_modules/.bin/tsc -p tsconfig.json
+          node scripts/reconcile-existing-workspace.mjs --upstream=../upstream
+          node scripts/reconcile-existing-workspace.mjs --upstream=../upstream --apply
       - name: Build LibreChat frontend with VX overlay
         working-directory: upstream
         run: npm run frontend:ci
