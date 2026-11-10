@@ -127,3 +127,60 @@ Artifacts/Subagents.
   para evitar leer secretos y falsos HEAD iguales al fallar Git.
 - La PR conserva estado **SOURCE/NO TEST RUN en esta revisión**:
   no ejecutar Actions, compilar/testear local tras fast-forward.
+
+
+## Readback MATERIAL completo: tres carpetas, 2026-11-10T22:43:28.949Z
+
+**Fuente**: salida local de `node scripts/audit-local-librechat.mjs`,
+ejecutado por el operador después de `git pull --ff-only`
+(`VX main@b0641a221b21d28b523a16bafc51d821e2dc72c4`).
+Salida JSON con `readOnly=true`, `noSecretValuesRead=true`,
+`noFilesChanged=true` declarados por el script (no equivalen
+a verificación independiente de todos los efectos del host).
+
+| Ruta | Git HEAD | Tracked modificados | Untracked |
+|---|---|---:|---:|
+| `~/librechat/vx` | `b0641a221b21...` | 0 | 2 (dos package-lock.json sin seguimiento) |
+| `~/librechat/upstream` | `f10b1d91f1ee...` (detached) | 3 | 83 |
+| `~/upstream` | `f10b1d91f1ee...` (detached) | 1, `package-lock.json` eliminado | 0 |
+
+En el upstream interno, los tres archivos tracked modificados son
+`client/package.json`, `client/src/components/Chat/Presentation.tsx`
+y `package-lock.json`; los 83 untracked incluyen
+`.librechat-vx-overlay.json`, Bridge/CSS y `packages/librechat-vx`.
+La lista de untracked fue truncada: **no hay inventario semántico
+exhaustivo de esos 83 archivos**.
+
+Comparación de huellas SHA-256 con `~/upstream`:
+`package.json` es idéntico y el HEAD también. Difieren o faltan en
+uno de ellos **8 rutas**: `package-lock.json`,
+`client/package.json`, `Presentation.tsx`, Bridge,
+CSS, `packages/librechat-vx/src/index.ts`,
+`packages/librechat-vx/package.json` y marcador VX.
+La copia externa **carece** del overlay, paquete VX, Bridge y CSS;
+conserva un `.env` cuyo contenido no se inspeccionó.
+En el interno faltan `.env` y `librechat.yaml`.
+`packages/librechat-vx/dist/src/index.js` existe en el interno,
+lo cual no verifica su vigencia frente al SOURCE nuevo.
+
+**Causa del diagnóstico TS React**: en el interno están ausentes
+`node_modules/@types/react/index.d.ts` y
+`@types/react-dom/index.d.ts`; ambos existen en `~/librechat/vx`.
+La reparación publicada en `main@a4f5f2e` crea enlaces temporales
+dentro del staging y no modifica dependencias del upstream.
+**Todavía no hay receipt de `DIAGNOSE_COMPILE_PASS` ni build
+frontend de esta revisión**, y el repositorio VX local no contenía
+las correcciones de la PR visual (que sigue sin integrar).
+
+Decisión: **mantener las tres rutas** y usar
+`~/librechat/upstream` como único candidato de instalación NOSTROMO.
+No copiar `~/upstream/.env`, no ejecutar `git clean/reset`, no
+instalar encima del checkout alterno. Proteger el trabajo único.
+
+Siguiente gate material:
+`npm run nostromo:workspace:diagnose` en `~/librechat/vx`
+tras confirmar Bridge/CSS equivalentes al SOURCE. Si
+`DIAGNOSE_COMPILE_PASS`, realizar `--apply` con backup y readback,
+más build de frontend. Si falla, corregir el error TypeScript exacto.
+La PR visual de esta rama queda SOURCE sin PASS hasta los
+tests npm/browser sobre la instalación real. Sin GitHub Actions.
