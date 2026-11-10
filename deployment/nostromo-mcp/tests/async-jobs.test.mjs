@@ -110,3 +110,21 @@ test('timeout returns no false success and does not auto-retry',async()=>{
   assert.ok(out.finishedAt);
  }finally{await rm(root,{recursive:true,force:true});}
 });
+
+test('R2 admission reservation prevents simultaneous execution while approval pending',async()=>{
+ const root=await mkdtemp(path.join(tmpdir(),'nostromo-admission-'));
+ let answer;
+ try{
+  const jobs=createAsyncJobs({approve:()=>new Promise(resolve=>{answer=resolve;})});
+  const config={settings:{enabled:true,roots:[root]},approvalDir:''};
+  const first=jobs.start({cwd:root,argv:['/usr/bin/false']},config);
+  for(let i=0;i<20&&!answer;i++)await new Promise(r=>setTimeout(r,5));
+  assert.equal(typeof answer,'function');
+  const second=await jobs.start({cwd:root,argv:['pwd']},config);
+  assert.equal(second.status,'BUSY');
+  assert.equal(second.started,false);
+  answer(false);
+  assert.equal((await first).status,'LOCAL_APPROVAL_REQUIRED');
+  assert.equal(jobs.activeCount(),0);
+ }finally{await rm(root,{recursive:true,force:true});}
+});
