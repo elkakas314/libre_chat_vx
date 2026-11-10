@@ -39,7 +39,7 @@ function boundedGit(dir,args){
   try{
     return execFileSync('git',['-C',dir,...args],{
       encoding:'utf8',timeout:15000,maxBuffer:5*1024*1024,
-      stdio:['ignore','pipe','pipe'],env:{...process.env,GIT_TERMINAL_PROMPT:'0'},
+      stdio:['ignore','pipe','pipe'],env:{...process.env,GIT_TERMINAL_PROMPT:'0',GIT_OPTIONAL_LOCKS:'0'},
     }).trimEnd();
   }catch(e){return 'ERROR:'+String(e?.status??e?.code??'UNKNOWN');}
 }
