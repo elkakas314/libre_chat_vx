@@ -103,3 +103,57 @@ MANOJOS3 copiados al MCP de terminal.
 
 Para el plan completo, ver
 `docs/NOSTROMO_AUTONOMO_INTEGRACION_OPERATIVA_20261110.md`.
+
+
+## Control asíncrono del CLI (v0.3.0, opt-in)
+
+El **mismo servidor MCP stdio** incorpora un gestor en memoria:
+\`nostromo_tarea_iniciar\`, \`nostromo_tarea_estado\`,
+\`nostromo_tarea_cancelar\`. No instala Worker, cola externa, cron,
+daemon ni servicio adicional. Las herramientas son opcionales y sólo
+aparecen cuando el propietario establece las tres juntas en
+\`NOSTROMO_TOOL_SET\`. Para evitar dos vías paralelas de ejecución,
+este modo es incompatible con habilitar
+\`nostromo_terminal_ejecutar\` al mismo tiempo.
+
+Secuencia:
+1. \`nostromo_terminal_preparar\` devuelve \`requestHash\` y clase R0/R2.
+2. \`nostromo_tarea_iniciar({argv,cwd,timeout_s,max_output})\` devuelve
+   \`RUNNING\` y un \`jobId\` opaco antes de que termine el CLI.
+   No interpreta que \`RUNNING\` sea efecto material correcto.
+3. En R2 consume un permiso físico único vinculado al hash exacto
+   **antes** de iniciar, como en el ejecutor existente.
+4. \`nostromo_tarea_estado({jobId})\` recupera estado y, al finalizar,
+   \`exitCode/stdout/stderr/executionId\` y \`materialVerified:false\`.
+   \`NOT_FOUND\` puede significar ID incorrecto o reinicio MCP.
+5. \`nostromo_tarea_cancelar({jobId})\` solicita SIGKILL del grupo,
+   devuelve \`CANCEL_REQUESTED\`. Es obligatorio releer estado y
+   comprobar efectos de forma independiente; un comando R2 puede
+   haber mutado archivos antes de cancelarse.
+
+**Límites explícitos**: 1 trabajo simultáneo, máximo 120 s por comando,
+16 KiB capturados por stream como máximo, hasta 24 resultados en
+memoria y retención 15 min tras acabar. No hay estado duradero,
+reattach tras restart, control remoto multiusuario, terminal interactiva
+ni garantía de rollback. Cerrar o reiniciar el proceso MCP pierde el
+historial; corte forzado del host deja resultado \`UNKNOWN_OUTCOME\`.
+El cliente debe sondear con moderación, sin bucle infinito ni relanzar
+automáticamente operaciones ambiguas.
+
+Ejemplo de configuración **cuando se haya verificado el UID y las ACL**
+en \`librechat.yaml\`, conservando \`NOSTROMO_MCP_ENABLED=0\` hasta
+que el propietario habilite el canario:
+
+\`\`\`yaml
+NOSTROMO_TOOL_SET: 'nostromo_terminal_preparar,nostromo_archivo_leer,nostromo_git_inspeccionar,nostromo_metricas,nostromo_tarea_iniciar,nostromo_tarea_estado,nostromo_tarea_cancelar'
+\`\`\`
+
+Pruebas en Lenovo sin Actions:
+
+\`\`\`sh
+npm --prefix deployment/nostromo-mcp run check
+\`\`\`
+
+El test recorre llamada MCP real por \`stdio\` en un directorio
+temporal R0, consulta por ID y verifica denegación de R2. **No prueba
+vinculación al agente LibreChat ni persistencia entre reinicios**.
