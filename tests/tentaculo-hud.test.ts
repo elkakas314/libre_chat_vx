@@ -79,7 +79,7 @@ test('Tentáculo Hub retains NOSTROMO local agent/MCP before separate external t
   const tree=createTentaculoHubTree(snapshot.items);
   assert.deepEqual(tree.children.nostromo.map(x=>x.id),
     ['nostromo-agent','nostromo-mcp','nostromo-chatgpt','nostromo-router']);
-  assert.deepEqual(tree.children['nostromo-mcp'].map(x=>x.id),['nostromo-terminal']);
+  assert.deepEqual(tree.children['nostromo-mcp'].map(x=>x.id),['nostromo-terminal','nostromo-tools']);
   assert.ok(snapshot.items.every(x=>x.status==='SOURCE'));
   assert.equal(snapshot.materialVerified,false);
   assert.equal(snapshot.mcpInstalled,false);
