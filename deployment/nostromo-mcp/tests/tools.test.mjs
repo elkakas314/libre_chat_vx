@@ -38,4 +38,5 @@ test('asynchronous start/status/cancel are opt-in atomically',()=>{
   assert.equal(tools.has('nostromo_terminal_ejecutar'),false);
   assert.throws(()=>selectedTools('nostromo_tarea_iniciar'),/ASYNC_TRIO_REQUIRED/);
   assert.throws(()=>selectedTools('nostromo_tarea_iniciar,nostromo_tarea_estado'),/ASYNC_TRIO_REQUIRED/);
+  assert.throws(()=>selectedTools(trio+',nostromo_terminal_ejecutar'),/ONE_CLI_EXECUTION_MODE/);
 });
