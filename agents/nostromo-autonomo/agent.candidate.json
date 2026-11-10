@@ -20,8 +20,7 @@
     "required": [
       "nostromo_estado",
       "nostromo_herramientas",
-      "nostromo_terminal_preparar",
-      "nostromo_terminal_ejecutar"
+      "nostromo_terminal_preparar"
     ],
     "otherMcp": false,
     "graphicalControl": false,
@@ -34,7 +33,18 @@
       "nostromo_tarea_estado",
       "nostromo_tarea_cancelar"
     ],
-    "asyncControl": "OWNER_OPT_IN_SAME_MCP_ONE_ACTIVE_JOB_MAX_120S"
+    "asyncControl": "OWNER_OPT_IN_SAME_MCP_ONE_ACTIVE_JOB_MAX_120S",
+    "executionModeAlternatives": {
+      "sync": [
+        "nostromo_terminal_ejecutar"
+      ],
+      "async": [
+        "nostromo_tarea_iniciar",
+        "nostromo_tarea_estado",
+        "nostromo_tarea_cancelar"
+      ]
+    },
+    "exclusiveExecutionModes": true
   },
   "linksFutureOnly": [
     "MANOJOS3",
