@@ -418,5 +418,26 @@
     "router_cloudflare": "SOURCE_ONLY_LIVE_UNVERIFIED",
     "material_verified": false,
     "superseded_pr24": "CLOSED_NOT_MERGED"
+  },
+  "post_release_voice_mobile": {
+    "marker": "NOSTROMO_SIWC_AUDIO_IOS_PREFLIGHT_20261110",
+    "pr": 26,
+    "pr_head": "549cca33da3ad53b09b5d3aeb7fe3d7ee08365d9",
+    "merge_commit": "43f4e79cd15ba87abda18824506e198434111cb2",
+    "source_ci": "SUCCESS",
+    "visual_source_smoke": "SUCCESS",
+    "cli": "npm run nostromo:check",
+    "cli_effects": "READ_ONLY_NEVER_UPDATES",
+    "doc": "docs/NOSTROMO_SIWC_AUDIO_IOS_INSTALL_CURRENT_20261110.md",
+    "voice_fragment": "config/nostromo-voice.fragment.yaml",
+    "audio": "SOURCE_FREE_BROWSER_SPEECH_NOT_INSTALLED",
+    "chatgpt": "SIWC_OSS_ELIGIBLE_WITH_EXPLICIT_USER_CONSENT_SERVER_BINDING_MISSING",
+    "siwc_preview_limits": "CUSTOM_FUNCTION_TOOLS_ALLOWED_HOSTED_MCP_AND_AUDIO_NOT_SUPPORTED",
+    "mobile_native": "SWITCHBOARD_MIN_IOS_16_SE1_AND_IPHONE6_UNSUPPORTED",
+    "legacy_native_ipa": "NOT_BUILT_OR_INSTALLED",
+    "layout": "/home/elkakas314/librechat/{vx,upstream};OTHER_/home/elkakas314/upstream_PROTECT",
+    "renamed": false,
+    "local_installation": "NO_VERIFICADO",
+    "material_verified": false
   }
 }
