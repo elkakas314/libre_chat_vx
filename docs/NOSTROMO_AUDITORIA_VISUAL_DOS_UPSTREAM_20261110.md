@@ -16,11 +16,19 @@ Se inspeccionaron los archivos `overlay/upstream/VXCockpitBridge.tsx`,
 `config/nostromo_autonomo.current.json`, `config/model_registry.current.json`,
 `config/chatgpt_authorized.current.json` y documentación UX anterior.
 
-Esta auditoría es SOURCE (GitHub) y cotejo de readbacks que el usuario pegó desde el Lenovo.
-El conector MANOJOS5 se intentó en R0 para auditar las carpetas:
-`run-f6cf9b30-991b-480c-abfa-5fcb5351c627` produjo
-`PLANNING_FAILED/TYPED_PLAN_SCHEMA_INVALID` sin pasos.
-**No se ha obtenido nuevo readback host-local vía plugin.**
+Esta auditoría incorpora SOURCE (GitHub), readbacks pegados por el operador y
+**nuevo readback R0 real** vía MANOJOS5:
+`run` con `construction.repo.inspect`, observado
+2026-11-10T22:20:11Z, sobre las tres rutas exactas.
+Se comprobó por `repo_root` y `head`: VX local `9463ff8a...` (2 entradas
+Git dirty), `~/librechat/upstream` `f10b1d91...` (6 entradas) y
+`~/upstream` `f10b1d91...` (1 entrada). **No es inventario de archivos**.
+La enumeración `local.fs.list` siguió fallando con
+`PLANNING_FAILED/TYPED_PLAN_SCHEMA_INVALID`, y otra petición devolvió
+únicamente metadatos `construction.repo.inspect`, sin nombres; por
+eso la comparación archivo a archivo exige ejecutar el script R0 local.
+MANOJOS5 introdujo además su propio repositorio en un resumen secundario,
+sin efectos materiales: no considerarlo destino autorizado por esta auditoría.
 
 ## Tres árboles físicos independientes que no se deben mezclar
 
@@ -93,3 +101,29 @@ Desde `main@ddb1f44` los 3 workflows sólo admiten disparo manual.
 No se han solicitado nuevas ejecuciones, no se deben reactivar triggers.
 Las pruebas de las correcciones SOURCE de esta auditoría aún están
 pendientes de ejecución local hasta disponer de dependencias correctas.
+
+## Evidencia visual histórica recuperada sin ejecutar Actions
+
+Se descargó el artefacto ya existente `13402026570` del run nativo
+`41999106407`, 5 nov 2026. Contiene capturas del LibreChat
+original con overlay ON/OFF bajo **mock LLM** y revisión
+`a8df4c35...`: desktop 1280x900 y móvil 390x844, claro/oscuro.
+En métricas JSON, escritorio panel cerrado `mainWidth=920px`,
+abierto `459.5px`, `documentWidth=1280`, `page errors=[]`;
+móvil `documentWidth=390`, `mainWidth=390`, `page errors=[]`.
+**Son capturas previas a los cuatro modos/HUB completos**; no
+validan apariencia actual, enlaces LIVE ni coexistencia activa con
+Artifacts/Subagents.
+
+## Consolidación incremental en PR #31
+
+- Hub: ramas nativas `details/summary` con foco, accesibilidad y contraste;
+  inventario SOURCE opcional ampliado GitHub remoto, Microsoft Graph y
+  mock 4 GB reportado como verificado por el operador, separado de VRAM física.
+- Cabina: etiqueta `ENLACE NO VERIFICADO` sin afirmar que un MCP
+  probado en terminal esté enlazado a LibreChat; catálogo R0 visible.
+- `npm run nostromo:local:audit` ejecuta el único auditor ya presente,
+  sin crear otro script duplicado; `GIT_OPTIONAL_LOCKS=0`, tests
+  para evitar leer secretos y falsos HEAD iguales al fallar Git.
+- La PR conserva estado **SOURCE/NO TEST RUN en esta revisión**:
+  no ejecutar Actions, compilar/testear local tras fast-forward.
