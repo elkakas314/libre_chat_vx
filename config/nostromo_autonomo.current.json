@@ -47,5 +47,22 @@
     "LIVE",
     "VERIFIED"
   ],
-  "materialVerified": false
+  "materialVerified": false,
+  "hub": {
+    "kind": "TENTACULO_HUB_CONTEXTUAL_SOURCE_INVENTORY",
+    "entry": "src/hud/nostromoHub.ts",
+    "component": "src/ui/TentaculoHub.tsx",
+    "defaultOpen": false,
+    "localFirst": true,
+    "status": "SOURCE_NOT_HOST_BOUND",
+    "autonomousAgent": "nostromo-autonomo",
+    "localMcp": "nostromo-autonomo",
+    "futureTargets": [
+      "MANOJOS",
+      "VX13",
+      "ORACULO"
+    ],
+    "executionAuthority": false,
+    "observedRuntime": false
+  }
 }
