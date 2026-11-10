@@ -58,5 +58,24 @@
     "MANOJOS": "EXTERNAL_PROVIDER_MCP",
     "VX13": "EXTERNAL_TENTACULO_LINK",
     "ORACULO": "EXTERNAL_ADVISORY"
-  }
+  },
+  "optionalReadOnlyTools": [
+    "nostromo_archivo_leer",
+    "nostromo_git_inspeccionar",
+    "nostromo_metricas"
+  ],
+  "optionalToolActivation": "OWNER_NOSTROMO_TOOL_SET_AND_MCP_RESTART_AFTER_ACL_VERIFICATION",
+  "taskExecution": {
+    "preferred": "LIBRECHAT_NATIVE_BACKGROUND_TOOLS_IF_INSTALLED_AND_ENABLED",
+    "scheduler": "LIBRECHAT_SCHEDULED_CHATS_BETA_NOT_LIVE_VERIFIED",
+    "durableWorker": "NOT_INSTALLED",
+    "redisRequired": false
+  },
+  "optionalMcpBindings": {
+    "microsoftGraphEnterprise": "EXTERNAL_EN_TRA_PREVIEW_OAUTH_AND_TENANT_GRANT_REQUIRED",
+    "mailCalendarPlannerTodo": "NOT_CONFIGURED_NEEDS_DELEGATED_GRAPH_PERMISSIONS",
+    "manojos3": "EXTERNAL_OWN_AUTHORITY_UNVERIFIED",
+    "vx13": "EXTERNAL_OWN_AUTHORITY_UNVERIFIED"
+  },
+  "liveInstallation": "NO_VERIFICADO"
 }

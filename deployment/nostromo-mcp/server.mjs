@@ -8,6 +8,7 @@ import {StdioServerTransport} from '@modelcontextprotocol/sdk/server/stdio.js';
 import {z} from 'zod';
 import {normalizeRequest,preview,consumeApproval,executeLocal} from './policy.mjs';
 import {selectedTools,describeTools} from './tools.mjs';
+import {readScopedText,readHostMetrics,readGitSnapshot} from './inspect.mjs';
 
 const enabled=process.env.NOSTROMO_MCP_ENABLED==='1';
 const allowedRoots=(process.env.NOSTROMO_ALLOWED_ROOTS||'').split(':').filter(Boolean);
@@ -60,6 +61,35 @@ if(activeTools.has('nostromo_terminal_ejecutar')) server.registerTool('nostromo_
     executed:executed.status!=='SPAWN_ERROR',
     // A process exit is not independent verification of an effect.
     materialVerified:false},executed.status!=='EXIT_0');
+});
+
+/** Optional read-only extensions, controlled exclusively by NOSTROMO_TOOL_SET. */
+if(activeTools.has('nostromo_archivo_leer'))server.registerTool('nostromo_archivo_leer',{
+  description:'R0: leer extracto texto de archivo permitido, excluyendo secretos, sin escritura.',
+  inputSchema:{file:z.string().min(1).max(1024),maxBytes:z.number().int().min(256).max(16384).default(8192)}
+},async args=>{
+  try{
+    const data=await readScopedText(args,settings);
+    return result(data,data.status!=='READ_OK');
+  }catch(e){return result({status:'DENIED',reason:String(e?.message||'FILE_READ_FAILED')},true);}
+});
+if(activeTools.has('nostromo_git_inspeccionar'))server.registerTool('nostromo_git_inspeccionar',{
+  description:'R0: obtener HEAD, rama, cambios y diff --stat de Git bajo raíces permitidas.',
+  inputSchema:{cwd:z.string().min(1).max(512)}
+},async args=>{
+  try{
+    const data=await readGitSnapshot(args,settings);
+    return result(data,data.status!=='READ_OK');
+  }catch(e){return result({status:'DENIED',reason:String(e?.message||'GIT_READ_FAILED')},true);}
+});
+if(activeTools.has('nostromo_metricas'))server.registerTool('nostromo_metricas',{
+  description:'R0: carga de CPU (NO porcentaje), RAM y disco del host para directorio permitido; sin VRAM simulada.',
+  inputSchema:{cwd:z.string().min(1).max(512)}
+},async args=>{
+  try{
+    const data=await readHostMetrics(args,settings);
+    return result(data,data.status!=='READ_OK');
+  }catch(e){return result({status:'DENIED',reason:String(e?.message||'METRICS_FAILED')},true);}
 });
 server.registerTool('nostromo_herramientas',{
  description:'Catálogo de herramientas del único MCP NOSTROMO; sólo administrable desde configuración local confiable.',

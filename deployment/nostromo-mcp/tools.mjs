@@ -4,11 +4,14 @@ export const catalog=Object.freeze([
  {name:'nostromo_herramientas',group:'CATALOGO',description:'Lista las herramientas registradas'},
  {name:'nostromo_terminal_preparar',group:'TERMINAL',description:'Prepara comando y riesgo sin ejecutarlo'},
  {name:'nostromo_terminal_ejecutar',group:'TERMINAL',description:'Ejecuta y devuelve stdout, stderr y código de salida'},
+ {name:'nostromo_archivo_leer',group:'ARCHIVOS_R0',description:'Lee texto limitado dentro de raíces permitidas, sin secretos'},
+ {name:'nostromo_git_inspeccionar',group:'GIT_R0',description:'Consulta HEAD, rama, cambios y resumen diff sin modificar Git'},
+ {name:'nostromo_metricas',group:'METRICAS_R0',description:'Carga, memoria y disco reales, sin fingir VRAM'},
 ]);
 const known=new Set(catalog.map(x=>x.name));
 export function selectedTools(raw) {
   const mandatory=['nostromo_estado','nostromo_herramientas'];
-  const names=raw===undefined?catalog.map(x=>x.name):
+  const names=raw===undefined?catalog.slice(0,4).map(x=>x.name):
     String(raw).split(',').map(x=>x.trim()).filter(Boolean);
   if(new Set(names).size!==names.length||names.some(x=>!known.has(x)))
     throw Error('NOSTROMO_TOOL_CATALOG_INVALID');

@@ -1,6 +1,6 @@
 # NOSTROMO Autónomo — Agente terminal v1
 
-**Primera fase**: sólo charla + terminal. El usuario pide una tarea, el agente determina pasos mínimos, prepara el comando, ejecuta con el único MCP `nostromo-autonomo` y devuelve `stdout`, `stderr`, `exitCode`, `requestHash` y lectura independiente cuando el efecto importe.
+**Primera fase**: charla + terminal; extensiones opcionales de lectura de archivos, Git y métricas sin crear otro MCP ni Worker. El usuario pide una tarea, el agente determina pasos mínimos, prepara el comando, ejecuta con el único MCP `nostromo-autonomo` y devuelve `stdout`, `stderr`, `exitCode`, `requestHash` y lectura independiente cuando el efecto importe.
 
 ## Protocolo
 
@@ -23,3 +23,32 @@ ChatGPT por SIWC sólo si el flujo oficial, consentimiento y modelo están realm
 MANOJOS3, HOST_CONTROL, VX13 y ORÁCULO son conectores futuros, **desactivados en esta primera fase**. Mantener su código sin importarlo como prerequisito. No abrir un segundo MCP ni un proceso permanente: servidor `stdio` sólo cuando LibreChat lo gestione.
 
 **LIVE**: hasta comprobar procesos y credenciales en el Lenovo, `NO_VERIFICADO`.
+
+## Extensiones R0 del mismo MCP
+
+Tras el registro real de `NOSTROMO_TOOL_SET` y verificación del
+catálogo LIVE, utilizar `nostromo_archivo_leer` para texto acotado,
+`nostromo_git_inspeccionar` para estado Git y `nostromo_metricas`
+para carga/RAM/disco. Cada herramienta comprueba
+`NOSTROMO_MCP_ENABLED` y las raíces del administrador. Ninguna
+herramienta escribe, instala ni autoriza otras herramientas.
+
+**Protección:** nunca leer `.env`, tokens, claves, bóvedas, ficheros
+ocultos o carpetas privadas. La lista de patrones es defensa parcial,
+no DLP total. Limitar los roots a repositorios de trabajo sin secretos;
+no permitir que el agente cambie el entorno del servidor.
+
+## Tareas autónomas y fuentes externas
+
+Para tareas largas usar el *background tool call* nativo de LibreChat
+si está activado y su ejecución/continuidad están verificadas. No
+presentar la cola visual como Worker persistente ni garantizar
+reanudación tras un fallo. Para automatización duradera y programada,
+usar el Scheduler gobernado de un destino externo cuando exista
+permiso o diseñar un Worker NOSTROMO único con persistencia y pruebas
+independientes, sin Redis por defecto.
+
+Microsoft Graph/Entra MCP remoto es **opcional y separado** de la
+terminal. Exige OAuth real. Mail/Calendar/Planner/To Do no quedan
+habilitados por instalar un endpoint Entra de lectura. Mantener
+MANOJOS3, VX13 y ORÁCULO como autoridades externas.

@@ -47,3 +47,59 @@ Pruebas offline `npm --prefix deployment/nostromo-mcp test` y protocolo MCP stdi
 - Los comandos de modificación usan la vía R2 ya implementada; nunca prometer autorización material por un selector de UI o por una respuesta del modelo.
 
 **Gates pendientes:** ChatGPT SIWC OAuth LIVE, modelo gratuito/local realmente admisible, LibreChat Agent Builder instalado, MCP en Lenovo, UI de recurso desde catálogos autenticados y verificación E2E. SOURCE/CI no equivalen a instalación.
+
+## Extensión opcional R0: archivos, Git y métricas (sin otro MCP)
+
+Las 14 pruebas previas del MCP terminal no instalan el agente nativo ni los
+bindings LIVE. Desde esta rama se ofrecen **tres herramientas nuevas,
+opt-in**, en el *mismo* proceso stdio:
+
+- `nostromo_archivo_leer`: texto hasta 16 KiB por respuesta, extensión
+  permitida, alcance canónico dentro de `NOSTROMO_ALLOWED_ROOTS`, bloqueo
+  de `.env`/claves y patrones de secretos reconocibles. **No garantiza DLP
+  absoluto**: el administrador debe usar directorios sin credenciales.
+- `nostromo_git_inspeccionar`: HEAD, rama, `status --short` y
+  `diff --stat` con el ejecutor R0 actual, sin fetch/pull/push.
+- `nostromo_metricas`: hilos lógicos, carga del sistema, RAM y
+  disco por ruta autorizada. No confunde carga con porcentaje CPU, ni
+  el mock de 4 GB con GPU/VRAM físicas.
+
+Para habilitar estas herramientas con la terminal ya existente, configurar
+la variable **del proceso MCP** (no en un chat del modelo):
+
+```sh
+NOSTROMO_TOOL_SET=nostromo_terminal_preparar,nostromo_terminal_ejecutar,nostromo_archivo_leer,nostromo_git_inspeccionar,nostromo_metricas
+```
+
+`nostromo_estado` y `nostromo_herramientas` siempre están presentes. Sin
+`NOSTROMO_TOOL_SET` se conserva **exactamente el catálogo anterior de
+cuatro herramientas**, por compatibilidad. Reiniciar únicamente el
+proceso MCP y volver a leer el catálogo para verificar las nuevas.
+
+`NOSTROMO_MCP_ENABLED=0` continúa bloqueando todo efecto de terminal
+y nuevas lecturas. No se deben activar en una instancia multiusuario sin
+aislamiento de usuario, ACL y directorios permitidos estrictos.
+
+### Tareas largas y temporizadas
+
+**No se instala FastMCP, Redis, otro servidor ni un Worker propio por
+este cambio.** Aprovechar primero los *background tool calls* y
+*scheduled chats* que ofrece el LibreChat upstream fijado, sólo tras
+verificar permisos, persistencia y límites en la instalación real.
+Para tareas materiales duraderas con reinicio, leases y receipts no
+equiparar background UI a ejecución verificada. MANOJOS3 seguirá
+externo, con su propio Scheduler/Worker si se elige esa vía.
+
+### Microsoft Graph
+
+`https://mcp.svc.cloud.microsoft/enterprise` es un **MCP externo
+opcional**, en preview, centrado en Entra. Requiere tenant/cliente y
+consentimiento OAuth; no configura correo, Planner o To Do por
+escribir la URL. Puede añadirse como servidor externo separado en
+LibreChat **sólo** con identidad/permisos reales y pruebas de lectura.
+Para correo/calendario/tareas con escritura usar adaptadores de Graph
+con consentimiento delegado y política propia; nunca tokens de
+MANOJOS3 copiados al MCP de terminal.
+
+Para el plan completo, ver
+`docs/NOSTROMO_AUTONOMO_INTEGRACION_OPERATIVA_20261110.md`.
