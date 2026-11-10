@@ -16,7 +16,8 @@ export interface VXCockpitBridgeProps {
 export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
   const [showTechnical, setShowTechnical] = useState(false);
   const [showAutonomous, setShowAutonomous] = useState(false);
-  const [activeSystem, setActiveSystem] = useState<HudSystem|null>(null);
+  const [activeMode, setActiveMode] = useState<'AUTONOMO'|HudSystem>('AUTONOMO');
+  const activeSystem:HudSystem|null = activeMode==='AUTONOMO' ? null : activeMode;
   const returnButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => { returnButtonRef.current?.focus(); }, []);
@@ -52,6 +53,21 @@ export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
           </p>
         </div>
 
+        <nav aria-label="Modos de NOSTROMO" className="vx-mode-switcher" data-testid="nostromo-mode-switcher">
+          {([
+            ['AUTONOMO','NOSTROMO Autónomo'],
+            ['MANOJOS','MANOJOS'],
+            ['VX13','VX13'],
+            ['ORACULO','ORÁCULO'],
+          ] as const).map(([id,name])=><button key={id} type="button" className="vx-mode-option"
+            aria-pressed={activeMode===id} onClick={()=>{setActiveMode(id);setShowAutonomous(false);}}>{name}</button>)}
+        </nav>
+        <p className="vx-mode-boundary" role="note">
+          {activeMode==='AUTONOMO'
+            ? 'Modo local: agente independiente, un único MCP de terminal.'
+            : 'Modo externo: cada sistema conserva su propio MCP y permisos; sin terminal local compartida.'}
+        </p>
+        {activeMode==='AUTONOMO' ? (
         <section className="vx-autonomy-card" aria-labelledby="vx-autonomy-heading">
           <div className="vx-autonomy-topline">
             <span className="vx-autonomy-label"><span className="vx-autonomy-beacon" aria-hidden="true"/> NOSTROMO · AUTÓNOMO</span>
@@ -89,54 +105,23 @@ export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
             </div>
           ) : null}
         </section>
+        ) : null}
 
+        {activeMode!=='AUTONOMO' ? (
         <section className="vx-context-systems" aria-labelledby="vx-systems-heading">
           <div className="vx-context-section-heading">
             <h3 id="vx-systems-heading">Sistemas</h3>
-            <span>3 destinos</span>
+            <span>Destino externo</span>
           </div>
-          <ul className="vx-target-list" aria-label="Destinos de NOSTROMO">
-            <li className="vx-target-item">
-              <div className="vx-target-identity">
-                <span className="vx-target-icon" aria-hidden="true">M</span>
-                <div>
-                  <strong>MANOJOS</strong>
-                  <small>Control actual: MANOJOS3; nuevo runtime no acreditado</small>
-                </div>
-              </div>
-              <span className="vx-target-state"><span aria-hidden="true" className="vx-target-dot"/>No enlazado</span>
-              <button type="button" className="vx-target-focus-button" aria-label="Ver contexto MANOJOS" onClick={() => setActiveSystem('MANOJOS')}>Ver contexto</button>
-            </li>
-            <li className="vx-target-item">
-              <div className="vx-target-identity">
-                <span className="vx-target-icon" aria-hidden="true">V</span>
-                <div>
-                  <strong>VX13</strong>
-                  <small>Plataforma de agentes</small>
-                </div>
-              </div>
-              <span className="vx-target-state"><span aria-hidden="true" className="vx-target-dot"/>En diseño</span>
-              <button type="button" className="vx-target-focus-button" aria-label="Ver contexto VX13" onClick={() => setActiveSystem('VX13')}>Ver contexto</button>
-            </li>
-            <li className="vx-target-item">
-              <div className="vx-target-identity">
-                <span className="vx-target-icon" aria-hidden="true">O</span>
-                <div>
-                  <strong>ORÁCULO</strong>
-                  <small>Investigación y verificación consultiva; sin autoridad VX13</small>
-                </div>
-              </div>
-              <span className="vx-target-state"><span aria-hidden="true" className="vx-target-dot"/>No enlazado</span>
-              <button type="button" className="vx-target-focus-button" aria-label="Ver contexto ORÁCULO" onClick={() => setActiveSystem('ORACULO')}>Ver contexto</button>
-            </li>
-          </ul>
+          <p className="vx-mode-subtitle">Tentáculo Hub muestra recursos y evidencias del sistema elegido, sin atribuirse su ejecución.</p>
         </section>
+        ) : null}
         <TentaculoHud cards={projectTentaculoHud([])} activeSystem={activeSystem}
-          onClose={() => setActiveSystem(null)} />
+          onClose={() => setActiveMode('AUTONOMO')} />
 
-        <p className="vx-context-note" role="note">
+        {activeMode!=='AUTONOMO' ? <p className="vx-context-note" role="note">
           Este es el estado del enlace con NOSTROMO, no la salud de cada sistema. Se actualizará tras una lectura autenticada.
-        </p>
+        </p> : null}
 
         <div className="vx-context-disclosure">
           <button type="button" className="vx-context-detail-toggle"
