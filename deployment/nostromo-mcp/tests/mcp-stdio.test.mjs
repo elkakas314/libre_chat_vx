@@ -25,7 +25,8 @@ test('MCP handshake, exactly three terminal tools, fail-closed by default',async
   const names=(await client.listTools()).tools.map(t=>t.name).sort();
   assert.deepEqual(names.sort(),['nostromo_estado','nostromo_herramientas','nostromo_terminal_ejecutar','nostromo_terminal_preparar']);
   const toolView=parse(await client.callTool({name:'nostromo_herramientas',arguments:{}}));
-  assert.equal(toolView.tools.length,4);
+  assert.equal(toolView.tools.length,7);
+  assert.equal(toolView.tools.filter(t=>t.enabled).length,4);
   assert.equal(toolView.mutableByModel,false);
   const state=parse(await client.callTool({name:'nostromo_estado',arguments:{}}));
   assert.equal(state.enabled,false);
