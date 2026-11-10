@@ -17,6 +17,12 @@ const approvalDir=process.env.NOSTROMO_APPROVAL_DIR||'';
 const settings={enabled,roots:allowedRoots};
 const server=new McpServer({name:'nostromo-autonomo',version:'0.3.0'});
 const jobs=createAsyncJobs();
+/** On graceful shutdown, stop process groups belonging to this MCP session.
+ * Force-killed host or power failure may leave an unknown effect: no persistence claim.
+ */
+process.once('SIGINT',()=>{jobs.cancelAll();});
+process.once('SIGTERM',()=>{jobs.cancelAll();});
+process.once('exit',()=>{jobs.cancelAll();});
 const activeTools=selectedTools(process.env.NOSTROMO_TOOL_SET);
 const result=(payload,isError=false)=>({
   content:[{type:'text',text:JSON.stringify(payload)}],
@@ -54,6 +60,7 @@ if(activeTools.has('nostromo_terminal_ejecutar')) server.registerTool('nostromo_
   catch(e){return result({status:'DENIED',reason:String(e?.message||'REQUEST_INVALID')},true);}
   if(decision.status==='DISABLED'||decision.status==='DENIED')
     return result(decision,true);
+  if(jobs.activeCount()>0)return result({status:'BUSY',reason:'ASYNC_CLI_JOB_ACTIVE',executed:false},true);
   if(decision.risk==='R2'&&!await consumeApproval(approvalDir,decision.requestHash))
     return result({status:'LOCAL_APPROVAL_REQUIRED',risk:'R2',
       requestHash:decision.requestHash,executed:false},true);
