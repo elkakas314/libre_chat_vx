@@ -30,7 +30,7 @@ function kind(abs){
 }
 function run(cmd,args,opts={}){
   try{return execFileSync(cmd,args,{encoding:'utf8',stdio:['ignore','pipe','ignore'],
-    timeout:10000,maxBuffer:1048576,...opts}).trim();}
+    timeout:10000,maxBuffer:1048576,env:{...process.env,GIT_OPTIONAL_LOCKS:'0'},...opts}).trim();}
   catch{return null;}
 }
 function redactedStatus(line){
