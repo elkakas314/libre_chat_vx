@@ -135,7 +135,7 @@ test('MCP async tool calls return jobId, permit polling and bound R2 without app
     assert.equal(denied.status,'LOCAL_APPROVAL_REQUIRED');
     assert.equal(denied.started,false);
     const missing=parse(await client.callTool({name:'nostromo_tarea_estado',
-      arguments:{jobId:'00000000-0000-0000-0000-000000000000'}}));
+      arguments:{jobId:'00000000-0000-4000-8000-000000000000'}}));
     assert.equal(missing.status,'NOT_FOUND');
   });
  }finally{await rm(root,{recursive:true,force:true});}
