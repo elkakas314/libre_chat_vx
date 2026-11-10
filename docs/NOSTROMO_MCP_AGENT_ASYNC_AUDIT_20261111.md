@@ -31,3 +31,7 @@
 ## Limitaciones
 
 Este mecanismo no es autonomía persistente ni tareas reanudables. Una caída/reinicio elimina los jobId del proceso y puede dejar efectos materiales desconocidos. Para reanudación real hacen falta journal durable, leases/fences, idempotencia, recuperación y pruebas independientes; no afirmar PASS por SOURCE.
+
+## Endurecimiento Git R0 del CLI
+
+La política del mismo ejecutor añade GIT_OPTIONAL_LOCKS=0 para evitar escrituras oportunistas en el índice, desactiva fsmonitor, omite configuración Git global y usa diff --no-ext-diff. Evita un driver externo en un comando clasificado R0. No sustituye una sandbox de sistema operativo ni demuestra ausencia absoluta de efectos secundarios.
