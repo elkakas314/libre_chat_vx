@@ -35,3 +35,15 @@ Este mecanismo no es autonomía persistente ni tareas reanudables. Una caída/re
 ## Endurecimiento Git R0 del CLI
 
 La política del mismo ejecutor añade GIT_OPTIONAL_LOCKS=0 para evitar escrituras oportunistas en el índice, desactiva fsmonitor, omite configuración Git global y usa diff --no-ext-diff. Evita un driver externo en un comando clasificado R0. No sustituye una sandbox de sistema operativo ni demuestra ausencia absoluta de efectos secundarios.
+
+## 2026-11-11 — receipt de pruebas reales Lenovo, cierre PR #32
+
+- SOURCE probado: `de2fa39ef79317d1a9cb23240b08b9d92ff9185f` en checkout temporal `--detach`; el operador confirmó volver a rama `main` intacta.
+- Comando ejecutado en el Lenovo: `npm --prefix deployment/nostromo-mcp run check`.
+- Pruebas Node: 28 / 28 PASS, 0 FAIL, 0 SKIP. `node --check` de server, policy y async-jobs completado.
+- Evidencia incluye R0 `pwd` por MCP stdio, sondeo asíncrono por `jobId` y resultado EXIT_0; R2 denegado, test real de cancelación y TIMEOUT; admisión R2 en carrera bloqueada.
+- PR #32 fusionada con comprobación SHA exacta en `main@c78ffab32d57c3dbd2a03f835521554312981a23`. Lectura posterior confirma MCP v0.3 en `main`.
+- GitHub Actions **NO ejecutados**; workflows mantienen disparador exclusivamente manual.
+- Estado de instalación: `SOURCE+TEST VERIFIED` para el MCP, **no** `AGENT LIVE` ni `MCP BOUND` en LibreChat. Fragmento `librechat-mcp.fragment.yaml` permanece con `NOSTROMO_MCP_ENABLED: '0'`.
+- Próximo gate material: actualizar únicamente `~/librechat/vx` con `git pull --ff-only origin main`, repetir `npm --prefix deployment/nostromo-mcp run check` en main, inspeccionar el backend y configurar UN único MCP stdio en LibreChat sólo tras backup/ACL. No importar `.env` de `~/upstream` sin revisión.
+- Bloqueo independiente: `npm run frontend:ci` del checkout `~/librechat/upstream` falló en `packages/data-provider` con `rimraf: not found`; falta instalar o reconciliar las dependencias de desarrollo preservando lockfile, y verificar luego puerto 3080/agent.
