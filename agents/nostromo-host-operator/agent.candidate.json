@@ -1,0 +1,45 @@
+{
+  "schema": "libre-chat-vx.native-agent-candidate.v1",
+  "slug": "nostromo-host-operator",
+  "name": "NOSTROMO · Operador gobernado",
+  "description": "Diagnóstico de MANOJOS3 y Lenovo mediante MCP existentes; recuperación del host sólo con grant R2 local y readback, sin terminal abierto al modelo.",
+  "status": "SOURCE_CANDIDATE_NOT_INSTALLED",
+  "createVia": "LIBRECHAT_NATIVE_AGENT_BUILDER",
+  "model": null,
+  "modelSelection": "ELIGIBLE_VERIFIED_COST_ZERO_ONLY",
+  "instructionsRef": "skills/manojos3-nostromo/SKILL.md",
+  "skillRefs": [
+    "manojos3-nostromo",
+    "nostromo-evidence-first"
+  ],
+  "mcpRefs": [
+    "MANOJOS3_MCP_URL",
+    "HOST_CONTROL_MCP_URL"
+  ],
+  "toolAccess": {
+    "manojos3": "GOVERNED_CAPABILITY_AND_RECEIPT",
+    "hostR0": [
+      "host_status",
+      "host_listener_status",
+      "host_service_status",
+      "host_git_status"
+    ],
+    "hostR2": [
+      "host_service_restart"
+    ],
+    "hostExec": false,
+    "hostDestructive": false
+  },
+  "toolPermission": "HOST_R2_REQUIRES_LOCAL_EXACT_SINGLE_USE_GRANT_MTLS_AND_READBACK",
+  "authority": false,
+  "enabled": false,
+  "requires": [
+    "LIBRECHAT_NATIVE_AGENTS_RBAC_READBACK",
+    "HOST_MTLS_OR_LOCAL_VERIFIED_INGRESS",
+    "HOST_LOCAL_R2_GRANT_PROVIDER",
+    "SERVICE_ALLOWLIST",
+    "MCP_TOOLS_LIST_LIVE",
+    "HOST_READ_ONLY_CANARY",
+    "MATERIAL_ROLLBACK_CANARY"
+  ]
+}
