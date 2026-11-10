@@ -14,6 +14,9 @@ mcpServers:
       NOSTROMO_MCP_ENABLED: '0'
       NOSTROMO_ALLOWED_ROOTS: /home/elkakas314/librechat/vx:/home/elkakas314/librechat/upstream
       NOSTROMO_APPROVAL_DIR: /home/elkakas314/.local/state/nostromo/approvals
-    # Dejar vacío para exponer las cuatro herramientas propias del MCP.
-    # Por ejemplo, para ocultar ejecución y conservar preparar:
-    # NOSTROMO_TOOL_SET: 'nostromo_terminal_preparar'
+    # Si se omite, se conservan exactamente las cuatro herramientas originales.
+    # Para añadir archivos/Git/métricas R0 al mismo MCP (sólo admin):
+    # NOSTROMO_TOOL_SET: 'nostromo_terminal_preparar,nostromo_terminal_ejecutar,nostromo_archivo_leer,nostromo_git_inspeccionar,nostromo_metricas'
+    # Para desactivar ejecución de terminal y dejar la inspección:
+    # NOSTROMO_TOOL_SET: 'nostromo_archivo_leer,nostromo_git_inspeccionar,nostromo_metricas'
+    # Activar NOSTROMO_MCP_ENABLED=1 sólo tras ACL y rutas host verificadas.
