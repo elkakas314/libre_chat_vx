@@ -11,7 +11,8 @@
       "LOCAL_CPU_GPU_CANARY"
     ],
     "chatgptLive": "NO_VERIFICADO",
-    "gpu4gbMock": "CAPACITY_UNVERIFIED_NOT_REAL_VRAM_PROOF"
+    "gpu4gbMock": "MOCK_VERIFIED_BY_OPERATOR_NOT_PHYSICAL_VRAM_PROOF",
+    "gpu4gbMockEvidence": "OPERATOR_REPORTED_NO_INDEPENDENT_HARDWARE_READBACK"
   },
   "mcp": {
     "name": "nostromo-autonomo",

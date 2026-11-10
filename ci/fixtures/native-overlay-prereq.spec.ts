@@ -71,7 +71,7 @@ for (const viewport of [
         await launcher.click();
         await expect(context).toBeVisible();
         await expect(context.getByRole('heading',{name:'Habla. Encarga. Comprueba.'})).toBeVisible();
-        await expect(context.getByText('SOURCE · SIN ACTIVAR')).toBeVisible();
+        await expect(context.getByText('ENLACE NO VERIFICADO')).toBeVisible();
         await expect(context.getByTestId('nostromo-autonomo-details')).toHaveCount(0);
         await context.getByRole('button',{name:'Ver modo autónomo NOSTROMO'}).click();
         await expect(context.getByTestId('nostromo-autonomo-details')).toBeVisible();
@@ -84,8 +84,11 @@ for (const viewport of [
         await expect(hub).toBeVisible();
         await expect(hub.getByText('Centro de capacidades')).toBeVisible();
         await expect(hub.locator('[data-hub-item="nostromo-mcp"]')).toBeVisible();
+        await hub.locator('[data-hub-item="nostromo-mcp"] > details > summary').click();
         await expect(hub.locator('[data-hub-item="nostromo-terminal"]')).toBeVisible();
-        await expect(hub.getByText('MCP no instalado', {exact:false})).toBeVisible();
+        await expect(hub.locator('[data-hub-item="nostromo-git"]')).toBeVisible();
+        await expect(hub.locator('[data-hub-item="nostromo-files"]')).toBeVisible();
+        await expect(hub.getByText('MCP sin vínculo LIVE verificado', {exact:false})).toBeVisible();
         await expect(hub.getByRole('button',{name:/ejecutar/i})).toHaveCount(0);
         await context.getByRole('button',{name:'Ocultar Tentáculo Hub'}).click();
         await expect(context.getByTestId('nostromo-tentaculo-hub')).toHaveCount(0);
@@ -99,12 +102,12 @@ for (const viewport of [
         await expect(modes.getByRole('button',{name:'VX13'})).toHaveAttribute('aria-pressed','true');
         await expect(context.getByRole('heading',{name:'Habla. Encarga. Comprueba.'})).toHaveCount(0);
         await expect(context.getByTestId('nostromo-tentaculo-hub')).toHaveCount(0);
-        await expect(context.getByTestId('tentaculo-focus').getByText('Sin conectar')).toBeVisible();
+        await expect(context.getByTestId('tentaculo-focus').getByText('Enlace sin verificar')).toBeVisible();
         await modes.getByRole('button',{name:'ORÁCULO'}).click();
         await expect(context.getByTestId('tentaculo-focus').getByRole('heading',{name:'ORÁCULO'})).toBeVisible();
         await modes.getByRole('button',{name:'MANOJOS'}).click();
         await expect(context.getByTestId('tentaculo-focus').getByRole('heading',{name:'MANOJOS'})).toBeVisible();
-        await context.getByRole('button',{name:'Volver al chat'}).click();
+        await context.getByRole('button',{name:'Volver a NOSTROMO'}).click();
         await expect(context.getByTestId('tentaculo-focus')).toHaveCount(0);
         await expect(modes.getByRole('button',{name:'NOSTROMO Autónomo'})).toHaveAttribute('aria-pressed','true');
         await expect(context.getByRole('heading',{name:'Habla. Encarga. Comprueba.'})).toBeVisible();

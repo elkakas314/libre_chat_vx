@@ -39,7 +39,7 @@ function boundedGit(dir,args){
   try{
     return execFileSync('git',['-C',dir,...args],{
       encoding:'utf8',timeout:15000,maxBuffer:5*1024*1024,
-      stdio:['ignore','pipe','pipe'],env:{...process.env,GIT_TERMINAL_PROMPT:'0'},
+      stdio:['ignore','pipe','pipe'],env:{...process.env,GIT_TERMINAL_PROMPT:'0',GIT_OPTIONAL_LOCKS:'0'},
     }).trimEnd();
   }catch(e){return 'ERROR:'+String(e?.status??e?.code??'UNKNOWN');}
 }
@@ -59,7 +59,10 @@ async function hashAllowedFile(p){
   return hash.digest('hex');
 }
 function gitStatus(dir){
-  const lines=boundedGit(dir,['status','--porcelain=v1','--untracked-files=all']).split('\n').filter(Boolean);
+  const raw=boundedGit(dir,['status','--porcelain=v1','--untracked-files=all']);
+  if(raw.startsWith('ERROR:'))return {status:'GIT_STATUS_UNAVAILABLE',trackedChanges:null,untracked:null,
+    modifiedPathsSample:[],untrackedPathsSample:[],entriesTruncated:false};
+  const lines=raw.split('\n').filter(Boolean);
   const redact=(line)=>line.slice(0,3)+safeName(line.slice(3));
   return {
     trackedChanges:lines.filter(x=>!x.startsWith('??')).length,
@@ -98,7 +101,7 @@ const compare=(a,b)=>{
     return {relativePath:rel,a:left.kind,b:right.kind,
       sameSha256:Boolean(left.sha256&&left.sha256===right.sha256)};
   });
-  return {a,b,sameHead:x.git.head===y.git.head,
+  return {a,b,sameHead:/^[0-9a-f]{40}$/.test(x.git.head) && x.git.head===y.git.head,
     sharedFileComparisons:rows,
     differentOrAbsent:rows.filter(x=>!x.sameSha256).map(x=>x.relativePath)};
 };

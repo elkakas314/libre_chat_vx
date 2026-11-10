@@ -65,7 +65,7 @@ test('organic HUD renders no UI without a requested focus and never renders a 3-
     {cards,activeSystem:'VX13'}));
   assert.match(vx13,/NOSTROMO \/ FOCO ACTUAL/);
   assert.match(vx13,/VX13/);
-  assert.match(vx13,/En diseño|Sin conectar/);
+  assert.match(vx13,/En diseño|Enlace sin verificar/);
   assert.equal(vx13.includes('ORÁCULO'),false);
   assert.equal(vx13.includes('grid-template-columns'),false);
   const off=renderToStaticMarkup(React.createElement(TentaculoHud,
@@ -78,12 +78,13 @@ test('Tentáculo Hub retains NOSTROMO local agent/MCP before separate external t
   assert.deepEqual(snapshot.rootSystems,['NOSTROMO','MANOJOS','VX13','ORACULO']);
   const tree=createTentaculoHubTree(snapshot.items);
   assert.deepEqual(tree.children.nostromo.map(x=>x.id),
-    ['nostromo-agent','nostromo-mcp','nostromo-chatgpt','nostromo-router']);
-  assert.deepEqual(tree.children['nostromo-mcp'].map(x=>x.id),['nostromo-terminal','nostromo-tools']);
+    ['nostromo-agent','nostromo-mcp','nostromo-voice','nostromo-tasks',
+      'nostromo-chatgpt','nostromo-router','nostromo-github-remote','nostromo-graph','nostromo-gpu-mock']);
+  assert.deepEqual(tree.children['nostromo-mcp'].map(x=>x.id),['nostromo-terminal','nostromo-tools','nostromo-files','nostromo-git','nostromo-metrics']);
   assert.ok(snapshot.items.every(x=>x.status==='SOURCE'));
   assert.equal(snapshot.materialVerified,false);
-  assert.equal(snapshot.mcpInstalled,false);
-  assert.equal(snapshot.chatgptConnected,false);
+  assert.equal(snapshot.mcpInstalled,null);
+  assert.equal(snapshot.chatgptConnected,null);
   assert.equal(snapshot.authority,false);
   assert.equal(snapshot.readOnly,true);
   const agent=hubAgentCandidate(snapshot.items.find(x=>x.id==='nostromo-agent')!);
@@ -100,7 +101,15 @@ test('Tentáculo Hub displays truthful SOURCE inventory without execution action
   assert.match(html,/Único MCP local/);
   assert.match(html,/ChatGPT · OAuth pendiente/);
   assert.match(html,/Conexiones futuras/);
-  assert.match(html,/MCP no instalado/);
+  assert.match(html,/MCP sin vínculo LIVE verificado/);
+  assert.doesNotMatch(html,/MCP no instalado/);
+  assert.match(html,/Git · inspección R0 opcional/);
+  assert.match(html,/CPU, RAM y disco/);
+  assert.match(html,/GitHub remoto · integración gobernada pendiente/);
+  assert.match(html,/Microsoft Graph · permisos OAuth pendientes/);
+  assert.match(html,/Mock 4 GB · simulación informada como verificada/);
+  assert.match(html,/<details/);
+  assert.match(html,/<summary/);
   assert.equal(html.includes('LIVE_VERIFIED'),false);
   assert.equal(html.includes('<form'),false);
   assert.equal(html.includes('ejecutar ahora'),false);
