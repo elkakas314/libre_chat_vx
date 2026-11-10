@@ -26,7 +26,9 @@
     "nostromo:workspace:preview": "node scripts/reconcile-existing-workspace.mjs --upstream=../upstream",
     "nostromo:workspace:apply": "node scripts/reconcile-existing-workspace.mjs --upstream=../upstream --apply",
     "nostromo:workspace:test": "node --test scripts/tests/reconcile-existing-workspace.test.mjs scripts/tests/stage-react-types.test.mjs",
-    "nostromo:workspace:diagnose": "node scripts/reconcile-existing-workspace.mjs --upstream=../upstream --diagnose"
+    "nostromo:workspace:diagnose": "node scripts/reconcile-existing-workspace.mjs --upstream=../upstream --diagnose",
+    "nostromo:frontend:deps:inspect": "node scripts/inspect-librechat-frontend-deps.mjs --upstream=../upstream",
+    "nostromo:frontend:deps:test": "node --test scripts/tests/inspect-librechat-frontend-deps.test.mjs"
   },
   "peerDependencies": {
     "react": "^18.2.0",
