@@ -28,3 +28,18 @@ No lee `.env`, no instala, no inicia servicios ni usa GitHub Actions.
 - Si los bins aparecen, reintentar `frontend:ci` con RAM disponible y límites; evitar carga paralela con MANOJOS3.
 - Sólo tras frontend y backend LIVE, configurar entrada del único MCP en `librechat.yaml`, validar namespace/UID/ACL y registrar agente mediante Agent Builder.
 - El fragmento de MCP sigue `NOSTROMO_MCP_ENABLED: '0'`: no implica MCP conectado por instalar VX.
+
+
+## Readback Lenovo 2026-11-10T23:40:23.205Z (2026-11-11 local)
+
+Auditor ejecutado en revisión exacta de la PR #33 (`90b37a4b22a32beb558d537a650d748e4d9fba7a`), terminal restaurada a `main`.
+`nostromo:frontend:deps:test`: **1/1 PASS**. Diagnóstico R0:
+`identityMatched:true`, upstream `f10b1d91...`, dirtyEntryCount 6,
+lock SHA-256 `e7119c0eecd9c97048c7fb838a9f8cb0cb620bed99b7488886743e9bbe14d5f5`.
+Bins: **rimraf MISSING**, **tsdown MISSING**, **vite MISSING**, **tsc PRESENT**.
+Estado `DEPENDENCIES_INCOMPLETE`; no se invocó npm install ni se tocó `~/upstream`.
+
+PR #33 fusionada tras aceptación R0, commit `00892423ded9705b6a1299919f9b7b0e204dd6c4`.
+El problema requiere restaurar dependencias de desarrollo del workspace completo.
+Evitar instalar sólo rimraf, borrar node_modules, usar npm ci o reescribir el lockfile dirty.
+La compilación frontend y enlace agente/MCP siguen pendientes. No GitHub Actions.
