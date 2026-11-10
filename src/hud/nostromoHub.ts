@@ -16,6 +16,8 @@ const sourceNodes: readonly HubItem[] = [
     parentId:'nostromo',sourceRef:'deployment/nostromo-mcp/server.mjs',status:'SOURCE'},
   {id:'nostromo-terminal',system:'NOSTROMO',kind:'CAPABILITY',label:'Terminal · preparar / ejecutar',
     parentId:'nostromo-mcp',sourceRef:'deployment/nostromo-mcp/policy.mjs',status:'SOURCE'},
+  {id:'nostromo-tools',system:'NOSTROMO',kind:'CAPABILITY',label:'Catálogo de herramientas MCP · administrable',
+    parentId:'nostromo-mcp',sourceRef:'deployment/nostromo-mcp/tools.mjs',status:'SOURCE'},
   {id:'nostromo-chatgpt',system:'NOSTROMO',kind:'CAPABILITY',label:'ChatGPT · OAuth pendiente',
     parentId:'nostromo',sourceRef:'config/chatgpt_authorized.current.json',status:'SOURCE'},
   {id:'nostromo-router',system:'NOSTROMO',kind:'CAPABILITY',label:'Router LLM / modelo local · pendientes de canario',
