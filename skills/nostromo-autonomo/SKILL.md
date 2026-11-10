@@ -52,3 +52,29 @@ Microsoft Graph/Entra MCP remoto es **opcional y separado** de la
 terminal. Exige OAuth real. Mail/Calendar/Planner/To Do no quedan
 habilitados por instalar un endpoint Entra de lectura. Mantener
 MANOJOS3, VX13 y ORÁCULO como autoridades externas.
+
+## Ejecución asíncrona del CLI, mismo MCP (SOURCE opt-in)
+
+Para trabajos cuyo resultado no sea inmediato y **sólo** cuando el catálogo LIVE
+confirme los tres nombres, preparar con `nostromo_terminal_preparar`
+y ejecutar con `nostromo_tarea_iniciar`. Guarda `jobId` y
+`requestHash`; el segundo sirve para la aprobación física R2 exacta.
+Una respuesta `RUNNING` no es PASS y no significa ejecución persistida.
+
+Consultar `nostromo_tarea_estado({jobId})` con moderación; recuperar
+`status`, `stdout`, `stderr`, `exitCode` y `materialVerified:false`
+al finalizar. No iniciar otra tarea si el MCP devuelve `BUSY`;
+no hacer bucles de sondeo ilimitados. Si se necesita cancelar, invocar
+`nostromo_tarea_cancelar({jobId})`, luego releer el estado final.
+`CANCEL_REQUESTED` no demuestra cancelación material; para operaciones R2
+hacer readback independiente. No reintentar a ciegas `TIMEOUT`,
+`CANCELLED`, fallo o pérdida de proceso.
+
+Límites: 1 ejecución asíncrona simultánea, `timeout_s` máximo 120,
+captura acotada, historial efímero de máximo 24 tareas retenidas durante
+15 minutos tras finalizar. **Sin reanudación después de reinicio o
+desconexión**. Este gestor está en memoria dentro del MCP de LibreChat:
+no es Worker autónomo, cron, journal durable ni background multiusuario.
+No crear otro MCP. Por defecto los tres nombres nuevos están deshabilitados
+hasta que el propietario configure `NOSTROMO_TOOL_SET` y vuelva a leer
+`nostromo_herramientas` en la instalación real.
