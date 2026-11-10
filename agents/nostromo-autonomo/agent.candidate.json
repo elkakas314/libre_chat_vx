@@ -38,6 +38,10 @@
   "notes": [
     "No afirmar instalación ni acceso host por SOURCE.",
     "No crear grants a través de prompts.",
-    "No usar token fine-grained como credential de OS."
-  ]
+    "No usar token fine-grained como credential de OS.",
+    "Tentáculo Hub muestra catálogo SOURCE; no habilita el MCP ni instala el agente."
+  ],
+  "hubRef": "config/tentaculo_hud.current.json",
+  "hubCatalog": "src/hud/nostromoHub.ts",
+  "hubMode": "READONLY_SOURCE_INVENTORY_NOT_EXECUTION"
 }
