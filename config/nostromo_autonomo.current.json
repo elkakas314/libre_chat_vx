@@ -23,7 +23,16 @@
     "allowedRoots": [],
     "localApprovalDir": "NOT_CONFIGURED",
     "terminalR0": "SOURCE_TESTED_ONLY",
-    "terminalR2": "EXACT_HUMAN_LOCAL_APPROVAL_REQUIRED"
+    "terminalR2": "EXACT_HUMAN_LOCAL_APPROVAL_REQUIRED",
+    "catalogTool": "nostromo_herramientas",
+    "toolAllowlistEnv": "NOSTROMO_TOOL_SET",
+    "toolSetDefault": [
+      "nostromo_estado",
+      "nostromo_herramientas",
+      "nostromo_terminal_preparar",
+      "nostromo_terminal_ejecutar"
+    ],
+    "toolChanges": "OWNER_CONFIG_AT_PROCESS_START_NOT_AGENT_MINT"
   },
   "toolFlow": "USER_CHAT->LLM->NATIVE_AGENT->SINGLE_MCP->LOCAL_OS_PROCESS->STDOUT_STDERR_EXIT_CODE",
   "independentOf": [
@@ -39,7 +48,7 @@
     "ORACULO"
   ],
   "futureEnabled": false,
-  "visual": "CONTEXTUAL_CHAT_FIRST_NO_PERMANENT_DASHBOARD",
+  "visual": "FOUR_EXCLUSIVE_MODES_TENTACULO_HUB_FOCUSED_SOURCE_NO_LIVE",
   "authorization": "LEAST_PRIVILEGE_R0_AUTONOMY_R2_SINGLE_USE_LOCAL_APPROVAL",
   "statusSeparation": [
     "SOURCE",
@@ -47,5 +56,31 @@
     "LIVE",
     "VERIFIED"
   ],
-  "materialVerified": false
+  "materialVerified": false,
+  "modes": {
+    "AUTONOMO": {
+      "agent": "nostromo-autonomo",
+      "mcp": "nostromo-autonomo",
+      "execution": "LOCAL_OS_USER",
+      "current": "SOURCE_NOT_INSTALLED"
+    },
+    "MANOJOS": {
+      "agent": "EXTERNAL",
+      "mcp": "OWN_MCP_NOT_NOSTROMO",
+      "execution": "TARGET_GOVERNED",
+      "current": "NO_VERIFICADO"
+    },
+    "VX13": {
+      "agent": "EXTERNAL",
+      "mcp": "TENTACULO_LINK",
+      "execution": "TARGET_GOVERNED",
+      "current": "NO_VERIFICADO"
+    },
+    "ORACULO": {
+      "agent": "EXTERNAL",
+      "mcp": "OWN_ADVISORY",
+      "execution": "TARGET_GOVERNED",
+      "current": "NO_VERIFICADO"
+    }
+  }
 }
