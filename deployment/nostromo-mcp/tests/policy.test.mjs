@@ -25,6 +25,8 @@ test('fail closed without enabled state, roots or after path escape',async()=>{
 test('strict R0 classifier never accepts shell or git mutations',()=>{
  assert.equal(isSafeReadOnly(['pwd']),true);
  assert.equal(isSafeReadOnly(['git','status','--short']),true);
+ assert.equal(isSafeReadOnly(['git','diff','--stat','--no-ext-diff']),true);
+ assert.equal(isSafeReadOnly(['git','diff','--stat']),false);
  for(const argv of [
    ['sh','-c','rm -rf /'],['bash','-c','echo test'],
    ['git','pull'],['git','-c','core.fsmonitor=evil','status'],
