@@ -77,6 +77,7 @@ for (const viewport of [
         await expect(context.getByTestId('nostromo-autonomo-details')).toBeVisible();
         await expect(context.getByTestId('nostromo-autonomo-details').getByText(/ChatGPT:/)).toBeVisible();
         await expect(context.getByTestId('nostromo-autonomo-details').getByText(/Terminal:/)).toBeVisible();
+        await expect(context.getByTestId('nostromo-tools-source')).toBeVisible();
         await context.getByRole('button',{name:'Ocultar modo autónomo'}).click();
         await expect(context.getByTestId('nostromo-autonomo-details')).toHaveCount(0);
         const modes = context.getByTestId('nostromo-mode-switcher');
