@@ -1,11 +1,6 @@
 name: visual-source-smoke
 
 on:
-  push:
-    branches:
-      - handoff_current_bootstrps
-      - main
-  pull_request:
   workflow_dispatch:
 
 permissions:

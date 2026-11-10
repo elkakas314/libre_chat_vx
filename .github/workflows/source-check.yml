@@ -1,11 +1,6 @@
 name: source-check
 
 on:
-  push:
-    branches:
-      - handoff_current_bootstrps
-      - main
-  pull_request:
   workflow_dispatch:
 
 permissions:
