@@ -10,6 +10,7 @@ import {
   readdirSync,realpathSync,renameSync,rmSync,statSync
 } from 'node:fs';
 import {homedir} from 'node:os';
+import {linkHostTypeDeclarations,clearStagedTypeLinks} from './stage-react-types.mjs';
 import path from 'node:path';
 
 const EXPECTED_UPSTREAM='f10b1d91f1eee3a2c82d5247bf620351486b7c1b';
@@ -106,6 +107,7 @@ try{
   stage=mkdtempSync(path.join(folder,'.nostromo-stage-'));
   chmodSync(stage,0o700);
   for(const item of allowed)cpSync(path.join(VX,item),path.join(stage,item),{recursive:true,errorOnExist:true});
+  const reactTypes=linkHostTypeDeclarations({stage,upstream:UP,vx:VX});
   // Compiler stdout/stderr must be returned to the operator on failure:
   // CI may be green while host dependencies differ. Never label this PASS.
   let compilerOutput='';
@@ -125,8 +127,10 @@ try{
       '; NODE='+process.version+'; UPSTREAM_TSC='+path.join(UP,'node_modules/.bin/tsc')+'\n');
     stop('TSC_BUILD_FAILED');
   }
+  clearStagedTypeLinks(stage);
   if(DIAGNOSE){
     console.log(JSON.stringify({...scan,status:'DIAGNOSE_COMPILE_PASS',
+      typeDeclarations:reactTypes,
       build:'PASS',installed:false,existingWorkspaceUnchanged:true,
       compilerOutput:compilerOutput.slice(0,2048)},null,2));
   }else{
