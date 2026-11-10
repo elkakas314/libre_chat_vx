@@ -47,3 +47,12 @@ La política del mismo ejecutor añade GIT_OPTIONAL_LOCKS=0 para evitar escritur
 - Estado de instalación: `SOURCE+TEST VERIFIED` para el MCP, **no** `AGENT LIVE` ni `MCP BOUND` en LibreChat. Fragmento `librechat-mcp.fragment.yaml` permanece con `NOSTROMO_MCP_ENABLED: '0'`.
 - Próximo gate material: actualizar únicamente `~/librechat/vx` con `git pull --ff-only origin main`, repetir `npm --prefix deployment/nostromo-mcp run check` en main, inspeccionar el backend y configurar UN único MCP stdio en LibreChat sólo tras backup/ACL. No importar `.env` de `~/upstream` sin revisión.
 - Bloqueo independiente: `npm run frontend:ci` del checkout `~/librechat/upstream` falló en `packages/data-provider` con `rimraf: not found`; falta instalar o reconciliar las dependencias de desarrollo preservando lockfile, y verificar luego puerto 3080/agent.
+
+
+## 2026-11-11 — segundo readback de Lenovo, instalado en rama main
+
+- Fast-forward de `~/librechat/vx` desde `f7cab1d` hasta `main@2b3c9bfc8ea8b1f3abcd3bb347a622b982e6707a` observado en la salida de consola del operador.
+- Ejecución en la **rama principal** de `npm --prefix deployment/nostromo-mcp run check`: **28 pruebas / 28 PASS, 0 fallos, 0 omitidas**; duración de suite aproximadamente 1,69 s.
+- Incluye ejecución real R0, MCP stdio con jobId/consulta/resultado, rechazo R2 sin grant, cancelación de proceso real, timeout, exclusión de concurrencia y protección de ámbito. El code check de tres scripts completó sin error.
+- Esto confirma **MCP local v0.3 SOURCE+LOCAL_TEST_VERIFIED** y `main` actualizado en el Lenovo. No confirma que el backend de LibreChat haya registrado el MCP ni agente activado: siguen `NOT_CONFIGURED/NOT_LIVE_VERIFIED`.
+- Bloqueo siguiente independiente: `frontend:ci` del upstream principal sigue fallando por binario `rimraf` ausente en `data-provider`; inspección R0 de dependencias preparada en rama de corrección. GitHub Actions no utilizados.
