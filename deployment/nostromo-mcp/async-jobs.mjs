@@ -36,47 +36,53 @@ export function createAsyncJobs({
     ...(j.status==='RUNNING'?{liveOutput:j.liveOutput}:{ }),
     ...(includeResult&&j.result?{result:j.result}:{})
   });
+  let admitting=false;
   async function start(input,{settings,approvalDir}){
     gc();
     const d=await preview(input,settings);
     if(d.status!=='READY_R0'&&d.status!=='LOCAL_APPROVAL_REQUIRED')
       return {status:d.status,reason:d.reason??'PREVIEW_DENIED',started:false};
-    if(active()>=maxRunning)return {status:'BUSY',started:false,
+    // Reserve admission BEFORE awaiting a physical approval: two concurrent
+    // R2 requests may otherwise consume two grants and launch two processes.
+    if(active()>=maxRunning||admitting)return {status:'BUSY',started:false,
       activeJobs:active(),limit:maxRunning,retrySafe:false};
-    if(records.size>=maxRetained){
-      gc();
-      if(records.size>=maxRetained)return {status:'HISTORY_FULL',started:false};
-    }
-    if(d.risk==='R2'&&!await approve(approvalDir,d.requestHash))
-      return {status:'LOCAL_APPROVAL_REQUIRED',risk:d.risk,
-        requestHash:d.requestHash,started:false};
-    const controller=new AbortController();
-    const id=randomUUID(),j={
-      id,requestHash:d.requestHash,risk:d.risk,
-      startedAt:new Date(clock()).toISOString(),
-      status:'RUNNING',controller,endedAt:null,finishedAt:null,
-      cancelRequested:false,result:null,
-      liveOutput:{stdout:'',stderr:'',truncated:false}
-    };
-    records.set(id,j);
-    // Deliberately do not await the CLI. No parallel tool spawning by default.
-    Promise.resolve().then(()=>execute(d.request,{
-      signal:controller.signal,
-      onOutput:output=>{j.liveOutput=output;}
-    }))
-      .then(out=>{
-        j.result=out;
-        j.status=TERMINAL.has(out?.status)?out.status:'FAILED';
-        j.endedAt=clock();
-        j.finishedAt=new Date(j.endedAt).toISOString();
-      },()=>{
-        // Never return exception messages or host secrets to the model.
-        j.status='FAILED';
-        j.result={status:'FAILED',materialVerified:false};
-        j.endedAt=clock();
-        j.finishedAt=new Date(j.endedAt).toISOString();
-      });
-    return {...view(j,false),started:true};
+    admitting=true;
+    try{
+      if(records.size>=maxRetained){
+        gc();
+        if(records.size>=maxRetained)return {status:'HISTORY_FULL',started:false};
+      }
+      if(d.risk==='R2'&&!await approve(approvalDir,d.requestHash))
+        return {status:'LOCAL_APPROVAL_REQUIRED',risk:d.risk,
+          requestHash:d.requestHash,started:false};
+      const controller=new AbortController();
+      const id=randomUUID(),j={
+        id,requestHash:d.requestHash,risk:d.risk,
+        startedAt:new Date(clock()).toISOString(),
+        status:'RUNNING',controller,endedAt:null,finishedAt:null,
+        cancelRequested:false,result:null,
+        liveOutput:{stdout:'',stderr:'',truncated:false}
+      };
+      records.set(id,j);
+      // Deliberately do not await the CLI. No parallel tool spawning by default.
+      Promise.resolve().then(()=>execute(d.request,{
+        signal:controller.signal,
+        onOutput:output=>{j.liveOutput=output;}
+      }))
+        .then(out=>{
+          j.result=out;
+          j.status=TERMINAL.has(out?.status)?out.status:'FAILED';
+          j.endedAt=clock();
+          j.finishedAt=new Date(j.endedAt).toISOString();
+        },()=>{
+          // Never return exception messages or host secrets to the model.
+          j.status='FAILED';
+          j.result={status:'FAILED',materialVerified:false};
+          j.endedAt=clock();
+          j.finishedAt=new Date(j.endedAt).toISOString();
+        });
+      return {...view(j,false),started:true};
+    }finally{admitting=false;}
   }
   function status(jobId){
     gc();
