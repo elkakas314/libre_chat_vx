@@ -119,6 +119,15 @@ try{
     renameSync(path.join(backup,'original-package'),pack);
     originalMoved=false;throw e;
   }
+  // Verify actual copied source after the switch; keep both versions on mismatch.
+  for(const rel of sourceFileSet()){
+    if(!readFileSync(path.join(VX,rel)).equals(readFileSync(path.join(pack,rel)))){
+      renameSync(pack,path.join(backup,'rejected-package'));
+      renameSync(path.join(backup,'original-package'),pack);
+      originalMoved=false;installed=false;
+      stop('POST_SWITCH_READBACK_MISMATCH:'+rel);
+    }
+  }
   console.log(JSON.stringify({...scan,status:'WORKSPACE_RECONCILED',
     build:'PASS',backup,installedWorkspace:pack,
     note:'Frontend, database, agent, OAuth and MCP binding not started or changed'},null,2));
