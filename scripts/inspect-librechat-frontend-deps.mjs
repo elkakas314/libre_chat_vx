@@ -11,7 +11,7 @@ const EXPECTED_HEAD='f10b1d91f1eee3a2c82d5247bf620351486b7c1b';
 const arg=process.argv.find(x=>x.startsWith('--upstream='));
 const up=path.resolve(arg?arg.slice('--upstream='.length):'../upstream');
 function git(args){
-  try{return execFileSync('git',['-C',up,...args],{
+  try{return execFileSync('git',['-C',up,'-c','core.fsmonitor=false','-c','core.hooksPath=/dev/null',...args],{
     encoding:'utf8',timeout:10000,maxBuffer:1048576,
     stdio:['ignore','pipe','ignore'],
     env:{...process.env,GIT_OPTIONAL_LOCKS:'0',GIT_TERMINAL_PROMPT:'0'}
