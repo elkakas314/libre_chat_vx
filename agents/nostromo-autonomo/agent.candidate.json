@@ -28,7 +28,13 @@
     "remoteDesktop": false,
     "terminalR0": true,
     "terminalR2": "HUMAN_LOCAL_HASH_APPROVAL",
-    "management": "OWNER_TOOL_SET_LOCAL_CONFIG_NO_MODEL_TOOL_INSTALL"
+    "management": "OWNER_TOOL_SET_LOCAL_CONFIG_NO_MODEL_TOOL_INSTALL",
+    "optionalAsyncTools": [
+      "nostromo_tarea_iniciar",
+      "nostromo_tarea_estado",
+      "nostromo_tarea_cancelar"
+    ],
+    "asyncControl": "OWNER_OPT_IN_SAME_MCP_ONE_ACTIVE_JOB_MAX_120S"
   },
   "linksFutureOnly": [
     "MANOJOS3",
@@ -69,7 +75,13 @@
     "preferred": "LIBRECHAT_NATIVE_BACKGROUND_TOOLS_IF_INSTALLED_AND_ENABLED",
     "scheduler": "LIBRECHAT_SCHEDULED_CHATS_BETA_NOT_LIVE_VERIFIED",
     "durableWorker": "NOT_INSTALLED",
-    "redisRequired": false
+    "redisRequired": false,
+    "cliAsync": "SOURCE_OPT_IN_INPROCESS_JOB_STATE_NOT_PERSISTENT",
+    "cliAsyncCancel": "SIGKILL_PROCESS_GROUP_UNKNOWN_MATERIAL_EFFECT_UNTIL_READBACK",
+    "cliAsyncMaxConcurrent": 1,
+    "cliAsyncMaxSeconds": 120,
+    "cliAsyncLedger": "VOLATILE_PER_MCP_PROCESS_JOB_ID",
+    "restartRecovery": "NOT_IMPLEMENTED_NO_PASS_CLAIMS"
   },
   "optionalMcpBindings": {
     "microsoftGraphEnterprise": "EXTERNAL_EN_TRA_PREVIEW_OAUTH_AND_TENANT_GRANT_REQUIRED",
