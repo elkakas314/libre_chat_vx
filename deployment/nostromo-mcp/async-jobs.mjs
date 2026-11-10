@@ -62,11 +62,12 @@ export function createAsyncJobs({
       .then(out=>{
         j.result=out;
         j.status=TERMINAL.has(out?.status)?out.status:'FAILED';
+        j.endedAt=clock();
+        j.finishedAt=new Date(j.endedAt).toISOString();
       },()=>{
         // Never return exception messages or host secrets to the model.
         j.status='FAILED';
         j.result={status:'FAILED',materialVerified:false};
-      }).finally(()=>{
         j.endedAt=clock();
         j.finishedAt=new Date(j.endedAt).toISOString();
       });
