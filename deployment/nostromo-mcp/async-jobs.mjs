@@ -33,6 +33,7 @@ export function createAsyncJobs({
     startedAt:j.startedAt,finishedAt:j.finishedAt??null,
     cancelRequested:j.cancelRequested,
     persisted:false,materialVerified:false,
+    ...(j.status==='RUNNING'?{liveOutput:j.liveOutput}:{ }),
     ...(includeResult&&j.result?{result:j.result}:{})
   });
   async function start(input,{settings,approvalDir}){
@@ -54,11 +55,15 @@ export function createAsyncJobs({
       id,requestHash:d.requestHash,risk:d.risk,
       startedAt:new Date(clock()).toISOString(),
       status:'RUNNING',controller,endedAt:null,finishedAt:null,
-      cancelRequested:false,result:null
+      cancelRequested:false,result:null,
+      liveOutput:{stdout:'',stderr:'',truncated:false}
     };
     records.set(id,j);
     // Deliberately do not await the CLI. No parallel tool spawning by default.
-    Promise.resolve().then(()=>execute(d.request,{signal:controller.signal}))
+    Promise.resolve().then(()=>execute(d.request,{
+      signal:controller.signal,
+      onOutput:output=>{j.liveOutput=output;}
+    }))
       .then(out=>{
         j.result=out;
         j.status=TERMINAL.has(out?.status)?out.status:'FAILED';
