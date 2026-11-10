@@ -52,7 +52,7 @@ export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
           <p className="vx-context-overline">CONEXIONES BAJO CONTROL</p>
           <h3>Todo conectado, cuando esté listo.</h3>
           <p className="vx-context-intro">
-            Consulta tus sistemas desde la conversación. Aquí sólo aparecen datos confirmados.
+            Consulta tus sistemas desde la conversación. El diseño y el estado real se distinguen: esta vista aún no consulta el runtime.
           </p>
         </div>
 
@@ -75,7 +75,7 @@ export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
         <section className="vx-autonomy-card" aria-labelledby="vx-autonomy-heading">
           <div className="vx-autonomy-topline">
             <span className="vx-autonomy-label"><span className="vx-autonomy-beacon" aria-hidden="true"/> NOSTROMO · AUTÓNOMO</span>
-            <span className="vx-autonomy-stage">SOURCE · SIN ACTIVAR</span>
+            <span className="vx-autonomy-stage">ENLACE NO VERIFICADO</span>
           </div>
           <div className="vx-autonomy-main">
             <div>
@@ -104,17 +104,19 @@ export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
                 <span>Evidencia</span>
               </div>
               <p><strong>ChatGPT:</strong> pendiente de autorización OAuth; puede sustituirse por LLM gratuito o local verificado.</p>
-              <p><strong>Terminal:</strong> SOURCE preparado, sin instalación LIVE acreditada. Comandos R0 limitados, R2 sólo con permiso local de un uso.</p>
+              <p><strong>Terminal:</strong> MCP con pruebas de origen; esta cabina todavía no consulta su estado LIVE. R0 limitado y R2 sólo con permiso local de un uso.</p>
               <div className="vx-mode-tools" data-testid="nostromo-tools-source">
                 <strong>Único MCP · catálogo SOURCE</strong>
                 <ul>
                   <li>Estado y lista de herramientas instalables</li>
                   <li>Preparar comando y comprobar sus límites</li>
                   <li>Ejecutar terminal con stdout, stderr y código de salida</li>
+                  <li>Leer archivos, inspeccionar Git y medir CPU/RAM/disco: herramientas R0 optativas</li>
+                  <li>GitHub remoto, Microsoft Graph, tareas, voz y Router: sólo con conectores verificados</li>
                 </ul>
                 <p>El administrador elige las herramientas del MCP. El chat no se concede privilegios.</p>
               </div>
-              <p className="vx-autonomy-warning">Esta cabina no inicia procesos ni concede permisos. La ejecución pertenece al agente y su MCP local autenticado.</p>
+              <p className="vx-autonomy-warning">Esta cabina no inicia procesos ni concede permisos. El agente y sus herramientas requieren registro y autorizaciones independientes.</p>
               <button type="button" className="vx-autonomy-hub-toggle" aria-expanded={showHub}
                 aria-controls="vx-nostromo-hub"
                 onClick={() => setShowHub(value => !value)}>
