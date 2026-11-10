@@ -1,0 +1,18 @@
+{
+  "name": "@nostromo/local-terminal-mcp",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "Single local stdio terminal MCP for NOSTROMO",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "check": "node --check server.mjs && node --check policy.mjs && npm test"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "zod": "^4.1.0"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "schema": "libre-chat-vx.native-agent-candidate.v1",
+  "slug": "nostromo-autonomo",
+  "name": "NOSTROMO · Autónomo",
+  "description": "Habla mediante ChatGPT (si autorizado) o un LLM gratis/local. Ejecuta tareas locales mediante un único MCP de terminal, devuelve código de salida, stdout, stderr y evidencia.",
+  "status": "SOURCE_CANDIDATE_NOT_INSTALLED",
+  "enabled": false,
+  "model": null,
+  "modelSelection": "CHATGPT_SIWC_AUTHORIZED_OR_VERIFIED_FREE_ROUTER_OR_LOCAL_MODEL",
+  "requiresHumanAdminProvisioning": true,
+  "createVia": "LIBRECHAT_NATIVE_AGENT_BUILDER",
+  "instructionsRef": "skills/nostromo-autonomo/SKILL.md",
+  "skillRefs": [
+    "nostromo-autonomo"
+  ],
+  "mcpRefs": [
+    "nostromo-autonomo"
+  ],
+  "toolAccess": {
+    "required": [
+      "nostromo_estado",
+      "nostromo_terminal_preparar",
+      "nostromo_terminal_ejecutar"
+    ],
+    "otherMcp": false,
+    "graphicalControl": false,
+    "remoteDesktop": false,
+    "terminalR0": true,
+    "terminalR2": "HUMAN_LOCAL_HASH_APPROVAL"
+  },
+  "linksFutureOnly": [
+    "MANOJOS3",
+    "HOST_CONTROL",
+    "VX13",
+    "ORACULO"
+  ],
+  "authority": false,
+  "notes": [
+    "No afirmar instalación ni acceso host por SOURCE.",
+    "No crear grants a través de prompts.",
+    "No usar token fine-grained como credential de OS."
+  ]
+}

@@ -120,3 +120,32 @@ This is why the product boundary is TargetGateway/TargetAdapter rather than MCP 
 7. no Action Proxy dependency;
 8. Cloudflare inference path remains independent;
 9. only later, one minimal reversible governed mutation.
+
+
+## NOSTROMO governed HOST_CONTROL companion — 2026-11-10
+
+El puerto MCP `MANOJOS3_MCP_URL` (8790) sigue siendo el **único**
+ingreso normal a la autoridad de MANOJOS3. Para inspección o recuperación
+del Lenovo cuando el Core no responde, usar el plano existente
+`HOST_CONTROL_MCP_URL` (8791) **separado**. No se crea un segundo
+Kernel ni se enruta HOST_CONTROL por el Kernel averiado.
+
+La nueva carpeta `src/host/` contiene un adaptador **server-only**
+que no exporta funciones a los clientes React: R0 de host/servicio/Git
+con allowlists del backend, y un único efecto candidato
+`host_service_restart` con local R2 grant preexistente. El agente
+`nostromo-host-operator` es un candidato no instalado y reutiliza
+la Skill `manojos3-nostromo`. No se crea otra Skill física ni un
+Plugin obligatorio; se aprovechan Agent Builder + MCP nativos.
+
+El ingreso remoto exige mTLS validado por el transportador. El
+portador de credenciales de ChatGPT, Cloudflare o del propio LLM
+**no** es autoridad de host. El servidor de HOST_CONTROL confirma
+hash/target/risk/expiry/grant de un solo uso. En NOSTROMO la ausencia
+de grant provoca LOCAL_GRANT_REQUIRED incluso si el host dispone de
+Operator Mode. Una petición de ToolApproval no fabrica grant.
+
+El control gráfico por Remote Desktop constituye una superficie
+externa diferente y no queda instalado por el MCP de comandos.
+Flujo, pruebas y rollback: `deployment/host-control/README.md`.
+Estado: SOURCE_CANDIDATE, enabled=false, host LIVE NO_VERIFICADO.

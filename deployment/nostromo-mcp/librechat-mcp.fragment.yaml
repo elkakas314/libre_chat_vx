@@ -1,0 +1,16 @@
+# FRAGMENTO: fusionar sólo tras inspección y backup del librechat.yaml real.
+# Requiere mcpServers existente. Rutas host sólo si LibreChat comparte namespace.
+mcpServers:
+  nostromo-autonomo:
+    type: stdio
+    description: "NOSTROMO · terminal local gobernado (R0 / permiso local R2)"
+    command: node
+    args:
+      - /home/elkakas314/librechat/vx/deployment/nostromo-mcp/server.mjs
+    timeout: 130000
+    initTimeout: 30000
+    serverInstructions: "Usa preparar antes de ejecutar. R0 lectura; R2 requiere autorización local exacta e independiente. No reiteres operaciones ambiguas. No declares trabajo material verificado por exit 0."
+    env:
+      NOSTROMO_MCP_ENABLED: '0'
+      NOSTROMO_ALLOWED_ROOTS: /home/elkakas314/librechat/vx:/home/elkakas314/librechat/upstream
+      NOSTROMO_APPROVAL_DIR: /home/elkakas314/.local/state/nostromo/approvals

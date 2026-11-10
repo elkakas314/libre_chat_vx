@@ -70,6 +70,15 @@ for (const viewport of [
       if (flag) {
         await launcher.click();
         await expect(context).toBeVisible();
+        await expect(context.getByRole('heading',{name:'Habla. Encarga. Comprueba.'})).toBeVisible();
+        await expect(context.getByText('SOURCE · SIN ACTIVAR')).toBeVisible();
+        await expect(context.getByTestId('nostromo-autonomo-details')).toHaveCount(0);
+        await context.getByRole('button',{name:'Ver modo autónomo NOSTROMO'}).click();
+        await expect(context.getByTestId('nostromo-autonomo-details')).toBeVisible();
+        await expect(context.getByTestId('nostromo-autonomo-details').getByText(/ChatGPT:/)).toBeVisible();
+        await expect(context.getByTestId('nostromo-autonomo-details').getByText(/Terminal:/)).toBeVisible();
+        await context.getByRole('button',{name:'Ocultar modo autónomo'}).click();
+        await expect(context.getByTestId('nostromo-autonomo-details')).toHaveCount(0);
         await expect(context.getByText('MANOJOS',{exact:true})).toBeVisible();
         await expect(context.getByText(/Control actual: MANOJOS3/)).toBeVisible();
         await expect(context.getByText('No enlazado')).toHaveCount(2);

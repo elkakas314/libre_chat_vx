@@ -15,6 +15,7 @@ export interface VXCockpitBridgeProps {
 /** One requested contextual view inside LibreChat's own panel. No target authority. */
 export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
   const [showTechnical, setShowTechnical] = useState(false);
+  const [showAutonomous, setShowAutonomous] = useState(false);
   const [activeSystem, setActiveSystem] = useState<HudSystem|null>(null);
   const returnButtonRef = useRef<HTMLButtonElement>(null);
 
@@ -50,6 +51,44 @@ export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
             Consulta tus sistemas desde la conversación. Aquí sólo aparecen datos confirmados.
           </p>
         </div>
+
+        <section className="vx-autonomy-card" aria-labelledby="vx-autonomy-heading">
+          <div className="vx-autonomy-topline">
+            <span className="vx-autonomy-label"><span className="vx-autonomy-beacon" aria-hidden="true"/> NOSTROMO · AUTÓNOMO</span>
+            <span className="vx-autonomy-stage">SOURCE · SIN ACTIVAR</span>
+          </div>
+          <div className="vx-autonomy-main">
+            <div>
+              <h3 id="vx-autonomy-heading">Habla. Encarga. Comprueba.</h3>
+              <p>Tu agente de terminal en el Lenovo: una conversación, un MCP local, resultados verificables.</p>
+            </div>
+            <div className="vx-autonomy-terminal-glyph" aria-hidden="true">&gt;_</div>
+          </div>
+          <div className="vx-autonomy-metrics" aria-label="Configuración del modo autónomo">
+            <span><b>01</b> MCP local</span>
+            <span><b>R0</b> lectura</span>
+            <span><b>R2</b> permiso puntual</span>
+          </div>
+          <button type="button" className="vx-autonomy-disclosure" aria-expanded={showAutonomous}
+            aria-controls="vx-autonomy-details"
+            onClick={() => setShowAutonomous(value => !value)}>
+            {showAutonomous ? 'Ocultar modo autónomo' : 'Ver modo autónomo NOSTROMO'}
+            <span aria-hidden="true">{showAutonomous ? '−' : '↗'}</span>
+          </button>
+          {showAutonomous ? (
+            <div id="vx-autonomy-details" className="vx-autonomy-details" data-testid="nostromo-autonomo-details">
+              <div className="vx-autonomy-flow" aria-label="Flujo del agente">
+                <span>Conversación</span><span aria-hidden="true">→</span>
+                <span>Agente</span><span aria-hidden="true">→</span>
+                <span>Terminal</span><span aria-hidden="true">→</span>
+                <span>Evidencia</span>
+              </div>
+              <p><strong>ChatGPT:</strong> pendiente de autorización OAuth; puede sustituirse por LLM gratuito o local verificado.</p>
+              <p><strong>Terminal:</strong> SOURCE preparado, sin instalación LIVE acreditada. Comandos R0 limitados, R2 sólo con permiso local de un uso.</p>
+              <p className="vx-autonomy-warning">Esta cabina no inicia procesos ni concede permisos. La ejecución pertenece al agente y su MCP local autenticado.</p>
+            </div>
+          ) : null}
+        </section>
 
         <section className="vx-context-systems" aria-labelledby="vx-systems-heading">
           <div className="vx-context-section-heading">

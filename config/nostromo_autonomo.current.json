@@ -1,0 +1,51 @@
+{
+  "schema": "libre-chat-vx.nostromo-autonomo.v1",
+  "product": "NOSTROMO",
+  "mode": "AUTONOMO_LOCAL_TERMINAL",
+  "status": "SOURCE_CANDIDATE_NOT_INSTALLED",
+  "backend": "LIBRECHAT_NATIVE_AGENT",
+  "llm": {
+    "preferred": "CHATGPT_SIWC_IF_AUTHORIZED_AND_SUPPORTED",
+    "fallback": [
+      "VERIFIED_ROUTER_ZERO_COST",
+      "LOCAL_CPU_GPU_CANARY"
+    ],
+    "chatgptLive": "NO_VERIFICADO",
+    "gpu4gbMock": "CAPACITY_UNVERIFIED_NOT_REAL_VRAM_PROOF"
+  },
+  "mcp": {
+    "name": "nostromo-autonomo",
+    "type": "stdio",
+    "server": "deployment/nostromo-mcp/server.mjs",
+    "entry": "librechat.yaml:mcpServers.nostromo-autonomo",
+    "singleVisibleMcp": true,
+    "enabled": false,
+    "allowedRoots": [],
+    "localApprovalDir": "NOT_CONFIGURED",
+    "terminalR0": "SOURCE_TESTED_ONLY",
+    "terminalR2": "EXACT_HUMAN_LOCAL_APPROVAL_REQUIRED"
+  },
+  "toolFlow": "USER_CHAT->LLM->NATIVE_AGENT->SINGLE_MCP->LOCAL_OS_PROCESS->STDOUT_STDERR_EXIT_CODE",
+  "independentOf": [
+    "MANOJOS3",
+    "HOST_CONTROL",
+    "VX13",
+    "ORACULO"
+  ],
+  "futureIntegrations": [
+    "MANOJOS3",
+    "HOST_CONTROL",
+    "VX13",
+    "ORACULO"
+  ],
+  "futureEnabled": false,
+  "visual": "CONTEXTUAL_CHAT_FIRST_NO_PERMANENT_DASHBOARD",
+  "authorization": "LEAST_PRIVILEGE_R0_AUTONOMY_R2_SINGLE_USE_LOCAL_APPROVAL",
+  "statusSeparation": [
+    "SOURCE",
+    "CONFIGURED",
+    "LIVE",
+    "VERIFIED"
+  ],
+  "materialVerified": false
+}
