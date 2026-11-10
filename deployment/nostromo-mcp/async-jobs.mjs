@@ -92,5 +92,13 @@ export function createAsyncJobs({
       cancelRequested:true,materialVerified:false,
       note:'Effect outcome unknown until job status and independent readback'};
   }
-  return {start,status,cancel};
+  function cancelAll(){
+    for(const j of records.values()){
+      if(!j.endedAt&&!j.cancelRequested){
+        j.cancelRequested=true;
+        j.controller.abort();
+      }
+    }
+  }
+  return {start,status,cancel,cancelAll,activeCount:active};
 }
