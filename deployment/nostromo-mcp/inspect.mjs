@@ -74,7 +74,7 @@ export async function readHostMetrics({cwd},settings) {
 export async function readGitSnapshot({cwd},settings) {
   if(!settings.enabled)return {status:'DISABLED',reason:'NOSTROMO_AUTONOMOUS_DISABLED'};
   const commands=[['git','rev-parse','HEAD'],['git','branch','--show-current'],
-    ['git','status','--short'],['git','diff','--stat']];
+    ['git','status','--short'],['git','diff','--stat','--no-ext-diff']];
   const outputs={};
   for(const argv of commands){
     const decision=await preview({cwd,argv,timeout_s:10,max_output:4096},settings);
