@@ -96,7 +96,7 @@ function check(){
 let stage=null,backup=null,originalMoved=false,installed=false;
 try{
   const scan=check();
-  if(!APPLY){
+  if(!APPLY&&!DIAGNOSE){
     console.log(JSON.stringify({...scan,status:'PREVIEW_ONLY',next:'REVIEW_THEN_APPLY'},null,2));
     process.exit(0);
   }
