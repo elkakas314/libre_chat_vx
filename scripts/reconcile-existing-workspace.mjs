@@ -129,8 +129,7 @@ try{
     console.log(JSON.stringify({...scan,status:'DIAGNOSE_COMPILE_PASS',
       build:'PASS',installed:false,existingWorkspaceUnchanged:true,
       compilerOutput:compilerOutput.slice(0,2048)},null,2));
-    process.exit(0);
-  }
+  }else{
   if(!existsSync(path.join(stage,'dist/src/index.js')))stop('COMPILED_ENTRY_MISSING');
   // Last snapshot: keep the original whole package instead of rm/clean.
   backup=mkdtempSync(path.join(homedir(),'nostromo-workspace-backup.'));
@@ -155,6 +154,7 @@ try{
   console.log(JSON.stringify({...scan,status:'WORKSPACE_RECONCILED',
     build:'PASS',backup,installedWorkspace:pack,
     note:'Frontend, database, agent, OAuth and MCP binding not started or changed'},null,2));
+  }
 }catch(e){
   if(originalMoved&&!installed&&!existsSync(pack)&&backup){
     try{renameSync(path.join(backup,'original-package'),pack);}
