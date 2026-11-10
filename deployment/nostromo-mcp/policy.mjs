@@ -88,7 +88,7 @@ export async function consumeApproval(dir,hash,now=Date.now()) {
     return true;
   }catch{return false;}
 }
-export async function executeLocal(request,{captureLimit,clock=()=>Date.now(),signal}={}) {
+export async function executeLocal(request,{captureLimit,clock=()=>Date.now(),signal,onOutput}={}) {
   const startedAt=new Date(clock()).toISOString(),executionId=randomUUID();
   const limit=Math.min(request.max_output,captureLimit??MAX_CAPTURE);
   const command=request.argv[0];
@@ -102,6 +102,7 @@ export async function executeLocal(request,{captureLimit,clock=()=>Date.now(),si
     const next=current+text;
     if(next.length>limit)truncated=true;
     if(target==='stdout')stdout=next.slice(0,limit);else stderr=next.slice(0,limit);
+    if(onOutput)try{onOutput({stdout,stderr,truncated});}catch{}
   };
   if(signal?.aborted)return {status:'CANCELLED',executionId,startedAt,
     finishedAt:new Date(clock()).toISOString(),exitCode:null,signal:null,
