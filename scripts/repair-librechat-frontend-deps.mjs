@@ -44,6 +44,11 @@ if(APPLY&&UP!==CANONICAL)fail('APPLY_ONLY_ALLOWED_ON_CANONICAL_CHECKOUT');
 for(const relative of protectedFiles){
   if(!file(path.join(UP,relative)))fail('PROTECTED_MANIFEST_MISSING_OR_SYMLINK',{relative});
 }
+for(const relative of ['node_modules','client/node_modules','packages/data-provider/node_modules']){
+  const p=path.join(UP,relative);
+  if(existsSync(p)&&lstatSync(p).isSymbolicLink())
+    fail('NODE_MODULES_SYMLINK_DENIED',{relative});
+}
 const git=run('git',['-c','core.fsmonitor=false','-C',UP,'rev-parse','HEAD'],
  {env:{...process.env,GIT_OPTIONAL_LOCKS:'0',GIT_TERMINAL_PROMPT:'0'}});
 if(git.exitCode!==0||git.stdout!==EXPECTED_UPSTREAM)
@@ -86,7 +91,9 @@ if(!before.length)fail('ALREADY_PRESENT',{missingBefore:[]});
 if(npmMajor!==11)fail('NPM_MAJOR_NOT_EXPECTED',{version:npm.stdout});
 if(availableDiskBytes<3*1024**3||!availableMemoryBytes||availableMemoryBytes<2*1024**3)
   fail('RESOURCE_GUARD_DENIED',{availableDiskBytes,availableMemoryBytes});
-const env={...process.env,
+const env={
+ HOME:os.homedir(),PATH:process.env.PATH??'/usr/bin:/bin',
+ LANG:'C.UTF-8',LC_ALL:'C.UTF-8',TMPDIR:process.env.TMPDIR??'/tmp',
  NODE_OPTIONS:'--max-old-space-size=1536',
  npm_config_maxsockets:'2',npm_config_update_notifier:'false',
  npm_config_audit:'false',npm_config_fund:'false',
