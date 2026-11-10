@@ -73,3 +73,40 @@ npm run nostromo:workspace:diagnose
 ```
 Si `DIAGNOSE_COMPILE_PASS` no aparece, corregir error concreto antes
 de `--apply`. GitHub Actions sigue manual-only.
+
+
+## Readback local posterior: 2026-11-10, staging TypeScript PASS
+
+El operador ejecutó en `~/librechat/vx`, después de fast-forward a
+`main@efd1a7587a52fca072a51c3fff04d31454da5cc8`:
+
+```text
+npm run nostromo:workspace:test
+tests 5 · pass 5 · fail 0
+npm run nostromo:workspace:diagnose
+status: DIAGNOSE_COMPILE_PASS
+sourceFiles: 192
+existingFiles: 81
+changedSources: 136
+ui: MATCHED
+typeDeclarations.react: VX_FALLBACK_LINKED
+typeDeclarations.react-dom: VX_FALLBACK_LINKED
+build: PASS
+installed: false
+existingWorkspaceUnchanged: true
+compilerOutput: ""
+```
+
+Interpretación: **resuelto el P0 TypeScript del staging en el Lenovo**.
+El fallback de declaraciones React funciona en una compilación real,
+sin mover el paquete instalado. `installed:false` significa que aún
+NO se ha efectuado el cambio de workspace ni el build de frontend.
+La presencia previa de `:3080`/:27017 sigue sin acreditarse como
+servicio operativo. La PR visual #31 continúa aparte, SOURCE/no instalada.
+
+Siguiente gate permitido: `npm run nostromo:workspace:apply` con
+respaldo local `~/nostromo-workspace-backup.*` y readback
+`WORKSPACE_RECONCILED`, seguido por compilación frontend del
+checkout `~/librechat/upstream` si MemAvailable lo permite.
+No copiar `.env` de `~/upstream`, no usar Actions, no reinstalar
+ni borrar trabajos locales.
