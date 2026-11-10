@@ -1,0 +1,32 @@
+{
+  "schema": "libre-chat-vx.mobile-legacy.v1",
+  "asOf": "2026-11-10",
+  "product": "NOSTROMO",
+  "sourceOnly": true,
+  "installed": false,
+  "iosDevice": "IPHONE_6_OR_SE_GENERATION_NOT_CONFIRMED",
+  "iosVersion": "UNKNOWN",
+  "realNativeClient": {
+    "name": "Switchboard LibreChat Mobile",
+    "source": "https://github.com/garfiec/Librechat-Mobile",
+    "distribution": "TestFlight",
+    "minIOS": "16.0",
+    "eligibleOnIPhoneSE1": false,
+    "eligibleOnIPhone6": false,
+    "requiresLiveBackend": true
+  },
+  "legacyNativeApp": {
+    "ios12": "NOT_IMPLEMENTED",
+    "ios15": "NOT_IMPLEMENTED",
+    "note": "No claim of an installable IPA; native app needs device signing and a compatible tested build."
+  },
+  "browserHomescreenFallback": "USER_REJECTED_AS_NATIVE_APP_SUBSTITUTE",
+  "transport": "TAILSCALE_SERVE_PRIVATE_PREFERRED",
+  "noSecretsInClient": true,
+  "pushOrMicrophone": "NOT_TESTED",
+  "voice": {
+    "freeBrowserSpeech": "SOURCE_CONFIG_ONLY",
+    "offlineOnDeviceNativeDictation": "DEPENDS_ON_IOS_VERSION",
+    "ChatGPTSIWCAsAudioBackend": false
+  }
+}

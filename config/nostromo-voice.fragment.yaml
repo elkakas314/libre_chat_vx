@@ -1,0 +1,19 @@
+# NOSTROMO voz gratuita: añadir UNA sola sección speech en librechat.yaml.
+# No introducirla dos veces ni reemplazar proveedores existentes.
+# El audio del navegador no usa ChatGPT SIWC ni consume cuota OpenAI.
+# En iOS antiguo la disponibilidad de Web Speech es una limitación del dispositivo.
+speech:
+  speechTab:
+    conversationMode: true
+    advancedMode: false
+    speechToText:
+      engineSTT: "browser"
+      languageSTT: "Spanish (Spain)"
+      autoTranscribeAudio: false
+      autoSendText: -1
+    textToSpeech:
+      engineTTS: "browser"
+      languageTTS: "es"
+      automaticPlayback: true
+      playbackRate: 1.0
+      cacheTTS: false
