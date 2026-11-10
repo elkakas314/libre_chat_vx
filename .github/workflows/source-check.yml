@@ -86,6 +86,7 @@ jobs:
         working-directory: vx
         run: |
           node scripts/reconcile-existing-workspace.mjs --upstream=../upstream
+          node scripts/reconcile-existing-workspace.mjs --upstream=../upstream --diagnose
           node scripts/reconcile-existing-workspace.mjs --upstream=../upstream --apply
       - name: Build LibreChat frontend with VX overlay
         working-directory: upstream

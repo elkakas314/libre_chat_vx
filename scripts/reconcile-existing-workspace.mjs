@@ -17,6 +17,8 @@ const VX=realpathSync(process.cwd());
 const targetArg=process.argv.find(a=>a.startsWith('--upstream='));
 const UP=path.resolve(targetArg?targetArg.slice('--upstream='.length):'../upstream');
 const APPLY=process.argv.includes('--apply');
+const DIAGNOSE=process.argv.includes('--diagnose');
+if(APPLY&&DIAGNOSE)throw Error('BLOCKED:APPLY_AND_DIAGNOSE_ARE_EXCLUSIVE');
 const allowed=['package.json','tsconfig.json','src','contracts','config'];
 const pack=path.join(UP,'packages/librechat-vx');
 const sourceUi=path.join(VX,'overlay/upstream');
@@ -84,7 +86,7 @@ function check(){
   if(uniqueOld.length)stop('UNIQUE_OLD_SOURCE_FILES:'+JSON.stringify(uniqueOld.slice(0,25)));
   const tsc=path.join(UP,'node_modules/.bin/tsc');
   if(!existsSync(tsc))stop('TSC_NOT_INSTALLED_IN_EXISTING_UPSTREAM');
-  return {schema:'nostromo.existing-workspace.v1',readOnly:!APPLY,
+  return {schema:'nostromo.existing-workspace.v1',readOnly:!APPLY&&!DIAGNOSE,
     upstream:UP,source:VX,upstreamHead:sha(UP),
     existingWorkspace:pack,sourceFiles:newSet.size,existingFiles:oldSet.size,
     changedSources:[...newSet].filter(p=>!oldSet.has(p)||
@@ -104,9 +106,30 @@ try{
   stage=mkdtempSync(path.join(folder,'.nostromo-stage-'));
   chmodSync(stage,0o700);
   for(const item of allowed)cpSync(path.join(VX,item),path.join(stage,item),{recursive:true,errorOnExist:true});
-  execFileSync(path.join(UP,'node_modules/.bin/tsc'),['-p','tsconfig.json'],{
-    cwd:stage,stdio:['ignore','pipe','pipe'],encoding:'utf8',timeout:180000,maxBuffer:1024*1024
-  });
+  // Compiler stdout/stderr must be returned to the operator on failure:
+  // CI may be green while host dependencies differ. Never label this PASS.
+  let compilerOutput='';
+  try{
+    compilerOutput=execFileSync(path.join(UP,'node_modules/.bin/tsc'),['-p','tsconfig.json'],{
+      cwd:stage,stdio:['ignore','pipe','pipe'],encoding:'utf8',timeout:180000,maxBuffer:1024*1024
+    });
+  }catch(e){
+    const message=[e?.stdout,e?.stderr].filter(Boolean).map(String).join('\n');
+    const sanitized=message
+      .replace(/gh[pousr]_[A-Za-z0-9]{24,}/g,'[REDACTED_GH_TOKEN]')
+      .replace(/github_pat_[A-Za-z0-9_]{25,}/g,'[REDACTED_GH_TOKEN]')
+      .replace(/sk-(?:proj-)?[A-Za-z0-9_-]{24,}/g,'[REDACTED_API_KEY]');
+    process.stderr.write('NOSTROMO_TSC_DIAGNOSTICS_BEGIN\n'+
+      sanitized.slice(0,16000)+'\nNOSTROMO_TSC_DIAGNOSTICS_END\n');
+    process.stderr.write('TSC_EXIT='+String(e?.status??'UNKNOWN')+
+      '; NODE='+process.version+'; UPSTREAM_TSC='+path.join(UP,'node_modules/.bin/tsc')+'\n');
+    stop('TSC_BUILD_FAILED');
+  }
+  if(DIAGNOSE){
+    console.log(JSON.stringify({...scan,status:'DIAGNOSE_COMPILE_PASS',
+      build:'PASS',installed:false,existingWorkspaceUnchanged:true,
+      compilerOutput:compilerOutput.slice(0,2048)},null,2));
+  }else{
   if(!existsSync(path.join(stage,'dist/src/index.js')))stop('COMPILED_ENTRY_MISSING');
   // Last snapshot: keep the original whole package instead of rm/clean.
   backup=mkdtempSync(path.join(homedir(),'nostromo-workspace-backup.'));
@@ -131,6 +154,7 @@ try{
   console.log(JSON.stringify({...scan,status:'WORKSPACE_RECONCILED',
     build:'PASS',backup,installedWorkspace:pack,
     note:'Frontend, database, agent, OAuth and MCP binding not started or changed'},null,2));
+  }
 }catch(e){
   if(originalMoved&&!installed&&!existsSync(pack)&&backup){
     try{renameSync(path.join(backup,'original-package'),pack);}

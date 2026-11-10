@@ -86,3 +86,35 @@ anterior puede contener trabajo único: no eliminar backup sin auditoría.
    conectar un solo MCP stdio; prueba R0 bajo root real.
 5. Router gratuito disponible LIVE y SIWC ChatGPT cuando exista
    consentimiento OAuth real; voz y Tentáculo Hub bajo prueba visual.
+
+## 2026-11-10 — Lenovo: bloqueo de compilación (observado)
+
+El operador ejecutó `main@7e33c58` y obtuvo `PREVIEW_ONLY`:
+`sourceFiles=192`, `existingFiles=81`, `changedSources=136`,
+`ui=MATCHED`, upstream `f10b1d91...`. `--apply` falló **antes
+ de mover el paquete existente**, al ejecutar
+`upstream/node_modules/.bin/tsc -p tsconfig.json` sobre staging.
+El script antiguo descartaba `stdout/stderr` del compilador y sólo
+mostraba `Command failed`. Por tanto **la causa raíz no se conoce**:
+pueden faltar dependencias/typings host-locales o existir una diferencia
+real entre la instalación y el runner limpio de CI. No declararla.
+
+Reparación instrumental: `npm run nostromo:workspace:diagnose` compila
+una copia de staging, captura hasta 16 KiB de errores TypeScript
+(reduciendo tokens evidentes) y **elimina el staging al terminar**.
+No conmuta el paquete ni modifica servicios; no exige repetir
+`--apply` hasta conocer el diagnóstico. `--apply` también imprime
+el mismo diagnóstico en caso de error.
+
+Comando de siguiente lectura al integrar esta revisión:
+
+```sh
+cd ~/librechat/vx
+git pull --ff-only origin main
+npm run nostromo:workspace:diagnose
+```
+
+Si devuelve `TSC_BUILD_FAILED`, leer las líneas entre
+`NOSTROMO_TSC_DIAGNOSTICS_BEGIN/END` y reparar la dependencia
+concreta sin borrar node_modules, package-lock ni árboles ajenos.
+Sólo entonces repetir `npm run nostromo:workspace:apply`.
