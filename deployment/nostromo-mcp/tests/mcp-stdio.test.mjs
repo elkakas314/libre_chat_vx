@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {mkdtemp,rm} from 'node:fs/promises';
+import {mkdtemp,rm,writeFile} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -68,4 +68,30 @@ test('owner tool registry can remove terminal execution without disabling MCP he
    const info=parse(await client.callTool({name:'nostromo_herramientas',arguments:{}}));
    assert.equal(info.tools.find(x=>x.name==='nostromo_terminal_ejecutar').enabled,false);
  });
+});
+
+test('opt-in inspection MCP tools return real R0 reads and respect scoping',async()=>{
+ const root=await mkdtemp(path.join(tmpdir(),'nostromo-r0-'));
+ try{
+  const file=path.join(root,'note.md');
+  await writeFile(file,'NOSTROMO live stdio');
+  await withServer({NOSTROMO_MCP_ENABLED:'1',NOSTROMO_ALLOWED_ROOTS:root,
+    NOSTROMO_TOOL_SET:'nostromo_archivo_leer,nostromo_git_inspeccionar,nostromo_metricas'},
+    async client=>{
+      const names=(await client.listTools()).tools.map(t=>t.name);
+      assert.ok(names.includes('nostromo_archivo_leer'));
+      assert.ok(names.includes('nostromo_git_inspeccionar'));
+      assert.ok(names.includes('nostromo_metricas'));
+      assert.equal(names.includes('nostromo_terminal_ejecutar'),false);
+      const fileData=parse(await client.callTool({name:'nostromo_archivo_leer',arguments:{file}}));
+      assert.equal(fileData.status,'READ_OK');
+      assert.match(fileData.text,/NOSTROMO live/);
+      const metrics=parse(await client.callTool({name:'nostromo_metricas',arguments:{cwd:root}}));
+      assert.equal(metrics.status,'READ_OK');
+      assert.ok(metrics.cpuThreads>0);
+      assert.equal(metrics.gpuVramBytesVerified,null);
+      const denied=parse(await client.callTool({name:'nostromo_archivo_leer',arguments:{file:'/etc/passwd'}}));
+      assert.equal(denied.status,'DENIED');
+    });
+ }finally{await rm(root,{recursive:true,force:true});}
 });
