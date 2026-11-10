@@ -4,9 +4,9 @@ import {catalog,selectedTools,describeTools} from '../tools.mjs';
 
 test('single MCP catalog includes health, tool management and terminal preview/execute',()=>{
   const set=selectedTools(undefined);
-  assert.equal(catalog.length,4);
-  assert.deepEqual([...set].sort(),catalog.map(x=>x.name).sort());
-  assert.ok(describeTools(set).every(x=>x.enabled));
+  assert.equal(catalog.length,7);
+  assert.deepEqual([...set].sort(),catalog.slice(0,4).map(x=>x.name).sort());
+  assert.equal(describeTools(set).filter(x=>x.enabled).length,4);
 });
 test('owner may disable terminal while retaining introspection',()=>{
   const set=selectedTools('');
@@ -18,4 +18,13 @@ test('unknown, duplicate or interpolated tool names fail closed',()=>{
     'nostromo_terminal_ejecutar,evil','nostromo_terminal_ejecutar\nfoo']){
     assert.throws(()=>selectedTools(s),/CATALOG_INVALID/);
   }
+});
+
+test('inspection tools remain opt-in and owner-configured',()=>{
+  const set=selectedTools('nostromo_archivo_leer,nostromo_git_inspeccionar,nostromo_metricas');
+  assert.deepEqual([...set].sort(),[
+    'nostromo_estado','nostromo_herramientas','nostromo_archivo_leer',
+    'nostromo_git_inspeccionar','nostromo_metricas'
+  ].sort());
+  assert.equal(set.has('nostromo_terminal_ejecutar'),false);
 });
