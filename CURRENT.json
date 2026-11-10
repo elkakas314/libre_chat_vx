@@ -1,6 +1,6 @@
 {
   "schema": "libre-chat-vx.current.v2",
-  "status": "SOURCE_CONSOLIDATED_MAIN_WITH_NOSTROMO_EXTERNAL_FOCUS_LIVE_GATED",
+  "status": "SOURCE_MAIN_PR22_NOSTROMO_AUTONOMO_LIVE_GATED",
   "repository": "elkakas314/libre_chat_vx",
   "branch": "main",
   "source_evidence_cutoff_head": "8a341487f5694997744e8012c36056d705ca5138",
@@ -99,7 +99,11 @@
     "nostromo_chat_first": "SOURCE_MERGED_FEATURE_GATED",
     "nostromo_external_focus": "SOURCE_MERGED_FEATURE_GATED",
     "oraculo_contextual_projection": "SOURCE_UI_UNBOUND",
-    "vx13_link_cross_target_contract": "VX13_MAIN_PROPOSAL_MERGED_NOT_FZ"
+    "vx13_link_cross_target_contract": "VX13_MAIN_PROPOSAL_MERGED_NOT_FZ",
+    "autonomous_local_terminal_mcp": "SOURCE_MERGED_DISABLED",
+    "autonomous_agent": "SOURCE_CANDIDATE_NOT_INSTALLED",
+    "autonomous_native_visual": "SOURCE_MOCK_PASS",
+    "future_manojos_host_control": "PRESERVED_DISABLED"
   },
   "transport": {
     "local_web": "127.0.0.1:3080",
@@ -290,5 +294,55 @@
       "host_binding": "NO_VERIFICADO",
       "material_verified": false
     }
+  },
+  "autonomous_release": {
+    "marker": "NOSTROMO_AUTONOMO_SOURCE_PR22_MERGED_20261110",
+    "release_pr": 22,
+    "source_head": "ac85aaaca4d40f6d9daf3d9124e18adb358d6bf8",
+    "main_merge": "faaa478b4bab8c726f369c4d7ba97461b5ac3f5b",
+    "feature": "CHAT_TO_NATIVE_AGENT_TO_SINGLE_LOCAL_STDIO_MCP_TO_TERMINAL",
+    "files": [
+      "deployment/nostromo-mcp/server.mjs",
+      "deployment/nostromo-mcp/policy.mjs",
+      "agents/nostromo-autonomo/agent.candidate.json",
+      "skills/nostromo-autonomo/SKILL.md",
+      "config/nostromo_autonomo.current.json",
+      "overlay/upstream/VXCockpitBridge.tsx",
+      "overlay/upstream/VXCockpit.css"
+    ],
+    "ci": {
+      "source_check": {
+        "id": 42874150288,
+        "conclusion": "SUCCESS"
+      },
+      "visual_source_smoke": {
+        "id": 42874150490,
+        "conclusion": "SUCCESS"
+      },
+      "vx_native_visual_prerequisite": {
+        "id": 42874150567,
+        "conclusion": "SUCCESS"
+      },
+      "mcp_tests": {
+        "count": 10,
+        "passed": 10,
+        "scope": "CI_STDIO_REAL_PROCESS_WITH_FIXTURE_OS"
+      },
+      "profile": "SOURCE_AND_UPSTREAM_MOCK_NOT_LENOVO_RUNTIME"
+    },
+    "mcp": {
+      "name": "nostromo-autonomo",
+      "transport": "stdio",
+      "tools": 3,
+      "enabled": false
+    },
+    "chatgpt": "SIWC_SOURCE_DISABLED_NO_LIVE_AUTH",
+    "agent": "NATIVE_LIBRECHAT_CANDIDATE_NOT_INSTALLED",
+    "router": "EXISTING_SOURCE_FUTURE_BINDING",
+    "local_model": "4GB_GPU_MOCK_NOT_VERIFIED_VRAM",
+    "manojos": "LEGACY_CONNECTORS_PRESERVED_NOT_REQUIRED",
+    "osHost": "LENOVO_LIBRECHAT_3080_NOT_LIVE_LAST_READBACK",
+    "material_verified": false,
+    "next": "BACKUP_LOCAL_DIRTY_UPSTREAM_AND_VX_BEFORE_FF_ONLY; INSTALL_MCP_DEPS_AND_LIBRECHAT_NATIVE_AGENT_WITH_RBAC; R0_CANARY; CHATGPT_SIWC_CONSENT"
   }
 }
