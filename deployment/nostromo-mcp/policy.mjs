@@ -88,14 +88,14 @@ export async function consumeApproval(dir,hash,now=Date.now()) {
     return true;
   }catch{return false;}
 }
-export async function executeLocal(request,{captureLimit,clock=()=>Date.now()}={}) {
+export async function executeLocal(request,{captureLimit,clock=()=>Date.now(),signal}={}) {
   const startedAt=new Date(clock()).toISOString(),executionId=randomUUID();
   const limit=Math.min(request.max_output,captureLimit??MAX_CAPTURE);
   const command=request.argv[0];
   const program=command.includes('/')?command:'/usr/bin/'+command;
   const args=request.argv.slice(1);
   const env={PATH:'/usr/bin:/bin',HOME:process.env.HOME??'',LANG:'C.UTF-8',LC_ALL:'C.UTF-8'};
-  let stdout='',stderr='',truncated=false,timedOut=false;
+  let stdout='',stderr='',truncated=false,timedOut=false,cancelled=false;
   const append=(target,chunk)=>{
     const text=chunk.toString('utf8');
     const current=target==='stdout'?stdout:stderr;
@@ -103,27 +103,39 @@ export async function executeLocal(request,{captureLimit,clock=()=>Date.now()}={
     if(next.length>limit)truncated=true;
     if(target==='stdout')stdout=next.slice(0,limit);else stderr=next.slice(0,limit);
   };
+  if(signal?.aborted)return {status:'CANCELLED',executionId,startedAt,
+    finishedAt:new Date(clock()).toISOString(),exitCode:null,signal:null,
+    stdout:'',stderr:'',truncated:false,materialVerified:false,executed:false};
   return await new Promise(resolve=>{
     let done=false,child;
+    const kill=()=>{
+      if(!child||!Number.isInteger(child.pid)||child.pid<=0)return;
+      try{process.kill(-child.pid,'SIGKILL');}
+      catch{try{child.kill('SIGKILL');}catch{}}
+    };
+    const cancel=()=>{cancelled=true;kill();};
     try {
       child=spawn(program,args,{cwd:request.cwd,env,shell:false,stdio:['ignore','pipe','pipe'],detached:true});
     }catch(err){
-      return resolve({status:'SPAWN_ERROR',executionId,startedAt,error:String(err),materialVerified:false});
+      return resolve({status:'SPAWN_ERROR',executionId,startedAt,
+        finishedAt:new Date(clock()).toISOString(),error:String(err),materialVerified:false});
     }
+    if(signal?.aborted)cancel();
+    else signal?.addEventListener('abort',cancel,{once:true});
     const timer=setTimeout(()=>{
-      timedOut=true;
-      try{process.kill(-child.pid,'SIGKILL');}catch{child.kill('SIGKILL');}
+      timedOut=true;kill();
     },request.timeout_s*1000);
     child.stdout?.on('data',chunk=>append('stdout',chunk));
     child.stderr?.on('data',chunk=>append('stderr',chunk));
-    const finish=(exitCode,signal,error)=>{
+    const finish=(exitCode,signalName,error)=>{
       if(done)return;done=true;clearTimeout(timer);
-      resolve({status:error?'SPAWN_ERROR':timedOut?'TIMEOUT':exitCode===0?'EXIT_0':'EXIT_NONZERO',
+      signal?.removeEventListener('abort',cancel);
+      resolve({status:error?'SPAWN_ERROR':cancelled?'CANCELLED':timedOut?'TIMEOUT':exitCode===0?'EXIT_0':'EXIT_NONZERO',
         executionId,startedAt,finishedAt:new Date(clock()).toISOString(),
-        exitCode,signal,stdout,stderr,truncated,materialVerified:false,
+        exitCode,signal:signalName,stdout,stderr,truncated,materialVerified:false,
         ...(error?{error:String(error)}:{})});
     };
     child.on('error',err=>finish(null,null,err));
-    child.on('close',(code,signal)=>finish(code,signal,null));
+    child.on('close',(code,signalName)=>finish(code,signalName,null));
   });
 }
