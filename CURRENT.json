@@ -1,6 +1,6 @@
 {
   "schema": "libre-chat-vx.current.v2",
-  "status": "SOURCE_MAIN_PR22_NOSTROMO_AUTONOMO_LIVE_GATED",
+  "status": "SOURCE_MAIN_PR25_FOUR_MODES_TENTACULO_HUB_LOCAL_MCP_LIVE_GATED",
   "repository": "elkakas314/libre_chat_vx",
   "branch": "main",
   "source_evidence_cutoff_head": "8a341487f5694997744e8012c36056d705ca5138",
@@ -376,5 +376,47 @@
     "mcp_live": "NO_VERIFICADO",
     "chatgpt_live": "NO_VERIFICADO",
     "material_verified": false
+  },
+  "mode_release": {
+    "marker": "NOSTROMO_FOUR_MODES_HUB_MCP_PR25_20261110",
+    "source_pr": 25,
+    "merged": true,
+    "merge_sha": "cef280fa961a8c7197468962e10bf998e7062954",
+    "source_head": "96ff1b18b7f04097ef3788ff31b8e0e798d99985",
+    "checks": [
+      {
+        "name": "source-check",
+        "id": 42879699293,
+        "result": "SUCCESS"
+      },
+      {
+        "name": "visual-source-smoke",
+        "id": 42879699411,
+        "result": "SUCCESS"
+      },
+      {
+        "name": "vx-native-visual-prerequisite",
+        "id": 42879698656,
+        "result": "SUCCESS",
+        "profile": "UPSTREAM_MOCK_DESKTOP_MOBILE"
+      }
+    ],
+    "modes": {
+      "AUTONOMO": "OWN_NATIVE_AGENT_AND_SINGLE_LOCAL_MCP",
+      "MANOJOS": "EXTERNAL_TARGET_OWN_POLICY",
+      "VX13": "EXTERNAL_TENTACULO_LINK",
+      "ORACULO": "EXTERNAL_ADVISORY_ONLY"
+    },
+    "hub": "PR23_SOURCE_INVENTORY_PRESERVED_AND_EXTENDED_TOOL_CATALOG",
+    "tool_registry": "nostromo_herramientas_PLUS_NOSTROMO_TOOL_SET_LOCAL_OWNER",
+    "agent_status": "SOURCE_CANDIDATE_NOT_INSTALLED",
+    "local_mcp_status": "SOURCE_TESTED_NOT_INSTALLED",
+    "local_port_3080": "NO_LISTENER_ON_2026_11_10_R0",
+    "local_git": "UNTRACKED_PACKAGE_LOCK_PROTECTED_REMOTE_AHEAD",
+    "chatgpt_oauth": "UNCONFIGURED_NO_CONSENT",
+    "model_local": "GPU_MOCK_CAPACITY_UNVERIFIED",
+    "router_cloudflare": "SOURCE_ONLY_LIVE_UNVERIFIED",
+    "material_verified": false,
+    "superseded_pr24": "CLOSED_NOT_MERGED"
   }
 }
