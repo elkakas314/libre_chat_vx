@@ -52,7 +52,8 @@ test('R2 requires an independent approval before async run',async()=>{
 test('only one async job runs and cancel is observable, without retry',async()=>{
  const root=await mkdtemp(path.join(tmpdir(),'nostromo-job-'));
  let settle;
- const execute=()=>new Promise(resolve=>{settle=resolve;});
+ const execute=(_,opts)=>{opts.onOutput({stdout:'progreso: paso 1',stderr:'',truncated:false});
+   return new Promise(resolve=>{settle=resolve;});};
  try{
   const jobs=createAsyncJobs({execute});
   const config={settings:{enabled:true,roots:[root]},approvalDir:''};
@@ -63,6 +64,7 @@ test('only one async job runs and cancel is observable, without retry',async()=>
   assert.equal(busy.status,'BUSY');
   assert.equal(busy.started,false);
   await Promise.resolve();
+  assert.match(jobs.status(start.jobId).liveOutput.stdout,/progreso: paso 1/);
   const cancel=jobs.cancel(start.jobId);
   assert.equal(cancel.status,'CANCEL_REQUESTED');
   assert.equal(jobs.cancel(start.jobId).status,'CANCEL_REQUESTED');
@@ -96,5 +98,15 @@ test('disabled scope and invalid root never create jobs',async()=>{
   assert.equal(a.status,'DISABLED');
   assert.equal(b.status,'DENIED');
   assert.equal(jobs.activeCount(),0);
+ }finally{await rm(root,{recursive:true,force:true});}
+});
+
+test('timeout returns no false success and does not auto-retry',async()=>{
+ const root=await mkdtemp(path.join(tmpdir(),'nostromo-timeout-'));
+ try{
+  const out=await executeLocal({cwd:root,argv:['/usr/bin/sleep','3'],timeout_s:1,max_output:256});
+  assert.equal(out.status,'TIMEOUT');
+  assert.equal(out.materialVerified,false);
+  assert.ok(out.finishedAt);
  }finally{await rm(root,{recursive:true,force:true});}
 });
