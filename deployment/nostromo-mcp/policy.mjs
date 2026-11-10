@@ -45,7 +45,7 @@ export function isSafeReadOnly(argv) {
   if(cmd==='uname')return exact([],['-a']);
   if(cmd==='df')return exact(['-h'],['-h','.']);
   if(cmd==='ls')return exact([],['-la'],['-l'],['-a']);
-  if(cmd==='git')return exact(['status','--short'],['status','--porcelain'],['rev-parse','HEAD'],['branch','--show-current'],['diff','--stat']);
+  if(cmd==='git')return exact(['status','--short'],['status','--porcelain'],['rev-parse','HEAD'],['branch','--show-current'],['diff','--stat','--no-ext-diff']);
   if(cmd==='ss')return exact(['-ltn'],['-ltnp']);
   if(cmd==='ps')return exact(['-e','-o','pid,comm'],['-e','-o','pid,comm,rss']);
   return false;
@@ -94,7 +94,10 @@ export async function executeLocal(request,{captureLimit,clock=()=>Date.now(),si
   const command=request.argv[0];
   const program=command.includes('/')?command:'/usr/bin/'+command;
   const args=request.argv.slice(1);
-  const env={PATH:'/usr/bin:/bin',HOME:process.env.HOME??'',LANG:'C.UTF-8',LC_ALL:'C.UTF-8'};
+  const env={PATH:'/usr/bin:/bin',HOME:process.env.HOME??'',LANG:'C.UTF-8',LC_ALL:'C.UTF-8',
+    GIT_OPTIONAL_LOCKS:'0',GIT_TERMINAL_PROMPT:'0',GIT_CONFIG_NOSYSTEM:'1',
+    GIT_CONFIG_GLOBAL:'/dev/null',GIT_CONFIG_COUNT:'1',
+    GIT_CONFIG_KEY_0:'core.fsmonitor',GIT_CONFIG_VALUE_0:'false'};
   let stdout='',stderr='',truncated=false,timedOut=false,cancelled=false;
   const append=(target,chunk)=>{
     const text=chunk.toString('utf8');
