@@ -10,23 +10,36 @@ function HubNode({item,children,depth=0}:{
   children:Readonly<Record<string,readonly HubItem[]>>;
   depth?:number;
 }){
+  const descendants=children[item.id]??[];
+  const content=(
+    <>
+      <span className="vx-hub-item-mark" aria-hidden="true">
+        {item.kind==='SYSTEM'?'◆':item.kind==='AGENT'?'◇':item.kind==='MODULE'?'▣':'·'}
+      </span>
+      <span>{item.label}</span>
+      <small>En código</small>
+    </>
+  );
   return (
     <li className={'vx-hub-item vx-hub-kind-'+item.kind.toLowerCase()}
       data-hub-item={item.id}>
-      <div className="vx-hub-item-main" style={{paddingInlineStart:depth*15}}>
-        <span className="vx-hub-item-mark" aria-hidden="true">
-          {item.kind==='SYSTEM'?'◆':item.kind==='AGENT'?'◇':item.kind==='MODULE'?'▣':'·'}
-        </span>
-        <span>{item.label}</span>
-        <small>En código</small>
-      </div>
-      {(children[item.id]?.length??0)>0&&
-        <ul className="vx-hub-children">
-          {children[item.id].map(child=>(
-            <HubNode key={child.id} item={child}
-              children={children} depth={depth+1}/>
-          ))}
-        </ul>}
+      {descendants.length>0 ? (
+        <details className="vx-hub-branch" open={depth===0}>
+          <summary className="vx-hub-item-main" style={{paddingInlineStart:depth*15}}>
+            {content}
+          </summary>
+          <ul className="vx-hub-children">
+            {descendants.map(child=>(
+              <HubNode key={child.id} item={child}
+                children={children} depth={depth+1}/>
+            ))}
+          </ul>
+        </details>
+      ):(
+        <div className="vx-hub-item-main" style={{paddingInlineStart:depth*15}}>
+          {content}
+        </div>
+      )}
     </li>
   );
 }
