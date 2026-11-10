@@ -38,9 +38,17 @@
     }
   ],
   "hub": {
-    "view": "SYSTEM_MODULE_CAPABILITY_RESOURCE_TREE",
+    "view": "ON_DEMAND_LOCAL_TREE_AND_FUTURE_TARGETS",
     "agentProfiles": "CANDIDATE_ONLY",
-    "lazy": true
+    "lazy": true,
+    "localProduct": "NOSTROMO",
+    "localAgent": "nostromo-autonomo",
+    "localMcp": "nostromo-autonomo",
+    "sourceCatalog": "src/hud/nostromoHub.ts",
+    "installed": false,
+    "live": false,
+    "materialVerified": false,
+    "noExecution": true
   },
   "rules": [
     "NO_SECOND_LINK_OR_KERNEL",

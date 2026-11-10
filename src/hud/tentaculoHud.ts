@@ -66,15 +66,17 @@ export function projectTentaculoHud(observations:readonly HudObservation[],
       canCreateAgentCandidate:true};
   });
 }
+export type HubSystem=HudSystem|'NOSTROMO';
 export type HubItemKind='SYSTEM'|'MODULE'|'CAPABILITY'|'AGENT';
-export interface HubItem {id:string;system:HudSystem;kind:HubItemKind;
+export interface HubItem {id:string;system:HubSystem;kind:HubItemKind;
   label:string;parentId?:string; sourceRef:string; status:'SOURCE'|'LIVE';}
 export function createTentaculoHubTree(items:readonly HubItem[]):{
   roots:readonly HubItem[];children:Record<string,readonly HubItem[]>;
 } {
+  const hubSystems:readonly HubSystem[]=['NOSTROMO',...systems];
   const seen=new Set<string>();
   for(const item of items){
-    if(!item.id||seen.has(item.id)||!systems.includes(item.system)||!item.sourceRef)
+    if(!item.id||seen.has(item.id)||!hubSystems.includes(item.system)||!item.sourceRef)
       throw Error('HUB_ITEM_ID_OR_SOURCE_INVALID');
     seen.add(item.id);
   }
@@ -103,7 +105,8 @@ export function hubAgentCandidate(item:HubItem) {
   return {schema:'libre-chat-vx.hub-agent-candidate.v1' as const,
     itemId:item.id,target:item.system,name:item.label,authority:false as const,
     state:'PROPOSED_NOT_INSTALLED' as const,
-    route:item.system==='VX13'?'TENTACULO_LINK_ONLY':
+    route:item.system==='NOSTROMO'?'NOSTROMO_LOCAL_MCP_PROPOSAL_ONLY':
+      item.system==='VX13'?'TENTACULO_LINK_ONLY':
       item.system==='ORACULO'?'ADVISORY_READ_ONLY':'MANOJOS_GOVERNED',
     sourceRef:item.sourceRef};
 }

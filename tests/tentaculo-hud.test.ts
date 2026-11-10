@@ -1,6 +1,8 @@
 import * as React from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 import {TentaculoHud} from '../src/ui/TentaculoHud';
+import {TentaculoHub} from '../src/ui/TentaculoHub';
+import {nostromoHubSourceSnapshot} from '../src/hud/nostromoHub';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {projectTentaculoHud, createTentaculoHubTree, hubAgentCandidate}
@@ -69,4 +71,44 @@ test('organic HUD renders no UI without a requested focus and never renders a 3-
   const off=renderToStaticMarkup(React.createElement(TentaculoHud,
     {cards,activeSystem:null}));
   assert.equal(off,'');
+});
+
+test('Tentáculo Hub retains NOSTROMO local agent/MCP before separate external targets',()=>{
+  const snapshot=nostromoHubSourceSnapshot();
+  assert.deepEqual(snapshot.rootSystems,['NOSTROMO','MANOJOS','VX13','ORACULO']);
+  const tree=createTentaculoHubTree(snapshot.items);
+  assert.deepEqual(tree.children.nostromo.map(x=>x.id),
+    ['nostromo-agent','nostromo-mcp','nostromo-chatgpt','nostromo-router']);
+  assert.deepEqual(tree.children['nostromo-mcp'].map(x=>x.id),['nostromo-terminal']);
+  assert.ok(snapshot.items.every(x=>x.status==='SOURCE'));
+  assert.equal(snapshot.materialVerified,false);
+  assert.equal(snapshot.mcpInstalled,false);
+  assert.equal(snapshot.chatgptConnected,false);
+  assert.equal(snapshot.authority,false);
+  assert.equal(snapshot.readOnly,true);
+  const agent=hubAgentCandidate(snapshot.items.find(x=>x.id==='nostromo-agent')!);
+  assert.equal(agent.route,'NOSTROMO_LOCAL_MCP_PROPOSAL_ONLY');
+  assert.equal(agent.authority,false);
+  assert.equal(agent.state,'PROPOSED_NOT_INSTALLED');
+});
+
+test('Tentáculo Hub displays truthful SOURCE inventory without execution actions',()=>{
+  const html=renderToStaticMarkup(React.createElement(TentaculoHub,
+    {snapshot:nostromoHubSourceSnapshot()}));
+  assert.match(html,/TENTÁCULO HUB/);
+  assert.match(html,/NOSTROMO · Autónomo/);
+  assert.match(html,/Único MCP local/);
+  assert.match(html,/ChatGPT · OAuth pendiente/);
+  assert.match(html,/Conexiones futuras/);
+  assert.match(html,/MCP no instalado/);
+  assert.equal(html.includes('LIVE_VERIFIED'),false);
+  assert.equal(html.includes('<form'),false);
+  assert.equal(html.includes('ejecutar ahora'),false);
+});
+
+test('Tentáculo Hub blocks mixed-system parent links and duplicates',()=>{
+  const items=[...nostromoHubSourceSnapshot().items];
+  assert.throws(()=>createTentaculoHubTree([...items,{...items[1],
+    id:'invalid-cross',system:'VX13',parentId:'nostromo'}]),/PARENT_INVALID/);
+  assert.throws(()=>createTentaculoHubTree([...items,items[0]]),/ID_OR_SOURCE_INVALID/);
 });

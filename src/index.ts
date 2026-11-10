@@ -142,6 +142,8 @@ export { validateDraftForApply } from './cockpit/controlDraft';
 export { acceptVisualAction } from './security/trustedSurfaceHost';
 
 export { projectTentaculoHud, createTentaculoHubTree, hubAgentCandidate } from './hud/tentaculoHud';
+export { nostromoHubSourceSnapshot } from './hud/nostromoHub';
+export type { NostromoHubSnapshot } from './hud/nostromoHub';
 export type { HudSystem, HudObservation, HudProjection } from './hud/tentaculoHud';
 
 export * from './ui';

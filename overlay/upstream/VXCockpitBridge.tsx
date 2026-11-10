@@ -3,7 +3,9 @@ import {
   MANOJOS3_LIBRECHAT_INTEGRATION,
   VX13_LIBRECHAT_INTEGRATION,
   TentaculoHud,
+  TentaculoHub,
   projectTentaculoHud,
+  nostromoHubSourceSnapshot,
 } from '@librechat/vx';
 import type { HudSystem } from '@librechat/vx';
 import './VXCockpit.css';
@@ -16,6 +18,7 @@ export interface VXCockpitBridgeProps {
 export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
   const [showTechnical, setShowTechnical] = useState(false);
   const [showAutonomous, setShowAutonomous] = useState(false);
+  const [showHub, setShowHub] = useState(false);
   const [activeSystem, setActiveSystem] = useState<HudSystem|null>(null);
   const returnButtonRef = useRef<HTMLButtonElement>(null);
 
@@ -86,6 +89,17 @@ export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
               <p><strong>ChatGPT:</strong> pendiente de autorización OAuth; puede sustituirse por LLM gratuito o local verificado.</p>
               <p><strong>Terminal:</strong> SOURCE preparado, sin instalación LIVE acreditada. Comandos R0 limitados, R2 sólo con permiso local de un uso.</p>
               <p className="vx-autonomy-warning">Esta cabina no inicia procesos ni concede permisos. La ejecución pertenece al agente y su MCP local autenticado.</p>
+              <button type="button" className="vx-autonomy-hub-toggle" aria-expanded={showHub}
+                aria-controls="vx-nostromo-hub"
+                onClick={() => setShowHub(value => !value)}>
+                {showHub ? 'Ocultar Tentáculo Hub' : 'Explorar Tentáculo Hub'}
+                <span aria-hidden="true">{showHub ? '−' : '↗'}</span>
+              </button>
+              {showHub ? (
+                <div id="vx-nostromo-hub">
+                  <TentaculoHub snapshot={nostromoHubSourceSnapshot()} />
+                </div>
+              ) : null}
             </div>
           ) : null}
         </section>
