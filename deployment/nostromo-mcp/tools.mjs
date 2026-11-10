@@ -18,6 +18,10 @@ export function selectedTools(raw) {
     String(raw).split(',').map(x=>x.trim()).filter(Boolean);
   if(new Set(names).size!==names.length||names.some(x=>!known.has(x)))
     throw Error('NOSTROMO_TOOL_CATALOG_INVALID');
+  const asynchronous=['nostromo_tarea_iniciar','nostromo_tarea_estado','nostromo_tarea_cancelar'];
+  const selected=asynchronous.filter(x=>names.includes(x));
+  if(selected.length!==0&&selected.length!==asynchronous.length)
+    throw Error('NOSTROMO_TOOL_CATALOG_INVALID_ASYNC_TRIO_REQUIRED');
   return new Set([...mandatory,...names]);
 }
 export function describeTools(enabled){
