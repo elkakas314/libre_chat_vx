@@ -118,3 +118,21 @@ Si devuelve `TSC_BUILD_FAILED`, leer las líneas entre
 `NOSTROMO_TSC_DIAGNOSTICS_BEGIN/END` y reparar la dependencia
 concreta sin borrar node_modules, package-lock ni árboles ajenos.
 Sólo entonces repetir `npm run nostromo:workspace:apply`.
+
+## 2026-11-10 — incidente de diagnósticos: selector inalcanzable
+
+Readback Lenovo tras `94d72cd`: `npm run nostromo:workspace:diagnose`
+devolvió `PREVIEW_ONLY` con `readOnly:false` (192 archivos nuevos,
+81 antiguos, 136 cambios) **sin invocar TypeScript**.
+
+Causa raíz SOURCE: el guard `if(!APPLY)` terminaba el proceso
+antes de llegar a `if(DIAGNOSE)`; el modo diagnóstico jamás
+compilaba. Se corrige a `if(!APPLY && !DIAGNOSE)`.
+Nueva aceptación CI: salida `DIAGNOSE_COMPILE_PASS` y
+`existingWorkspaceUnchanged:true` obligatorias en la misma revisión.
+Si el Lenovo muestra `TSC_BUILD_FAILED`, capturar diagnósticos y
+corregir únicamente entonces; no repetir reinstalación.
+
+El campo `readOnly:false` en `--diagnose` significa que sí crea
+y borra staging temporal, **no** que reemplace el paquete VX
+ni modifique servicios.
