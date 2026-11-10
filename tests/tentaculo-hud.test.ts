@@ -78,8 +78,10 @@ test('Tentáculo Hub retains NOSTROMO local agent/MCP before separate external t
   assert.deepEqual(snapshot.rootSystems,['NOSTROMO','MANOJOS','VX13','ORACULO']);
   const tree=createTentaculoHubTree(snapshot.items);
   assert.deepEqual(tree.children.nostromo.map(x=>x.id),
-    ['nostromo-agent','nostromo-mcp','nostromo-chatgpt','nostromo-router']);
-  assert.deepEqual(tree.children['nostromo-mcp'].map(x=>x.id),['nostromo-terminal','nostromo-tools']);
+    ['nostromo-agent','nostromo-mcp','nostromo-chatgpt','nostromo-router',
+     'nostromo-voice','nostromo-tasks','nostromo-graph','nostromo-mock']);
+  assert.deepEqual(tree.children['nostromo-mcp'].map(x=>x.id),
+    ['nostromo-terminal','nostromo-tools','nostromo-files','nostromo-git','nostromo-metrics']);
   assert.ok(snapshot.items.every(x=>x.status==='SOURCE'));
   assert.equal(snapshot.materialVerified,false);
   assert.equal(snapshot.mcpInstalled,false);
@@ -100,7 +102,13 @@ test('Tentáculo Hub displays truthful SOURCE inventory without execution action
   assert.match(html,/Único MCP local/);
   assert.match(html,/ChatGPT · OAuth pendiente/);
   assert.match(html,/Conexiones futuras/);
-  assert.match(html,/MCP no instalado/);
+  assert.match(html,/MCP: sin lectura LIVE desde LibreChat/);
+  assert.match(html,/Archivos · lectura R0 opcional/);
+  assert.match(html,/Git local · inspección R0 opcional/);
+  assert.match(html,/Microsoft Graph · OAuth y MCP externo pendientes/);
+  assert.match(html,/Mock de 4 GB · simulación, no VRAM física/);
+  assert.match(html,/details/);
+  assert.match(html,/summary/);
   assert.equal(html.includes('LIVE_VERIFIED'),false);
   assert.equal(html.includes('<form'),false);
   assert.equal(html.includes('ejecutar ahora'),false);
