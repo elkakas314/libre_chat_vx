@@ -61,7 +61,7 @@ y ejecutar con `nostromo_tarea_iniciar`. Guarda `jobId` y
 `requestHash`; el segundo sirve para la aprobación física R2 exacta.
 Una respuesta `RUNNING` no es PASS y no significa ejecución persistida.
 
-Consultar `nostromo_tarea_estado({jobId})` con moderación; recuperar
+Consultar `nostromo_tarea_estado({jobId})` con moderación; mientras esté RUNNING leer `liveOutput` (stdout/stderr parcial acotado), y recuperar
 `status`, `stdout`, `stderr`, `exitCode` y `materialVerified:false`
 al finalizar. No iniciar otra tarea si el MCP devuelve `BUSY`;
 no hacer bucles de sondeo ilimitados. Si se necesita cancelar, invocar
