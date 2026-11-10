@@ -101,6 +101,15 @@ export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
               </div>
               <p><strong>ChatGPT:</strong> pendiente de autorización OAuth; puede sustituirse por LLM gratuito o local verificado.</p>
               <p><strong>Terminal:</strong> SOURCE preparado, sin instalación LIVE acreditada. Comandos R0 limitados, R2 sólo con permiso local de un uso.</p>
+              <div className="vx-mode-tools" data-testid="nostromo-tools-source">
+                <strong>Herramientas MCP preparadas (SOURCE)</strong>
+                <ul>
+                  <li>Estado y catálogo de herramientas</li>
+                  <li>Preparar comando y ver sus efectos previstos</li>
+                  <li>Ejecutar terminal y recibir código, salida y errores</li>
+                </ul>
+                <p>Su exposición se configura en el servidor local; esta vista no crea permisos.</p>
+              </div>
               <p className="vx-autonomy-warning">Esta cabina no inicia procesos ni concede permisos. La ejecución pertenece al agente y su MCP local autenticado.</p>
             </div>
           ) : null}
@@ -110,7 +119,7 @@ export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
         {activeMode!=='AUTONOMO' ? (
         <section className="vx-context-systems" aria-labelledby="vx-systems-heading">
           <div className="vx-context-section-heading">
-            <h3 id="vx-systems-heading">Sistemas</h3>
+            <h3 id="vx-systems-heading">Tentáculo Hub</h3>
             <span>Destino externo</span>
           </div>
           <p className="vx-mode-subtitle">Tentáculo Hub muestra recursos y evidencias del sistema elegido, sin atribuirse su ejecución.</p>
