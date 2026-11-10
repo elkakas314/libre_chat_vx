@@ -19,4 +19,8 @@ mcpServers:
     # NOSTROMO_TOOL_SET: 'nostromo_terminal_preparar,nostromo_terminal_ejecutar,nostromo_archivo_leer,nostromo_git_inspeccionar,nostromo_metricas'
     # Para desactivar ejecución de terminal y dejar la inspección:
     # NOSTROMO_TOOL_SET: 'nostromo_archivo_leer,nostromo_git_inspeccionar,nostromo_metricas'
+    # Asíncrono opt-in, MISMO proceso MCP, 1 tarea activa; sin Worker ni daemon:
+    # NOSTROMO_TOOL_SET: 'nostromo_terminal_preparar,nostromo_archivo_leer,nostromo_git_inspeccionar,nostromo_metricas,nostromo_tarea_iniciar,nostromo_tarea_estado,nostromo_tarea_cancelar'
+    # El trío iniciar/estado/cancelar debe habilitarse completo. `timeout` 130 s no
+    # garantiza persistencia; el gestor retiene resultados sólo mientras vive el MCP.
     # Activar NOSTROMO_MCP_ENABLED=1 sólo tras ACL y rutas host verificadas.
