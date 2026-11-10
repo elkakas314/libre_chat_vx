@@ -7,6 +7,9 @@ export const catalog=Object.freeze([
  {name:'nostromo_archivo_leer',group:'ARCHIVOS_R0',description:'Lee texto limitado dentro de raíces permitidas, sin secretos'},
  {name:'nostromo_git_inspeccionar',group:'GIT_R0',description:'Consulta HEAD, rama, cambios y resumen diff sin modificar Git'},
  {name:'nostromo_metricas',group:'METRICAS_R0',description:'Carga, memoria y disco reales, sin fingir VRAM'},
+ {name:'nostromo_tarea_iniciar',group:'CLI_ASYNC',description:'Inicia un único proceso CLI gobernado sin bloquear la respuesta MCP'},
+ {name:'nostromo_tarea_estado',group:'CLI_ASYNC',description:'Consulta estado y resultado de tarea por ID opaco'},
+ {name:'nostromo_tarea_cancelar',group:'CLI_ASYNC',description:'Solicita cancelación del proceso; readback posterior obligatorio'},
 ]);
 const known=new Set(catalog.map(x=>x.name));
 export function selectedTools(raw) {
