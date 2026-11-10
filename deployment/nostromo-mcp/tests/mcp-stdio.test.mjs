@@ -25,7 +25,7 @@ test('MCP handshake, exactly three terminal tools, fail-closed by default',async
   const names=(await client.listTools()).tools.map(t=>t.name).sort();
   assert.deepEqual(names.sort(),['nostromo_estado','nostromo_herramientas','nostromo_terminal_ejecutar','nostromo_terminal_preparar']);
   const toolView=parse(await client.callTool({name:'nostromo_herramientas',arguments:{}}));
-  assert.equal(toolView.tools.length,7);
+  assert.equal(toolView.tools.length,10);
   assert.equal(toolView.tools.filter(t=>t.enabled).length,4);
   assert.equal(toolView.mutableByModel,false);
   const state=parse(await client.callTool({name:'nostromo_estado',arguments:{}}));
@@ -94,5 +94,49 @@ test('opt-in inspection MCP tools return real R0 reads and respect scoping',asyn
       const denied=parse(await client.callTool({name:'nostromo_archivo_leer',arguments:{file:'/etc/passwd'}}));
       assert.equal(denied.status,'DENIED');
     });
+ }finally{await rm(root,{recursive:true,force:true});}
+});
+
+test('MCP async tool calls return jobId, permit polling and bound R2 without approval',async()=>{
+ const root=await mkdtemp(path.join(tmpdir(),'nostromo-async-stdio-'));
+ try{
+  await withServer({
+    NOSTROMO_MCP_ENABLED:'1',NOSTROMO_ALLOWED_ROOTS:root,
+    NOSTROMO_APPROVAL_DIR:'',
+    NOSTROMO_TOOL_SET:'nostromo_tarea_iniciar,nostromo_tarea_estado,nostromo_tarea_cancelar',
+  },async client=>{
+    const tools=(await client.listTools()).tools.map(t=>t.name);
+    assert.ok(tools.includes('nostromo_tarea_iniciar'));
+    assert.ok(tools.includes('nostromo_tarea_estado'));
+    assert.ok(tools.includes('nostromo_tarea_cancelar'));
+    assert.equal(tools.includes('nostromo_terminal_ejecutar'),false);
+    const started=parse(await client.callTool({
+      name:'nostromo_tarea_iniciar',
+      arguments:{cwd:root,argv:['pwd'],timeout_s:5,max_output:1024}
+    }));
+    assert.equal(started.status,'RUNNING');
+    assert.equal(started.persisted,false);
+    assert.equal(started.started,true);
+    let final;
+    for(let i=0;i<100;i++){
+      const data=parse(await client.callTool({
+        name:'nostromo_tarea_estado',arguments:{jobId:started.jobId}
+      }));
+      if(data.finishedAt){final=data;break;}
+      await new Promise(r=>setTimeout(r,20));
+    }
+    assert.ok(final,'expected terminal readback');
+    assert.equal(final.status,'EXIT_0');
+    assert.equal(final.result.exitCode,0);
+    assert.match(final.result.stdout,/nostromo-async-stdio-/);
+    assert.equal(final.materialVerified,false);
+    const denied=parse(await client.callTool({name:'nostromo_tarea_iniciar',
+      arguments:{cwd:root,argv:['/bin/sh','-c','echo unsafe']}}));
+    assert.equal(denied.status,'LOCAL_APPROVAL_REQUIRED');
+    assert.equal(denied.started,false);
+    const missing=parse(await client.callTool({name:'nostromo_tarea_estado',
+      arguments:{jobId:'00000000-0000-0000-0000-000000000000'}}));
+    assert.equal(missing.status,'NOT_FOUND');
+  });
  }finally{await rm(root,{recursive:true,force:true});}
 });
