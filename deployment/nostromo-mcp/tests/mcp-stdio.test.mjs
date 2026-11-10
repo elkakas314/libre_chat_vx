@@ -23,7 +23,10 @@ function parse(result) {
 test('MCP handshake, exactly three terminal tools, fail-closed by default',async()=>{
  await withServer({NOSTROMO_MCP_ENABLED:'0',NOSTROMO_ALLOWED_ROOTS:''},async client=>{
   const names=(await client.listTools()).tools.map(t=>t.name).sort();
-  assert.deepEqual(names.sort(),['nostromo_estado','nostromo_terminal_ejecutar','nostromo_terminal_preparar']);
+  assert.deepEqual(names.sort(),['nostromo_estado','nostromo_herramientas','nostromo_terminal_ejecutar','nostromo_terminal_preparar']);
+  const toolView=parse(await client.callTool({name:'nostromo_herramientas',arguments:{}}));
+  assert.equal(toolView.tools.length,4);
+  assert.equal(toolView.mutableByModel,false);
   const state=parse(await client.callTool({name:'nostromo_estado',arguments:{}}));
   assert.equal(state.enabled,false);
   const call=await client.callTool({name:'nostromo_terminal_ejecutar',arguments:{cwd:'/tmp',argv:['pwd']}});
@@ -52,4 +55,17 @@ test('MCP stdio R0 command executes in allowlisted temporary directory',async()=
     assert.equal(forbidden.status,'LOCAL_APPROVAL_REQUIRED');
   });
  }finally{await rm(root,{recursive:true,force:true});}
+});
+
+test('owner tool registry can remove terminal execution without disabling MCP health or catalog',async()=>{
+ await withServer({
+   NOSTROMO_MCP_ENABLED:'1',
+   NOSTROMO_TOOL_SET:'nostromo_terminal_preparar',
+   NOSTROMO_ALLOWED_ROOTS:'',
+ },async client=>{
+   const tools=(await client.listTools()).tools.map(x=>x.name).sort();
+   assert.deepEqual(tools,['nostromo_estado','nostromo_herramientas','nostromo_terminal_preparar']);
+   const info=parse(await client.callTool({name:'nostromo_herramientas',arguments:{}}));
+   assert.equal(info.tools.find(x=>x.name==='nostromo_terminal_ejecutar').enabled,false);
+ });
 });
