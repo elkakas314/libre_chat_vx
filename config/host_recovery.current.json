@@ -1,0 +1,46 @@
+{
+  "schema": "libre-chat-vx.host-recovery.v1",
+  "status": "SOURCE_PREPARED_LIVE_UNVERIFIED",
+  "enabled": false,
+  "authority": false,
+  "design": "REUSE_EXISTING_MANOJOS3_MCP_AND_INDEPENDENT_HOST_CONTROL",
+  "hostControl": {
+    "kind": "EXISTING_REMOTE_MCP",
+    "urlEnv": "HOST_CONTROL_MCP_URL",
+    "urlSample": "http://127.0.0.1:8791/mcp",
+    "externalIngress": "MTLS_REQUIRED",
+    "authenticatedHostIdentityRequired": true,
+    "hostLocalGrantRequired": true,
+    "remoteGrantCreationAllowed": false,
+    "hostExecExposed": false,
+    "processKillExposed": false,
+    "fsDeleteExposed": false
+  },
+  "manojos3": {
+    "kind": "EXISTING_GOVERNED_MCP",
+    "urlEnv": "MANOJOS3_MCP_URL",
+    "normalFlow": "NostromoTargetGateway -> Manojos3McpTargetAdapter -> MANOJOS3 Policy/Kernel/Verifier",
+    "status": "BINDING_NO_VERIFICADO"
+  },
+  "allowedR0Tools": [
+    "host_status",
+    "host_listener_status",
+    "host_service_status",
+    "host_git_status"
+  ],
+  "allowedR2Tools": [
+    "host_service_restart"
+  ],
+  "allowedR3Tools": [],
+  "allowedServices": [],
+  "allowedRepositories": [],
+  "userConfirmation": "HOST_LOCAL_EXACT_GRANT_REQUIRED_NOT_CHAT_APPROVAL",
+  "noAutoRetry": true,
+  "noNewKernel": true,
+  "noNewHostDaemon": true,
+  "noNewTunnel": true,
+  "materialVerification": "MANDATORY_TARGET_READBACK_AND_EXISTING_RECEIPT_NOT_HTTP_200",
+  "guiControl": "EXTERNAL_REMOTE_DESKTOP_INDEPENDENT_NOT_GRANTED",
+  "deployment": "DISABLED_UNTIL_HOST_ACL_MTLS_LOCAL_GRANT_AND_CANARY",
+  "live": "NO_VERIFICADO"
+}
