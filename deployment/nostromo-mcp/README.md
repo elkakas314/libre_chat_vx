@@ -36,3 +36,14 @@ ChatGPT SIWC sigue `enabled=false` hasta completar consentimiento OAuth y bindin
 ## Gates
 
 Pruebas offline `npm --prefix deployment/nostromo-mcp test` y protocolo MCP stdio (CI SOURCE), verificación visual del modo en escritorio/móvil (mock). Después, canario real R0 en el Lenovo, test R2 sobre archivo/servicio de prueba y readback separado, permiso/RBAC, coste y uso de RAM. Hasta entonces `INSTALLED/LIVE/MATERIAL_VERIFIED=NO_VERIFICADO`.
+
+## Cuatro modos y Tentáculo Hub (PR #24)
+
+- **NOSTROMO Autónomo:** agente independiente del modelo; único servidor MCP local `nostromo-autonomo`, herramientas de terminal y recibos. El selector de la cabina es sólo una **vista**: para ejecutar, el agente nativo LibreChat y el MCP deben estar instalados, autorizados y activos.
+- **MANOJOS, VX13, ORÁCULO:** modos externos con sus propias autoridades y transportes. No reciben el MCP local NOSTROMO por el hecho de seleccionar una pestaña.
+- Tentáculo Hub reutiliza la proyección `projectTentaculoHud` y `createTentaculoHubTree`; sin backend autenticado no muestra estados LIVE ni instala capacidades automáticamente.
+- **Gestión de herramientas de un solo MCP:** `nostromo_herramientas` devuelve el catálogo efectivo. El administrador puede elegir en `NOSTROMO_TOOL_SET` una lista separada por comas de `nostromo_terminal_preparar`, `nostromo_terminal_ejecutar` (o ambas); `nostromo_estado` y `nostromo_herramientas` siempre quedan disponibles. Cambiar la variable exige reiniciar **sólo el proceso MCP**; el agente no puede otorgarse herramientas nuevas. Para añadir un ejecutor real se incorpora un módulo de código con test y nueva revisión, no se evalúa código arbitrario enviado por el LLM.
+- GitHub y Google Drive serán adaptadores del mismo MCP, con autorización propia y SecretRefs existentes por ámbito, **sin copiar secretos desde MANOJOS** ni montar sus bóvedas en LibreChat.
+- Los comandos de modificación usan la vía R2 ya implementada; nunca prometer autorización material por un selector de UI o por una respuesta del modelo.
+
+**Gates pendientes:** ChatGPT SIWC OAuth LIVE, modelo gratuito/local realmente admisible, LibreChat Agent Builder instalado, MCP en Lenovo, UI de recurso desde catálogos autenticados y verificación E2E. SOURCE/CI no equivalen a instalación.
