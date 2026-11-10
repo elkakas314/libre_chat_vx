@@ -103,7 +103,8 @@
     "autonomous_local_terminal_mcp": "SOURCE_MERGED_DISABLED",
     "autonomous_agent": "SOURCE_CANDIDATE_NOT_INSTALLED",
     "autonomous_native_visual": "SOURCE_MOCK_PASS",
-    "future_manojos_host_control": "PRESERVED_DISABLED"
+    "future_manojos_host_control": "PRESERVED_DISABLED",
+    "tentaculo_hub_local_first": "SOURCE_MERGED_PR23_NO_LIVE_BINDING"
   },
   "transport": {
     "local_web": "127.0.0.1:3080",
@@ -344,5 +345,36 @@
     "osHost": "LENOVO_LIBRECHAT_3080_NOT_LIVE_LAST_READBACK",
     "material_verified": false,
     "next": "BACKUP_LOCAL_DIRTY_UPSTREAM_AND_VX_BEFORE_FF_ONLY; INSTALL_MCP_DEPS_AND_LIBRECHAT_NATIVE_AGENT_WITH_RBAC; R0_CANARY; CHATGPT_SIWC_CONSENT"
+  },
+  "autonomous_hub": {
+    "marker": "NOSTROMO_AUTONOMO_HUB_PR23_MERGED_20261110",
+    "pr": 23,
+    "code_head": "88d8bbc098325c624cb5a4a4b93f46ded82a7af6",
+    "merge_commit": "6b324a2cc1287096d2352967491bedec3cb68a5b",
+    "ci": {
+      "source-check": {
+        "run": 42876900364,
+        "result": "SUCCESS"
+      },
+      "visual-source-smoke": {
+        "run": 42876900368,
+        "result": "SUCCESS"
+      },
+      "vx-native-visual-prerequisite": {
+        "run": 42876900371,
+        "result": "SUCCESS_SOURCE_MOCK"
+      }
+    },
+    "features": [
+      "CONTEXTUAL_TENTACULO_HUB_LOCAL_FIRST",
+      "EXISTING_AUTONOMOUS_AGENT_SINGLE_MCP",
+      "MANOJOS_VX13_ORACULO_FUTURE_DISABLED"
+    ],
+    "runtime": "SOURCE_ONLY",
+    "display": "ON_DEMAND_NOT_PERMANENT",
+    "host_installed": "NO_VERIFICADO",
+    "mcp_live": "NO_VERIFICADO",
+    "chatgpt_live": "NO_VERIFICADO",
+    "material_verified": false
   }
 }
