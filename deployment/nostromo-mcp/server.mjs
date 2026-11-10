@@ -17,11 +17,9 @@ const approvalDir=process.env.NOSTROMO_APPROVAL_DIR||'';
 const settings={enabled,roots:allowedRoots};
 const server=new McpServer({name:'nostromo-autonomo',version:'0.3.0'});
 const jobs=createAsyncJobs();
-/** On graceful shutdown, stop process groups belonging to this MCP session.
- * Force-killed host or power failure may leave an unknown effect: no persistence claim.
+/** Preserve Node's default signal-exit behavior. At process exit abort local
+ * children synchronously (SIGKILL cannot be intercepted; outcome may be unknown).
  */
-process.once('SIGINT',()=>{jobs.cancelAll();});
-process.once('SIGTERM',()=>{jobs.cancelAll();});
 process.once('exit',()=>{jobs.cancelAll();});
 const activeTools=selectedTools(process.env.NOSTROMO_TOOL_SET);
 const result=(payload,isError=false)=>({
