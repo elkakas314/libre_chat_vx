@@ -22,6 +22,8 @@ export function selectedTools(raw) {
   const selected=asynchronous.filter(x=>names.includes(x));
   if(selected.length!==0&&selected.length!==asynchronous.length)
     throw Error('NOSTROMO_TOOL_CATALOG_INVALID_ASYNC_TRIO_REQUIRED');
+  if(selected.length===3&&names.includes('nostromo_terminal_ejecutar'))
+    throw Error('NOSTROMO_TOOL_CATALOG_INVALID_ONE_CLI_EXECUTION_MODE');
   return new Set([...mandatory,...names]);
 }
 export function describeTools(enabled){
