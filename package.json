@@ -26,7 +26,8 @@
     "nostromo:workspace:preview": "node scripts/reconcile-existing-workspace.mjs --upstream=../upstream",
     "nostromo:workspace:apply": "node scripts/reconcile-existing-workspace.mjs --upstream=../upstream --apply",
     "nostromo:workspace:test": "node --test scripts/tests/reconcile-existing-workspace.test.mjs scripts/tests/stage-react-types.test.mjs",
-    "nostromo:workspace:diagnose": "node scripts/reconcile-existing-workspace.mjs --upstream=../upstream --diagnose"
+    "nostromo:workspace:diagnose": "node scripts/reconcile-existing-workspace.mjs --upstream=../upstream --diagnose",
+    "nostromo:local:trees:audit": "node scripts/audit-local-three-trees.mjs"
   },
   "peerDependencies": {
     "react": "^18.2.0",
