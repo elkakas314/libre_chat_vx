@@ -318,7 +318,7 @@ html.light .vx-autonomy-flow span:nth-child(even){color:#7299aa;}
 .vx-mode-switcher {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin:0 0 12px;}
 .vx-mode-option {min-height:44px;min-width:0;display:flex;align-items:center;justify-content:center;
   padding:8px 11px;border:1px solid var(--vx-border);border-radius:11px;cursor:pointer;
-  color:var(--vx-text);background:var(--vx-surface);font:650 12px/1.3 inherit;text-align:center;}
+  color:var(--vx-text);background:var(--vx-surface);font-weight:650;font-size:12px;line-height:1.3;font-family:inherit;text-align:center;}
 .vx-mode-option[aria-pressed="true"] {border-color:var(--vx-primary);
   background:color-mix(in srgb,var(--vx-primary) 15%,var(--vx-surface));}
 .vx-mode-option:hover {border-color:var(--vx-primary);}
