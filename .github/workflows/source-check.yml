@@ -44,6 +44,10 @@ jobs:
         run: npm run transport:validate
       - name: Build and test
         run: npm test
+      - name: Validate NOSTROMO standalone terminal MCP (real stdio roundtrip)
+        run: |
+          npm install --prefix deployment/nostromo-mcp --no-audit --no-fund --package-lock=false
+          npm --prefix deployment/nostromo-mcp run check
       - name: Validate agent event SOURCE projection with compiled runtime
         run: node --test canaries/agent-events-live/01-local-delivery.test.cjs
 
