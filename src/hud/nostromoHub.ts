@@ -25,7 +25,7 @@ const sourceNodes: readonly HubItem[] = [
   {id:'vx13',system:'VX13',kind:'SYSTEM',label:'VX13 · futuro',
     sourceRef:'src/adapters/vx13LinkReadOnlyAdapter.ts',status:'SOURCE'},
   {id:'oraculo',system:'ORACULO',kind:'SYSTEM',label:'ORÁCULO · futuro',
-    sourceRef:'src/adapters/oraculoAdvisoryAdapter.ts',status:'SOURCE'},
+    sourceRef:'src/adapters/oraculoAdvisoryBridge.ts',status:'SOURCE'},
 ];
 
 export interface NostromoHubSnapshot {
