@@ -77,6 +77,17 @@ for (const viewport of [
         await expect(context.getByTestId('nostromo-autonomo-details')).toBeVisible();
         await expect(context.getByTestId('nostromo-autonomo-details').getByText(/ChatGPT:/)).toBeVisible();
         await expect(context.getByTestId('nostromo-autonomo-details').getByText(/Terminal:/)).toBeVisible();
+        await expect(context.getByTestId('nostromo-tentaculo-hub')).toHaveCount(0);
+        await context.getByRole('button',{name:'Explorar Tentáculo Hub'}).click();
+        const hub=context.getByTestId('nostromo-tentaculo-hub');
+        await expect(hub).toBeVisible();
+        await expect(hub.getByText('Centro de capacidades')).toBeVisible();
+        await expect(hub.locator('[data-hub-item="nostromo-mcp"]')).toBeVisible();
+        await expect(hub.locator('[data-hub-item="nostromo-terminal"]')).toBeVisible();
+        await expect(hub.getByText('MCP no instalado', {exact:false})).toBeVisible();
+        await expect(hub.getByRole('button',{name:/ejecutar/i})).toHaveCount(0);
+        await context.getByRole('button',{name:'Ocultar Tentáculo Hub'}).click();
+        await expect(context.getByTestId('nostromo-tentaculo-hub')).toHaveCount(0);
         await context.getByRole('button',{name:'Ocultar modo autónomo'}).click();
         await expect(context.getByTestId('nostromo-autonomo-details')).toHaveCount(0);
         await expect(context.getByText('MANOJOS',{exact:true})).toBeVisible();
