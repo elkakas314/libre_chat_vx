@@ -19,6 +19,7 @@
   "toolAccess": {
     "required": [
       "nostromo_estado",
+      "nostromo_herramientas",
       "nostromo_terminal_preparar",
       "nostromo_terminal_ejecutar"
     ],
@@ -26,7 +27,8 @@
     "graphicalControl": false,
     "remoteDesktop": false,
     "terminalR0": true,
-    "terminalR2": "HUMAN_LOCAL_HASH_APPROVAL"
+    "terminalR2": "HUMAN_LOCAL_HASH_APPROVAL",
+    "management": "OWNER_TOOL_SET_LOCAL_CONFIG_NO_MODEL_TOOL_INSTALL"
   },
   "linksFutureOnly": [
     "MANOJOS3",
@@ -39,5 +41,19 @@
     "No afirmar instalación ni acceso host por SOURCE.",
     "No crear grants a través de prompts.",
     "No usar token fine-grained como credential de OS."
-  ]
+  ],
+  "mode": "AUTONOMO",
+  "agentModelIndependent": true,
+  "modelSources": [
+    "CHATGPT_OAUTH_IF_BOUND",
+    "CLOUDFLARE_ZERO_COST_IF_LIVE",
+    "LOCAL_BACKEND_IF_VERIFIED"
+  ],
+  "modeBoundaries": {
+    "AUTONOMO": "OWN_SINGLE_MCP_TERMINAL",
+    "MANOJOS": "EXTERNAL_PROVIDER_MCP",
+    "VX13": "EXTERNAL_TENTACULO_LINK",
+    "ORACULO": "EXTERNAL_ADVISORY"
+  },
+  "hub": "FOCUSED_RESOURCE_PROJECTION_NO_EXPLICIT_AUTOMATIC_TOOL_PRIVILEGES"
 }
