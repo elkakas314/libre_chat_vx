@@ -39,7 +39,7 @@ if(process.argv.some(x=>x.startsWith('--')&&!['--apply'].includes(x))){
 }else if(existsSync(dest)){
   // Existing private config must be merged by an operator with an actual
   // YAML parser, backup and real readback. Never touch or reveal its content.
-  status('EXISTING_YAML_NO_AUTOMATED_MERGE',{existingFile:true},0);
+  status('EXISTING_YAML_NO_AUTOMATED_MERGE',{existingFile:true},apply?2:0);
 }else{
   let gitHead;
   try{
