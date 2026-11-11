@@ -66,7 +66,7 @@ export function relocateLegacyLayout({home=homedir(),apply=false}={}){
  const toMove=pre.moves.filter(x=>x.status==='READY_TO_MOVE');
  if(!toMove.length)return {...pre,status:'ALREADY_RELOCATED_OR_NOT_PRESENT',
    mode:'APPLY',mutated:false,verified:true};
- for(const name of ['backups','tools','runtime','worktrees','reports'])
+ for(const name of ['worktrees','tools','backups','runtime','reports','handoffs','manifests','staging','cache','tmp','legacy'])
   ensureNostromoDir(name,{home});
  const done=[];
  try{
