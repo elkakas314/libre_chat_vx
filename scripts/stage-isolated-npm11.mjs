@@ -12,6 +12,9 @@ const up=path.join(os.homedir(),'librechat','upstream');
 const tools=path.join(os.homedir(),'.local','share','nostromo','tools');
 const dst=path.join(tools,'npm-11.13.0');
 const apply=process.argv.includes('--apply');
+function occupied(file){
+ try{lstatSync(file);return true;}catch(e){if(e?.code==='ENOENT')return false;throw e;}
+}
 const args=['install','--prefix','STAGE','--no-save','--package-lock=false',
   '--ignore-scripts','--no-audit','--no-fund','--prefer-offline','--progress=false','npm@11.13.0'];
 function status(code,info={},rc=0){
@@ -46,7 +49,7 @@ if(process.argv.some(x=>x.startsWith('--')&&x!=='--apply')){
    command:'npm install --prefix <private-temporary-tool-dir> --no-save --package-lock=false --ignore-scripts --no-audit --no-fund --prefer-offline npm@11.13.0'};
  if(!contract.applyAdmissible){
    status('UPSTREAM_PACKAGE_MANAGER_NOT_EXPECTED',pre,2);
- }else if(existsSync(dst)){
+ }else if(occupied(dst)){
    let version=null;
    try{
      if(!lstatSync(cli).isSymbolicLink()&&statSync(cli).isFile()){
@@ -64,8 +67,10 @@ if(process.argv.some(x=>x.startsWith('--')&&x!=='--apply')){
  }else{
    // Only the isolated tools parent may be created; never touch upstream.
    mkdirSync(tools,{recursive:true,mode:0o700});
-   if(lstatSync(tools).isSymbolicLink()){
-     status('TOOLS_PARENT_SYMLINK_DENIED',pre,2);
+   const dirStat=lstatSync(tools);
+   if(!dirStat.isDirectory()||dirStat.isSymbolicLink()||
+     (dirStat.mode&0o077)!==0||(process.getuid&&dirStat.uid!==process.getuid())){
+     status('TOOLS_PARENT_UNSAFE',pre,2);
    }else{
      const stage=mkdtempSync(path.join(tools,'.npm11-stage-'));
      const env={
@@ -93,7 +98,7 @@ if(process.argv.some(x=>x.startsWith('--')&&x!=='--apply')){
      }else{
        try{
          // Do not overwrite any existing owner toolchain.
-         if(existsSync(dst))throw Error('DESTINATION_RACE');
+         if(occupied(dst))throw Error('DESTINATION_RACE');
          renameSync(stage,dst);
          status('ISOLATED_NPM11_STAGED_VERIFIED',{
            ...pre,observedVersion:version,toolCli:cli,mutatedOnlyPrivateToolchain:true});
