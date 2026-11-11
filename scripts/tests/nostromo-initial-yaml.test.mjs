@@ -13,6 +13,9 @@ test('pinned upstream config creates only one disabled stdio MCP entry',()=>{
  assert.equal([...result.matchAll(/^mcpServers:$/gm)].length,1);
  assert.match(result,/NOSTROMO_MCP_ENABLED: '0'/);
  assert.match(result,/type: stdio/);
+ assert.match(result,/chatMenu: false/);
+ assert.match(result,/NOSTROMO_TOOL_SET: 'nostromo_terminal_preparar,nostromo_tarea_iniciar,nostromo_tarea_estado,nostromo_tarea_cancelar'/);
+ assert.equal(result.includes("NOSTROMO_TOOL_SET: 'nostromo_terminal_ejecutar"),false);
  assert.match(result,/nostromo-autonomo:/);
  assert.ok(!result.includes('enabled: true'));
 });
