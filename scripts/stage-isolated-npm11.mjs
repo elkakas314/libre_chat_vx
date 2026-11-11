@@ -9,8 +9,10 @@ import os from 'node:os';
 import path from 'node:path';
 import {assessNpmEnvironment} from './librechat-frontend-npm-gate.mjs';
 import {createNpmConfigIsolation} from './npm-config-isolation.mjs';
+import {nostromoLayout,ensureNostromoDir} from './nostromo-layout.mjs';
 const up=path.join(os.homedir(),'librechat','upstream');
-const tools=path.join(os.homedir(),'.local','share','nostromo','tools');
+const tools=nostromoLayout().tools;
+const legacyDst=nostromoLayout().legacyTool;
 const dst=path.join(tools,'npm-11.13.0');
 const apply=process.argv.includes('--apply');
 function occupied(file){
@@ -61,13 +63,28 @@ if(process.argv.some(x=>x.startsWith('--')&&x!=='--apply')){
    }catch{}
    status(version==='11.13.0'?'ISOLATED_NPM11_ALREADY_VERIFIED':'ISOLATED_TOOL_DIR_EXISTS_NEEDS_AUDIT',
      {...pre,observedVersion:version},version==='11.13.0'?0:2);
+ }else if(occupied(legacyDst)){
+   const legacyCli=path.join(legacyDst,'node_modules','npm','bin','npm-cli.js');
+   let legacyVersion=null;
+   try{
+     if(!lstatSync(legacyCli).isSymbolicLink()&&statSync(legacyCli).isFile()){
+       const r=spawnSync(process.execPath,[legacyCli,'--version'],
+         {encoding:'utf8',timeout:8000,stdio:['ignore','pipe','ignore']});
+       if(r.status===0)legacyVersion=r.stdout.trim();
+     }
+   }catch{}
+   status(legacyVersion==='11.13.0'?'ISOLATED_NPM11_LEGACY_LAYOUT_PRESENT':
+     'ISOLATED_NPM11_LEGACY_UNVERIFIED',{
+     ...pre,legacyLocation:legacyDst,observedVersion:legacyVersion,
+     next:'MIGRATE_VERIFIED_TOOL_TO_CANONICAL_LAYOUT_WITH_SEPARATE_GUARDED_COMMAND'
+   },legacyVersion==='11.13.0'?0:2);
  }else if(!apply){
    status('ISOLATED_NPM11_READY_TO_STAGE',pre);
  }else if(diskFree<2*1024**3||memFree<1024**3){
    status('RESOURCE_GUARD_DENIED',pre,2);
  }else{
    // Only the isolated tools parent may be created; never touch upstream.
-   mkdirSync(tools,{recursive:true,mode:0o700});
+   ensureNostromoDir('tools');
    const dirStat=lstatSync(tools);
    if(!dirStat.isDirectory()||dirStat.isSymbolicLink()||
      (dirStat.mode&0o077)!==0||(process.getuid&&dirStat.uid!==process.getuid())){
