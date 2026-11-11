@@ -46,7 +46,7 @@ run_pr() {
   return "$failed"
 }
 run_pr PR34 fix/nostromo-frontend-devdeps-guarded-20261111 c86d0ac527e4ec0f2d9d928d1ac18cc749218ab9; R34=$?
-run_pr PR35 feat/nostromo-native-wiring-gates-20261111 8f60a04863bfc04c1e9dc5c50273d011164151a9; R35=$?
+run_pr PR35 feat/nostromo-native-wiring-gates-20261111 ab478c6914abd896b089aaf548ab4848a55c71f2; R35=$?
 run_pr PR31 audit/nostromo-visual-and-local-trees-20261110 983229e69c7a5e8f8d2c425736a2effc9116830b; R31=$?
 if [[ "$(git branch --show-current)" != main ]] ||
    [[ "$(git rev-parse HEAD)" != "$MAIN" ]]; then
