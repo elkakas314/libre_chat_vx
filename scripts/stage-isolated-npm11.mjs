@@ -3,7 +3,7 @@
  * PREVIEW default, --apply builds a new tool directory outside the dirty
  * upstream. Never updates system npm, never deletes or replaces existing tools.
  */
-import {existsSync,lstatSync,mkdirSync,mkdtempSync,renameSync,statfsSync,readFileSync,statSync} from 'node:fs';
+import {existsSync,lstatSync,mkdirSync,mkdtempSync,renameSync,rmSync,statfsSync,readFileSync,statSync} from 'node:fs';
 import {spawnSync} from 'node:child_process';
 import os from 'node:os';
 import path from 'node:path';
@@ -73,6 +73,17 @@ if(process.argv.some(x=>x.startsWith('--')&&x!=='--apply')){
      status('TOOLS_PARENT_UNSAFE',pre,2);
    }else{
      const stage=mkdtempSync(path.join(tools,'.npm11-stage-'));
+     const born=lstatSync(stage);
+     function discardCreatedStage(){
+       try{
+         const current=lstatSync(stage);
+         if(!current.isDirectory()||current.isSymbolicLink()||
+            current.dev!==born.dev||current.ino!==born.ino||
+            current.uid!==born.uid||path.dirname(stage)!==tools)return false;
+         rmSync(stage,{recursive:true,force:true});
+         return !occupied(stage);
+       }catch{return false;}
+     }
      const env={
        HOME:os.homedir(),PATH:process.env.PATH||'/usr/bin:/bin',
        LANG:'C.UTF-8',LC_ALL:'C.UTF-8',
@@ -94,7 +105,7 @@ if(process.argv.some(x=>x.startsWith('--')&&x!=='--apply')){
      if(version!=='11.13.0'){
        status('ISOLATED_NPM11_INSTALL_INCOMPLETE',{
          ...pre,exitCode:result.status,observedVersion:version,
-         preservedStage:stage,mutatedOnlyPrivateStage:true},2);
+         privateStageRemoved:discardCreatedStage(),mutatedOnlyPrivateStage:true},2);
      }else{
        try{
          // Do not overwrite any existing owner toolchain.
@@ -104,7 +115,8 @@ if(process.argv.some(x=>x.startsWith('--')&&x!=='--apply')){
            ...pre,observedVersion:version,toolCli:cli,mutatedOnlyPrivateToolchain:true});
        }catch(e){
          status('ISOLATED_NPM11_PROMOTION_BLOCKED',{
-           ...pre,preservedStage:stage,error:String(e?.message||'PROMOTION_ERROR')},2);
+           ...pre,privateStageRemoved:discardCreatedStage(),
+           error:String(e?.message||'PROMOTION_ERROR')},2);
        }
      }
    }
