@@ -23,3 +23,37 @@ test('unknown dry-run payload or truncated output fails closed before mutating n
   assert.equal(assessNpmDryRun(payload).allow,false);
  }
 });
+
+test('npm v11 prefixed action-lines are accepted only with exact JSON add objects',()=>{
+ const npm = {add:[{name:'debug',version:'4.4.3',path:'/sample/node_modules/debug'}],
+   added:1,audited:0,change:[],changed:0,remove:[],removed:0};
+ const result=assessNpmDryRun('add debug 4.4.3\n'+JSON.stringify(npm,null,2));
+ assert.deepEqual(result,{status:'DRY_RUN_ADDITIONS_ONLY',allow:true,
+   added:1,removed:0,changed:0,prefixedActionLinesVerified:1});
+});
+test('npm v11 prefixed add lines cannot hide changes, removals, missing metadata or mismatches',()=>{
+ const v={add:[{name:'debug',version:'4.4.3'}],added:1,
+   change:[],changed:0,remove:[],removed:0};
+ const fixture=x=>'add debug 4.4.3\n'+JSON.stringify(x);
+ const rejects=[
+   fixture({...v,removed:1,remove:[{name:'any'}]}),
+   fixture({...v,changed:1,change:[{name:'debug'}]}),
+   fixture({...v,added:2}),
+   fixture({...v,add:undefined}),
+   fixture({...v,remove:[{name:'tampering'}]}),
+   fixture({...v,add:[{name:'debug',version:'1.0.0'}]}),
+   'add altered 4.4.3\n'+JSON.stringify(v),
+   'change debug 4.4.3\n'+JSON.stringify(v),
+   'npm WARN unsafe\n'+JSON.stringify(v),
+   'add debug 4.4.3\n{broken-json'
+ ];
+ for(const x of rejects)assert.equal(assessNpmDryRun(x).allow,false,x.slice(0,120));
+});
+test('multiple prefixed add lines require multiplicity and matching versions',()=>{
+ const changes={add:[{name:'foo',version:'1.2.3'},{name:'foo',version:'1.2.3'},
+   {name:'@scope/pkg',version:'2.0.0'}],added:3,
+   remove:[],removed:0,change:[],changed:0};
+ const ok='add foo 1.2.3\nadd @scope/pkg 2.0.0\nadd foo 1.2.3\n'+JSON.stringify(changes);
+ assert.equal(assessNpmDryRun(ok).allow,true);
+ assert.equal(assessNpmDryRun(ok.replace('add foo 1.2.3\n','')).allow,false);
+});
