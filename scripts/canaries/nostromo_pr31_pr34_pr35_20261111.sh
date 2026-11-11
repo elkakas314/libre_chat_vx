@@ -16,6 +16,9 @@ echo "MAIN_BEFORE=$MAIN"
 run_pr() {
   local label="$1" branch="$2" expected="$3" failed=0
   echo "===== $label / FETCH ====="
+  if [[ "$(git branch --show-current)" != main ]]; then
+    echo "$label MAIN_NOT_RESTORED"; exit 2
+  fi
   git fetch --no-tags origin "refs/heads/$branch" || { echo "$label FETCH_FAILED"; return 1; }
   if [[ "$(git rev-parse FETCH_HEAD)" != "$expected" ]]; then
     echo "$label HEAD_MISMATCH: no ejecutar una revision distinta"; return 1
@@ -38,7 +41,7 @@ run_pr() {
       ;;
     *) failed=1 ;;
   esac
-  git switch -q main || { echo "$label RESTORE_MAIN_FAILED"; return 2; }
+  git switch -q main || { echo "$label RESTORE_MAIN_FAILED"; exit 2; }
   if (( failed )); then echo "$label BLOCKED"; else echo "$label SOURCE_CANARY_PASS_NOT_E2E"; fi
   return "$failed"
 }
