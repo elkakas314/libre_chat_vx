@@ -8,6 +8,7 @@ import {createHash} from 'node:crypto';
 import {existsSync,readFileSync,realpathSync,lstatSync,mkdtempSync,mkdirSync,copyFileSync,chmodSync,statfsSync,writeFileSync} from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
+import {assessNpmDryRun} from './librechat-npm-dry-run-guard.mjs';
 
 const EXPECTED_UPSTREAM='f10b1d91f1eee3a2c82d5247bf620351486b7c1b';
 const EXPECTED_LOCK='e7119c0eecd9c97048c7fb838a9f8cb0cb620bed99b7488886743e9bbe14d5f5';
@@ -99,11 +100,13 @@ const env={
  npm_config_audit:'false',npm_config_fund:'false',
  npm_config_registry:'https://registry.npmjs.org/',
  npm_config_userconfig:'/dev/null',npm_config_globalconfig:'/dev/null'};
-const dry=run('npm',[...allowedArgs,'--dry-run'],{
+const dry=run('npm',[...allowedArgs,'--dry-run','--json'],{
  env,stdio:'pipe',timeout:6*60_000});
 if(dry.exitCode!==0)fail('DRY_RUN_FAILED',{
- exitCode:dry.exitCode,error:dry.error,stdoutTail:dry.stdout.slice(-4000),
- stderrTail:dry.stderr.slice(-4000)});
+ exitCode:dry.exitCode,error:dry.error,action:'REVIEW_NPM_DIAGNOSTICS_LOCALLY'});
+const dryRun=assessNpmDryRun(dry.stdout);
+if(!dryRun.allow)fail(dryRun.status,{
+ dryRun,action:'REVIEW_NPM_PLAN_LOCALLY_BEFORE_ANY_MUTATION'});
 for(const relative of protectedFiles)if(sha(path.join(UP,relative))!==baseline[relative])
   fail('PREVIEW_CHANGED_PROTECTED_FILE',{relative});
 const backup=mkdtempSync(path.join(os.homedir(),'nostromo-frontend-deps-backup.'));
@@ -120,7 +123,7 @@ writeFileSync(path.join(backup,'receipt.json'),JSON.stringify({
  note:'Backup of manifests only: node_modules is not snapshotted'
 },null,2),{mode:0o600});
 console.log(JSON.stringify({...report,status:'APPLY_START',
- backupPath:backup,mutated:false},null,2));
+ backupPath:backup,mutated:false,dryRun},null,2));
 const install=run('npm',allowedArgs,{env,stdio:'inherit',timeout:30*60_000});
 const changedProtected=protectedFiles.filter(x=>sha(path.join(UP,x))!==baseline[x]);
 const after=missing();
@@ -130,7 +133,7 @@ const status=changedProtected.length?'PROTECTED_MANIFEST_CHANGED':
 console.log(JSON.stringify({
  ...report,status,exitCode:install.exitCode,error:install.error,
  missingAfter:after,protectedManifestChanges:changedProtected,
- backupPath:backup,mutated:true,frontendBuilt:false,mcpOrServicesChanged:false,
+ backupPath:backup,mutated:true,dryRun,frontendBuilt:false,mcpOrServicesChanged:false,
  next:status==='DEVELOPMENT_BINARIES_PRESENT_NOT_BUILD_VERIFIED'?
   'RUN_FRONTEND_CI_WITH_RESOURCE_GUARD':
   'INSPECT_FAILURE_AND_BACKUP_BEFORE_RETRY_NO_FORCE'
