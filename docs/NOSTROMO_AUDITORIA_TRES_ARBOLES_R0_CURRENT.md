@@ -110,3 +110,50 @@ respaldo local `~/nostromo-workspace-backup.*` y readback
 checkout `~/librechat/upstream` si MemAvailable lo permite.
 No copiar `.env` de `~/upstream`, no usar Actions, no reinstalar
 ni borrar trabajos locales.
+
+
+## Corte operativo de continuidad — 2026-11-11 (preparación del cierre)
+
+Esta sección **sustituye como siguiente paso** a las instrucciones históricas
+de staging anteriores; no borra sus receipts.
+
+**HOST, reportado y probado por el operador:**
+- `~/librechat/upstream/packages/librechat-vx` reconciliado y compilado,
+  `WORKSPACE_RECONCILED`, backup privado
+  `~/nostromo-workspace-backup.2jGTrK`.
+- `deployment/nostromo-mcp` v0.3 probado en Lenovo:
+  **28/28 PASS**, repetido en `main@2b3c9bfc...`, protocolo
+  stdio con jobs asíncronos, R0 y R2 denegado sin permiso.
+- Auditor de dependencias **1/1 PASS** sobre upstream
+  `f10b1d91...`, archivo package-lock SHA
+  `e7119c0eecd9c97048c7fb838a9f8cb0cb620bed99b7488886743e9bbe14d5f5`.
+  Ausentes: `rimraf`, `tsdown`, `vite`. `tsc` existe.
+- Reparador PREVIEW anterior **5/5 PASS**,
+  `mutated:false`, npm host **10.9.8** frente a
+  `packageManager npm@11.13.0` fijado. No `--apply` acreditado.
+- LibreChat backend, Mongo, agente, consentimiento ChatGPT OAuth,
+  sesión MCP desde agente y frontend final: **NO VERIFICADOS**.
+
+**SOURCE nuevo, pendiente de test en Lenovo (NO confundir con LIVE):**
+- PR #34 `c86d0ac527e4ec0f2d9d928d1ac18cc749218ab9`: runtime npm 11.13.0
+  aislado bajo `~/.local/share/nostromo/tools/` (sin reemplazar
+  npm global), reparación protegida, dry-run JSON y control de hashes.
+- PR #35 `a4ec825fb4d480e27ce82e71c470eec6b70b7cce`: auditor R0 de cableado
+  y staging opcional de una sola entrada MCP stdio inicialmente
+  DESACTIVADA, `chatMenu:false` y herramientas asíncronas
+  exclusivas. El YAML existente nunca se sobrescribe.
+- PR #31 `d693082c9e1a681ab357901c46c49d779cedda07`: cabina/Hub
+  plegable, responsive y reconciliador Bridge/CSS con respaldo y
+  preservación de trabajo visual único. La cabina avanzada es
+  SOURCE, no una superficie LIVE por existir el fixture.
+- Funciones puras renderer/compatibilidad/npm dry-run:
+  **8/8 comprobaciones aisladas PASS**, NO pruebas de host ni E2E.
+
+**NEXT_ELIGIBLE**: probar las tres PRs sobre el Lenovo sin Actions;
+resolver npm 11 aislado + devDependencies sin podas; compilar frontend;
+probar/sincronizar UI con respaldo; configurar YAML/ACL de MCP
+desactivado, levantar backend; registrar agente con modelo real y
+herramientas MCP; probar conversación→jobId→poll/cancel→readback.
+Ningún trabajo en `~/upstream` debe alterarse ni extraerse
+credenciales de allí. Mantener `main` limpio de cambios no
+probados: las tres PRs siguen separadas y DRAFT.
