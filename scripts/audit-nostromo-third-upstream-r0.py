@@ -227,7 +227,8 @@ def scan_tree_references(root, needle="/home/elkakas314/upstream",
                                     onerror=lambda _: None):
         dirs[:] = [name for name in dirs if name not in SKIP_DIRS and
                    not os.path.islink(os.path.join(base, name))]
-        for name in files:
+        dirs.sort()
+        for name in sorted(files):
             if files_seen >= max_files or bytes_seen >= max_bytes:
                 incomplete = True
                 break
@@ -352,7 +353,8 @@ def scan(target, integrated, max_files, max_hash_size, hash_mib,
             except OSError:
                 dirs.remove(name)
                 report["skipped"]["DIR_UNKNOWN"] += 1
-        for name in files:
+        dirs.sort()
+        for name in sorted(files):
             if total >= max_files:
                 report["warnings"].append("FILE_COUNT_BUDGET_REACHED")
                 break
@@ -376,8 +378,11 @@ def scan(target, integrated, max_files, max_hash_size, hash_mib,
                 # Secret files are presence-only, never hashed or scanned.
                 continue
             if not tags:
-                report["skipped"]["UNCATEGORIZED"] += 1
-                continue
+                if Path(rel).suffix.lower() in SOURCE_EXT:
+                    tags = ["GENERAL_SOURCE"]
+                else:
+                    report["skipped"]["UNCATEGORIZED"] += 1
+                    continue
             external_hash, source_status = bounded_hash(
                 target, rel, st, max_hash_size, hash_budget)
             if source_status == "HASHED":
