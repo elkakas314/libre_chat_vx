@@ -40,7 +40,7 @@ test('private user/global npm configs are distinct and npm --version runs withou
        ...overrides},stdio:['ignore','pipe','pipe']
    });
    assert.equal(npm.status,0,npm.stderr||String(npm.error));
-   assert.match(npm.stdout.trim(),/^\\d+\\.\\d+\\.\\d+$/);
+   assert.match(npm.stdout.trim(),/^\d+\.\d+\.\d+$/);
    assert.doesNotMatch(npm.stderr,/double-loading config/i);
  }finally{rmSync(dir,{recursive:true,force:true});}
 });
