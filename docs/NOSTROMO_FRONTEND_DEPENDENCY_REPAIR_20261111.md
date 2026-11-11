@@ -106,3 +106,40 @@ construir otro servicio. Verificar versión de Node y escoger npm 11
 compatible, acotado al proceso y revisado contra `packageManager`/lock.
 No lanzar npm install, dry-run con efectos o frontend build mientras el
 gate permanezca bloqueado. Sin GitHub Actions.
+
+
+## Runtime aislado npm 11.13.0 — implementación SOURCE
+
+Para no sustituir npm 10 global del Lenovo se ha añadido
+`scripts/stage-isolated-npm11.mjs`, con vista PREVIEW y operación
+`--apply` explícita. Cuando se habilite, sólo instala
+`npm@11.13.0` bajo
+`~/.local/share/nostromo/tools/npm-11.13.0` utilizando un
+staging temporal privado y comprobando
+`node <staging>/node_modules/npm/bin/npm-cli.js --version`
+antes de promocionar. Deniega destino ya ocupado (también enlace
+simbólico colgante), permisos inseguros o recursos insuficientes.
+No toca `~/librechat/upstream`, `~/upstream` ni npm global.
+
+El reparador reconoce automáticamente este CLI aislado si existe
+en la ruta canónica, valida su `--version` contra el
+`packageManager: npm@11.13.0` del upstream y sigue
+exigiendo `lockfileVersion:3`, SHA del lockfile exacto,
+guardia RAM/disco, simulación JSON que no elimine ni cambie
+paquetes existentes, backup y readback. Si no está instalado el
+CLI aislado, conserva la denegación del npm10 del host.
+
+Comandos de **solo lectura** para comprobar la revisión SOURCE:
+
+```sh
+npm run nostromo:frontend:deps:repair:test
+npm run nostromo:runtime:npm11:test
+npm run nostromo:runtime:npm11:preview
+npm run nostromo:frontend:deps:repair
+```
+
+Las fases de escritura `nostromo:runtime:npm11:stage` y
+`nostromo:frontend:deps:repair -- --apply` NO están autorizadas
+por una prueba SOURCE. Exigen readback local y operación
+explícita, con recepción del receipt. Ninguna instalación global,
+ni GitHub Actions ni manipulación de secrets.
