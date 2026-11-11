@@ -6,6 +6,7 @@ Does not rescan trees, modify data, read .env, disclose file contents or approve
 """
 import argparse
 import hashlib
+import errno
 import json
 import os
 import re
@@ -80,9 +81,19 @@ def checked_bytes(root, rel, limit):
         return state, None
     if before.st_size > limit:
         return "SIZE_LIMIT", None
+    # Open every ancestor by dirfd with O_NOFOLLOW, not by a single path.
+    # This prevents a symlink swap between root_state() and this read.
     fd = None
     try:
-        fd = os.open(Path(root) / rel, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0))
+        fd = os.open("/", os.O_RDONLY | os.O_DIRECTORY)
+        parts = list(Path(root).parts[1:]) + list(PurePosixPath(relative(rel)).parts)
+        for index, name in enumerate(parts):
+            flags = os.O_RDONLY | os.O_NOFOLLOW
+            if index != len(parts) - 1:
+                flags |= os.O_DIRECTORY
+            next_fd = os.open(name, flags, dir_fd=fd)
+            os.close(fd)
+            fd = next_fd
         observed = os.fstat(fd)
         identity = lambda st: (st.st_dev, st.st_ino, st.st_size, st.st_mtime_ns)
         if not stat.S_ISREG(observed.st_mode) or identity(before) != identity(observed):
@@ -91,7 +102,9 @@ def checked_bytes(root, rel, limit):
         if len(payload) != before.st_size or identity(os.fstat(fd)) != identity(observed):
             return "RACE_BLOCKED", None
         return "READ_OK", payload
-    except OSError:
+    except OSError as exc:
+        if exc.errno in (errno.ELOOP, errno.ENOTDIR, errno.ENOENT):
+            return "RACE_BLOCKED", None
         return "UNREADABLE", None
     finally:
         if fd is not None:
