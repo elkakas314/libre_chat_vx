@@ -63,6 +63,15 @@ class ThirdUpstreamAuditTests(unittest.TestCase):
         (self.integrated / "api" / "route.ts").write_text("modified", encoding="utf8")
         self.assertEqual(self.perform()["counts"]["relations"]["DIFFERENT_CONTENT"], 1)
 
+
+    def test_redis_signal_detected_in_generic_file_without_executing_it(self):
+        (self.third / "backend").mkdir()
+        (self.third / "backend" / "config.ts").write_text(
+            "import Redis from 'ioredis';", encoding="utf8")
+        r = self.perform()
+        self.assertGreater(r["sourceSignals"]["REDIS_QUEUE_CALLS"]["filesContainingSignal"], 0)
+        self.assertFalse(r["conclusions"]["redisLiveVerified"])
+
     def test_missing_lock_and_distinct_env_are_only_warnings(self):
         (self.third / ".env").write_text("PASSWORD=private", encoding="utf8")
         (self.integrated / "package-lock.json").write_text("{}", encoding="utf8")
