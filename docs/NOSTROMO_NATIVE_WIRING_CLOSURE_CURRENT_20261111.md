@@ -132,3 +132,26 @@ rechaza si la fuente no es exactamente la carpeta canónica
 `~/librechat/vx`. Con ello se puede ejecutar el PREVIEW de una
 rama aislada y comparar SHA/catálogo sin que genere por error
 configuración desde una revisión antigua de `main`.
+
+
+## Readback superseding earlier pending frontend gate — 2026-11-11
+
+La indicación previa **`frontend:ci NO PASS` es histórica** y queda
+sustituida por la salida LIVE del Lenovo aportada por el usuario:
+`FRONTEND_CI_PASS`, `LOCKFILE_PRESERVED`, 2.984 dependencias añadidas
+(0 removed, 0 changed), `npm@11.13.0` aislado, Vite 8.2.2 con PWA.
+El build incluyó `client/dist/manifest.webmanifest` y `sw.js`.
+
+**NO se han acreditado** todavía: backend Mongo/3080, agente nativo
+registrado, MCP unido al agente, LLM/OAuth admitido, panel completo
+NostromoCockpit montado, dispositivo móvil autenticado, ruta Tailscale
+Serve HTTPS, ejecución E2E ni recuperación. Advertencia `@librechat/agents
+4.0.1` requiere Node >=24 frente al Node 22.23.2 actual del Lenovo:
+probar compatibilidad de backend antes de declarar LIVE; no forzar
+actualización global sin auditoría.
+
+Nuevos artefactos SOURCE de la rama integrada: `scripts/nostromo-layout.mjs`
+y migración protegida `scripts/nostromo-layout-relocate.mjs` para reubicar
+backups/tools en `~/librechat/nostromo`; `nostromo:qa:diagnostics`
+(10 grupos); `nostromo:mobile:preflight`. Sólo GitHub verificado,
+**pruebas de estos cambios aún pendientes en el Lenovo**.
