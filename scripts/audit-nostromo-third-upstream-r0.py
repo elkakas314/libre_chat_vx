@@ -210,8 +210,69 @@ def top_entries(root):
     return results[:160]
 
 
+
+def scan_tree_references(root, needle="/home/elkakas314/upstream",
+                         max_files=25000, max_bytes=24 * 1024 * 1024,
+                         sample_limit=40):
+    """Detect only hardcoded path mentions in safe text. Never print contents."""
+    try:
+        st = os.lstat(root)
+        if not stat.S_ISDIR(st.st_mode) or stat.S_ISLNK(st.st_mode):
+            return {"status": "ROOT_UNSAFE", "filesInspected": 0}
+    except OSError:
+        return {"status": "ROOT_UNAVAILABLE", "filesInspected": 0}
+    files_seen, bytes_seen, count, paths = 0, 0, 0, []
+    incomplete = False
+    for base, dirs, files in os.walk(root, followlinks=False, topdown=True,
+                                    onerror=lambda _: None):
+        dirs[:] = [name for name in dirs if name not in SKIP_DIRS and
+                   not os.path.islink(os.path.join(base, name))]
+        for name in files:
+            if files_seen >= max_files or bytes_seen >= max_bytes:
+                incomplete = True
+                break
+            rel = os.path.relpath(os.path.join(base, name), root)
+            files_seen += 1
+            if sensitive(rel) or Path(rel).suffix.lower() not in SOURCE_EXT:
+                continue
+            state, st = regular_at(root, rel)
+            if state != "REGULAR" or st.st_size > 512 * 1024 or (
+                    bytes_seen + st.st_size > max_bytes):
+                continue
+            fd = None
+            try:
+                fd = os.open(root / rel, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0))
+                b = os.fstat(fd)
+                if (b.st_dev, b.st_ino, b.st_size, b.st_mtime_ns) != (
+                        st.st_dev, st.st_ino, st.st_size, st.st_mtime_ns):
+                    incomplete = True
+                    continue
+                payload = os.read(fd, st.st_size + 1)
+                a = os.fstat(fd)
+                if (a.st_dev, a.st_ino, a.st_size, a.st_mtime_ns) != (
+                        b.st_dev, b.st_ino, b.st_size, b.st_mtime_ns):
+                    incomplete = True
+                    continue
+                bytes_seen += len(payload)
+                if needle.encode("utf-8") in payload:
+                    count += 1
+                    if len(paths) < sample_limit:
+                        paths.append(safe_name(rel))
+            except OSError:
+                incomplete = True
+            finally:
+                if fd is not None:
+                    os.close(fd)
+        if files_seen >= max_files or bytes_seen >= max_bytes:
+            incomplete = True
+            break
+    return {"status": "R0_PARTIAL" if incomplete else "R0_SCAN_COMPLETE",
+            "filesInspected": files_seen, "bytesScanned": bytes_seen,
+            "filesReferencingThirdAbsolutePath": count,
+            "examples": paths, "rawSourceValuesReadIntoReport": False}
+
 def scan(target, integrated, max_files, max_hash_size, hash_mib,
-         ref_mib, full, max_samples):
+         ref_mib, full, max_samples, vx_root=None):
     report = {"schema": "nostromo.third-upstream.forensic.r0.v1",
               "readOnly": True, "mutations": 0, "networkRequests": 0,
               "followSymlinks": False, "secretsValuesRead": False,
@@ -375,6 +436,11 @@ def scan(target, integrated, max_files, max_hash_size, hash_mib,
         rows = sorted(rows, key=lambda x: (x["relation"] == "IDENTICAL", x["path"]))
         report["categories"][cat] = {"files": len(rows), "relations": by,
             "examples": rows if full else rows[:max_samples]}
+    report["crossTreePathReferences"] = {
+        "integrated": scan_tree_references(integrated),
+        "vx": scan_tree_references(vx_root) if vx_root is not None
+              else {"status": "NOT_REQUESTED", "filesInspected": 0}
+    }
     report["hardcodedReferencesInThird"] = dict(hardrefs)
     report["sourceSignals"] = {kind: {"filesContainingSignal": count,
         "examples": signal_examples[kind]} for kind, count in sorted(signals.items())}
@@ -400,6 +466,7 @@ def main(argv=None):
     p = argparse.ArgumentParser(description="Read-only deep audit of third upstream")
     p.add_argument("--target", default=str(Path.home() / "upstream"))
     p.add_argument("--integrated", default=str(Path.home() / "librechat/upstream"))
+    p.add_argument("--vx", default=str(Path.home() / "librechat/vx"))
     p.add_argument("--max-files", type=int, default=40000)
     p.add_argument("--hash-budget-mib", type=int, default=128)
     p.add_argument("--max-file-mib", type=int, default=4)
@@ -418,7 +485,8 @@ def main(argv=None):
         return 2
     result = scan(t, i, args.max_files, args.max_file_mib * 1024 * 1024,
                   args.hash_budget_mib, args.reference_budget_mib,
-                  args.detail == "full", args.sample)
+                  args.detail == "full", args.sample,
+                  vx_root=Path(args.vx).absolute())
     print(json.dumps(result, ensure_ascii=False, indent=2, default=str))
     return 0 if result["status"].startswith("R0_") else 2
 
