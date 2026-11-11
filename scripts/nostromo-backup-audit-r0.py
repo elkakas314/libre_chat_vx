@@ -22,6 +22,25 @@ SECRET_TERMS = (".env", ".pem", ".key", "id_rsa", "id_ed25519",
                 "credential", "secret", "token", "auth", "cookie")
 
 
+
+def directory_ancestors_safe(root):
+    """Reject symlink/non-directory components from '/' before any tree walk.
+
+    This is a static R0 guard; a hostile concurrent directory swap still
+    requires stronger descriptor-based traversal before hashing.
+    """
+    current = Path("/")
+    for part in Path(os.path.abspath(root)).parts[1:]:
+        current = current / part
+        try:
+            st = os.lstat(current)
+        except OSError:
+            return False
+        if stat.S_ISLNK(st.st_mode) or not stat.S_ISDIR(st.st_mode):
+            return False
+    return True
+
+
 def secret_like(relative):
     return any(x in relative.lower().split("/")[-1] for x in SECRET_TERMS)
 
@@ -30,8 +49,8 @@ def snapshot(root, max_files):
     """Inventory metadata with lstat. Any error is NOT an all-clear."""
     found = {}
     errors = []
-    if not os.path.isdir(root) or os.path.islink(root):
-        return found, ["NOT_A_REAL_DIRECTORY"]
+    if not directory_ancestors_safe(root):
+        return found, ["ROOT_ANCESTOR_UNSAFE"]
     for folder, dirs, files in os.walk(
             root, topdown=True, followlinks=False,
             onerror=lambda _: errors.append("WALK_ERROR_UNREADABLE_DIRECTORY")):
@@ -71,6 +90,8 @@ def identity(s):
 
 def hash_file(path, baseline, budget):
     """No symlink following; detect replaced/mutated files during read."""
+    if not directory_ancestors_safe(os.path.dirname(path)):
+        raise ValueError("FILE_ANCESTOR_UNSAFE")
     flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0)
     fd = os.open(path, flags)
     try:
@@ -114,6 +135,10 @@ def audit_dir(root, max_files=20000, max_hash_bytes=256 * 1024 ** 2):
               "inventorySha256": None, "contentSha256": None,
               "sensitiveCount": 0, "symlinkCount": 0, "hashedBytes": 0,
               "issues": [], "entries": None}
+    if not directory_ancestors_safe(root):
+        result["status"] = "UNKNOWN_PRESERVE"
+        result["issues"].append("ROOT_ANCESTOR_UNSAFE")
+        return result
     try:
         st = os.lstat(root)
         if not stat.S_ISDIR(st.st_mode):
@@ -168,6 +193,8 @@ def audit_dir(root, max_files=20000, max_hash_bytes=256 * 1024 ** 2):
         root_after = identity(os.lstat(root))
     except OSError:
         root_after = None
+    if not directory_ancestors_safe(root):
+        result["issues"].append("ROOT_ANCESTOR_UNSAFE_AFTER_SCAN")
     if root_before != root_after or baseline != after:
         result["issues"].append("TREE_CHANGED_DURING_AUDIT")
     if not result["issues"]:
