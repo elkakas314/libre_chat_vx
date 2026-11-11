@@ -12,7 +12,9 @@ import {visualUpdateDisposition} from './visual-overlay-gate.mjs';
 
 const base='b0641a221b21d28b523a16bafc51d821e2dc72c4';
 const upstream='f10b1d91f1eee3a2c82d5247bf620351486b7c1b';
-const vx=realpathSync(process.cwd()),up=path.resolve(vx,'../upstream');
+const vx=realpathSync(process.cwd());
+const canonicalVx=path.join(homedir(),'librechat','vx');
+const up=path.join(homedir(),'librechat','upstream');
 const files=['VXCockpitBridge.tsx','VXCockpit.css'];
 const apply=process.argv.includes('--apply');
 if(process.argv.includes('--help')){console.log('node scripts/reconcile-native-visual.mjs [--apply]');process.exit(0);}
@@ -37,6 +39,7 @@ const data=[];
 try{
  if(process.argv.some(x=>x.startsWith('--')&&x!=='--apply'))
   throw Error('UNKNOWN_FLAG_REFUSED');
+ if(apply&&vx!==canonicalVx)throw Error('APPLY_ONLY_FROM_CANONICAL_VX_CHECKOUT');
  if(!existsSync(up)||lstatSync(up).isSymbolicLink()||realpathSync(up)!==up)
   throw Error('UPSTREAM_PATH_UNSAFE');
  if(git(up,['rev-parse','HEAD']).trim()!==upstream)
