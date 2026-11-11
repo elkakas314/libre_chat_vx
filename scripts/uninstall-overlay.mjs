@@ -1,21 +1,7 @@
-import { execFileSync } from 'node:child_process';
-import { rmSync } from 'node:fs';
-import { resolve } from 'node:path';
-
-const upstream = resolve(process.argv[2] ?? '../upstream');
-
-execFileSync('git', [
-  '-C',
-  upstream,
-  'restore',
-  '--source=HEAD',
-  '--',
-  'client/package.json',
-  'client/src/components/Chat/Presentation.tsx'
-], { stdio: 'inherit' });
-
-rmSync(resolve(upstream, 'client/src/components/VX'), { recursive: true, force: true });
-rmSync(resolve(upstream, 'packages/librechat-vx'), { recursive: true, force: true });
-rmSync(resolve(upstream, '.librechat-vx-overlay.json'), { force: true });
-
-console.log(JSON.stringify({ status: 'OVERLAY_REMOVED' }));
+#!/usr/bin/env node
+/** Disabled legacy UNINSTALL route. Historical implementation preserved in Git.
+ * It used destructive rmSync/git restore without a complete unique-work readback.
+ * The protected workflow is reconcile-existing-workspace.mjs.
+ */
+process.stderr.write('NOSTROMO_LEGACY_UNINSTALL_BLOCKED: old script could overwrite unique LibreChat files. Use audited, backed-up reconciliation / manual owner-approved uninstall.\\n');
+process.exitCode=2;

@@ -25,10 +25,12 @@
     "nostromo:check:test": "node --test scripts/tests/nostromo-preflight.test.mjs",
     "nostromo:workspace:preview": "node scripts/reconcile-existing-workspace.mjs --upstream=../upstream",
     "nostromo:workspace:apply": "node scripts/reconcile-existing-workspace.mjs --upstream=../upstream --apply",
-    "nostromo:workspace:test": "node --test scripts/tests/reconcile-existing-workspace.test.mjs scripts/tests/stage-react-types.test.mjs",
+    "nostromo:workspace:test": "node --test scripts/tests/reconcile-existing-workspace.test.mjs scripts/tests/stage-react-types.test.mjs scripts/tests/workspace-noop-gate.test.mjs",
     "nostromo:workspace:diagnose": "node scripts/reconcile-existing-workspace.mjs --upstream=../upstream --diagnose",
     "nostromo:frontend:deps:inspect": "node scripts/inspect-librechat-frontend-deps.mjs --upstream=../upstream",
-    "nostromo:frontend:deps:test": "node --test scripts/tests/inspect-librechat-frontend-deps.test.mjs"
+    "nostromo:frontend:deps:test": "node --test scripts/tests/inspect-librechat-frontend-deps.test.mjs",
+    "nostromo:backups:audit": "python3 -B scripts/nostromo-backup-audit-r0.py",
+    "nostromo:backups:test": "PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s scripts/tests -p 'test_nostromo_backup_audit_r0.py' -v && node --test scripts/tests/workspace-noop-gate.test.mjs && node --test scripts/tests/legacy-guard.test.mjs"
   },
   "peerDependencies": {
     "react": "^18.2.0",
