@@ -66,6 +66,13 @@ test('M3 SDK stdio handshake and bounded R0 tool invocation; no exec capability'
   assert.equal(typeof preview.requestHash,'string');
   assert.equal(preview.requestHash.length,64);
 
+  const gatedR2=payload(await client.callTool({name:'nostromo_terminal_preparar',arguments:{
+   argv:['/bin/sh','-c','pwd'],cwd:root,timeout_s:5,max_output:1024
+  }}));
+  assert.equal(gatedR2.status,'LOCAL_APPROVAL_REQUIRED');
+  assert.equal(gatedR2.risk,'R2'); // preview only, no grant minted/no shell run
+  assert.equal(gatedR2.requestHash.length,64);
+
   const read=payload(await client.callTool({name:'nostromo_archivo_leer',
    arguments:{file,maxBytes:256}}));
   assert.equal(read.status,'READ_OK');
