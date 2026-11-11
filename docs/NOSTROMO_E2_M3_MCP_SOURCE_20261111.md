@@ -72,3 +72,37 @@ aprobaciones verificados. Exigir pruebas reales del recorrido
 **GAP:** `CONFIG_GAP / EXECUTION_ROUTING_MISMATCH` para Lenovo; entorno
 de pruebas sin SDK MCP para handshake real.
 **ESTADO:** `SOURCE_CONFIG_TESTED / MCP_HANDSHAKE_PENDING / HOST_UNVERIFIED`.
+
+
+## M3 continuación — intento real de instalación aislada del SDK, SIN PASS
+
+- Revisión `deployment/nostromo-mcp/package.json` Git blob
+  `72893789a8ce629b882e07321da2b191af523d94` (readback verificado).
+  Declaraciones `@modelcontextprotocol/sdk: ^1.32.2`, `zod: ^4.1.0`:
+  **rangos**, no un pin efectivo de dependencias resueltas.
+- `deployment/nostromo-mcp/package-lock.json` y `package-lock.json`
+  consultados por GitHub: ambos **NOT_FOUND (404)**. No se ha creado ni
+  actualizado lockfile en ninguna rama.
+- Copia temporal separada en `/mnt/data/nostromo_m3_sdk_trial/package.json`,
+  con `git hash-object` = `72893789a8ce629b882e07321da2b191af523d94`;
+  idéntico al archivo en GitHub. Ambiente de prueba:
+  Node `v22.16.0`, npm `10.9.2` (NO Lenovo; no reproducen el pin
+  de LibreChat `24.16.0 / 11.13.0`).
+- Comando ejecutado sin escribir en el repositorio:
+  `npm install --prefix /mnt/data/nostromo_m3_sdk_trial --no-package-lock --ignore-scripts --no-audit --no-fund --fetch-retries=0 --fetch-timeout=7000`
+  → **exit code 1**, `EAI_AGAIN getaddrinfo registry.npmjs.org`
+  al solicitar `@modelcontextprotocol/sdk`. En este runtime no
+  hay SDK en caché ni en `node_modules` detectables:
+  `MODULE_NOT_FOUND`. No se empleó una implementación simulada.
+- En consecuencia, **`npm run test:stdio:source` con SDK real NO EJECUTADO**;
+  el canario conserva **1 SKIP** por dependencia ausente.
+  Su definición cubre el handshake MCP, `listTools`, estado, preparación
+  R0/R2 sin ejecutar R2, lectura de archivo temporal y denegación
+  `/etc/hosts`; no equivale a ejecución material de esas comprobaciones.
+- `HOST_RECEIPTS: NONE`; no se tocó Lenovo, MCP real del usuario, `.env`
+  ni configuración privada. La prueba temporal aislada sólo intentó npm.
+- `NEXT_ACTION`: en un runtime aislado **con DNS/npm disponible**
+  recuperar dependencias legítimas, registrar versiones/lock SHA allí
+  sin hacer commit, volver a probar canario con SDK real, confrontar
+  resultados y corregir si aparecen fallos. El bloqueo de Lenovo sigue
+  `CONFIG_GAP / EXECUTION_ROUTING_MISMATCH`.
