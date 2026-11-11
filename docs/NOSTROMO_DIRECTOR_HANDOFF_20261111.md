@@ -66,4 +66,13 @@ Readback tras publicar: script blob 3e4415f25fef2a38d6d15a38009a46cd8ccfeefd; te
 
 GAP: no hay prueba de backend, Mongo ni AVX del Lenovo y no hay script de instalación decidido. N-B0 debe ejecutarse allí primero; su resultado selecciona entre reutilizar el stack actual o preparar un único backend/DB con rollback.
 
+
+## M1 SOURCE — extractor seguro de discrepancias
+
+Añadí scripts/extract-third-upstream-differences-r0.py y scripts/tests/test_nostromo_third_upstream_extract_r0.py. No vuelve a recorrer ~/upstream: consume únicamente el JSON forense ya generado, valida su esquema/flags, exige el baseline documentado (1 ONLY_IN_THIRD, 2 DIFFERENT_CONTENT y 8 referencias VX completas), rechaza ejemplos faltantes/redactados, rutas inseguras, symlinks e informes fuera de librechat/nostromo/reports, y devuelve SHA-256 del informe más rutas/metadatos, nunca contenidos fuente. El CLI es nostromo:third-upstream:extract; sus pruebas quedan registradas en nostromo:qa:diagnostics.
+
+Pruebas de fixture: 6/6 PASS para extracción, baseline incompleto, flags, redacción/traversal, symlink y ruta canónica. Combinadas con layout (7/7) y backend preflight (4/4), son 17 pruebas focalizadas PASS. El source report privado no está disponible en este workspace, así que **las tres rutas reales todavía no se han extraído**; no se inventaron. E2 lo ejecutará en el Lenovo y conservará salida/hash bajo reports.
+
+HEAD readback actual antes de este handoff: cdeafdcd6e4597d097586f5e7503c263cef9a1e7; rama 16 commits ahead y 0 behind integration, 10 archivos modificados/añadidos en total. SOURCE probado y publicado en la rama, sin merge/PR. Mantener el checkout tercero intacto hasta revisar las rutas que entregue el extractor, consumidores de las 8 referencias y rollback.
+
 NEXT_ACTION: entregar issue #37 + este handoff a E2; ejecutar N-B0 primero; aceptar recibo antes de N-B1. Raíz requerida: /home/elkakas314/librechat/.
