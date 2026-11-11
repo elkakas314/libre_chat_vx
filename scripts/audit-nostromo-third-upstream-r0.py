@@ -44,6 +44,16 @@ CATEGORY_TERMS = {
     "DOCUMENTATION": ("docs", "readme", "instructions", "guides"),
 }
 HARD_REF = ("/home/elkakas314/upstream", "~/upstream", "/home/elkakas314/librechat/upstream")
+SOURCE_SIGNALS = {
+    "REDIS_QUEUE_CALLS": ("redis", "ioredis", "bullmq", "bull.queue", "new queue("),
+    "API_HTTP_HANDLERS": ("router.get(", "router.post(", "app.get(", "app.post(", "fastify.", "/api/"),
+    "E2E_TOOLING": ("playwright", "cypress", "test.describe(", "describe(", "it("),
+    "SKILL_LOADING": ("skill.md", "skills/", "loadskill", "skillregistry"),
+    "MCP_TRANSPORT": ("mcpserver", "@modelcontextprotocol/sdk", "mcpservers", "stdio"),
+    "MOBILE_PWA": ("serviceworker", "manifest.webmanifest", "beforeinstallprompt"),
+    "CONTAINER_ORCHESTRATION": ("docker compose", "docker-compose", "redis:"),
+}
+
 
 
 def sensitive(rel):
@@ -152,7 +162,12 @@ def inspect_package(root, relative):
     if state != "REGULAR" or info.st_size > 1024 * 1024:
         return {"path": relative, "status": state}
     try:
-        with open(root / relative, "r", encoding="utf-8") as f:
+        fd = os.open(root / relative, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0))
+        with os.fdopen(fd, "r", encoding="utf-8") as f:
+            observed = os.fstat(f.fileno())
+            if (observed.st_dev, observed.st_ino, observed.st_size, observed.st_mtime_ns) != (
+                    info.st_dev, info.st_ino, info.st_size, info.st_mtime_ns):
+                raise ValueError("PACKAGE_FILE_CHANGED")
             pkg = json.load(f)
         if not isinstance(pkg, dict):
             raise ValueError("NOT_PACKAGE_OBJECT")
@@ -237,8 +252,12 @@ def scan(target, integrated, max_files, max_hash_size, hash_mib,
     cat_records = collections.defaultdict(list)
     states = collections.Counter()
     hardrefs = collections.Counter()
+    signals = collections.Counter()
+    signal_examples = collections.defaultdict(list)
     unreadable = 0
-    for base, dirs, files in os.walk(target, topdown=True, followlinks=False):
+    for base, dirs, files in os.walk(
+            target, topdown=True, followlinks=False,
+            onerror=lambda _: report["warnings"].append("UNREADABLE_SUBTREE")):
         relbase = os.path.relpath(base, target)
         depth = 0 if relbase == "." else len(Path(relbase).parts)
         if depth >= 15:
@@ -317,6 +336,12 @@ def scan(target, integrated, max_files, max_hash_size, hash_mib,
                         for pattern in HARD_REF:
                             if pattern in data:
                                 hardrefs[pattern] += 1
+                        lowered = data.lower()
+                        for kind, needles in SOURCE_SIGNALS.items():
+                            if any(needle in lowered for needle in needles):
+                                signals[kind] += 1
+                                if len(signal_examples[kind]) < max_samples:
+                                    signal_examples[kind].append(safe_name(rel))
                 except OSError:
                     unreadable += 1
                 finally:
@@ -336,6 +361,8 @@ def scan(target, integrated, max_files, max_hash_size, hash_mib,
         report["categories"][cat] = {"files": len(rows), "relations": by,
             "examples": rows if full else rows[:max_samples]}
     report["hardcodedReferencesInThird"] = dict(hardrefs)
+    report["sourceSignals"] = {kind: {"filesContainingSignal": count,
+        "examples": signal_examples[kind]} for kind, count in sorted(signals.items())}
     report["skipped"] = dict(report["skipped"])
     report["conclusions"] = {
         "thirdCanBeDeleted": False, "thirdCanBeMovedWithoutReferenceAudit": False,
