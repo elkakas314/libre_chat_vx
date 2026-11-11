@@ -55,4 +55,15 @@ Validación: se ejecutó Node test runner contra los cuatro archivos exactos le�
 
 HEAD de la rama al registrar este handoff: 89ff7c7e2c1842b130a75ad00a733ee4ec4d6f56. No se abrió PR ni se mezcló el cambio con integration/main. Próxima aceptación: E2 lee el diff/recibo, ejecuta el lote de árbol en el Lenovo sólo tras inventario y ejecuta el set QA SOURCE completo en su checkout.
 
+
+## N-B0 SOURCE implementado (sin ejecución host)
+
+Añadí scripts/nostromo-backend-preflight.mjs y el comando nostromo:backend:preflight. El script es de sólo lectura: recoge Node/npm, AVX (booleano), RAM/disco, presencia de rutas/config sin leer valores, unidades systemd de usuario filtradas por nombre y sondas TCP de loopback para 27017/3080. La salida declara expresamente que TCP no prueba protocolo Mongo, salud LibreChat, identidad ni autenticación; no arranca servicios y nunca abre .env ni YAML.
+
+Añadí cuatro tests en scripts/tests/nostromo-backend-preflight.test.mjs y los enganché a nostromo:qa:diagnostics. Ejecuté el comando npm run nostromo:backend:preflight:test contra los archivos exactos leídos de esta rama: 4/4 PASS, 0 FAIL. No ejecuté N-B0 sobre Lenovo; las sondas reales del script aquí serían del contenedor de trabajo, no se presentan como host Lenovo.
+
+Readback tras publicar: script blob 3e4415f25fef2a38d6d15a38009a46cd8ccfeefd; test blob fc8d438424100a012e8a5efb8accd6e08a0e5a86; package.json blob 23aa6f53cea9bcb3fa03c941c5def8053dcc399e. El diff total de la rama respecto de integration tiene 8 archivos, 10 commits ahead, 0 behind. HEAD actual: f57ee22193b5d7c33397ba1de398392f95ac85fa.
+
+GAP: no hay prueba de backend, Mongo ni AVX del Lenovo y no hay script de instalación decidido. N-B0 debe ejecutarse allí primero; su resultado selecciona entre reutilizar el stack actual o preparar un único backend/DB con rollback.
+
 NEXT_ACTION: entregar issue #37 + este handoff a E2; ejecutar N-B0 primero; aceptar recibo antes de N-B1. Raíz requerida: /home/elkakas314/librechat/.
