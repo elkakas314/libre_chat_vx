@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Extract prior R0 audit relations; never rescan trees or print source contents."""
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -25,7 +26,7 @@ def safe_relative(value):
     return value
 
 
-def validate_report(doc):
+def validate_report(doc, report_sha256=None):
     if not isinstance(doc, dict) or doc.get("schema") != "nostromo.third-upstream.forensic.r0.v1":
         raise ValueError("REPORT_SCHEMA_MISMATCH")
     if (doc.get("readOnly") is not True or doc.get("mutations") != 0 or
@@ -74,6 +75,7 @@ def validate_report(doc):
     return {
         "schema": "nostromo.third-upstream.extracted-differences.r0.v1",
         "sourceReportSchema": doc["schema"],
+        "sourceReportSha256": report_sha256,
         "sourceReportStatus": doc.get("status"),
         "readOnly": True,
         "sourceContentsPrinted": False,
@@ -101,9 +103,12 @@ def read_report(path):
         if not stat.S_ISREG(current.st_mode) or (current.st_dev, current.st_ino, current.st_size) != (
                 before.st_dev, before.st_ino, before.st_size):
             raise ValueError("REPORT_CHANGED_DURING_OPEN")
-        with os.fdopen(fd, "r", encoding="utf-8") as handle:
+        with os.fdopen(fd, "rb") as handle:
             fd = -1
-            return json.load(handle)
+            data = handle.read(MAX_REPORT_BYTES + 1)
+        if len(data) > MAX_REPORT_BYTES:
+            raise ValueError("REPORT_TOO_LARGE")
+        return json.loads(data.decode("utf-8")), hashlib.sha256(data).hexdigest()
     except (UnicodeError, json.JSONDecodeError) as exc:
         raise ValueError("REPORT_JSON_INVALID") from exc
     finally:
@@ -116,7 +121,14 @@ def main(argv=None):
     parser.add_argument("--report", default=str(DEFAULT_REPORT))
     args = parser.parse_args(argv)
     try:
-        result = validate_report(read_report(args.report))
+        report_path = Path(args.report).absolute()
+        reports_dir = DEFAULT_REPORT.parent.absolute()
+        if report_path.parent != reports_dir:
+            raise ValueError("REPORT_OUTSIDE_CANONICAL_REPORTS")
+        if report_path.suffix.lower() != ".json" or SENSITIVE.search(report_path.name):
+            raise ValueError("REPORT_FILENAME_REFUSED")
+        doc, digest = read_report(report_path)
+        result = validate_report(doc, digest)
         print(json.dumps(result, ensure_ascii=False, indent=2))
         return 0
     except (ValueError, OSError) as exc:
