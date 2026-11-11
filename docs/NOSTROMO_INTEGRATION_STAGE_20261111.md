@@ -25,3 +25,11 @@ This is a reversible GitHub branch, not an installation and not evidence that th
 7. Preserve all three backups until a distinct real verifier proves safe rollback; the backup audit never authorizes deletion. No force push, reset --hard, git clean, legacy overlay destructive install/uninstall or paid services.
 
 **Finish condition:** SOURCE/INSTALLED/CONFIGURED/LIVE/VERIFIED separated with exact receipts, CPU/RAM, version, test evidence, and qualified external blockers. Until then no PRODUCT_VERIFIED.
+
+## Verificación independiente de estructura GitHub (2026-11-11)
+
+- Readback de rama: `a2acfbc17d16c99c0e743f0e8fb589cb2e477e75`, `main@04784e51ceda9ce6a2b1a70db0f1cd58b86989ae`; comparación `ahead=1, behind=0`, 44 archivos modificados/añadidos, cero eliminados.
+- `package.json` parseado como JSON: **PASS**. Total 32 comandos npm, manteniendo todos los comandos previos y fusionando las adiciones de las cuatro PR. Referencias locales a scripts extraídas de esos comandos: **35/35 rutas existen en el árbol del commit**.
+- Cambios en workflows GitHub Actions: **0**. Archivos `.env`, `package-lock.json` o secretos modificados: **0**. Nuevos symlinks entre los cambios: **0**. No se solicitó ejecución de Actions.
+- Estos son gates **STATIC_TREE_PASS** hechos mediante readback de GitHub, **no** pruebas Node/TypeScript, no `npm run frontend:ci`, no acceso Lenovo, no instalación, no navegador, no sesión de agente, no CLI E2E.
+- Mantener PR #31 en DRAFT/CONFLICTED y #34/#35/#36 en DRAFT hasta aceptar sus gates propios. No ejecutar merge a main por estas verificaciones estáticas.
