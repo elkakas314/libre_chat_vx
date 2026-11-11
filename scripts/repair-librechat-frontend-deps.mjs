@@ -9,6 +9,7 @@ import {existsSync,readFileSync,realpathSync,lstatSync,mkdtempSync,mkdirSync,cop
 import path from 'node:path';
 import os from 'node:os';
 import {assessNpmDryRun} from './librechat-npm-dry-run-guard.mjs';
+import {assessNpmEnvironment} from './librechat-frontend-npm-gate.mjs';
 
 const EXPECTED_UPSTREAM='f10b1d91f1eee3a2c82d5247bf620351486b7c1b';
 const EXPECTED_LOCK='e7119c0eecd9c97048c7fb838a9f8cb0cb620bed99b7488886743e9bbe14d5f5';
@@ -67,7 +68,13 @@ const binExists=(name,workspace)=>[
 const missing=()=>Object.entries(tools).filter(([n,w])=>!binExists(n,w)).map(([n])=>n);
 const before=missing();
 const npm=run('npm',['--version']);
-const npmMajor=Number(npm.stdout.split('.')[0]);
+const rootPackage=JSON.parse(readFileSync(path.join(UP,'package.json'),'utf8'));
+const lockData=JSON.parse(readFileSync(path.join(UP,'package-lock.json'),'utf8'));
+const npmCompatibility=assessNpmEnvironment({
+ declaredPackageManager:rootPackage.packageManager,
+ actualNpmVersion:npm.stdout,
+ lockfileVersion:lockData.lockfileVersion
+});
 const allowedArgs=['install','--no-save','--include=dev','--ignore-scripts',
  '--no-audit','--no-fund','--prefer-offline','--progress=false'];
 const disk=statfsSync(UP);
@@ -77,7 +84,7 @@ const availableMemoryBytes=memMatch?Number(memMatch[1])*1024:null;
 const report={
  schema:'nostromo.frontend.devdeps.repair.v1',mode:APPLY?'APPLY':'PREVIEW',
  upstream:UP,identityVerified:true,lockSha256:lockSha,
- missingBefore:before,npmVersion:npm.stdout,
+ missingBefore:before,npmVersion:npm.stdout,npmCompatibility,
  availableDiskBytes,availableMemoryBytes,
  willPreserve:'package-lock.json and package manifests (SHA guarded)',
  installation:'npm install --no-save --include=dev --ignore-scripts --no-audit --no-fund --prefer-offline',
@@ -85,11 +92,11 @@ const report={
  backupPath:null,mutated:false
 };
 if(!APPLY){
-  console.log(JSON.stringify({...report,status:before.length?'PREVIEW_REPAIR_AVAILABLE':'ALREADY_PRESENT'},null,2));
+  console.log(JSON.stringify({...report,status:!npmCompatibility.applyAdmissible?'PREVIEW_CONFIG_GAP':before.length?'PREVIEW_REPAIR_AVAILABLE':'ALREADY_PRESENT'},null,2));
   process.exit(0);
 }
 if(!before.length)fail('ALREADY_PRESENT',{missingBefore:[]});
-if(npmMajor!==11)fail('NPM_MAJOR_NOT_EXPECTED',{version:npm.stdout});
+if(!npmCompatibility.applyAdmissible)fail('NPM_ENVIRONMENT_BLOCKED',{npmCompatibility,mutated:false});
 if(availableDiskBytes<3*1024**3||!availableMemoryBytes||availableMemoryBytes<2*1024**3)
   fail('RESOURCE_GUARD_DENIED',{availableDiskBytes,availableMemoryBytes});
 const env={
