@@ -42,7 +42,7 @@ test('M3 SDK stdio handshake and bounded R0 tool invocation; no exec capability'
    },
    stderr:'pipe'
   });
-  client=new Client({name:'nostromo-e2-source-canary',version:'0.0.1'});
+  client=new Client({name:'nostromo-e2-source-canary',version:'0.0.1'},{capabilities:{}});
   await client.connect(transport); // real initialize handshake and server info
   const announced=await client.listTools();
   const names=announced.tools.map(x=>x.name);
