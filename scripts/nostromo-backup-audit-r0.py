@@ -206,7 +206,7 @@ def audit_dir(root, max_files=20000, max_hash_bytes=256 * 1024 ** 2):
         root_before = identity(st)
         result['ownerUid'] = st.st_uid
         result['rootMode'] = oct(stat.S_IMODE(st.st_mode))
-        baseline, errors = snapshot(root, max_files, root_fd=root_fd)
+        baseline, errors = snapshot(root, max_files, root_fd)
         result['issues'].extend(errors)
         result['inventorySha256'] = fingerprint(baseline)
         remaining, manifest = max_hash_bytes, []
@@ -240,7 +240,7 @@ def audit_dir(root, max_files=20000, max_hash_bytes=256 * 1024 ** 2):
             except (OSError, ValueError):
                 result['issues'].append('FILE_UNREADABLE_OR_CHANGED')
                 manifest.append([rel, 'UNKNOWN', None, None])
-        after, after_errors = snapshot(root, max_files, root_fd=root_fd)
+        after, after_errors = snapshot(root, max_files, root_fd)
         result['issues'].extend(after_errors)
         try:
             root_after = identity(os.lstat(root))
