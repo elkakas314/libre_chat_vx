@@ -155,3 +155,24 @@ la base ni fusionar sin revisión del Director y pruebas sobre integración.
 **Siguiente paso SOURCE independiente viable:** análisis de
 compatibilidad de contratos M3→M4→M5 con evidencia publicada,
 sin reabrir PR #38–#40 ni preparar una copia fusionada de producción.
+
+
+## Siguiente auditoría SOURCE independiente — backup R0, hallazgo puntual
+
+Revisadas `scripts/nostromo-backup-audit-r0.py` y sus pruebas
+existentes en la **base Director**, sin reejecución ni modificación.
+`audit_dir(root)` ejecuta `os.lstat(root)` sobre la entrada final,
+pero **no valida cada componente ancestro**; `snapshot(root)` usa
+`os.walk` y `hash_file(path,...)` usa `O_NOFOLLOW` sólo en el
+fichero final. Un symlink de **directorio padre** de un backup podría
+resolver el escaneo fuera del árbol previsto, aunque los enlaces
+simbólicos internos estáticos ya se rechacen. Por tanto la bandera
+de salida `followedSymlinks:false` **no es prueba universal** para
+ancestros sin validación adicional. Clasificación: **P1 SOURCE_FINDING**
+pendiente de corrección estrecha y tests propios; **NO explotado en host**.
+No se cambió backup ni se hizo `hash_file` con rutas externas.
+
+No usar el scanner con raíces controladas por terceros hasta
+endurecer ancestros e impedir carreras de sustitución con
+descriptores de directorio. La próxima revisión puede resolverlo
+como trabajo independiente, sin mezclar ramas M1–M5 ni borrar backups.
