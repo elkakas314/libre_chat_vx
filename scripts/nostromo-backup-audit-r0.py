@@ -102,16 +102,18 @@ def fingerprint(entries):
 def audit_dir(root, max_files=20000, max_hash_bytes=2 * 1024 ** 3):
     root = os.path.abspath(root)
     result = {"path": root, "status": "UNKNOWN", "files": 0,
-              "bytesLogical": 0, "bytesAllocated": 0,
+              "bytesLogical": 0, "bytesAllocated": None,
               "inventorySha256": None, "contentSha256": None,
               "sensitiveCount": 0, "symlinkCount": 0, "hashedBytes": 0,
               "issues": [], "entries": None}
     try:
         st = os.lstat(root)
         if not stat.S_ISDIR(st.st_mode):
+            result["status"] = "UNKNOWN_PRESERVE"
             result["issues"].append("ROOT_NOT_DIRECTORY_OR_SYMLINK")
             return result
     except OSError:
+        result["status"] = "UNKNOWN_PRESERVE"
         result["issues"].append("ROOT_UNAVAILABLE")
         return result
     root_before = identity(st)
@@ -137,7 +139,6 @@ def audit_dir(root, max_files=20000, max_hash_bytes=2 * 1024 ** 3):
             continue
         result["files"] += 1
         result["bytesLogical"] += value[2]
-        result["bytesAllocated"] += 0  # recorded as unknown rather than estimated disk recovery
         if secret_like(rel):
             result["sensitiveCount"] += 1
             result["issues"].append("SENSITIVE_FILE_NOT_HASHED")
