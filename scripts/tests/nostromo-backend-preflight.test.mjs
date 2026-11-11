@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {detectAvx,pathState,parseSystemdUnits,collectBackendPreflight} from '../scripts/nostromo-backend-preflight.mjs';
+import {detectAvx,pathState,parseSystemdUnits,collectBackendPreflight} from '../nostromo-backend-preflight.mjs';
 
 test('AVX detection is precise and architecture aware',()=>{
  assert.equal(detectAvx('x64','flags : fpu sse avx avx2\n'),true);
