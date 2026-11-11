@@ -102,17 +102,23 @@ archivo de Lenovo ha sido movido o eliminado por este lote.
   mock `checked_bytes.assert_not_called()` y bytes de archivo externo sin cambios.
 - Prueba de scope externo, traversal y ancestro fichero; `migrationAllowed=false`.
 - **Pruebas nuevas reproducidas a partir de bytes cuyos blob SHA coinciden con GitHub:**
-  M1 **8/8 PASS**, N-B1 **5/5 PASS**; total **13/13**, entorno temporal aislado
+  M1 **9/9 PASS**, N-B1 **5/5 PASS**; total **14/14**, entorno temporal aislado
   fuera del Lenovo. Python `unittest` y Node test runner.
-- Blob Git M1 `acc9340451f144dab31192eb4d1f5f9ac65d8a15`;
-  test M1 `9fb7e30f48c001972dbfa6cd43a2b9148ad9aba6`.
+- Blob Git M1 `41388c7ed7687141d7b60a62432909703ba4a26f`;
+  test M1 `143cb4f9f5e2f901ef2dd79b8ca6d97f91fc3b7a`.
   Blobs N-B1 no modificados:
   código `b6138d41402faf53108d55e76bff309617334d7c`,
   test `48db6c943eb0bf9cbaa7f7b04dbfeb37d58b8dad`.
-- **Límite conocido:** `lstat` de ancestros y apertura posterior son operaciones
-  separadas; esta compuerta bloquea symlinks estáticos, pero **no demuestra**
-  inmunidad a una sustitución simultánea de ancestros maliciosa (TOCTOU).
-  Seguir `migrationAllowed=false`; para límites de host con escritores no fiables
-  exigir apertura dirfd `O_NOFOLLOW` de todos los componentes.
+- **Hardening TOCTOU añadido:** `checked_bytes` mantiene las comprobaciones
+  de `lstat`, pero abre **todos** los ancestros desde `/` con `dir_fd`,
+  `O_DIRECTORY` y `O_NOFOLLOW`; el archivo final también usa
+  `O_NOFOLLOW`. Si un padre se sustituye por un symlink entre la
+  comprobación y la lectura, devuelve `RACE_BLOCKED` sin `os.read`.
+  Fixture de cambio concurrente, `os.read.assert_not_called()` y bytes
+  externos intactos: PASS. No es una garantía universal frente a un
+  atacante con privilegios para modificar mounts/bind mounts. Siempre
+  `migrationAllowed=false`.
 - Host `CONFIG_GAP / EXECUTION_ROUTING_MISMATCH` sin cambios; no existe
   readback NOSTROMO LIVE. PR #38 permanece draft hasta revisión Director.
+
+**Readback de la corrección final:** M1 source `41388c7ed7687141d7b60a62432909703ba4a26f`, M1 tests `143cb4f9f5e2f901ef2dd79b8ca6d97f91fc3b7a`; M1 9/9 PASS, N-B1 5/5 PASS en entorno de prueba separado del Lenovo. Sin operaciones host, sin datos privados, sin MOVE.
