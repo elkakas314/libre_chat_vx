@@ -2,7 +2,7 @@
 import path from 'node:path';
 import {homedir} from 'node:os';
 import {lstatSync,mkdirSync,mkdtempSync,chmodSync} from 'node:fs';
-const LEAVES=Object.freeze(['backups','tools','runtime','worktrees','reports']);
+const LEAVES=Object.freeze(['worktrees','tools','backups','runtime','reports','handoffs','manifests','staging','cache','tmp','legacy']);
 export const LEGACY_BACKUP_NAMES=Object.freeze([
  'nostromo-frontend-deps-backup.fDbtdf','nostromo-backup.ceBhjB8V',
  'nostromo-ui-backup.s5cE3siD','nostromo-workspace-backup.2jGTrK'
@@ -10,9 +10,12 @@ export const LEGACY_BACKUP_NAMES=Object.freeze([
 export function nostromoLayout(home=homedir()){
  if(typeof home!=='string'||!path.isAbsolute(home))throw Error('NOSTROMO_HOME_INVALID');
  const base=path.join(home,'librechat'),root=path.join(base,'nostromo');
- return Object.freeze({base,root,backups:path.join(root,'backups'),
-  tools:path.join(root,'tools'),runtime:path.join(root,'runtime'),
-  worktrees:path.join(root,'worktrees'),reports:path.join(root,'reports'),
+ return Object.freeze({base,root,worktrees:path.join(root,'worktrees'),
+  tools:path.join(root,'tools'),backups:path.join(root,'backups'),
+  runtime:path.join(root,'runtime'),reports:path.join(root,'reports'),
+  handoffs:path.join(root,'handoffs'),manifests:path.join(root,'manifests'),
+  staging:path.join(root,'staging'),cache:path.join(root,'cache'),
+  tmp:path.join(root,'tmp'),legacy:path.join(root,'legacy'),
   legacyTool:path.join(home,'.local','share','nostromo','tools','npm-11.13.0'),
   pinnedTool:path.join(root,'tools','npm-11.13.0')});
 }
