@@ -31,7 +31,9 @@ def snapshot(root, max_files):
     errors = []
     if not os.path.isdir(root) or os.path.islink(root):
         return found, ["NOT_A_REAL_DIRECTORY"]
-    for folder, dirs, files in os.walk(root, topdown=True, followlinks=False):
+    for folder, dirs, files in os.walk(
+            root, topdown=True, followlinks=False,
+            onerror=lambda _: errors.append("WALK_ERROR_UNREADABLE_DIRECTORY")):
         dirs.sort()
         files.sort()
         # Symlinked directory entries are included as links but never traversed.
@@ -117,6 +119,8 @@ def audit_dir(root, max_files=20000, max_hash_bytes=2 * 1024 ** 3):
         result["issues"].append("ROOT_UNAVAILABLE")
         return result
     root_before = identity(st)
+    result["ownerUid"] = st.st_uid
+    result["rootMode"] = oct(stat.S_IMODE(st.st_mode))
     baseline, errors = snapshot(root, max_files)
     result["issues"].extend(errors)
     result["inventorySha256"] = fingerprint(baseline)
