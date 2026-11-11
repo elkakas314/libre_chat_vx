@@ -122,3 +122,13 @@ definido en YAML pertenece al operador LibreChat. Antes de activar,
 verificar single-user/ACL/admin role, mismo UID/namespace, carpeta
 de aprobaciones sin acceso del agente y límites de rutas; no usar
 este MCP local en LibreChat multiusuario sin un aislamiento real.
+
+
+## Trabajo en worktree de prueba
+
+El preparador YAML toma su fragmento de la **revisión SOURCE donde se
+ejecuta**, aunque sea un worktree de pruebas. Su fase `--apply` se
+rechaza si la fuente no es exactamente la carpeta canónica
+`~/librechat/vx`. Con ello se puede ejecutar el PREVIEW de una
+rama aislada y comparar SHA/catálogo sin que genere por error
+configuración desde una revisión antigua de `main`.
