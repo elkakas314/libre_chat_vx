@@ -63,3 +63,21 @@ Reparador SOURCE pendiente de pruebas reales en host al publicarse.
 El operador ya ha verificado 1/1 del auditor y 28/28 del MCP,
 no este nuevo aplicador. El repositorio `elkakas314/libre_chat_vx`
 permanece independiente de MANOJOS3, VX13 y ORÁCULO.
+
+
+## Endurecimiento posterior: auditoría DeepSeek M1–M3
+
+La propuesta externa fue revisada en `docs/NOSTROMO_DEEPSEEK_M1_M2_M3_REVIEW_20261111.md`.
+No ejecutar el código externo sin cambios: su `PREFLIGHT_PASS`
+requiere binarios que precisamente faltan, el fallback `vite@^5`
+no concuerda con LibreChat v0.8.8 (`^8.2.2`), y el rollback sólo
+repone manifests aunque npm puede modificar `node_modules`.
+
+Esta PR incorpora un gate adicional **antes de --apply**:
+`npm install --dry-run --json` debe producir un objeto legible con
+conteos `added/removed/changed`; se deniega automáticamente si
+`removed>0` o `changed>0`, o si faltan datos. Este gate está
+implementado en `scripts/librechat-npm-dry-run-guard.mjs` y
+tiene pruebas negativas. Una simulación sin cambios planeados es sólo
+evidencia de bajo riesgo, NO garantía de que la ejecución real sea
+reversible. Mantener --apply desactivado hasta obtener receipt local.
