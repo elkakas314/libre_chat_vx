@@ -101,7 +101,7 @@ def fingerprint(entries):
     return h.hexdigest()
 
 
-def audit_dir(root, max_files=20000, max_hash_bytes=2 * 1024 ** 3):
+def audit_dir(root, max_files=20000, max_hash_bytes=256 * 1024 ** 2):
     root = os.path.abspath(root)
     result = {"path": root, "status": "UNKNOWN", "files": 0,
               "bytesLogical": 0, "bytesAllocated": None,
@@ -211,7 +211,7 @@ def main(argv=None):
     p.add_argument("--installed-workspace", default=str(
         Path.home() / "librechat/upstream/packages/librechat-vx"))
     p.add_argument("--max-files", type=int, default=20000)
-    p.add_argument("--max-hash-mib", type=int, default=2048)
+    p.add_argument("--max-hash-mib", type=int, default=256)
     args = p.parse_args(argv)
     if not 1 <= args.max_files <= 100000 or not 1 <= args.max_hash_mib <= 8192:
         p.error("limits outside safe range")
