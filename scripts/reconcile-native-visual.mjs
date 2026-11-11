@@ -26,7 +26,7 @@ function sha(x){return createHash('sha256').update(x).digest('hex');}
 function git(dir,args){
  return execFileSync('git',['-c','core.fsmonitor=false','-c','core.hooksPath=/dev/null',
   '-C',dir,...args],{
-  encoding:args[0]==='show'?'buffer':'utf8',
+  encoding:args[0]==='show'?null:'utf8',
   maxBuffer:8*1024*1024,timeout:10000,stdio:['ignore','pipe','ignore'],
   env:{PATH:'/usr/bin:/bin',GIT_OPTIONAL_LOCKS:'0',GIT_TERMINAL_PROMPT:'0',
    GIT_CONFIG_NOSYSTEM:'1',GIT_CONFIG_GLOBAL:'/dev/null'}
