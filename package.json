@@ -28,7 +28,10 @@
     "nostromo:workspace:test": "node --test scripts/tests/reconcile-existing-workspace.test.mjs scripts/tests/stage-react-types.test.mjs",
     "nostromo:workspace:diagnose": "node scripts/reconcile-existing-workspace.mjs --upstream=../upstream --diagnose",
     "nostromo:local:audit": "node scripts/audit-local-librechat.mjs",
-    "nostromo:local:audit:test": "node --test scripts/tests/audit-local-librechat.test.mjs"
+    "nostromo:local:audit:test": "node --test scripts/tests/audit-local-librechat.test.mjs",
+    "nostromo:visual:preview": "node scripts/reconcile-native-visual.mjs",
+    "nostromo:visual:apply": "node scripts/reconcile-native-visual.mjs --apply",
+    "nostromo:visual:test": "node --test scripts/tests/reconcile-native-visual.test.mjs"
   },
   "peerDependencies": {
     "react": "^18.2.0",
