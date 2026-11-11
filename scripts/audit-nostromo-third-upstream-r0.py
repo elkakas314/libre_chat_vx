@@ -275,7 +275,8 @@ def scan(target, integrated, max_files, max_hash_size, hash_mib,
          ref_mib, full, max_samples, vx_root=None):
     report = {"schema": "nostromo.third-upstream.forensic.r0.v1",
               "readOnly": True, "mutations": 0, "networkRequests": 0,
-              "followSymlinks": False, "secretsValuesRead": False,
+              "followSymlinks": False, "secretNamedFilesOpened": False,
+              "secretValuesPrinted": False, "sourceFilesMayContainEmbeddedSecrets": True,
               "sourceIsNotLive": True, "target": str(target),
               "integrated": str(integrated), "status": "INCOMPLETE",
               "warnings": [], "categories": {}, "skipped": collections.Counter()}
