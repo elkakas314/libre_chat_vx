@@ -17,6 +17,18 @@ test('layout is under librechat, has four historical backup names and does not c
   assert.equal(existsSync(d.root),false);
  });
 });
+test('canonical tree exposes all required directories and creates them owner-private',()=>{
+ fixture(home=>{
+  const d=nostromoLayout(home);
+  const names=['worktrees','tools','backups','runtime','reports','handoffs','manifests','staging','cache','tmp','legacy'];
+  for(const name of names)assert.equal(d[name],path.join(d.root,name),name);
+  for(const name of names){
+   const p=ensureNostromoDir(name,{home});
+   assert.equal(p,path.join(d.root,name));
+   assert.equal(lstatSync(p).mode&0o077,0,name);
+  }
+ });
+});
 test('backup creation creates only owner-private directories under librechat/nostromo/backups',()=>{
  fixture(home=>{
   const p=createNostromoBackupDir('frontend-deps',{home});
