@@ -140,6 +140,36 @@ class ThirdUpstreamMoveGateTests(unittest.TestCase):
             reads.assert_not_called()
         self.assertFalse(result['migrationAllowed'])
 
+    def test_concurrent_parent_symlink_swap_cannot_read_external(self):
+        # Simulate a hostile external actor switching an already-validated
+        # parent path immediately after the preliminary lstat.
+        outside = self.home / 'external-swap'
+        outside.mkdir()
+        original = self.home / 'librechat'
+        parked = outside / 'original'
+        marker = self.vx / 'src/ref-0.ts'
+        baseline = marker.read_bytes()
+        real_file_state = gate.file_state
+        swapped = False
+
+        def swap_after_stat(root, rel):
+            nonlocal swapped
+            result = real_file_state(root, rel)
+            if not swapped:
+                swapped = True
+                original.rename(parked)
+                original.symlink_to(parked, target_is_directory=True)
+            return result
+
+        with patch.object(gate, 'file_state', side_effect=swap_after_stat), \
+             patch.object(gate.os, 'read', wraps=gate.os.read) as reads:
+            status, body = gate.checked_bytes(self.vx, 'src/ref-0.ts', gate.MAX_REFERENCE_BYTES)
+            reads.assert_not_called()
+        self.assertTrue(swapped)
+        self.assertEqual(status, 'RACE_BLOCKED')
+        self.assertIsNone(body)
+        self.assertEqual((parked / 'vx/src/ref-0.ts').read_bytes(), baseline)
+
     def test_cli_refuses_malformed_input_without_mutations(self):
         result = subprocess.run([sys.executable, str(SOURCE), '--third', str(self.third),
              '--integrated', str(self.integrated), '--vx', str(self.vx)],
