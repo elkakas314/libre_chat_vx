@@ -143,3 +143,7 @@ Las fases de escritura `nostromo:runtime:npm11:stage` y
 por una prueba SOURCE. Exigen readback local y operación
 explícita, con recepción del receipt. Ninguna instalación global,
 ni GitHub Actions ni manipulación de secrets.
+
+## Prevención de residuos de instalación npm aislada
+
+El instalador opt-in de npm 11 ahora elimina **únicamente su staging recién creado**, después de comprobar que el directorio sigue siendo el mismo inode/dev/uid y cuelga exactamente del directorio privado de herramientas. Si falla la instalación o promoción, devuelve `privateStageRemoved:true/false`. Si la identidad cambia o no puede verificarse, se niega a borrar y deja la incidencia explícita. Nunca borra un npm ya instalado, `node_modules` de LibreChat ni otro respaldo.
