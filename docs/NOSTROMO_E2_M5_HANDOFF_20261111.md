@@ -103,3 +103,55 @@ HTTP autenticado, restore ni tests React/E2E; son gates separados.
 **ROLLBACK:** cerrar este PR DRAFT o revertir sólo commits de esta rama;
 no hubo efectos en host, configuración privada ni otros PR.
 **ESTADO:** `M5_SOURCE_TESTED / GITHUB_READBACK_VERIFIED / HOST_UNVERIFIED`.
+
+
+## M5 — integración en test TypeScript nativo (continuación E2)
+
+Se añadieron dos tests **al archivo ya existente**
+`tests/mobile-recovery.test.ts`, sin modificar `package.json`.
+Esto asegura que el compilado normal del proyecto incorpora el guard
+`INTERACTIVE` sólo con `authenticated===true` y la degradación
+a `STALE_READONLY` con sesión autenticada/snapshot caducado.
+
+**Verificación material en fixture físico aislado:** los cinco archivos TS
+de test y dependencias se materializaron **byte por byte** desde GitHub,
+con `git hash-object` contrastado:
+- `tests/mobile-recovery.test.ts` `f3d0eafa779392d11459db93bee152e589dce421`
+- `src/mobile/mobileRecovery.ts` `ea1db96e70da509706eb5f2d07a5544be7e9b545`
+- `src/mobile/offlineDraft.ts` `f360aa120f4743493c4eda1cddfdc748dc15c160`
+- `src/mobile/pushRefresh.ts` `979151ca10ad0de9dea717cd6fe114aaa3e85734`
+- `src/mobile/mobileContinuity.ts` `0913734e311fca3f393797fcee3f6aa46ee83c67`.
+
+Se transpilaron sólo esos cinco SOURCE mediante TypeScript global
+`transpileModule` a CommonJS ES2022 **sin alterar su lógica ni imports
+de origen** y se ejecutó:
+`node --test tests/mobile-recovery.test.js` ⇒ **9/9 PASS, 0 FAIL**.
+No es `npm test` completo ni `tsc` de todo el producto; el
+`tsc --noEmit --strict` independiente para `mobileContinuity.ts` ya dio PASS.
+
+**Balance de ejecuciones SOURCE M5:** 4 pruebas preflight PWA + 5
+canarias autenticación + 9 pruebas existentes de continuidad (incluidas
+dos nuevas) = **18 ejecuciones PASS**, con casos parcialmente
+redundantes. Sin navegador, HTTPS, Lenovo, recuperación real o live auth.
+
+## Integración cruzada E2 sin fusionar
+
+Comparación autenticada GitHub contra la **misma base Director**:
+- PR #38 @ `6c68fb229ac42565198e080f7478826a4332cae0`:
+  6 archivos, M1/N-B1, 13 commits ahead/0 behind.
+- PR #39 @ `22991523b4e6867e30b22aa0e08f10811746512c`:
+  4 archivos, agente/MCP, 9 ahead/0 behind; handshake SDK SKIP.
+- PR #40 @ `7921fc6d3bd9da8df9a3a959dcb5f989c5167c10`:
+  3 archivos, bridge visual, 4 ahead/0 behind.
+- PR #41 (esta rama): móvil/R0/continuidad, sin tocar ninguno de
+  los otros 13 archivos (6+4+3). Todos sobre
+  `c11af334ccfce8b7dd4b5be8dece44768b9999d2`.
+
+**Solapamientos de rutas: cero.** Esto no acredita mergeability del
+runtime ni éxito de las suites conjuntas: PR #38 añade comandos al
+package raíz y PR #39 depende de SDK que no está resuelto. No cambiar
+la base ni fusionar sin revisión del Director y pruebas sobre integración.
+
+**Siguiente paso SOURCE independiente viable:** análisis de
+compatibilidad de contratos M3→M4→M5 con evidencia publicada,
+sin reabrir PR #38–#40 ni preparar una copia fusionada de producción.
