@@ -85,7 +85,7 @@ class BackupAuditR0Tests(unittest.TestCase):
 
     def test_unavailable_and_hash_budget_are_unknown(self):
         root = self.directory("a", content="more_than_four")
-        self.assertEqual(audit_module.audit_dir(str(self.home / "missing"))["status"], "UNKNOWN")
+        self.assertEqual(audit_module.audit_dir(str(self.home / "missing"))["status"], "UNKNOWN_PRESERVE")
         report = audit_module.audit_dir(str(root), max_hash_bytes=4)
         self.assertEqual(report["status"], "UNKNOWN_PRESERVE")
         self.assertIn("FILE_UNREADABLE_OR_CHANGED", report["issues"])
