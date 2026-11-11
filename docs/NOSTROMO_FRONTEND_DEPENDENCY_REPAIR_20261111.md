@@ -81,3 +81,28 @@ implementado en `scripts/librechat-npm-dry-run-guard.mjs` y
 tiene pruebas negativas. Una simulación sin cambios planeados es sólo
 evidencia de bajo riesgo, NO garantía de que la ejecución real sea
 reversible. Mantener --apply desactivado hasta obtener receipt local.
+
+
+## Actualización 2026-11-11 — npm real del Lenovo y gate previo
+
+Readback operador de la revisión anterior de esta PR: `repair:test` **5/5 PASS**,
+`repair` en modo PREVIEW, `mutated:false`, upstream HEAD
+`f10b1d91...`, lock SHA exacto `e7119c0e...d5f5`,
+faltantes `rimraf/tsdown/vite`, `tsc` presente,
+`npmVersion:10.9.8`, recursos reportados:
+13.16 GB MemAvailable y ~774 GB disco. Main restaurado.
+
+**Nuevo diagnóstico: CONFIG_GAP**. El `packageManager` del upstream
+fijado declara `npm@11.13.0`; el host usa npm 10.9.8. No se retira
+silenciosamente la protección: `librechat-frontend-npm-gate.mjs`
+clasifica compatibilidad del major y `lockfileVersion`. Preview de
+revisión nueva devuelve `PREVIEW_CONFIG_GAP` en caso de incompatibilidad.
+El aplicador deniega `--apply` hasta reconciliar el gestor npm y
+comprobar el formato real del lockfile. Pruebas negativas de este gate
+incluidas en el script `nostromo:frontend:deps:repair:test`.
+
+La solución futura preferida no debe reemplazar npm global de Lenovo ni
+construir otro servicio. Verificar versión de Node y escoger npm 11
+compatible, acotado al proceso y revisado contra `packageManager`/lock.
+No lanzar npm install, dry-run con efectos o frontend build mientras el
+gate permanezca bloqueado. Sin GitHub Actions.
