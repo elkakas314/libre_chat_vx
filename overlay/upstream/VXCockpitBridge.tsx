@@ -68,7 +68,7 @@ export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
         </nav>
         <p className="vx-mode-boundary" role="note">
           {activeMode==='AUTONOMO'
-            ? 'Modo local independiente: agente y MCP propio de terminal.'
+            ? 'Modo local candidato: agente y MCP propio de terminal sin enlace LIVE acreditado.'
             : 'Sistema externo: conserva su propio MCP y permisos. No recibe la terminal local automáticamente.'}
         </p>
         {activeMode==='AUTONOMO' ? (
@@ -80,7 +80,7 @@ export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
           <div className="vx-autonomy-main">
             <div>
               <h3 id="vx-autonomy-heading">Habla. Encarga. Comprueba.</h3>
-              <p>Tu agente de terminal en el Lenovo: una conversación, un MCP local, resultados verificables.</p>
+              <p>Agente candidato de terminal para el Lenovo: una conversación y un único MCP local pendientes de verificación.</p>
             </div>
             <div className="vx-autonomy-terminal-glyph" aria-hidden="true">&gt;_</div>
           </div>
@@ -104,7 +104,7 @@ export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
                 <span>Evidencia</span>
               </div>
               <p><strong>ChatGPT:</strong> pendiente de autorización OAuth; puede sustituirse por LLM gratuito o local verificado.</p>
-              <p><strong>Terminal:</strong> MCP probado localmente, pero sin enlace LIVE con LibreChat comprobado. R0 limitado y R2 con permiso local de un uso.</p>
+              <p><strong>Terminal:</strong> MCP con pruebas SOURCE, sin enlace LIVE con LibreChat comprobado. R0 limitado y R2 con permiso local de un uso.</p>
               <div className="vx-mode-tools" data-testid="nostromo-tools-source">
                 <strong>Único MCP · catálogo SOURCE</strong>
                 <ul>
