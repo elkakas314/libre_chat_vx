@@ -27,21 +27,29 @@ run_pr() {
   case "$label" in
     PR34)
       npm run nostromo:frontend:deps:repair:test || failed=1
-      npm run nostromo:runtime:npm11:preview || failed=1
-      npm run nostromo:frontend:deps:repair || failed=1
+      if (( failed == 0 )); then
+        npm run nostromo:runtime:npm11:preview || failed=1
+        npm run nostromo:frontend:deps:repair || failed=1
+      fi
       ;;
     PR35)
       npm run nostromo:wiring:test || failed=1
-      npm run nostromo:wiring:inspect || failed=1
-      npm run nostromo:wiring:config:preview || failed=1
+      if (( failed == 0 )); then
+        npm run nostromo:wiring:inspect || failed=1
+        npm run nostromo:wiring:config:preview || failed=1
+      fi
       ;;
     PR36)
       npm run nostromo:backups:test || failed=1
-      npm run nostromo:backups:audit || failed=1
+      if (( failed == 0 )); then
+        npm run nostromo:backups:audit || failed=1
+      fi
       ;;
     PR31)
       npm run nostromo:visual:test || failed=1
-      npm run nostromo:visual:preview || failed=1
+      if (( failed == 0 )); then
+        npm run nostromo:visual:preview || failed=1
+      fi
       ;;
     *) failed=1 ;;
   esac
