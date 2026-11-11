@@ -4,6 +4,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
 SOURCE = Path(__file__).resolve().parents[1] / 'review-third-upstream-move-gate-r0.py'
@@ -34,10 +35,12 @@ class ThirdUpstreamMoveGateTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
-        self.third, self.integrated, self.vx = [Path(self.temp.name) / x
-                                                 for x in ('third', 'integrated', 'vx')]
+        self.home = Path(self.temp.name)
+        self.third = self.home / 'upstream'
+        self.integrated = self.home / 'librechat/upstream'
+        self.vx = self.home / 'librechat/vx'
         for root in (self.third, self.integrated, self.vx):
-            root.mkdir()
+            root.mkdir(parents=True)
         put(self.third, 'src/unique.ts', 'unique')
         put(self.third, 'src/changed.ts', 'left')
         put(self.integrated, 'src/changed.ts', 'right')
@@ -47,7 +50,7 @@ class ThirdUpstreamMoveGateTests(unittest.TestCase):
             put(self.vx, f'src/ref-{n}.ts', f'const path="{gate.NEEDLE.decode()}";')
 
     def review(self, doc=None):
-        return gate.review(doc or extracted(), self.third, self.integrated, self.vx)
+        return gate.review(doc or extracted(), self.third, self.integrated, self.vx, home=self.home)
 
     def test_exact_bounded_readback_and_never_approve_move(self):
         result = self.review()
@@ -94,8 +97,48 @@ class ThirdUpstreamMoveGateTests(unittest.TestCase):
         self.assertFalse(result['migrationAllowed'])
         fake = Path(self.temp.name) / 'link'
         fake.symlink_to(self.third)
-        result = gate.review(extracted(), fake, self.integrated, self.vx)
+        result = gate.review(extracted(), fake, self.integrated, self.vx, home=self.home)
         self.assertEqual(result['status'], 'ROOTS_BLOCKED')
+
+    def test_parent_symlink_refuses_external_reads_and_mutations(self):
+        # The canonical lexical path exists but its intermediate librechat/
+        # points to an external tree. No checked_bytes invocation is allowed.
+        outside = self.home / 'outside-data'
+        outside.mkdir()
+        original = self.home / 'librechat'
+        relocated = outside / 'legitimate-data'
+        original.rename(relocated)  # Fixture setup only, before measured gate.
+        original.symlink_to(relocated, target_is_directory=True)
+        marker = relocated / 'vx/src/ref-0.ts'
+        original_bytes = marker.read_bytes()
+        with patch.object(gate, 'checked_bytes', side_effect=AssertionError('UNSAFE_EXTERNAL_READ')) as reads:
+            result = self.review()
+            reads.assert_not_called()
+        self.assertEqual(result['status'], 'ROOTS_BLOCKED')
+        self.assertEqual(result['roots']['integrated'], 'ROOT_SYMLINK_BLOCKED')
+        self.assertEqual(result['roots']['vx'], 'ROOT_SYMLINK_BLOCKED')
+        self.assertFalse(result['migrationAllowed'])
+        self.assertEqual(result['mutations'], 0)
+        self.assertEqual(marker.read_bytes(), original_bytes)
+        self.assertTrue(original.is_symlink())
+        self.assertTrue(relocated.is_dir())
+
+    def test_root_scope_and_ancestor_not_directory_refused(self):
+        alternative = self.home / 'outside-data'
+        alternative.mkdir()
+        self.assertEqual(gate.root_state(alternative, self.home / 'upstream'),
+                         'ROOT_OUTSIDE_CANONICAL_SCOPE')
+        self.assertEqual(gate.root_state(self.home / 'upstream/../librechat/upstream',
+                                         self.home / 'librechat/upstream'),
+                         'ROOT_OUTSIDE_CANONICAL_SCOPE')
+        bad = self.home / 'bad'
+        bad.write_text('regular-file')
+        self.assertEqual(gate.root_state(bad / 'upstream', bad / 'upstream'),
+                         'ROOT_ANCESTOR_NOT_DIRECTORY')
+        with patch.object(gate, 'checked_bytes', side_effect=AssertionError('EXTERNAL_READ')) as reads:
+            result = gate.review(extracted(), alternative, self.integrated, self.vx, home=self.home)
+            reads.assert_not_called()
+        self.assertFalse(result['migrationAllowed'])
 
     def test_cli_refuses_malformed_input_without_mutations(self):
         result = subprocess.run([sys.executable, str(SOURCE), '--third', str(self.third),
