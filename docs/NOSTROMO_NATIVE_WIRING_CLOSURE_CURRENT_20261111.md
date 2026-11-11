@@ -105,3 +105,20 @@ Mantener \`~/upstream\` independiente y no usar sus secretos.
 config gap npm, compilar frontend, preparar YAML desactivado mediante
 gate local y registrar agente una vez que exista backend real.
 Ningún test SOURCE equivale a \`LIVE\` o \`PRODUCT_FINISHED\`.
+
+## Seguridad del servidor MCP dentro de LibreChat
+
+El fragmento SOURCE para primera activación incluye
+`chatMenu:false` y `NOSTROMO_TOOL_SET` con exclusivamente
+`nostromo_terminal_preparar` + trío asíncrono
+`nostromo_tarea_iniciar/estado/cancelar`. El ejecutor directo
+`nostromo_terminal_ejecutar` NO aparece en esa selección.
+`NOSTROMO_MCP_ENABLED: '0'` se conserva: ninguna terminal arranca
+por el hecho de instalar el YAML.
+
+**Ojo:** `chatMenu:false` oculta el MCP del compositor general,
+pero NO equivale a RBAC ni aislamiento de otro usuario. Un MCP stdio
+definido en YAML pertenece al operador LibreChat. Antes de activar,
+verificar single-user/ACL/admin role, mismo UID/namespace, carpeta
+de aprobaciones sin acceso del agente y límites de rutas; no usar
+este MCP local en LibreChat multiusuario sin un aislamiento real.
