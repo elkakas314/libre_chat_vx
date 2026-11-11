@@ -72,6 +72,14 @@ class ThirdUpstreamAuditTests(unittest.TestCase):
         self.assertGreater(r["sourceSignals"]["REDIS_QUEUE_CALLS"]["filesContainingSignal"], 0)
         self.assertFalse(r["conclusions"]["redisLiveVerified"])
 
+    def test_generic_source_files_are_scanned_for_redis_signals(self):
+        (self.third / "src").mkdir()
+        (self.third / "src" / "index.ts").write_text(
+            "import Redis from 'ioredis';", encoding="utf8")
+        r = self.perform()
+        self.assertEqual(r["categories"]["GENERAL_SOURCE"]["files"], 1)
+        self.assertGreater(r["sourceSignals"]["REDIS_QUEUE_CALLS"]["filesContainingSignal"], 0)
+
     def test_cross_tree_absolute_references_are_detected_without_printing_source(self):
         (self.integrated / "scripts").mkdir()
         (self.integrated / "scripts" / "legacy-migrate.sh").write_text(
