@@ -8,6 +8,7 @@ import {spawnSync} from 'node:child_process';
 import os from 'node:os';
 import path from 'node:path';
 import {assessNpmEnvironment} from './librechat-frontend-npm-gate.mjs';
+import {createNpmConfigIsolation} from './npm-config-isolation.mjs';
 const up=path.join(os.homedir(),'librechat','upstream');
 const tools=path.join(os.homedir(),'.local','share','nostromo','tools');
 const dst=path.join(tools,'npm-11.13.0');
@@ -89,8 +90,7 @@ if(process.argv.some(x=>x.startsWith('--')&&x!=='--apply')){
        LANG:'C.UTF-8',LC_ALL:'C.UTF-8',
        NODE_OPTIONS:'--max-old-space-size=1024',
        npm_config_audit:'false',npm_config_fund:'false',
-       npm_config_maxsockets:'2',npm_config_userconfig:'/dev/null',
-       npm_config_globalconfig:'/dev/null'
+       npm_config_maxsockets:'2',...createNpmConfigIsolation(stage)
      };
      const installArgs=args.map(x=>x==='STAGE'?stage:x);
      const result=spawnSync('npm',installArgs,{cwd:stage,env,

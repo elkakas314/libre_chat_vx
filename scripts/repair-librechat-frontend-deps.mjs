@@ -5,11 +5,12 @@
  */
 import {spawnSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
-import {existsSync,readFileSync,realpathSync,lstatSync,mkdtempSync,mkdirSync,copyFileSync,chmodSync,statfsSync,writeFileSync} from 'node:fs';
+import {existsSync,readFileSync,realpathSync,lstatSync,mkdtempSync,mkdirSync,copyFileSync,chmodSync,statfsSync,writeFileSync,readdirSync,unlinkSync,rmdirSync} from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
 import {assessNpmDryRun} from './librechat-npm-dry-run-guard.mjs';
 import {assessNpmEnvironment} from './librechat-frontend-npm-gate.mjs';
+import {createNpmConfigIsolation,ISOLATED_NPM_CONFIG_FILE} from './npm-config-isolation.mjs';
 
 const EXPECTED_UPSTREAM='f10b1d91f1eee3a2c82d5247bf620351486b7c1b';
 const EXPECTED_LOCK='e7119c0eecd9c97048c7fb838a9f8cb0cb620bed99b7488886743e9bbe14d5f5';
@@ -107,6 +108,26 @@ if(!before.length)fail('ALREADY_PRESENT',{missingBefore:[]});
 if(!npmCompatibility.applyAdmissible)fail('NPM_ENVIRONMENT_BLOCKED',{npmCompatibility,mutated:false});
 if(availableDiskBytes<3*1024**3||!availableMemoryBytes||availableMemoryBytes<2*1024**3)
   fail('RESOURCE_GUARD_DENIED',{availableDiskBytes,availableMemoryBytes});
+// Temporary config isolation: no aliasing /dev/null as user + global npmrc.
+// The exact private inode is checked before cleaning only our empty file.
+const npmConfigDir=mkdtempSync(path.join(os.tmpdir(),'nostromo-npm-config-'));
+const npmConfigBirth=lstatSync(npmConfigDir);
+const isolatedNpmConfig=createNpmConfigIsolation(npmConfigDir);
+process.once('exit',()=>{
+ try{
+   const st=lstatSync(npmConfigDir);
+   if(!st.isDirectory()||st.isSymbolicLink()||
+     st.dev!==npmConfigBirth.dev||st.ino!==npmConfigBirth.ino||
+     st.uid!==npmConfigBirth.uid)return;
+   if(readdirSync(npmConfigDir).join()!==ISOLATED_NPM_CONFIG_FILE)return;
+   const configFile=path.join(npmConfigDir,ISOLATED_NPM_CONFIG_FILE);
+   const fileStat=lstatSync(configFile);
+   if(!fileStat.isFile()||fileStat.isSymbolicLink()||
+     fileStat.uid!==st.uid||readFileSync(configFile).length!==0)return;
+   unlinkSync(configFile);
+   rmdirSync(npmConfigDir);
+ }catch{/* preserve unknown changes for forensic inspection */}
+});
 const env={
  HOME:os.homedir(),PATH:process.env.PATH??'/usr/bin:/bin',
  LANG:'C.UTF-8',LC_ALL:'C.UTF-8',TMPDIR:process.env.TMPDIR??'/tmp',
@@ -114,7 +135,7 @@ const env={
  npm_config_maxsockets:'2',npm_config_update_notifier:'false',
  npm_config_audit:'false',npm_config_fund:'false',
  npm_config_registry:'https://registry.npmjs.org/',
- npm_config_userconfig:'/dev/null',npm_config_globalconfig:'/dev/null'};
+ ...isolatedNpmConfig};
 const dry=npmRun([...allowedArgs,'--dry-run','--json'],{
  env,stdio:'pipe',timeout:6*60_000});
 if(dry.exitCode!==0)fail('DRY_RUN_FAILED',{
