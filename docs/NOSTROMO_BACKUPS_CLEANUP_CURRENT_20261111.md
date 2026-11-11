@@ -99,3 +99,9 @@ a cada backup en el árbol de scripts y receipts:
 Quedan protegidas las tres rutas. Este PR no llama a `rm -rf`,
 no crea backups ni modifica servicios/archivos de host, y no
 utiliza GitHub Actions.
+
+## Protección adicional de reaplicaciones
+
+El gate `ALREADY_RECONCILED_NO_BACKUP` exige además que exista físicamente un `dist/src/index.js` regular y no symlink dentro del paquete instalado. Si falta, no interpreta que un paquete parcialmente construido sea una instalación terminada: reentra en la reconciliación protegida. Auditor R0 limitado por defecto a **256 MiB de hash por raíz** y 20.000 entradas; sobrepasar cualquiera de los límites clasifica `UNKNOWN_PRESERVE`, sin prometer deduplicación ni espacio recuperable.
+
+Un intento R0 mediante transporte de control externo para inspeccionar el host devolvió `ADAPTER_EXCEPTION` en `construction.repo.inspect`; no aportó readback válido de estas tres carpetas, no ejecutó acciones materiales (effect_state NONE). **No atribuir tamaños ni PASS de auditoría al Lenovo a partir de ese resultado.**
