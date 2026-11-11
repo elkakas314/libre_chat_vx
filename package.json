@@ -30,7 +30,7 @@
     "nostromo:frontend:deps:inspect": "node scripts/inspect-librechat-frontend-deps.mjs --upstream=../upstream",
     "nostromo:frontend:deps:test": "node --test scripts/tests/inspect-librechat-frontend-deps.test.mjs",
     "nostromo:backups:audit": "python3 -B scripts/nostromo-backup-audit-r0.py",
-    "nostromo:backups:test": "PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s scripts/tests -p 'test_nostromo_backup_audit_r0.py' -v && node --test scripts/tests/workspace-noop-gate.test.mjs"
+    "nostromo:backups:test": "PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s scripts/tests -p 'test_nostromo_backup_audit_r0.py' -v && node --test scripts/tests/workspace-noop-gate.test.mjs && node --test scripts/tests/legacy-guard.test.mjs"
   },
   "peerDependencies": {
     "react": "^18.2.0",
