@@ -54,7 +54,7 @@
   no se convierte en PASS ni en E2E.
 - Blobs verificados del código nuevo:
   config test `35eed8a4b3709a7368fe7019b8e72cf01f9ca4d6`;
-  handshake test `a9e237aace60b802aaa786f651978d09abf25b51`.
+  handshake test `e021d24042da919200bf450d564dda0ed6af1acb`.
 - No hay modelo consultable, agente registrado, autenticación, backend
   ni MCP LIVE del Lenovo acreditados.
 
@@ -106,3 +106,5 @@ de pruebas sin SDK MCP para handshake real.
   sin hacer commit, volver a probar canario con SDK real, confrontar
   resultados y corregir si aparecen fallos. El bloqueo de Lenovo sigue
   `CONFIG_GAP / EXECUTION_ROUTING_MISMATCH`.
+
+**Alineación adicional de canario SDK:** Constructor `Client` ajustado con `{capabilities:{}}`, igual que el test stdio preexistente `deployment/nostromo-mcp/tests/mcp-stdio.test.mjs`. Blob final canario `e021d24042da919200bf450d564dda0ed6af1acb` (GitHub readback). Este cambio de código no resuelve el bloqueo EAI_AGAIN ni demuestra handshake ejecutado.
