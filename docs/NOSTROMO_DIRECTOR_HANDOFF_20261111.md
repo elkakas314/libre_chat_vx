@@ -41,4 +41,18 @@ Después de B1/A1/M1: interfaz HUD con datos LIVE; luego PWA bajo HTTPS privado,
 
 Referencias oficiales actuales: https://www.librechat.ai/docs/local ; https://www.librechat.ai/docs/local/docker ; https://www.librechat.ai/docs/configuration/librechat_yaml/object_structure/mcp_servers ; https://www.mongodb.com/docs/manual/administration/production-notes/ . Contrastar con la revisión v0.8.8 y hardware/OS reales.
 
+
+## Avance SOURCE posterior y pruebas
+
+En esta rama se reparó la cobertura del árbol canónico:
+- scripts/nostromo-layout.mjs: LEAVES y nostromoLayout ahora incluyen worktrees, tools, backups, runtime, reports, handoffs, manifests, staging, cache, tmp y legacy. Los imports siguen sin crear rutas; ensureNostromoDir crea sólo la hoja solicitada con permisos privados.
+- scripts/nostromo-layout-relocate.mjs: la migración reversible prepara el árbol completo sólo después de superar su preflight, conservando sus reglas de identidad, mismo filesystem y rollback.
+- scripts/tests/nostromo-layout.test.mjs y scripts/tests/nostromo-layout-relocate.test.mjs: se añadieron aserciones de todas las rutas, permisos y creación completa en fixtures.
+
+Commits de la cadena de rama: layout b8a155a881dfd868dc245946bf6260a096a7ef24; migración 20dff00fd5c176b9bbb2bd720aa67d2e01d8c698; tests layout d75d8ca0c4359d2acbd3070f72958e4ebd0dfda1; tests migración 89ff7c7e2c1842b130a75ad00a733ee4ec4d6f56.
+
+Validación: se ejecutó Node test runner contra los cuatro archivos exactos leídos desde esta rama, en un fixture temporal aislado: 7 tests, 7 PASS, 0 FAIL (145 ms). No se ejecutó la suite completa ni el Lenovo. No equivale a migración real, limpieza de /home/upstream ni verificación LIVE. El entorno actual no tiene checkout local del repo; por eso esta prueba focalizada verificó el delta modificado y sus fixtures, no todos los comandos npm del repositorio.
+
+HEAD de la rama al registrar este handoff: 89ff7c7e2c1842b130a75ad00a733ee4ec4d6f56. No se abrió PR ni se mezcló el cambio con integration/main. Próxima aceptación: E2 lee el diff/recibo, ejecuta el lote de árbol en el Lenovo sólo tras inventario y ejecuta el set QA SOURCE completo en su checkout.
+
 NEXT_ACTION: entregar issue #37 + este handoff a E2; ejecutar N-B0 primero; aceptar recibo antes de N-B1. Raíz requerida: /home/elkakas314/librechat/.
