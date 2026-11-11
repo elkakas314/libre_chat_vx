@@ -62,3 +62,25 @@ backend+Mongo/auth/persistencia y mobile/recovery no verificados.
 checkout aislado con dependencias legítimas; tras readback Lenovo y auth,
 instrumentar una proyección **autenticada** con recibo, sin segunda UI.
 **ESTADO:** `SOURCE_CONTRACTS_REVIEWED / UI_HOST_UNVERIFIED`.
+
+
+## E2 continuación — ejecución del código original de test en JS V8
+
+Readback `fetch_file` de GitHub en la rama PR #40, con SHA de test
+`bd6608573b57bc53ddc8eed2a01563d1827026e8` y los seis archivos
+SOURCE de los que depende. A diferencia de un chequeo manual, se ejecutaron
+**exactamente las cinco funciones de test** del archivo publicado,
+eliminando sólo las líneas de importación Node y sustituyendo
+`readFileSync` por acceso a los **bytes obtenidos por GitHub**.
+Los operadores `assert.match` / `assert.doesNotMatch` usaron las
+expresiones regulares originales y errores al fallar.
+
+**Resultado:** 5 callbacks PASS, 0 FAIL; 0 excepciones al cargar código.
+Esto prueba las cinco invariantes SOURCE sobre los archivos GitHub
+concretos, **no** equivale a `node --test`, compilación TypeScript/React,
+montaje en navegador ni integración material LIVE.
+No se ha modificado NOSTROMO ni instalado dependencias en el host.
+
+**Comprobación adicional:** GitHub Actions no tiene ejecuciones
+`pull_request` asociadas a los HEAD de PR #39 / #40 consultados en
+este turno. No atribuir éxito CI a ausencia de runs.
