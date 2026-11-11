@@ -9,9 +9,11 @@ import {createHash} from 'node:crypto';
 import {execFileSync} from 'node:child_process';
 import path from 'node:path';
 import os from 'node:os';
+import {fileURLToPath} from 'node:url';
 import {renderInitialNostromoYaml} from './nostromo-initial-yaml.mjs';
 
-const vx=path.join(os.homedir(),'librechat','vx');
+const vx=path.resolve(fileURLToPath(new URL('../',import.meta.url)));
+const canonicalVx=path.join(os.homedir(),'librechat','vx');
 const up=path.join(os.homedir(),'librechat','upstream');
 const apply=process.argv.includes('--apply');
 const expected='f10b1d91f1eee3a2c82d5247bf620351486b7c1b';
@@ -30,6 +32,8 @@ if(process.argv.includes('--help')){
 }
 if(process.argv.some(x=>x.startsWith('--')&&!['--apply'].includes(x))){
   status('UNKNOWN_FLAG_REFUSED',{},2);
+}else if(apply&&vx!==canonicalVx){
+  status('APPLY_ONLY_FROM_CANONICAL_VX_CHECKOUT',{},2);
 }else if(!existsSync(up)||lstatSync(up).isSymbolicLink()||realpathSync(up)!==up){
   status('UPSTREAM_PATH_UNSAFE',{},2);
 }else if(existsSync(dest)){
