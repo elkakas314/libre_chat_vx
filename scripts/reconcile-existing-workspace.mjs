@@ -11,6 +11,7 @@ import {
 } from 'node:fs';
 import {homedir} from 'node:os';
 import {linkHostTypeDeclarations,clearStagedTypeLinks} from './stage-react-types.mjs';
+import {isWorkspaceNoop} from './workspace-noop-gate.mjs';
 import path from 'node:path';
 
 const EXPECTED_UPSTREAM='f10b1d91f1eee3a2c82d5247bf620351486b7c1b';
@@ -97,6 +98,19 @@ function check(){
 let stage=null,backup=null,originalMoved=false,installed=false;
 try{
   const scan=check();
+  // A repeated apply of byte-identical source is not a new installation.
+  // Do not stage, build, rename or create another ~/nostromo-workspace-backup.*.
+  const builtEntry=path.join(pack,'dist/src/index.js');
+  const builtEntryVerified=existsSync(builtEntry)&&
+    !lstatSync(builtEntry).isSymbolicLink()&&statSync(builtEntry).isFile();
+  if(APPLY&&isWorkspaceNoop(scan,{compiledEntryVerified:builtEntryVerified})){
+    console.log(JSON.stringify({...scan,
+      status:'ALREADY_RECONCILED_NO_BACKUP',
+      build:'PREVIOUS_INSTALL_NOT_REBUILT',
+      installed:true,backup:null,backupCreated:false,
+      note:'Exact source identity confirmed; installation unchanged'},null,2));
+    process.exit(0);
+  }
   if(!APPLY&&!DIAGNOSE){
     console.log(JSON.stringify({...scan,status:'PREVIEW_ONLY',next:'REVIEW_THEN_APPLY'},null,2));
     process.exit(0);

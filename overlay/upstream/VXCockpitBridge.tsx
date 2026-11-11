@@ -52,7 +52,7 @@ export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
           <p className="vx-context-overline">CONEXIONES BAJO CONTROL</p>
           <h3>Todo conectado, cuando esté listo.</h3>
           <p className="vx-context-intro">
-            Consulta tus sistemas desde la conversación. Aquí sólo aparecen datos confirmados.
+            Consulta el inventario desde tu conversación. El estado LIVE requiere una lectura autenticada.
           </p>
         </div>
 
@@ -75,7 +75,7 @@ export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
         <section className="vx-autonomy-card" aria-labelledby="vx-autonomy-heading">
           <div className="vx-autonomy-topline">
             <span className="vx-autonomy-label"><span className="vx-autonomy-beacon" aria-hidden="true"/> NOSTROMO · AUTÓNOMO</span>
-            <span className="vx-autonomy-stage">SOURCE · SIN ACTIVAR</span>
+            <span className="vx-autonomy-stage">ENLACE NO VERIFICADO</span>
           </div>
           <div className="vx-autonomy-main">
             <div>
@@ -104,13 +104,15 @@ export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
                 <span>Evidencia</span>
               </div>
               <p><strong>ChatGPT:</strong> pendiente de autorización OAuth; puede sustituirse por LLM gratuito o local verificado.</p>
-              <p><strong>Terminal:</strong> SOURCE preparado, sin instalación LIVE acreditada. Comandos R0 limitados, R2 sólo con permiso local de un uso.</p>
+              <p><strong>Terminal:</strong> MCP probado localmente, pero sin enlace LIVE con LibreChat comprobado. R0 limitado y R2 con permiso local de un uso.</p>
               <div className="vx-mode-tools" data-testid="nostromo-tools-source">
                 <strong>Único MCP · catálogo SOURCE</strong>
                 <ul>
                   <li>Estado y lista de herramientas instalables</li>
                   <li>Preparar comando y comprobar sus límites</li>
                   <li>Ejecutar terminal con stdout, stderr y código de salida</li>
+                  <li>Archivos, Git y métricas: lecturas R0 optativas, sin permisos por defecto</li>
+                  <li>GitHub remoto y Microsoft Graph: conectar como destinos gobernados, con SecretRefs/OAuth propios</li>
                 </ul>
                 <p>El administrador elige las herramientas del MCP. El chat no se concede privilegios.</p>
               </div>
@@ -141,7 +143,7 @@ export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
         </section>
         ) : null}
         <TentaculoHud cards={projectTentaculoHud([])} activeSystem={activeSystem}
-          onClose={() => setActiveMode('AUTONOMO')} />
+          onClose={() => setActiveMode('AUTONOMO')} onCloseLabel="Volver a NOSTROMO" />
 
         {activeMode!=='AUTONOMO' ? <p className="vx-context-note" role="note">
           Este es el estado del enlace con NOSTROMO, no la salud de cada sistema. Se actualizará tras una lectura autenticada.
