@@ -33,12 +33,27 @@ def relative(value):
     return value
 
 
-def root_state(root):
-    try:
-        info = os.lstat(root)
-    except OSError:
-        return "ROOT_UNAVAILABLE"
-    return "DIRECTORY" if stat.S_ISDIR(info.st_mode) and not stat.S_ISLNK(info.st_mode) else "ROOT_UNSAFE"
+def root_state(root, expected):
+    """Fail closed: exact canonical scope and lstat of EVERY ancestor from '/'.
+
+    No root contents are opened here; do not use resolve()/is_dir() on a
+    user-supplied path, because those would follow an ancestor symlink.
+    """
+    root, expected = Path(root), Path(expected)
+    if not root.is_absolute() or root != expected:
+        return "ROOT_OUTSIDE_CANONICAL_SCOPE"
+    current = Path(root.anchor)
+    for part in root.parts[1:]:
+        current = current / part
+        try:
+            info = os.lstat(current)
+        except OSError:
+            return "ROOT_UNAVAILABLE"
+        if stat.S_ISLNK(info.st_mode):
+            return "ROOT_SYMLINK_BLOCKED"
+        if not stat.S_ISDIR(info.st_mode):
+            return "ROOT_ANCESTOR_NOT_DIRECTORY"
+    return "DIRECTORY"
 
 
 def file_state(root, rel):
@@ -119,9 +134,16 @@ def validate_extracted(doc):
     return diffs, names
 
 
-def review(doc, third, integrated, vx):
+def review(doc, third, integrated, vx, *, home=None):
     diffs, refs = validate_extracted(doc)
-    roots = {"third": root_state(third), "integrated": root_state(integrated), "vx": root_state(vx)}
+    # R0 scope is intentionally not configurable independently per root.
+    # The optional home is exclusively for isolated test fixtures.
+    base = Path.home() if home is None else Path(home)
+    roots = {
+        "third": root_state(third, base / "upstream"),
+        "integrated": root_state(integrated, base / "librechat/upstream"),
+        "vx": root_state(vx, base / "librechat/vx"),
+    }
     if any(status != "DIRECTORY" for status in roots.values()):
         return {"schema": SCHEMA, "readOnly": True, "mutations": 0,
                 "status": "ROOTS_BLOCKED", "roots": roots, "migrationAllowed": False}
