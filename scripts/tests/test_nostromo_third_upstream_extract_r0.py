@@ -1,5 +1,7 @@
 import importlib.util
 import json
+import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -67,6 +69,16 @@ class ExtractDifferencesTests(unittest.TestCase):
             link.symlink_to(real)
             with self.assertRaisesRegex(ValueError, "REPORT_NOT_REGULAR_FILE"):
                 extract.read_report(link)
+
+    def test_cli_refuses_reports_outside_canonical_reports_directory(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            report_path = Path(tmp) / "report.json"
+            report_path.write_text(json.dumps(report()), encoding="utf-8")
+            result = subprocess.run([sys.executable, str(SOURCE), "--report", str(report_path)],
+                                    capture_output=True, text=True, timeout=5)
+            self.assertEqual(result.returncode, 2)
+            self.assertEqual(json.loads(result.stdout)["status"],
+                             "REPORT_OUTSIDE_CANONICAL_REPORTS")
 
 
 if __name__ == "__main__":
