@@ -54,6 +54,38 @@ class BackupAuditR0Tests(unittest.TestCase):
         self.assertEqual(result["symlinkCount"], 1)
         self.assertIn("SYMLINK_PRESENT_NO_FOLLOW", result["issues"])
 
+    def test_root_parent_symlink_is_rejected_before_walking_or_hashing(self):
+        outside = self.home / "external"
+        (outside / "backup").mkdir(parents=True)
+        marker = outside / "backup" / "unique.txt"
+        marker.write_text("DO_NOT_READ_OUTSIDE", encoding="utf-8")
+        link = self.home / "alias"
+        link.symlink_to(outside, target_is_directory=True)
+        root = link / "backup"  # final is a real directory, but parent is link
+        original = marker.read_bytes()
+        with mock.patch.object(audit_module, "snapshot", side_effect=AssertionError("UNSAFE_WALK")) as walk, \
+             mock.patch.object(audit_module, "hash_file", side_effect=AssertionError("UNSAFE_READ")) as read:
+            result = audit_module.audit_dir(str(root))
+            walk.assert_not_called()
+            read.assert_not_called()
+        self.assertEqual(result["status"], "UNKNOWN_PRESERVE")
+        self.assertIn("ROOT_ANCESTOR_UNSAFE", result["issues"])
+        self.assertIsNone(result["contentSha256"])
+        self.assertEqual(marker.read_bytes(), original)
+
+    def test_snapshot_and_file_hash_refuse_symlink_parent(self):
+        root = self.directory("real")
+        link = self.home / "via-link"
+        link.symlink_to(root, target_is_directory=True)
+        scoped = link / "a.txt"
+        listing, issues = audit_module.snapshot(str(link), 20)
+        self.assertEqual(listing, {})
+        self.assertIn("ROOT_ANCESTOR_UNSAFE", issues)
+        with mock.patch.object(audit_module.os, "open", side_effect=AssertionError("MUST_NOT_OPEN")) as opened:
+            with self.assertRaisesRegex(ValueError, "FILE_ANCESTOR_UNSAFE"):
+                audit_module.hash_file(str(scoped), audit_module.identity(scoped.stat()), 100)
+            opened.assert_not_called()
+
     def test_secret_contents_not_read_or_echoed(self):
         root = self.directory("a", file=".env", content="SUPER_SECRET_VALUE")
         result = audit_module.audit_dir(str(root))
