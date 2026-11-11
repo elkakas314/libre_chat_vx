@@ -100,7 +100,10 @@ try{
   const scan=check();
   // A repeated apply of byte-identical source is not a new installation.
   // Do not stage, build, rename or create another ~/nostromo-workspace-backup.*.
-  if(APPLY&&isWorkspaceNoop(scan)){
+  const builtEntry=path.join(pack,'dist/src/index.js');
+  const builtEntryVerified=existsSync(builtEntry)&&
+    !lstatSync(builtEntry).isSymbolicLink()&&statSync(builtEntry).isFile();
+  if(APPLY&&isWorkspaceNoop(scan,{compiledEntryVerified:builtEntryVerified})){
     console.log(JSON.stringify({...scan,
       status:'ALREADY_RECONCILED_NO_BACKUP',
       build:'PREVIOUS_INSTALL_NOT_REBUILT',
