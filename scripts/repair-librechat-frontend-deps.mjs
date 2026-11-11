@@ -11,6 +11,7 @@ import os from 'node:os';
 import {assessNpmDryRun} from './librechat-npm-dry-run-guard.mjs';
 import {assessNpmEnvironment} from './librechat-frontend-npm-gate.mjs';
 import {createNpmConfigIsolation,ISOLATED_NPM_CONFIG_FILE} from './npm-config-isolation.mjs';
+import {nostromoLayout,createNostromoBackupDir} from './nostromo-layout.mjs';
 
 const EXPECTED_UPSTREAM='f10b1d91f1eee3a2c82d5247bf620351486b7c1b';
 const EXPECTED_LOCK='e7119c0eecd9c97048c7fb838a9f8cb0cb620bed99b7488886743e9bbe14d5f5';
@@ -68,8 +69,10 @@ const binExists=(name,workspace)=>[
 ].some(x=>existsSync(x));
 const missing=()=>Object.entries(tools).filter(([n,w])=>!binExists(n,w)).map(([n])=>n);
 const before=missing();
-const pinnedCli=path.join(os.homedir(),'.local','share','nostromo','tools',
-  'npm-11.13.0','node_modules','npm','bin','npm-cli.js');
+const layout=nostromoLayout();
+const newCli=path.join(layout.pinnedTool,'node_modules','npm','bin','npm-cli.js');
+const oldCli=path.join(layout.legacyTool,'node_modules','npm','bin','npm-cli.js');
+const pinnedCli=existsSync(newCli)?newCli:oldCli;
 const pinnedPresent=existsSync(pinnedCli);
 if(pinnedPresent&&(lstatSync(pinnedCli).isSymbolicLink()||
   !lstatSync(pinnedCli).isFile()))fail('PINNED_NPM_CLI_UNSAFE');
@@ -145,8 +148,7 @@ if(!dryRun.allow)fail(dryRun.status,{
  dryRun,action:'REVIEW_NPM_PLAN_LOCALLY_BEFORE_ANY_MUTATION'});
 for(const relative of protectedFiles)if(sha(path.join(UP,relative))!==baseline[relative])
   fail('PREVIEW_CHANGED_PROTECTED_FILE',{relative});
-const backup=mkdtempSync(path.join(os.homedir(),'nostromo-frontend-deps-backup.'));
-chmodSync(backup,0o700);
+const backup=createNostromoBackupDir('frontend-deps');
 for(const relative of protectedFiles){
   const out=path.join(backup,relative);
   mkdirSync(path.dirname(out),{recursive:true,mode:0o700});
