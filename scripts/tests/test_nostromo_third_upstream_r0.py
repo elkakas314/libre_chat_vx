@@ -72,6 +72,16 @@ class ThirdUpstreamAuditTests(unittest.TestCase):
         self.assertGreater(r["sourceSignals"]["REDIS_QUEUE_CALLS"]["filesContainingSignal"], 0)
         self.assertFalse(r["conclusions"]["redisLiveVerified"])
 
+    def test_cross_tree_absolute_references_are_detected_without_printing_source(self):
+        (self.integrated / "scripts").mkdir()
+        (self.integrated / "scripts" / "legacy-migrate.sh").write_text(
+            "cd /home/elkakas314/upstream; echo FICTIONAL_SENTINEL", encoding="utf8")
+        r = self.perform()
+        x = r["crossTreePathReferences"]["integrated"]
+        self.assertEqual(x["filesReferencingThirdAbsolutePath"], 1)
+        self.assertIn("scripts/legacy-migrate.sh", x["examples"])
+        self.assertNotIn("FICTIONAL_SENTINEL", json.dumps(r))
+
     def test_missing_lock_and_distinct_env_are_only_warnings(self):
         (self.third / ".env").write_text("PASSWORD=private", encoding="utf8")
         (self.integrated / "package-lock.json").write_text("{}", encoding="utf8")
