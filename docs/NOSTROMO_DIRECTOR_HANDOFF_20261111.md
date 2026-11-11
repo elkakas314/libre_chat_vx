@@ -75,4 +75,13 @@ Pruebas de fixture: 6/6 PASS para extracción, baseline incompleto, flags, redac
 
 HEAD readback actual antes de este handoff: cdeafdcd6e4597d097586f5e7503c263cef9a1e7; rama 16 commits ahead y 0 behind integration, 10 archivos modificados/añadidos en total. SOURCE probado y publicado en la rama, sin merge/PR. Mantener el checkout tercero intacto hasta revisar las rutas que entregue el extractor, consumidores de las 8 referencias y rollback.
 
+
+## N-B1 — decisión SOURCE de backend fijado
+
+Inspección de LibreChat-AI/LibreChat en el commit exacto de UPSTREAM.json (`f10b1d91f1eee3a2c82d5247bf620351486b7c1b`): package.json fija npm@11.13.0, .nvmrc fija Node 24.16.0 y ofrece `npm run backend`. El docker-compose.yml fijado usa imagen `registry.librechat.ai/librechat-ai/librechat-dev:latest`, por lo que no es reproducible respecto al commit instalado. Además, api depende de mongodb y rag_api; rag_api depende de vectordb. Levantar el servicio api por el camino por defecto inicia dependencias opcionales y no cumple el criterio mínimo sin override/estrategia adicional.
+
+Candidato SOURCE de menor expansión, pendiente del N-B0 host: ejecutar el backend desde el checkout local ya fijado con su Node/npm compatibles y una sola MongoDB persistente existente o añadida. Mantener Meilisearch apagado mientras SEARCH permanezca false; RAG/vector sólo si File Search se activa y se requiere. Si el preflight exige Docker para Mongo, resolver publicación sólo a loopback, persistencia/backup y autenticación antes del arranque. No crear aún installer ni tocar .env: faltan el estado material del host, AVX/OS, datos existentes, puertos y rollback.
+
+La guía oficial npm actual pide Node 24.16 y npm 11.16, mientras que el checkout v0.8.8 fija npm 11.13. La instalación deberá seguir la versión fijada por ese checkout y probarla; no actualizar a la versión de documentación por mera actualidad. MongoDB 5+ requiere AVX x86_64; medir la CPU real antes de escoger versión/imagen. El Compose actual oficial también advierte que su stack predeterminado carga componentes adicionales. Estas referencias actuales orientan el chequeo, pero la compatibilidad final se decide contra el commit instalado y el hardware del Lenovo.
+
 NEXT_ACTION: entregar issue #37 + este handoff a E2; ejecutar N-B0 primero; aceptar recibo antes de N-B1. Raíz requerida: /home/elkakas314/librechat/.
