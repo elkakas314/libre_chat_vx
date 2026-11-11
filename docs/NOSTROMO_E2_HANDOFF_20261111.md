@@ -87,3 +87,32 @@ issue #37 y PR; nunca sobrescribir su rama ni el trabajo dirty de host.
 **ROLLBACK:** revertir los commits E2 de la rama o cerrar PR; ningún
 archivo de Lenovo ha sido movido o eliminado por este lote.
 **ESTADO:** `SOURCE_TESTED / GITHUB_READBACK_VERIFIED / HOST_UNVERIFIED`.
+
+
+## Revisión Director #6802226607 — corrección M1 aceptable para nueva revisión
+
+- `root_state(root, expected)`: exige igualdad exacta con `home/upstream`,
+  `home/librechat/upstream` o `home/librechat/vx`; ejecuta
+  `os.lstat` sobre todos los ancestros desde `/`, bloqueando enlaces
+  simbólicos, ancestros no-directory y rutas fuera del scope.
+- `review(...,home=...)`: `home` es inyectable sólo por tests; CLI mantiene
+  los tres defaults de `Path.home()` y no acepta cambio de home.
+- Prueba padre `librechat/` symlink a árbol externo: dos raíces
+  `ROOT_SYMLINK_BLOCKED`, `ROOTS_BLOCKED`, `migrationAllowed=false`,
+  mock `checked_bytes.assert_not_called()` y bytes de archivo externo sin cambios.
+- Prueba de scope externo, traversal y ancestro fichero; `migrationAllowed=false`.
+- **Pruebas nuevas reproducidas a partir de bytes cuyos blob SHA coinciden con GitHub:**
+  M1 **8/8 PASS**, N-B1 **5/5 PASS**; total **13/13**, entorno temporal aislado
+  fuera del Lenovo. Python `unittest` y Node test runner.
+- Blob Git M1 `acc9340451f144dab31192eb4d1f5f9ac65d8a15`;
+  test M1 `9fb7e30f48c001972dbfa6cd43a2b9148ad9aba6`.
+  Blobs N-B1 no modificados:
+  código `b6138d41402faf53108d55e76bff309617334d7c`,
+  test `48db6c943eb0bf9cbaa7f7b04dbfeb37d58b8dad`.
+- **Límite conocido:** `lstat` de ancestros y apertura posterior son operaciones
+  separadas; esta compuerta bloquea symlinks estáticos, pero **no demuestra**
+  inmunidad a una sustitución simultánea de ancestros maliciosa (TOCTOU).
+  Seguir `migrationAllowed=false`; para límites de host con escritores no fiables
+  exigir apertura dirfd `O_NOFOLLOW` de todos los componentes.
+- Host `CONFIG_GAP / EXECUTION_ROUTING_MISMATCH` sin cambios; no existe
+  readback NOSTROMO LIVE. PR #38 permanece draft hasta revisión Director.
