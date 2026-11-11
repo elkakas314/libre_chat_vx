@@ -79,10 +79,15 @@ def hash_file(path, baseline, budget):
         if before.st_size > budget:
             raise ValueError("HASH_BUDGET_EXCEEDED")
         h = hashlib.sha256()
+        consumed = 0
         while True:
-            chunk = os.read(fd, BLOCK)
+            # A file growing during the scan must not bypass the I/O budget.
+            chunk = os.read(fd, min(BLOCK, budget - consumed + 1))
             if not chunk:
                 break
+            consumed += len(chunk)
+            if consumed > budget:
+                raise ValueError("HASH_BUDGET_EXCEEDED_DURING_READ")
             h.update(chunk)
         after = os.fstat(fd)
         if identity(before) != identity(after):
