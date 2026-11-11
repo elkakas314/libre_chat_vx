@@ -67,7 +67,15 @@ const binExists=(name,workspace)=>[
 ].some(x=>existsSync(x));
 const missing=()=>Object.entries(tools).filter(([n,w])=>!binExists(n,w)).map(([n])=>n);
 const before=missing();
-const npm=run('npm',['--version']);
+const pinnedCli=path.join(os.homedir(),'.local','share','nostromo','tools',
+  'npm-11.13.0','node_modules','npm','bin','npm-cli.js');
+const pinnedPresent=existsSync(pinnedCli);
+if(pinnedPresent&&(lstatSync(pinnedCli).isSymbolicLink()||
+  !lstatSync(pinnedCli).isFile()))fail('PINNED_NPM_CLI_UNSAFE');
+const npmInvocation=pinnedPresent?{program:process.execPath,args:[pinnedCli],source:'ISOLATED_NPM_11'}:
+  {program:'npm',args:[],source:'HOST_NPM_PATH'};
+const npmRun=(args,opts={})=>run(npmInvocation.program,[...npmInvocation.args,...args],opts);
+const npm=npmRun(['--version']);
 const rootPackage=JSON.parse(readFileSync(path.join(UP,'package.json'),'utf8'));
 const lockData=JSON.parse(readFileSync(path.join(UP,'package-lock.json'),'utf8'));
 const npmCompatibility=assessNpmEnvironment({
@@ -84,10 +92,10 @@ const availableMemoryBytes=memMatch?Number(memMatch[1])*1024:null;
 const report={
  schema:'nostromo.frontend.devdeps.repair.v1',mode:APPLY?'APPLY':'PREVIEW',
  upstream:UP,identityVerified:true,lockSha256:lockSha,
- missingBefore:before,npmVersion:npm.stdout,npmCompatibility,
+ missingBefore:before,npmVersion:npm.stdout,npmSource:npmInvocation.source,npmCompatibility,
  availableDiskBytes,availableMemoryBytes,
  willPreserve:'package-lock.json and package manifests (SHA guarded)',
- installation:'npm install --no-save --include=dev --ignore-scripts --no-audit --no-fund --prefer-offline',
+ installation:'pinned npm CLI or host npm: install --no-save --include=dev --ignore-scripts --no-audit --no-fund --prefer-offline',
  risk:'npm install can change node_modules; cannot promise complete rollback of dependencies',
  backupPath:null,mutated:false
 };
@@ -107,7 +115,7 @@ const env={
  npm_config_audit:'false',npm_config_fund:'false',
  npm_config_registry:'https://registry.npmjs.org/',
  npm_config_userconfig:'/dev/null',npm_config_globalconfig:'/dev/null'};
-const dry=run('npm',[...allowedArgs,'--dry-run','--json'],{
+const dry=npmRun([...allowedArgs,'--dry-run','--json'],{
  env,stdio:'pipe',timeout:6*60_000});
 if(dry.exitCode!==0)fail('DRY_RUN_FAILED',{
  exitCode:dry.exitCode,error:dry.error,action:'REVIEW_NPM_DIAGNOSTICS_LOCALLY'});
@@ -131,7 +139,7 @@ writeFileSync(path.join(backup,'receipt.json'),JSON.stringify({
 },null,2),{mode:0o600});
 console.log(JSON.stringify({...report,status:'APPLY_START',
  backupPath:backup,mutated:false,dryRun},null,2));
-const install=run('npm',allowedArgs,{env,stdio:'inherit',timeout:30*60_000});
+const install=npmRun(allowedArgs,{env,stdio:'inherit',timeout:30*60_000});
 const changedProtected=protectedFiles.filter(x=>sha(path.join(UP,x))!==baseline[x]);
 const after=missing();
 const status=changedProtected.length?'PROTECTED_MANIFEST_CHANGED':
