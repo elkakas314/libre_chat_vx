@@ -9,6 +9,7 @@ import {existsSync,readFileSync,lstatSync,realpathSync,mkdtempSync,chmodSync,mkd
 import {homedir} from 'node:os';
 import path from 'node:path';
 import {visualUpdateDisposition} from './visual-overlay-gate.mjs';
+import {createNostromoBackupDir} from './nostromo-layout.mjs';
 
 const base='b0641a221b21d28b523a16bafc51d821e2dc72c4';
 const upstream='f10b1d91f1eee3a2c82d5247bf620351486b7c1b';
@@ -65,8 +66,7 @@ try{
   report('VISUAL_SAFE_TO_STAGE',{files:descriptions,
    next:'APPLY_ONLY_AFTER_VERIFYING_SOURCE_AND_HOST_STATUS'});
  }else{
-  const backup=mkdtempSync(path.join(homedir(),'nostromo-visual-backup.'));
-  chmodSync(backup,0o700);
+  const backup=createNostromoBackupDir('visual');
   for(const item of data){
    const output=path.join(backup,item.name);
    copyFileSync(item.dest,output);
