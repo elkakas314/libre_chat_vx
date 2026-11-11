@@ -184,3 +184,33 @@ tras confirmar Bridge/CSS equivalentes al SOURCE. Si
 más build de frontend. Si falla, corregir el error TypeScript exacto.
 La PR visual de esta rama queda SOURCE sin PASS hasta los
 tests npm/browser sobre la instalación real. Sin GitHub Actions.
+
+
+## Reconciliación visual protegida antes de promover PR #31
+
+Este cambio SOURCE añade `scripts/reconcile-native-visual.mjs`.
+`npm run nostromo:visual:preview` compara byte a byte las dos
+rutas Bridge/CSS instaladas en `~/librechat/upstream` con el SOURCE
+actual de esta rama y con el SOURCE anterior en `main@b0641a221b21...`.
+Estados:
+- `VISUAL_ALREADY_MATCHED`: idempotente, sin escritura.
+- `VISUAL_SAFE_TO_STAGE`: la instalación contiene exactamente los dos
+  archivos anteriores reconocidos y puede sustituirse con protección.
+- `LOCAL_UNIQUE_WORK_PRESERVED`: cualquier variación desconocida
+  bloquea los cambios sin borrar trabajo único.
+- `VISUAL_SYNC_BLOCKED`: identidad Git, permisos o archivo inválido.
+
+La fase de escritura `npm run nostromo:visual:apply` es OPT-IN:
+tras gate R0 y prueba `npm run nostromo:visual:test` efectuada
+en el Lenovo, crea backup privado
+`~/nostromo-visual-backup.*`, escribe cada fichero atómicamente
+con lectura posterior y mantiene `Presentation.tsx` y el paquete
+`packages/librechat-vx` intactos. NO sincroniza el hermano
+`~/upstream`, ni `.env` ni los servicios.
+
+Una vez comprobados Bridge/CSS nuevos, `npm run
+nostromo:workspace:diagnose` debe validar el nuevo paquete VX sin
+aplicar cambios, y sólo entonces puede usarse el reconciliador
+del workspace existente. No fusionar esta PR por test fixture
+visual histórico ni declarar frontend LIVE hasta `frontend:ci`
+y comprobación visual en navegador real.
