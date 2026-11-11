@@ -30,7 +30,7 @@
     "nostromo:frontend:deps:inspect": "node scripts/inspect-librechat-frontend-deps.mjs --upstream=../upstream",
     "nostromo:frontend:deps:test": "node --test scripts/tests/inspect-librechat-frontend-deps.test.mjs",
     "nostromo:frontend:deps:repair": "node scripts/repair-librechat-frontend-deps.mjs",
-    "nostromo:frontend:deps:repair:test": "node --test scripts/tests/repair-librechat-frontend-deps.test.mjs scripts/tests/librechat-npm-dry-run-guard.test.mjs"
+    "nostromo:frontend:deps:repair:test": "node --test scripts/tests/repair-librechat-frontend-deps.test.mjs scripts/tests/librechat-npm-dry-run-guard.test.mjs scripts/tests/librechat-frontend-npm-gate.test.mjs"
   },
   "peerDependencies": {
     "react": "^18.2.0",
