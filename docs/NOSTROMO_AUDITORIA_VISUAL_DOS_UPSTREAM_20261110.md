@@ -214,3 +214,13 @@ aplicar cambios, y sólo entonces puede usarse el reconciliador
 del workspace existente. No fusionar esta PR por test fixture
 visual histórico ni declarar frontend LIVE hasta `frontend:ci`
 y comprobación visual en navegador real.
+
+
+## Preview visual desde worktree
+
+El lector de dos ficheros Bridge/CSS obtiene SOURCE desde el
+checkout de la PR evaluada y compara con el upstream **canónico**
+`~/librechat/upstream`, aunque el checkout de prueba esté separado.
+La ejecución `--apply` se deniega expresamente desde cualquier
+worktree que no sea `~/librechat/vx`; no hay actualizaciones
+accidentales del checkout de prueba ni del hermano `~/upstream`.
