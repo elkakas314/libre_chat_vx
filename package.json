@@ -30,7 +30,9 @@
     "nostromo:frontend:deps:inspect": "node scripts/inspect-librechat-frontend-deps.mjs --upstream=../upstream",
     "nostromo:frontend:deps:test": "node --test scripts/tests/inspect-librechat-frontend-deps.test.mjs",
     "nostromo:wiring:inspect": "node scripts/audit-nostromo-native-wiring.mjs",
-    "nostromo:wiring:test": "node --test scripts/tests/audit-nostromo-native-wiring.test.mjs"
+    "nostromo:wiring:test": "node --test scripts/tests/audit-nostromo-native-wiring.test.mjs scripts/tests/nostromo-initial-yaml.test.mjs",
+    "nostromo:wiring:config:preview": "node scripts/stage-nostromo-mcp-config.mjs",
+    "nostromo:wiring:config:stage": "node scripts/stage-nostromo-mcp-config.mjs --apply"
   },
   "peerDependencies": {
     "react": "^18.2.0",
