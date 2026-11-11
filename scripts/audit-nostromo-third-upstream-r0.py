@@ -23,7 +23,7 @@ SOURCE_EXT = {".js", ".jsx", ".ts", ".tsx", ".mjs", ".cjs", ".py", ".sh",
               ".bash", ".yml", ".yaml", ".json", ".toml", ".md",
               ".xml", ".sql", ".ini", ".conf"}
 CATEGORY_TERMS = {
-    "API_BACKEND": ("api", "routes", "controllers", "endpoints", "providers",
+    "API_BACKEND": ("api", "backend", "routes", "controllers", "endpoints", "providers",
                     "server", "graphql", "http", "express", "fastify"),
     "E2E_TESTS": ("e2e", "playwright", "cypress", "integration", "test", "spec",
                   "fixture", "vitest", "jest", "smoke", "canary"),
@@ -143,7 +143,8 @@ def git_info(root):
             p = subprocess.run(["git", "-c", "core.fsmonitor=false",
                                 "-c", "core.hooksPath=/dev/null", "-C", str(root)] + args,
                                env=env, capture_output=True, timeout=20, check=False)
-            return p.stdout.decode("utf-8", "replace").strip() if p.returncode == 0 else None
+            return (p.stdout.decode("utf-8", "replace") if args[0] == "status"
+                    else p.stdout.decode("utf-8", "replace").strip()) if p.returncode == 0 else None
         except (OSError, subprocess.TimeoutExpired):
             return None
     status = call(["status", "--porcelain=v1", "--untracked-files=all"])
