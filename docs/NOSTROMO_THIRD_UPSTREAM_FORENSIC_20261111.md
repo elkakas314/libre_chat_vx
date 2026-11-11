@@ -86,3 +86,9 @@ python3 -B scripts/audit-nostromo-third-upstream-r0.py \
    evitando instalar servidores duplicados por cada árbol.
 
 Estado actual: **AUDITOR SOURCE COMMITTED / LENOVO FORENSIC PENDING**.
+
+## Cobertura adicional y límites
+- La auditoría incluye `workspacePackages` (API, cliente, data-provider, agents, MCP, E2E, Redis) y `sourceSignals` por nombre de archivo, sin devolver contenido de código.
+- `crossTreePathReferences` inspecciona también referencias absolutas a `/home/elkakas314/upstream` en el upstream integrado y en VX, para evitar romper consumidores al mover el tercero. No interpreta esas menciones como usos LIVE.
+- Se excluyen archivos cuyo **nombre** parece contener secretos y no se imprimen valores de los archivos fuente. No puede garantizarse que un archivo fuente de nombre inocuo carezca de secretos incrustados: el informe permanece privado y jamás se sube automáticamente a Git.
+- La herramienta tiene pruebas unitarias aisladas para categorías, Redis, rutas absolutas, diferencias de hash, `.env` y symlinks. Estado SOURCE hasta ejecutar esas pruebas en Lenovo.
