@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {mkdtempSync,mkdirSync,writeFileSync,readFileSync,rmSync,symlinkSync,existsSync} from 'node:fs';
+import {mkdtempSync,mkdirSync,writeFileSync,readFileSync,rmSync,symlinkSync,existsSync,lstatSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
 import {auditLegacyLayout,relocateLegacyLayout} from '../nostromo-layout-relocate.mjs';
@@ -28,6 +28,12 @@ test('apply moves four existing backups under private root without deleting cont
   const dst=path.join(home,'librechat','nostromo','backups',name,'keep.txt');
   assert.equal(readFileSync(dst,'utf8'),name);
   assert.equal(existsSync(path.join(home,name)),false);
+ }
+ const names=['worktrees','tools','backups','runtime','reports','handoffs','manifests','staging','cache','tmp','legacy'];
+ for(const name of names){
+  const dir=path.join(home,'librechat','nostromo',name);
+  assert.equal(lstatSync(dir).isDirectory(),true,name);
+  assert.equal(lstatSync(dir).mode&0o077,0,name);
  }
  assert.equal(relocateLegacyLayout({home,apply:true}).status,'ALREADY_RELOCATED_OR_NOT_PRESENT');
 }));
