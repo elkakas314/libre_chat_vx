@@ -57,10 +57,10 @@ run_pr() {
   if (( failed )); then echo "$label BLOCKED"; else echo "$label SOURCE_CANARY_PASS_NOT_E2E"; fi
   return "$failed"
 }
-run_pr PR34 fix/nostromo-frontend-devdeps-guarded-20261111 c86d0ac527e4ec0f2d9d928d1ac18cc749218ab9; R34=$?
+run_pr PR34 fix/nostromo-frontend-devdeps-guarded-20261111 d8809dbcf18987211edb4b0327c9bc9580f10788; R34=$?
 run_pr PR35 feat/nostromo-native-wiring-gates-20261111 ab478c6914abd896b089aaf548ab4848a55c71f2; R35=$?
 run_pr PR31 audit/nostromo-visual-and-local-trees-20261110 983229e69c7a5e8f8d2c425736a2effc9116830b; R31=$?
-run_pr PR36 fix/nostromo-backup-forensics-r0-20261111 0c4359d9c092205756ab76ad8a1b1ade263ee551; R36=$?
+run_pr PR36 fix/nostromo-backup-forensics-r0-20261111 3adf801fef4c45ba8111844e6e9fdc505e32fdc5; R36=$?
 if [[ "$(git branch --show-current)" != main ]] ||
    [[ "$(git rev-parse HEAD)" != "$MAIN" ]]; then
   echo 'MAIN_READBACK_BLOCKED'; exit 2
