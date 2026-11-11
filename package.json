@@ -48,9 +48,11 @@
     "nostromo:layout:test": "node --test scripts/tests/nostromo-layout.test.mjs",
     "nostromo:mobile:preflight": "node scripts/audit-nostromo-mobile-readiness.mjs",
     "nostromo:mobile:preflight:test": "node --test scripts/tests/nostromo-mobile-readiness.test.mjs",
+    "nostromo:backend:preflight": "node scripts/nostromo-backend-preflight.mjs",
+    "nostromo:backend:preflight:test": "node --test scripts/tests/nostromo-backend-preflight.test.mjs",
     "nostromo:layout:migrate:preview": "node scripts/nostromo-layout-relocate.mjs",
     "nostromo:layout:migrate:test": "node --test scripts/tests/nostromo-layout-relocate.test.mjs",
-    "nostromo:qa:diagnostics": "npm run nostromo:runtime:npm11:test && npm run nostromo:frontend:deps:repair:test && npm run nostromo:visual:test && npm run nostromo:workspace:test && npm run nostromo:wiring:test && npm run nostromo:backups:test && npm run nostromo:local:audit:test && npm run nostromo:layout:test && npm run nostromo:layout:migrate:test && npm run nostromo:mobile:preflight:test && npm run nostromo:third-upstream:test",
+    "nostromo:qa:diagnostics": "npm run nostromo:runtime:npm11:test && npm run nostromo:frontend:deps:repair:test && npm run nostromo:visual:test && npm run nostromo:workspace:test && npm run nostromo:wiring:test && npm run nostromo:backups:test && npm run nostromo:local:audit:test && npm run nostromo:layout:test && npm run nostromo:layout:migrate:test && npm run nostromo:mobile:preflight:test && npm run nostromo:backend:preflight:test && npm run nostromo:third-upstream:test",
     "nostromo:third-upstream:audit": "PYTHONDONTWRITEBYTECODE=1 python3 -B scripts/audit-nostromo-third-upstream-r0.py",
     "nostromo:third-upstream:test": "PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s scripts/tests -p 'test_nostromo_third_upstream_r0.py' -v"
   },
