@@ -12,6 +12,7 @@ import sys
 from pathlib import Path
 
 DEFAULT_BACKUPS = [
+    "nostromo-frontend-deps-backup.fDbtdf",
     "nostromo-workspace-backup.2jGTrK",
     "nostromo-ui-backup.s5cE3siD",
     "nostromo-backup.ceBhjB8V",
