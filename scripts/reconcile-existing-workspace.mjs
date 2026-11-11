@@ -12,6 +12,7 @@ import {
 import {homedir} from 'node:os';
 import {linkHostTypeDeclarations,clearStagedTypeLinks} from './stage-react-types.mjs';
 import {isWorkspaceNoop} from './workspace-noop-gate.mjs';
+import {createNostromoBackupDir} from './nostromo-layout.mjs';
 import path from 'node:path';
 
 const EXPECTED_UPSTREAM='f10b1d91f1eee3a2c82d5247bf620351486b7c1b';
@@ -150,8 +151,7 @@ try{
   }else{
   if(!existsSync(path.join(stage,'dist/src/index.js')))stop('COMPILED_ENTRY_MISSING');
   // Last snapshot: keep the original whole package instead of rm/clean.
-  backup=mkdtempSync(path.join(homedir(),'nostromo-workspace-backup.'));
-  chmodSync(backup,0o700);
+  backup=createNostromoBackupDir('workspace');
   chmodSync(stage,statSync(pack).mode&0o777);
   renameSync(pack,path.join(backup,'original-package'));
   originalMoved=true;
