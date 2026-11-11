@@ -243,6 +243,20 @@ def scan(target, integrated, max_files, max_hash_size, hash_mib,
         "third": inspect_package(target, "package.json"),
         "integrated": inspect_package(integrated, "package.json")
     }
+    # Monorepo workspace contract inventory: dependency *names* and script
+    # *names* only. No .env contents, npm execution or package install.
+    workspace_candidates = ("api/package.json", "client/package.json",
+        "packages/data-provider/package.json", "packages/agents/package.json",
+        "packages/mcp/package.json", "e2e/package.json",
+        "packages/redis/package.json")
+    report["workspacePackages"] = {}
+    for relative in workspace_candidates:
+        if (regular_at(target, relative)[0] == "REGULAR" or
+                regular_at(integrated, relative)[0] == "REGULAR"):
+            report["workspacePackages"][relative] = {
+                "third": inspect_package(target, relative),
+                "integrated": inspect_package(integrated, relative)
+            }
     tracked = 0
     total = 0
     symlinks = 0
