@@ -4,8 +4,14 @@ import {mkdtemp,writeFile,rm,chmod} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {Client} from '@modelcontextprotocol/sdk/client/index.js';
-import {StdioClientTransport} from '@modelcontextprotocol/sdk/client/stdio.js';
+let Client,StdioClientTransport,sdkMissing=false;
+try{
+ ({Client}=await import('@modelcontextprotocol/sdk/client/index.js'));
+ ({StdioClientTransport}=await import('@modelcontextprotocol/sdk/client/stdio.js'));
+}catch(error){
+ if(error?.code!=='ERR_MODULE_NOT_FOUND')throw error;
+ sdkMissing=true;
+}
 
 /** Actual SDK client → existing NOSTROMO stdio server → R0 tool → result.
  * Needs the existing package dependencies installed. NO model/host/LibreChat
@@ -18,7 +24,7 @@ const payload=result=>{
  return JSON.parse(text);
 };
 
-test('M3 SDK stdio handshake and bounded R0 tool invocation; no exec capability', {timeout:20000}, async()=>{
+test('M3 SDK stdio handshake and bounded R0 tool invocation; no exec capability', {timeout:20000,skip:sdkMissing?'SDK_DEPENDENCY_NOT_INSTALLED_IN_THIS_RUNTIME':false}, async()=>{
  const root=await mkdtemp(path.join(tmpdir(),'nostromo-mcp-stdio-r0-'));
  const file=path.join(root,'README.md');
  let client=null, transport=null;
