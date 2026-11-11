@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# NOSTROMO 2026-11-11: verify three PRs sequentially, with no --apply.
+# NOSTROMO 2026-11-11: verify four PRs sequentially, with no --apply.
 # git fetch/fast-forward and detached checkout only. No Actions/services/npm install.
 set -uo pipefail
 VX="$HOME/librechat/vx"
@@ -35,6 +35,10 @@ run_pr() {
       npm run nostromo:wiring:inspect || failed=1
       npm run nostromo:wiring:config:preview || failed=1
       ;;
+    PR36)
+      npm run nostromo:backups:test || failed=1
+      npm run nostromo:backups:audit || failed=1
+      ;;
     PR31)
       npm run nostromo:visual:test || failed=1
       npm run nostromo:visual:preview || failed=1
@@ -48,13 +52,14 @@ run_pr() {
 run_pr PR34 fix/nostromo-frontend-devdeps-guarded-20261111 c86d0ac527e4ec0f2d9d928d1ac18cc749218ab9; R34=$?
 run_pr PR35 feat/nostromo-native-wiring-gates-20261111 ab478c6914abd896b089aaf548ab4848a55c71f2; R35=$?
 run_pr PR31 audit/nostromo-visual-and-local-trees-20261110 983229e69c7a5e8f8d2c425736a2effc9116830b; R31=$?
+run_pr PR36 fix/nostromo-backup-forensics-r0-20261111 0c4359d9c092205756ab76ad8a1b1ade263ee551; R36=$?
 if [[ "$(git branch --show-current)" != main ]] ||
    [[ "$(git rev-parse HEAD)" != "$MAIN" ]]; then
   echo 'MAIN_READBACK_BLOCKED'; exit 2
 fi
 echo "MAIN_RESTORED=$MAIN"
-echo "PR34_RC=$R34 PR35_RC=$R35 PR31_RC=$R31"
-if (( R34 || R35 || R31 )); then
+echo "PR34_RC=$R34 PR35_RC=$R35 PR31_RC=$R31 PR36_RC=$R36"
+if (( R34 || R35 || R31 || R36 )); then
   echo 'SOURCE_CANARIES_PARTIAL_OR_BLOCKED - no apply'
   exit 1
 fi
