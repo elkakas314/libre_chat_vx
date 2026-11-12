@@ -47,6 +47,11 @@ jobs:
           ln -s ../../packages/librechat-vx node_modules/@librechat/vx
           ./node_modules/.bin/tsc -p packages/librechat-vx/tsconfig.json
           npm run frontend:ci
+          # frontend:ci deliberately skips the API/data-schema builds. The
+          # genuine LibreChat E2E backend imports compiled API credentials.
+          npm run build:data-schemas
+          npm run build:api
+          test -f packages/api/dist/credentials.cjs
       - name: Install Chromium on isolated runner only
         working-directory: upstream
         run: npx playwright install --with-deps chromium
