@@ -1,6 +1,10 @@
 name: source-check
 
 on:
+  push:
+    branches:
+      - e2/nostromo-qa-ci-20261112
+      - e2/nostromo-source-final-mcp-gates-20261112
   workflow_dispatch:
 
 permissions:
@@ -37,7 +41,17 @@ jobs:
         run: npm install --no-audit --no-fund
       - name: Validate parallel transport isolation
         run: npm run transport:validate
-      - name: Build and test
+      - name: NOSTROMO integration diagnostics (M1-M5)
+        run: npm run nostromo:qa:diagnostics
+      - name: E2 PR38-43 targeted integration regressions
+        run: |
+          PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s scripts/tests -p 'test_nostromo_backup_*.py' -v
+          PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s scripts/tests -p 'test_nostromo_third_upstream_move_gate_r0.py' -v
+          node --test scripts/tests/nostromo-backend-decision.test.mjs scripts/tests/nostromo-m4-visual-source-contract.test.mjs scripts/tests/nostromo-mobile-readiness.test.mjs
+          node --experimental-strip-types --test scripts/tests/nostromo-m5-mobile-auth.test.mjs
+      - name: Explicit TypeScript build
+        run: npm run build
+      - name: Full VX workspace test suite
         run: npm test
       - name: Validate NOSTROMO standalone terminal MCP (real stdio roundtrip)
         run: |
@@ -46,11 +60,12 @@ jobs:
       - name: Validate agent event SOURCE projection with compiled runtime
         run: node --test canaries/agent-events-live/01-local-delivery.test.cjs
 
-  overlay-smoke:
+  pinned-upstream-ci-native-mount:
+    needs: build-test
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 30
     steps:
-      - name: Checkout LibreChat VX
+      - name: Checkout VX source
         uses: actions/checkout@v4
         with:
           path: vx
@@ -64,38 +79,66 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '24'
-      - name: Install pinned upstream dependencies
+      - name: Install upstream dependencies in disposable runner only
         working-directory: upstream
         run: npm ci --no-audit --no-fund
-      - name: Verify pinned upstream
+      - name: Verify pinned upstream exact HEAD and source identity
         working-directory: vx
         run: npm run verify:upstream -- ../upstream
-      - name: Install reversible overlay
+      - name: Verify CI staging fail-closed preconditions
         working-directory: vx
-        run: npm run overlay:install -- ../upstream
-      - name: Link VX workspace without changing upstream lock
-        run: |
-          mkdir -p upstream/node_modules/@librechat
-          ln -sfn ../../packages/librechat-vx upstream/node_modules/@librechat/vx
-      - name: Reconcile already installed VX workspace with reversible local pack
+        run: node --test ci/tests/nostromo-stage-clean-overlay-ci-only.test.mjs
+      - name: Stage exact VX bridge into disposable pinned upstream only
         working-directory: vx
-        run: |
-          node scripts/reconcile-existing-workspace.mjs --upstream=../upstream
-          node scripts/reconcile-existing-workspace.mjs --upstream=../upstream --diagnose > /tmp/nostromo-diagnose.json
-          grep -q '"status": "DIAGNOSE_COMPILE_PASS"' /tmp/nostromo-diagnose.json
-          grep -q '"existingWorkspaceUnchanged": true' /tmp/nostromo-diagnose.json
-          node scripts/reconcile-existing-workspace.mjs --upstream=../upstream --apply
-      - name: Build LibreChat frontend with VX overlay
+        env:
+          NOSTROMO_CI_EPHEMERAL_STAGE: '1'
+        run: node ci/nostromo-stage-clean-overlay-ci-only.mjs --stage
+      - name: Build VX package and native LibreChat frontend in runner
         working-directory: upstream
-        run: npm run frontend:ci
-      - name: Uninstall overlay
+        run: |
+          test ! -e node_modules/@librechat/vx
+          test ! -L node_modules/@librechat/vx
+          mkdir -p node_modules/@librechat
+          ln -s ../../packages/librechat-vx node_modules/@librechat/vx
+          ./node_modules/.bin/tsc -p packages/librechat-vx/tsconfig.json
+          npm run frontend:ci
+      - name: Validate ephemeral overlay staged identity and compiled package
+        working-directory: upstream
+        run: |
+          test -f packages/librechat-vx/dist/src/index.js
+          test -f client/src/components/VX/VXCockpitBridge.tsx
+          test -f client/src/components/VX/VXCockpit.css
+          grep -Fq 'VXCockpitBridge' client/src/components/Chat/Presentation.tsx
+      # Deliberately NO legacy overlay:install/uninstall. These remain blocked
+      # to protect user files. This is a disposable CI mount, not host install.
+
+  chromium-source-visual:
+    needs: build-test
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout exact QA branch
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install visual source tooling in disposable runner
+        run: |
+          npm install --no-audit --no-fund
+          npm install --no-save --no-package-lock esbuild@0.25.9 playwright@1.55.0
+      - name: Install Chromium in runner
+        run: npx playwright install --with-deps chromium
+      - name: Exercise NOSTROMO React source in browser (not host LIVE)
+        run: node tests/visual/visual-smoke.cjs
+      - name: Retain screenshots and browser evidence
         if: always()
-        working-directory: vx
-        run: npm run overlay:uninstall -- ../upstream
-      - name: Verify upstream clean after uninstall
-        if: always()
-        working-directory: vx
-        run: npm run verify:upstream -- ../upstream
+        uses: actions/upload-artifact@v4
+        with:
+          name: nostromo-qa-pr43-source-visual
+          path: visual-evidence/
+          retention-days: 14
+          if-no-files-found: warn
 
   canary-self-test:
     runs-on: ubuntu-latest
