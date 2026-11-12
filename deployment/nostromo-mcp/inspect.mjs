@@ -3,7 +3,7 @@
  */
 import os from 'node:os';
 import path from 'node:path';
-import {open,statfs} from 'node:fs/promises';
+import {open,statfs,realpath} from 'node:fs/promises';
 import {constants as fs} from 'node:fs';
 import {createHash} from 'node:crypto';
 import {resolveScope,preview,executeLocal} from './policy.mjs';
@@ -18,8 +18,25 @@ function checkFileName(file) {
   if(typeof file!=='string'||!path.isAbsolute(file)||file.length>1024||file.includes('\0'))
     throw Error('FILE_PATH_INVALID');
   const components=path.normalize(file).split(path.sep);
-  if(components.some(p=>BANNED_PARTS.has(p))||SECRET_NAME.test(path.basename(file)))
+  // A secret-named ancestor must be as private as the leaf. Never open
+  // tokens/notes.md or .env.d/notes.md merely because "notes" is benign.
+  if(components.some(p=>BANNED_PARTS.has(p)||SECRET_NAME.test(p)))
     throw Error('SENSITIVE_PATH_DENIED');
+}
+
+/** Assert the ALREADY OPEN descriptor still names the exact pre-approved file.
+ * O_NOFOLLOW only protects the basename, not ancestor symlink swaps between
+ * resolveScope() and open(). Linux /proc/self/fd pins the actual opened inode.
+ * Non-Linux or inaccessible /proc fails CLOSED, before any file data is read.
+ */
+export async function openedHandleMatchesExactPath(handle,approvedAbsolutePath) {
+  if(!Number.isInteger(handle?.fd)||handle.fd<0||
+     typeof approvedAbsolutePath!=='string'||!path.isAbsolute(approvedAbsolutePath))
+    return false;
+  try {
+    const opened=await realpath('/proc/self/fd/'+handle.fd);
+    return opened===approvedAbsolutePath;
+  }catch{return false;}
 }
 
 /** Read a bounded text excerpt, after canonical directory scoping and O_NOFOLLOW. */
@@ -38,9 +55,11 @@ export async function readScopedText({file,maxBytes=8192},settings) {
   const resolved=path.join(parent,path.basename(file));
   let handle;
   try{
-    handle=await open(resolved,fs.O_RDONLY|fs.O_NOFOLLOW);
+    handle=await open(resolved,fs.O_RDONLY|fs.O_NOFOLLOW|fs.O_NONBLOCK);
     const st=await handle.stat();
     if(!st.isFile()||st.size>1048576)return {status:'DENIED',reason:'FILE_SIZE_OR_TYPE_DENIED'};
+    if(!(await openedHandleMatchesExactPath(handle,resolved)))
+      return {status:'DENIED',reason:'FD_SCOPE_MISMATCH'};
     const data=Buffer.alloc(maxBytes+1);
     const {bytesRead}=await handle.read(data,0,data.length,0);
     const sample=data.subarray(0,Math.min(bytesRead,maxBytes));
