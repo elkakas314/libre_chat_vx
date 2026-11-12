@@ -1,0 +1,106 @@
+name: nostromo-native-runtime-ci-canary
+
+on:
+  push:
+    branches:
+      - e2/nostromo-native-runtime-canary-20261112
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  native-librechat-vx-mock-e2e:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Checkout exact NOSTROMO QA sources
+        uses: actions/checkout@v4
+        with:
+          path: vx
+      - name: Checkout exact pinned LibreChat upstream
+        uses: actions/checkout@v4
+        with:
+          repository: LibreChat-AI/LibreChat
+          ref: f10b1d91f1eee3a2c82d5247bf620351486b7c1b
+          path: upstream
+      - name: Setup Node 24 (upstream required)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install pinned upstream dependencies in ephemeral runner
+        working-directory: upstream
+        run: npm ci --no-audit --no-fund
+      - name: Verify exact upstream and stage guarded CI-only NOSTROMO native bridge
+        working-directory: vx
+        env:
+          NOSTROMO_CI_EPHEMERAL_STAGE: '1'
+        run: |
+          npm run verify:upstream -- ../upstream
+          node --test ci/tests/nostromo-stage-clean-overlay-ci-only.test.mjs
+          node ci/nostromo-stage-clean-overlay-ci-only.mjs --stage
+      - name: Build the actual mounted LibreChat/VX frontend
+        working-directory: upstream
+        run: |
+          test ! -e node_modules/@librechat/vx
+          mkdir -p node_modules/@librechat
+          ln -s ../../packages/librechat-vx node_modules/@librechat/vx
+          ./node_modules/.bin/tsc -p packages/librechat-vx/tsconfig.json
+          npm run frontend:ci
+      - name: Install Chromium on isolated runner only
+        working-directory: upstream
+        run: npx playwright install --with-deps chromium
+      - name: Install existing native NOSTROMO browser assertions in disposable upstream only
+        run: |
+          test ! -e upstream/e2e/screenshots/vx-prereq.spec.ts
+          cp vx/ci/fixtures/native-overlay-prereq.spec.ts upstream/e2e/screenshots/vx-prereq.spec.ts
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('upstream/e2e/screenshots/playwright.config.ts')
+          s=p.read_text(encoding='utf-8')
+          marker="testMatch: 'pilot.spec.ts'"
+          assert s.count(marker)==1, "PINNED_PLAYWRIGHT_TEST_MATCH_DRIFT"
+          p.write_text(s.replace(marker,"testMatch: 'vx-prereq.spec.ts'"),encoding='utf-8')
+          PY
+          # The pinned Playwright screenshot config checks exact Git HEAD and
+          # an empty git diff. Commit solely in the ephemeral upstream checkout,
+          # never to GitHub or Lenovo. No token is exposed, no push.
+          cd upstream
+          git add -A
+          git -c user.name='Nostromo CI Fixture' -c user.email='ci@example.invalid' \
+            commit -m 'ci-only: disposable native VX browser harness'
+          git diff --quiet HEAD
+      - name: Native desktop/mobile with VX disabled — mock backend only
+        working-directory: upstream
+        env:
+          E2E_USE_MEMORY_MONGO: 'true'
+          E2E_BASE_URL: http://127.0.0.1:3333
+          VX_COCKPIT_FLAG: '0'
+          VX_SOURCE_SHA: ${{ github.sha }}
+          E2E_CAPTURE_DIR: ${{ runner.temp }}/nostromo-native-off
+          VX_CAPTURE_DIR: ${{ runner.temp }}/nostromo-native-off
+        run: |
+          export E2E_CAPTURE_SHA="$(git rev-parse HEAD)"
+          npx playwright test --config=e2e/screenshots/playwright.config.ts
+      - name: Native desktop/mobile with VX enabled — mock backend only
+        working-directory: upstream
+        env:
+          E2E_USE_MEMORY_MONGO: 'true'
+          E2E_BASE_URL: http://127.0.0.1:3333
+          VX_COCKPIT_FLAG: '1'
+          VX_SOURCE_SHA: ${{ github.sha }}
+          E2E_CAPTURE_DIR: ${{ runner.temp }}/nostromo-native-on
+          VX_CAPTURE_DIR: ${{ runner.temp }}/nostromo-native-on
+        run: |
+          export E2E_CAPTURE_SHA="$(git rev-parse HEAD)"
+          npx playwright test --config=e2e/screenshots/playwright.config.ts
+      - name: Preserve actual native browser readback — no LIVE claim
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nostromo-native-vx-mock-e2e-source
+          path: |
+            ${{ runner.temp }}/nostromo-native-off/
+            ${{ runner.temp }}/nostromo-native-on/
+          retention-days: 14
+          if-no-files-found: warn
