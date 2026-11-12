@@ -20,8 +20,6 @@ function checkFileName(file) {
   const components=path.normalize(file).split(path.sep);
   if(components.some(p=>BANNED_PARTS.has(p))||SECRET_NAME.test(path.basename(file)))
     throw Error('SENSITIVE_PATH_DENIED');
-  if(!READ_EXTENSIONS.has(path.extname(file).toLowerCase()))
-    throw Error('FILE_TYPE_DENIED');
 }
 
 /** Read a bounded text excerpt, after canonical directory scoping and O_NOFOLLOW. */
@@ -32,6 +30,11 @@ export async function readScopedText({file,maxBytes=8192},settings) {
     throw Error('FILE_READ_LIMIT_INVALID');
   const parent=await resolveScope(path.dirname(file),settings.roots);
   if(!parent)return {status:'DENIED',reason:'FILE_OUTSIDE_ALLOWED_ROOTS'};
+  // Scope takes precedence over file-type filtering: outside files are never
+  // opened or classified using their name/extension. Secret names remain
+  // rejected by checkFileName before either operation.
+  if(!READ_EXTENSIONS.has(path.extname(file).toLowerCase()))
+    throw Error('FILE_TYPE_DENIED');
   const resolved=path.join(parent,path.basename(file));
   let handle;
   try{
