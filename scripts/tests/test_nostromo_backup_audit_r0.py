@@ -99,6 +99,26 @@ class BackupAuditR0Tests(unittest.TestCase):
         self.assertNotIn("SUPER_SECRET_VALUE", output.stdout)
         self.assertNotIn("SUPER_SECRET_VALUE", output.stderr)
 
+    def test_sensitive_parent_directory_never_opens_file_content(self):
+        """A benign basename inside secrets/ must not be hashed or opened."""
+        root = self.home / "secret-parent-case"
+        root.mkdir()
+        nested = root / "secrets"
+        nested.mkdir()
+        (nested / "notes.txt").write_text("CANARY_NEVER_READ", encoding="utf-8")
+        self.assertTrue(audit_module.secret_like("secrets/notes.txt"))
+        self.assertTrue(audit_module.secret_like(".env.d/notes.txt"))
+        self.assertFalse(audit_module.secret_like("ordinary/notes.txt"))
+        with mock.patch.object(audit_module, "hash_file",
+                               side_effect=AssertionError("SECRET_FILE_READ_ATTEMPT")) as read:
+            result = audit_module.audit_dir(str(root))
+            read.assert_not_called()
+        self.assertEqual(result["sensitiveCount"], 1)
+        self.assertEqual(result["hashedBytes"], 0)
+        self.assertIsNone(result["contentSha256"])
+        self.assertEqual(result["status"], "UNKNOWN_PRESERVE")
+        self.assertIn("SENSITIVE_FILE_NOT_HASHED", result["issues"])
+
     def test_mid_scan_change_fails_closed(self):
         root = self.directory("a")
         original = audit_module.snapshot
