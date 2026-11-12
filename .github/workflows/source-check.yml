@@ -59,7 +59,7 @@ jobs:
       - name: Validate agent event SOURCE projection with compiled runtime
         run: node --test canaries/agent-events-live/01-local-delivery.test.cjs
 
-  pinned-upstream-reference:
+  pinned-upstream-ci-native-mount:
     needs: build-test
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -84,12 +84,32 @@ jobs:
       - name: Verify pinned upstream exact HEAD and source identity
         working-directory: vx
         run: npm run verify:upstream -- ../upstream
-      - name: Build untouched native LibreChat frontend reference
+      - name: Verify CI staging fail-closed preconditions
+        working-directory: vx
+        run: node --test ci/tests/nostromo-stage-clean-overlay-ci-only.test.mjs
+      - name: Stage exact VX bridge into disposable pinned upstream only
+        working-directory: vx
+        env:
+          NOSTROMO_CI_EPHEMERAL_STAGE: '1'
+        run: node ci/nostromo-stage-clean-overlay-ci-only.mjs --stage
+      - name: Build VX package and native LibreChat frontend in runner
         working-directory: upstream
-        run: npm run frontend:ci
-      # Deliberately NO legacy overlay:install/uninstall. Both are permanently
-      # blocked because they could discard unique user files. This job verifies
-      # upstream compatibility only, NOT the mounted VX native integration.
+        run: |
+          test ! -e node_modules/@librechat/vx
+          test ! -L node_modules/@librechat/vx
+          mkdir -p node_modules/@librechat
+          ln -s ../../packages/librechat-vx node_modules/@librechat/vx
+          ./node_modules/.bin/tsc -p packages/librechat-vx/tsconfig.json
+          npm run frontend:ci
+      - name: Validate ephemeral overlay staged identity and compiled package
+        working-directory: upstream
+        run: |
+          test -f packages/librechat-vx/dist/src/index.js
+          test -f client/src/components/VX/VXCockpitBridge.tsx
+          test -f client/src/components/VX/VXCockpit.css
+          grep -Fq 'VXCockpitBridge' client/src/components/Chat/Presentation.tsx
+      # Deliberately NO legacy overlay:install/uninstall. These remain blocked
+      # to protect user files. This is a disposable CI mount, not host install.
 
   chromium-source-visual:
     needs: build-test

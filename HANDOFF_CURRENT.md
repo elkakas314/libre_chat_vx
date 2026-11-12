@@ -1,5 +1,11 @@
 # LIBRECHAT HANDOFF CURRENT
 
+## 2026-11-12 — E2 addendum: CI-only native overlay staging (no host installation)
+- Primer run CI #43202481895: `build-test` SUCCESS, `chromium-source-visual` SUCCESS con desktop 1280 y móvil 390, `pinned-upstream-reference` SUCCESS, `canary-self-test` SUCCESS. SOURCE browser evidencia archivo artifact `13936535446`; no backend, auth ni móvil real.
+- Gate nativo faltante: rutas legacy overlay:install/uninstall deshabilitadas por seguridad, no se reactivan. PR #46 DRAFT introduce `ci/nostromo-stage-clean-overlay-ci-only.mjs` y tests negativos, **exclusivamente GitHub Actions runner limpio** con pin upstream exacto, sin targets existentes, sin symlinks y sin borrado. Se trae a esta rama de QA para intentar compilación integrada de VX con upstream en runner; NO se ejecuta ni transfiere el instalador al Lenovo.
+- Si CI del montaje falla, mantener la interfaz nativa como `CI_NATIVE_BUILD_FAIL`, reparar en PR E2 aislado sin relajar gates. Si pasa, `SOURCE_CI_NATIVE_BUILD_PASS` (no prueba de instalación real). El reconciliador del Lenovo requiere preflight readback y preservación de modificaciones únicas.
+- Host readback adicional: `~/librechat/upstream` ya contiene `packages/librechat-vx` y marcador, pero su `git status` marca modificaciones nativas; GET `http://127.0.0.1:3080/` devolvió `Connection refused`. NOSTROMO backend NO LIVE. Se preserva todo, sin escrituras en host.
+
 ## 2026-11-12 — E2 addendum: handshake MCP real y reparación de orden de scope
 - GitHub Actions run `43201758605`, HEAD `940f5cbc8ba593e77af34b3f99fcd592f22ce734`: `canary-self-test` SUCCESS; `build-test` FAIL en test SDK de MCP stdio **31 PASS / 1 FAIL**. La llamada externa `nostromo_archivo_leer('/etc/hosts')` devolvió `FILE_TYPE_DENIED` antes de comprobar la raíz, en lugar de `FILE_OUTSIDE_ALLOWED_ROOTS`; no hubo lectura externa.
 - **Corrección SOURCE** en PR #45 DRAFT basado Director `c11af334...`: mover sólo la comprobación de extensión detrás del control de ámbito, conservando el veto previo de nombres sensibles y `O_NOFOLLOW`; nuevo test sobre ruta externa sin extensión y ruta interna con tipo denegado. Cambios idénticos trasladados a esta rama QA para repetir el SDK handshake real. Los blobs exactos son `1c500187b13c9dda5d6919288692124c4773f187` (inspector) y `fe1b1995e61f1f4735919c37dc1b4dd788356aaf` (test).
