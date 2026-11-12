@@ -3,7 +3,7 @@ name: nostromo-native-runtime-ci-canary
 on:
   push:
     branches:
-      - e2/nostromo-native-runtime-canary-20261112
+      - e2/nostromo-source-final-mcp-gates-20261112
   workflow_dispatch:
 
 permissions:
@@ -99,6 +99,29 @@ jobs:
         run: |
           export E2E_CAPTURE_SHA="$(git rev-parse HEAD)"
           npx playwright test --config=e2e/screenshots/playwright.config.ts
+      - name: Verify MCP allowlist rejection, scoped administrative override and rollback
+        working-directory: upstream
+        env:
+          E2E_USE_MEMORY_MONGO: 'true'
+          E2E_BASE_URL: http://127.0.0.1:3333
+          E2E_MODEL_FIXTURES: 'mock'
+        run: |
+          # Exact upstream E2E: disallowed HTTP fixture must be denied first.
+          # The admin-only override is test scoped, then explicitly reverted.
+          # No global policy relaxation or production endpoint configuration.
+          npx playwright test --config=e2e/playwright.config.mock.ts \
+            e2e/specs/mock/mcp-allowlist-override.spec.ts --workers=1
+      - name: Verify OAuth MCP requires authorization and pending prompt survives resume
+        working-directory: upstream
+        env:
+          E2E_USE_MEMORY_MONGO: 'true'
+          E2E_BASE_URL: http://127.0.0.1:3333
+          E2E_MODEL_FIXTURES: 'mock'
+        run: |
+          # Protected mock MCP must stay unauthenticated until OAuth.
+          # This is an isolated runner test, not host auth or real MCP binding.
+          npx playwright test --config=e2e/playwright.config.mock.ts \
+            e2e/specs/mock/mcp-oauth-resume.spec.ts --workers=1
       - name: Preserve actual native browser readback — no LIVE claim
         if: always()
         uses: actions/upload-artifact@v4
