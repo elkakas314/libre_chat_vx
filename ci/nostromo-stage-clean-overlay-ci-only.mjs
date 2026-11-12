@@ -19,6 +19,9 @@ const EXPECTED_PRESENTATION_BLOB='46a176099fa1e6ae1afae709c559a42a19c719fa';
 const SOURCE_ENTRIES=['package.json','tsconfig.json','src','contracts','config'];
 const UI_NAMES=['VXCockpitBridge.tsx','VXCockpit.css'];
 const IMPORT_ANCHOR="import AppChatSurface from '~/components/Chat/Surface';";
+const REACT_IMPORT_ANCHOR="import { lazy, Suspense, useCallback, useEffect, useMemo, useRef } from 'react';";
+const REF_ANCHOR='  const previousConversationIdRef = useRef<string | null>(null);';
+const MAIN_ANCHOR='            <main className="flex h-full flex-col overflow-y-auto" role="main">\n              {children}';
 const PANEL_ANCHOR='const panelElement = artifactsElement ?? subagentElement;';
 
 function refuse(code){throw Error('NOSTROMO_CI_STAGE_REFUSED:'+code);}
@@ -85,6 +88,9 @@ function main(argv=process.argv.slice(2),env=process.env){
   regular(presentationPath);regular(clientPackagePath);
   const presentation=readFileSync(presentationPath,'utf8');
   uniqueOccurrence(presentation,IMPORT_ANCHOR,'IMPORT_ANCHOR');
+  uniqueOccurrence(presentation,REACT_IMPORT_ANCHOR,'REACT_IMPORT');
+  uniqueOccurrence(presentation,REF_ANCHOR,'REF_ANCHOR');
+  uniqueOccurrence(presentation,MAIN_ANCHOR,'MAIN_CONTENT');
   uniqueOccurrence(presentation,PANEL_ANCHOR,'PANEL_ANCHOR');
 
   const pkg=JSON.parse(readFileSync(clientPackagePath,'utf8'));
@@ -117,11 +123,41 @@ function main(argv=process.argv.slice(2),env=process.env){
   pkg.dependencies['@librechat/vx']='*';
   writeFileSync(clientPackagePath,JSON.stringify(pkg,null,2)+'\n',{flag:'w'});
   const newPresentation=presentation
+    .replace(REACT_IMPORT_ANCHOR,
+      "import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';")
     .replace(IMPORT_ANCHOR,
       IMPORT_ANCHOR+"\nimport VXCockpitBridge from '~/components/VX/VXCockpitBridge';")
+    .replace(REF_ANCHOR, REF_ANCHOR + `
+  const [vxEnabled,setVxEnabled] = useState(false);
+  const [vxPanelOpen,setVxPanelOpen] = useState(false);
+  const vxLauncherRef = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    try { setVxEnabled(window.localStorage.getItem('librechat-vx-cockpit') === '1'); }
+    catch { setVxEnabled(false); }
+  }, []);
+  const closeVxPanel = useCallback(() => {
+    setVxPanelOpen(false);
+    window.requestAnimationFrame(() => vxLauncherRef.current?.focus());
+  }, []);
+  useEffect(() => { setVxPanelOpen(false); }, [conversationId]);`)
     .replace(PANEL_ANCHOR,
-      'const vxCockpitElement = <VXCockpitBridge />;\n  '+
-      'const panelElement = artifactsElement ?? subagentElement ?? vxCockpitElement;');
+      'const vxCockpitElement = vxEnabled && vxPanelOpen\n'+
+      '    ? <VXCockpitBridge onClose={closeVxPanel} /> : null;\n  '+
+      'const panelElement = artifactsElement ?? subagentElement ?? vxCockpitElement;')
+    .replace(MAIN_ANCHOR,
+      `            <main className="flex h-full flex-col overflow-y-auto" role="main">
+              {vxEnabled ? (
+                <button
+                  ref={vxLauncherRef}
+                  type="button"
+                  className="vx-context-launcher"
+                  aria-label="Abrir contexto NOSTROMO"
+                  aria-expanded={vxPanelOpen && artifactsElement == null && subagentElement == null}
+                  disabled={artifactsElement != null || subagentElement != null}
+                  onClick={() => setVxPanelOpen(true)}
+                >Contexto NOSTROMO</button>
+              ) : null}
+              {children}`);
   writeFileSync(presentationPath,newPresentation,{flag:'w'});
   writeFileSync(marker,JSON.stringify({
     schema:'nostromo.ci-only.overlay-stage.v1',
