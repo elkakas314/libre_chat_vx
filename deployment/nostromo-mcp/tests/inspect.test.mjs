@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {mkdtemp,writeFile,symlink,rm,open,mkdir} from 'node:fs/promises';
+import {mkdtemp,writeFile,symlink,rm,open,mkdir,rename} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
 import {execFileSync} from 'node:child_process';
@@ -69,6 +69,81 @@ test('M3 validates opened descriptor identity, not only pathname preflight',asyn
    await disallowed.close();
    await rm(outside,{force:true});
   }
+ });
+});
+
+test('M3 canonical alias public -> secrets fails before any open/read',async()=>{
+ await fixture(async root=>{
+  const sensitive=path.join(root,'secrets');
+  await mkdir(sensitive);
+  await writeFile(path.join(sensitive,'notes.md'),'FAKE_PRIVATE_MARKER_NEVER_READ');
+  await symlink(sensitive,path.join(root,'public'),'dir');
+  let opened=0;
+  await assert.rejects(
+   readScopedText({file:path.join(root,'public','notes.md'),maxBytes:256},
+    settings(root),{openFile:async()=>{opened++;throw Error('UNEXPECTED_OPEN');}}),
+   /SENSITIVE_PATH_DENIED/
+  );
+  assert.equal(opened,0,'canonical sensitive alias must be rejected pre-open');
+  const direct=await open(path.join(sensitive,'notes.md'),'r');
+  try{
+   assert.equal(await openedHandleMatchesExactPath(direct,path.join(sensitive,'notes.md')),false,
+    'opened descriptor with sensitive canonical path must never pass');
+  }finally{await direct.close();}
+ });
+});
+
+test('M3 benign alias to approved nonsensitive directory stays readable',async()=>{
+ await fixture(async root=>{
+  const data=path.join(root,'documents');
+  await mkdir(data);
+  await writeFile(path.join(data,'notes.md'),'BENIGN_ALLOWED_TEXT');
+  await symlink(data,path.join(root,'public'),'dir');
+  const result=await readScopedText({file:path.join(root,'public','notes.md'),maxBytes:256},settings(root));
+  assert.equal(result.status,'READ_OK');
+  assert.equal(result.text,'BENIGN_ALLOWED_TEXT');
+ });
+});
+
+test('M3 full scoped read denies concurrent parent swap before reading opened descriptor',async()=>{
+ await fixture(async root=>{
+  const sensitive=path.join(root,'secrets');
+  await mkdir(sensitive);
+  await writeFile(path.join(sensitive,'notes.md'),'SECRET_FIXTURE_UNREAD');
+  const outside=await mkdtemp(path.join(tmpdir(),'nostromo-mcp-external-'));
+  try{
+   await writeFile(path.join(outside,'notes.md'),'OUTSIDE_FIXTURE_UNREAD');
+   for(const [suffix,destination] of [['sensitive',sensitive],['external',outside]]){
+    const parent=path.join(root,'public-'+suffix);
+    const parked=path.join(root,'parked-'+suffix);
+    await mkdir(parent);
+    await writeFile(path.join(parent,'notes.md'),'ORIGINALLY_ALLOWED');
+    const requested=path.join(parent,'notes.md');
+    let opens=0,reads=0;
+    const result=await readScopedText({file:requested,maxBytes:256},settings(root),{
+     openFile:async (approved,flags)=>{
+      assert.equal(approved,requested);
+      // Deterministic TOCTOU: mutate parent only after resolveScope(),
+      // exactly before the production file-open point in readScopedText().
+      await rename(parent,parked);
+      await symlink(destination,parent,'dir');
+      const handle=await open(approved,flags);
+      opens++;
+      return {
+       fd:handle.fd,
+       stat:(...args)=>handle.stat(...args),
+       read:()=>{reads++;throw Error('EXTERNAL_FILE_READ_ATTEMPT');},
+       close:()=>handle.close()
+      };
+     }
+    });
+    assert.equal(opens,1);
+    assert.equal(reads,0,'no read() on sensitive/outside inode');
+    assert.equal(result.status,'DENIED');
+    assert.equal(result.reason,'FD_SCOPE_MISMATCH');
+    assert.equal(result.text,undefined);
+   }
+  }finally{await rm(outside,{recursive:true,force:true});}
  });
 });
 
