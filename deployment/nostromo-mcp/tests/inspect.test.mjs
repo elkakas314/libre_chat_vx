@@ -27,6 +27,14 @@ test('scoped text read returns bounded excerpt and SHA; blocks secrets and escap
   assert.equal((await readScopedText({file:tok},settings(root))).reason,'BINARY_OR_SECRET_CONTENT');
   await assert.rejects(readScopedText({file, maxBytes:17000},settings(root)),/FILE_READ_LIMIT_INVALID/);
   assert.equal((await readScopedText({file:path.join(tmpdir(),'outside.md')},settings(root))).status,'DENIED');
+  // With no extension, an outside path is still denied by boundary first.
+  // This protects the real stdio handshake contract even on Node 22/24.
+  const outsideNoExt=await readScopedText({file:'/etc/hosts'},settings(root));
+  assert.equal(outsideNoExt.status,'DENIED');
+  assert.equal(outsideNoExt.reason,'FILE_OUTSIDE_ALLOWED_ROOTS');
+  const inScopeNoExt=path.join(root,'README');
+  await writeFile(inScopeNoExt,'safe but not allowlisted by extension');
+  await assert.rejects(readScopedText({file:inScopeNoExt},settings(root)),/FILE_TYPE_DENIED/);
   const link=path.join(root,'redirect.md');
   await symlink('/etc/hosts',link);
   assert.equal((await readScopedText({file:link},settings(root))).status,'DENIED');
