@@ -1,10 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {mkdtemp,writeFile,symlink,rm} from 'node:fs/promises';
+import {mkdtemp,writeFile,symlink,rm,open,mkdir} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
 import {execFileSync} from 'node:child_process';
-import {readScopedText,readHostMetrics,readGitSnapshot} from '../inspect.mjs';
+import {readScopedText,readHostMetrics,readGitSnapshot,openedHandleMatchesExactPath} from '../inspect.mjs';
 
 function settings(root){return {enabled:true,roots:[root]};}
 async function fixture(fn){
@@ -40,6 +40,38 @@ test('scoped text read returns bounded excerpt and SHA; blocks secrets and escap
   assert.equal((await readScopedText({file:link},settings(root))).status,'DENIED');
  });
 });
+test('M3 refuses benign filenames below secret-named ancestor directories',async()=>{
+ await fixture(async root=>{
+  const secretDir=path.join(root,'tokens');
+  await mkdir(secretDir);
+  const file=path.join(secretDir,'notes.md');
+  await writeFile(file,'SENSITIVE_DATA_MUST_NEVER_BE_OPENED');
+  await assert.rejects(
+    readScopedText({file,maxBytes:256},settings(root)),
+    /SENSITIVE_PATH_DENIED/
+  );
+ });
+});
+
+test('M3 validates opened descriptor identity, not only pathname preflight',async()=>{
+ await fixture(async root=>{
+  const safe=path.join(root,'safe.md');
+  await writeFile(safe,'ALLOWED');
+  const outside=path.join(tmpdir(),'nostromo-outside-fd-'+process.pid+'.txt');
+  await writeFile(outside,'EXTERNAL_SHOULD_NOT_BE_READ');
+  const allowed=await open(safe,'r');
+  const disallowed=await open(outside,'r');
+  try{
+   assert.equal(await openedHandleMatchesExactPath(allowed,safe),true);
+   assert.equal(await openedHandleMatchesExactPath(disallowed,safe),false);
+  }finally{
+   await allowed.close();
+   await disallowed.close();
+   await rm(outside,{force:true});
+  }
+ });
+});
+
 test('system metrics return observed load, memory, disk; no fake VRAM proof',async()=>{
  await fixture(async root=>{
   const info=await readHostMetrics({cwd:root},settings(root));
