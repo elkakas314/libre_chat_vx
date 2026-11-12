@@ -22,7 +22,16 @@ FILE_FLAGS = os.O_RDONLY | os.O_NOFOLLOW | getattr(os, 'O_CLOEXEC', 0) | getattr
 
 
 def secret_like(relative):
-    return any(x in relative.lower().split('/')[-1] for x in SECRET_TERMS)
+    """Treat sensitive ancestor directories like sensitive file basenames.
+
+    The audit must not read bytes from files nested below a secret-like path,
+    even when the leaf is named innocuously (e.g. secrets/notes.txt).
+    """
+    return any(
+        marker in part.lower()
+        for part in relative.split('/')
+        for marker in SECRET_TERMS
+    )
 
 
 def identity(s):
