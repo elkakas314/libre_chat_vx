@@ -1,6 +1,9 @@
 name: source-check
 
 on:
+  push:
+    branches:
+      - e2/nostromo-qa-ci-20261112
   workflow_dispatch:
 
 permissions:
@@ -37,7 +40,17 @@ jobs:
         run: npm install --no-audit --no-fund
       - name: Validate parallel transport isolation
         run: npm run transport:validate
-      - name: Build and test
+      - name: NOSTROMO integration diagnostics (M1-M5)
+        run: npm run nostromo:qa:diagnostics
+      - name: E2 PR38-43 targeted integration regressions
+        run: |
+          PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s scripts/tests -p 'test_nostromo_backup_*.py' -v
+          PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s scripts/tests -p 'test_nostromo_third_upstream_move_gate_r0.py' -v
+          node --test scripts/tests/nostromo-backend-decision.test.mjs scripts/tests/nostromo-m4-visual-source-contract.test.mjs scripts/tests/nostromo-mobile-readiness.test.mjs
+          node --experimental-strip-types --test scripts/tests/nostromo-m5-mobile-auth.test.mjs
+      - name: Explicit TypeScript build
+        run: npm run build
+      - name: Full VX workspace test suite
         run: npm test
       - name: Validate NOSTROMO standalone terminal MCP (real stdio roundtrip)
         run: |
