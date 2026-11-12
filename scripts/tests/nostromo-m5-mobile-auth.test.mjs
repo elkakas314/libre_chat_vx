@@ -1,7 +1,20 @@
 /** Node 22+ SOURCE canary for TypeScript mobile projection; no browser or host. */
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {mobileLibreChatState} from '../../src/mobile/mobileContinuity.ts';
+import {readFileSync} from 'node:fs';
+import {stripTypeScriptTypes} from 'node:module';
+
+// The root package is CommonJS; Node 22 point releases differ in how they
+// expose named ESM exports for a directly imported .ts file. Strip types
+// from the exact SOURCE and import as an explicit ESM data module, avoiding
+// false failures from the package boundary. This tests SOURCE, not LIVE.
+const mobileSource = new URL('../../src/mobile/mobileContinuity.ts', import.meta.url);
+const mobileJavaScript = stripTypeScriptTypes(readFileSync(mobileSource, 'utf8'), {
+  mode: 'strip'
+});
+const {mobileLibreChatState} = await import(
+  'data:text/javascript;base64,' + Buffer.from(mobileJavaScript).toString('base64')
+);
 
 test('an unauthenticated or unknown session cannot appear interactive',()=>{
  for(const authenticated of [undefined,false]){

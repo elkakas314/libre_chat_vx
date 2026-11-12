@@ -59,11 +59,12 @@ jobs:
       - name: Validate agent event SOURCE projection with compiled runtime
         run: node --test canaries/agent-events-live/01-local-delivery.test.cjs
 
-  overlay-smoke:
+  pinned-upstream-reference:
+    needs: build-test
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 30
     steps:
-      - name: Checkout LibreChat VX
+      - name: Checkout VX source
         uses: actions/checkout@v4
         with:
           path: vx
@@ -77,38 +78,46 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '24'
-      - name: Install pinned upstream dependencies
+      - name: Install upstream dependencies in disposable runner only
         working-directory: upstream
         run: npm ci --no-audit --no-fund
-      - name: Verify pinned upstream
+      - name: Verify pinned upstream exact HEAD and source identity
         working-directory: vx
         run: npm run verify:upstream -- ../upstream
-      - name: Install reversible overlay
-        working-directory: vx
-        run: npm run overlay:install -- ../upstream
-      - name: Link VX workspace without changing upstream lock
-        run: |
-          mkdir -p upstream/node_modules/@librechat
-          ln -sfn ../../packages/librechat-vx upstream/node_modules/@librechat/vx
-      - name: Reconcile already installed VX workspace with reversible local pack
-        working-directory: vx
-        run: |
-          node scripts/reconcile-existing-workspace.mjs --upstream=../upstream
-          node scripts/reconcile-existing-workspace.mjs --upstream=../upstream --diagnose > /tmp/nostromo-diagnose.json
-          grep -q '"status": "DIAGNOSE_COMPILE_PASS"' /tmp/nostromo-diagnose.json
-          grep -q '"existingWorkspaceUnchanged": true' /tmp/nostromo-diagnose.json
-          node scripts/reconcile-existing-workspace.mjs --upstream=../upstream --apply
-      - name: Build LibreChat frontend with VX overlay
+      - name: Build untouched native LibreChat frontend reference
         working-directory: upstream
         run: npm run frontend:ci
-      - name: Uninstall overlay
+      # Deliberately NO legacy overlay:install/uninstall. Both are permanently
+      # blocked because they could discard unique user files. This job verifies
+      # upstream compatibility only, NOT the mounted VX native integration.
+
+  chromium-source-visual:
+    needs: build-test
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout exact QA branch
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install visual source tooling in disposable runner
+        run: |
+          npm install --no-audit --no-fund
+          npm install --no-save --no-package-lock esbuild@0.25.9 playwright@1.55.0
+      - name: Install Chromium in runner
+        run: npx playwright install --with-deps chromium
+      - name: Exercise NOSTROMO React source in browser (not host LIVE)
+        run: node tests/visual/visual-smoke.cjs
+      - name: Retain screenshots and browser evidence
         if: always()
-        working-directory: vx
-        run: npm run overlay:uninstall -- ../upstream
-      - name: Verify upstream clean after uninstall
-        if: always()
-        working-directory: vx
-        run: npm run verify:upstream -- ../upstream
+        uses: actions/upload-artifact@v4
+        with:
+          name: nostromo-qa-pr43-source-visual
+          path: visual-evidence/
+          retention-days: 14
+          if-no-files-found: warn
 
   canary-self-test:
     runs-on: ubuntu-latest

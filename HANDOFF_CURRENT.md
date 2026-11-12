@@ -1,5 +1,11 @@
 # LIBRECHAT HANDOFF CURRENT
 
+## 2026-11-12 — E2 addendum: CI verificado, dos fallos diagnosticados y reparación en QA
+- GitHub run #43200656511 / SHA `e97cb5a06d190b15cda81c9ee149c0fcbae77e54`: `canary-self-test` SUCCESS; `build-test` FAIL por importación ES Module desde `src/mobile/mobileContinuity.ts` bajo `package.json type=commonjs` con Node 22.23.4; `overlay-smoke` FAIL porque `overlay:install/uninstall` son rutas legacy bloqueadas intencionadamente (error `NOSTROMO_LEGACY_INSTALL_BLOCKED`). No tratar fallos de safety gate como autorización para desbloquearlos.
+- Reparación en esta **rama QA únicamente**: el test M5 importa TS usando `node:module.stripTypeScriptTypes` y un módulo ESM de datos; comportamiento del producto no alterado; comprobar en CI Node22. Se sustituye el job de overlay obsoleto por upstream limpio (sólo baseline) y smoke Chromium de UI SOURCE. Ambas ramas de navegador/upstream esperan build-test PASS para ahorrar cuota.
+- **Limitación intencionada:** estos jobs NO prueban overlay nativo montado ni instalación en Lenovo. El reconciliador actual `reconcile-existing-workspace.mjs` exige una instalación ya existente con marcador y verificación bilateral; en un upstream fresco no debe ejecutarse como instalador. Mantener `NATIVE_OVERLAY_INSTALL_GATE_OPEN` hasta nueva vía reversible, probada, de instalación inicial sin sobrescribir unique work.
+- Run nuevo de CI debe leerse mediante GitHub Actions, no inferir resultado del commit. PR #43 intacto, PR #44 DRAFT, no merge; issue #37 recibe receipt.
+
 ## 2026-11-12 — E2 NOSTROMO, QA integrada en rama desechable (SOURCE, no LIVE)
 - **Propietario:** E2 NOSTROMO; repository `elkakas314/libre_chat_vx`. **Director** `director/nostromo-critical-path-20261111@c11af334ccfce8b7dd4b5be8dece44768b9999d2`; **main** `04784e51ceda9ce6a2b1a70db0f1cd58b86989ae` (readback GitHub).
 - **PR #38–#43** siguen OPEN/DRAFT y sin fusionar. PR #43 exacto `2df22abecfe7805dd81f6287712d48c12c037f2d`, 25 rutas frente a Director; auditor de backup descriptor-fd obtuvo 12/12 PASS SOURCE y readback independiente; aún NO aprobado para integración.
