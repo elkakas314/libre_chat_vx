@@ -1,5 +1,13 @@
 # LIBRECHAT HANDOFF CURRENT
 
+## 2026-11-12 — E2 final candidate QA + E2E exact SHA (source-only)
+- **OWNER:** E2 NOSTROMO; **BASE_HEAD:** Director `c11af334ccfce8b7dd4b5be8dece44768b9999d2`, **SOURCE_HEAD before QA triggers:** `f6976fd5842321dd49ff948809ecc7d45d473e50` (PR50). Parent chain includes #48/#49/#50, 44 commits ahead, 0 behind, 32 changed paths. No merge, no force-push, no host writes.
+- **CI candidate branch:** `e2/nostromo-final-candidate-e2e-20261112` is created to run **both** pinned source-check and native LibreChat mock E2E against one exact immutable SHA (this commit), on ephemeral runners. It does NOT expand a host installer, permissions, runtime roots or public network. **Verification pending at commit time:** read real job/status/exit/logs before ACCEPTANCE or PASS.
+- **Last Director decision:** issue #37 comment `6834410226` accepts PR50 security delta only for covered cases, not global integration. Maintain #48, #49, #50 DRAFT and issue #37 OPEN.
+- **HOST boundary:** MANOJOS5/HOST_CONTROL is a separate governed connector; `HOST_EXEC_COMMAND_NOT_ALLOWLISTED` previously returned NOT_APPLIED. Do not retarget MANOJOS3 or treat this CI work as Lenovo LIVE. Protect existing checkout `/home/elkakas314/librechat/vx`, untracked lockfiles, dirty upstream, .env, four backups.
+- **NEXT_ACTION:** verify CI source-check + CI native mock E2E status on exact SHA; continue R0 preflight via admitted MANOJOS5 operations; request only minimum NOSTROMO-specific R2 execution from HOST_CONTROL operator; then reversible staged install and host E2E with backup restore, monitoring, PWA/auth/model/MCP/agent.
+
+
 ## 2026-11-12 — E2 NOSTROMO: MCP fixture security E2E verified, final combined candidate
 - **OWNER** E2 NOSTROMO. Repo exclusivo `elkakas314/libre_chat_vx`; **BASE_HEAD Director** `c11af334ccfce8b7dd4b5be8dece44768b9999d2`, **main** `04784e51ceda9ce6a2b1a70db0f1cd58b86989ae`, ambos readback GitHub 2026-11-12 sin drift. PR #38–#47 originales OPEN/DRAFT, ninguno fusionado. PR #48 DRAFT `e2/nostromo-source-final-mcp-gates-20261112` es el candidato **integrado SOURCE** derivado de #47/#44/#43, y contiene los blobs M3 PR45 y CI stage PR46 actualizado. Ramas anteriores protegidas.
 - **QA SOURCE/NATIVA base:** run GitHub #43203865893 (4/4 SUCCESS, diagnósticos M1–M5, 221 Node PASS, backup TOCTOU, SDK MCP por stdio, build TS y LibreChat + VX montado en runner), run #43206554822 (SUCCESS, LibreChat nativo con Mongo efímera + modelo simulado: VX OFF 2/2 y ON 2/2 escritorio/móvil). No atribuir estos resultados al Lenovo.

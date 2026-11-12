@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - e2/nostromo-source-final-mcp-gates-20261112
+      - e2/nostromo-final-candidate-e2e-20261112
   workflow_dispatch:
 
 permissions:
