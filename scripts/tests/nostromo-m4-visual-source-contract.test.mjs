@@ -21,10 +21,11 @@ test('M4 native bridge mounts the existing Hub/HUD only as SOURCE context',()=>{
 
 test('M4 neutral labels and offline text do not assert an installed agent/MCP',()=>{
  const bridge=read('overlay/upstream/VXCockpitBridge.tsx');
- assert.match(bridge,/Agente candidato de terminal para el Lenovo/);
- assert.match(bridge,/MCP con pruebas SOURCE, sin enlace LIVE con LibreChat comprobado/);
- assert.match(bridge,/Modo local candidato: agente y MCP propio de terminal sin enlace LIVE acreditado/);
- assert.match(bridge,/ENLACE NO VERIFICADO/);
+ assert.match(bridge,/El contexto de conversación aparece arriba/);
+ assert.match(bridge,/el resultado de sus herramientas/);
+ assert.match(bridge,/La ejecución chat→MCP sigue sin verificarse/);
+ assert.match(bridge,/CHAT→MCP NO VERIFICADO/);
+ assert.match(bridge,/no confirma la ejecución ni el éxito de MCP/);
  assert.match(bridge,/ChatGPT:<\/strong> pendiente de autorización OAuth/);
  assert.match(bridge,/Esta cabina no inicia procesos ni concede permisos/);
  assert.doesNotMatch(bridge,/Tu agente de terminal en el Lenovo/);
