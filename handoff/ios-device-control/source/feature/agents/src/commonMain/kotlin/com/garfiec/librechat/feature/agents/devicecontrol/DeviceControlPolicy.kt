@@ -95,6 +95,7 @@ internal data class DeviceActionRequest(
     val scopedOneTimeApproval: Boolean = false,
     val destinationIsAuthenticatedNostromoBackend: Boolean = false,
     val outboundTelemetryConsent: Boolean = false,
+    val transmitsTelemetryOffDevice: Boolean = false,
     val attemptsMaterialEffectOnRemoteSystem: Boolean = false,
 )
 
@@ -105,7 +106,13 @@ internal object IOSDevicePolicy {
         if (contract.risk == DeviceOperationRisk.UNSUPPORTED ||
             contract.state == FeatureState.NOT_AVAILABLE_TO_APP ||
             request.attemptsMaterialEffectOnRemoteSystem) return ControlDecision.DENY
-        if (request.target != TargetSystem.NOSTROMO &&
+        // Apple required-reason API 85F4.1 permits displaying storage on this device,
+        // not uploading disk-capacity information to a remote backend over the Internet.
+        if (request.transmitsTelemetryOffDevice &&
+            request.capability in setOf(DeviceCapability.VOLUME_CAPACITY, DeviceCapability.APP_CACHE_USAGE)) {
+            return ControlDecision.DENY
+        }
+        if ((request.target != TargetSystem.NOSTROMO || request.transmitsTelemetryOffDevice) &&
             (!request.deviceOnline || !request.destinationIsAuthenticatedNostromoBackend ||
                 !request.outboundTelemetryConsent)) return ControlDecision.DENY
         if (contract.foregroundOnly && !request.appForeground) return ControlDecision.DENY
