@@ -29,7 +29,7 @@ struct NostromoNetworkPath: Codable, Sendable {
 /// Public device summary; no serial, IMEI, health %, cycle count, ambient SSIDs or user documents.
 @MainActor
 final class NostromoIOSProbe {
-    private let monitor = NWPathMonitor()
+    private var monitor: NWPathMonitor?
     private let networkQueue = DispatchQueue(label: "nostromo.ios.path.monitor")
     private var currentPath: NostromoNetworkPath = .unknown
     private var observing = false
@@ -37,6 +37,8 @@ final class NostromoIOSProbe {
     func startNetworkObservation() {
         guard !observing else { return }
         observing = true
+        let monitor = NWPathMonitor()
+        self.monitor = monitor
         monitor.pathUpdateHandler = { [weak self] path in
             let kind: String
             if path.usesInterfaceType(.wifi) { kind = "wifi" }
@@ -57,17 +59,22 @@ final class NostromoIOSProbe {
     func stopNetworkObservation() {
         guard observing else { return }
         observing = false
-        monitor.cancel()
-        // NWPathMonitor cannot restart after cancellation: create a new adapter when reopened.
+        monitor?.cancel()
+        monitor = nil
+        currentPath = .unknown
+        // Start creates a fresh NWPathMonitor after each cancellation.
     }
 
     func snapshot() -> NostromoDeviceSnapshot {
         let device = UIDevice.current
+        let batteryMonitorWasEnabled = device.isBatteryMonitoringEnabled
         device.isBatteryMonitoringEnabled = true
         let level = device.batteryLevel
         let battery = (0.0...1.0).contains(level) ? Int((level * 100).rounded()) : nil
+        let state = device.batteryState
+        device.isBatteryMonitoringEnabled = batteryMonitorWasEnabled
         let charging: String
-        switch device.batteryState {
+        switch state {
         case .charging: charging = "charging"
         case .full: charging = "full"
         case .unplugged: charging = "unplugged"
