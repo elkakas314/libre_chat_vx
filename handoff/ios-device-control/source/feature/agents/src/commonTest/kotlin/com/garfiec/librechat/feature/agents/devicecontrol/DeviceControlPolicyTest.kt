@@ -50,7 +50,8 @@ class DeviceControlPolicyTest {
             )))
             assertEquals(ControlDecision.ALLOW_R0_LOCAL, IOSDevicePolicy.decide(DeviceActionRequest(
                 DeviceCapability.NETWORK_PATH, target = target, deviceOnline = true,
-                destinationIsAuthenticatedNostromoBackend = true
+                destinationIsAuthenticatedNostromoBackend = true,
+                outboundTelemetryConsent = true
             )))
             assertEquals(ControlDecision.DENY, IOSDevicePolicy.decide(DeviceActionRequest(
                 DeviceCapability.NETWORK_PATH, target = target, deviceOnline = true,
@@ -66,4 +67,16 @@ class DeviceControlPolicyTest {
             nativePermissionGranted = true, appForeground = false,
         )))
     }
+    @Test fun remoteReadRequiresExplicitTelemetryConsent() {
+        assertEquals(ControlDecision.DENY, IOSDevicePolicy.decide(DeviceActionRequest(
+            DeviceCapability.BATTERY_PERCENT, target = TargetSystem.ORACULO,
+            deviceOnline = true, destinationIsAuthenticatedNostromoBackend = true,
+        )))
+        assertEquals(ControlDecision.ALLOW_R0_LOCAL, IOSDevicePolicy.decide(DeviceActionRequest(
+            DeviceCapability.BATTERY_PERCENT, target = TargetSystem.ORACULO,
+            deviceOnline = true, destinationIsAuthenticatedNostromoBackend = true,
+            outboundTelemetryConsent = true,
+        )))
+    }
+
 }
