@@ -40,9 +40,9 @@ internal fun DeviceControlDashboardScreen(
     state: DeviceDashboardState,
     onBack: () -> Unit,
     onRefreshDevice: () -> Unit,
-    onStartBoundedBluetoothScan: () -> Unit,
-    onPreviewAppCache: () -> Unit,
-    onPreviewAppBackup: () -> Unit,
+    onStartBoundedBluetoothScan: (() -> Unit)? = null,
+    onPreviewAppCache: (() -> Unit)? = null,
+    onPreviewAppBackup: (() -> Unit)? = null,
 ) {
     Scaffold(topBar = {
         TopAppBar(
@@ -95,9 +95,10 @@ internal fun DeviceControlDashboardScreen(
                     ) {
                         Text("Sonda Bluetooth LE", style = MaterialTheme.typography.titleMedium)
                         Text("Estado: " + state.bleStatus)
-                        Text("Escaneo solo con tu permiso, en primer plano y hasta 15 segundos.")
+                        Text("Escaneo BLE solo con permiso y durante 15 segundos. Botón desactivado hasta conectar el adaptador.")
                         Button(
-                            onClick = onStartBoundedBluetoothScan,
+                            onClick = { onStartBoundedBluetoothScan?.invoke() },
+                            enabled = onStartBoundedBluetoothScan != null,
                             modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)
                         ) { Text("Buscar dispositivos BLE cercanos") }
                     }
@@ -105,11 +106,13 @@ internal fun DeviceControlDashboardScreen(
             }
             item {
                 Text("Mantenimiento y copias", style = MaterialTheme.typography.titleLarge)
-                Text("Vista previa: aquí no se elimina ni copia nada automáticamente.")
-                OutlinedButton(onClick = onPreviewAppCache, modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)) {
+                Text("El inventario se habilitará tras conectar las acciones nativas. Ninguna operación se ejecuta automáticamente.")
+                OutlinedButton(onClick = { onPreviewAppCache?.invoke() },
+                    enabled = onPreviewAppCache != null, modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)) {
                     Text("Revisar cachés de NOSTROMO")
                 }
-                OutlinedButton(onClick = onPreviewAppBackup, modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)) {
+                OutlinedButton(onClick = { onPreviewAppBackup?.invoke() },
+                    enabled = onPreviewAppBackup != null, modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)) {
                     Text("Preparar inventario para copia de NOSTROMO")
                 }
             }
