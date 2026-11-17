@@ -1,11 +1,22 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {spawnSync} from 'node:child_process';
-import {mkdtempSync,mkdirSync,readdirSync,rmSync} from 'node:fs';
+import {mkdtempSync,mkdirSync,readdirSync,readFileSync,rmSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {join,resolve} from 'node:path';
 
 const SCRIPT=resolve('ci/nostromo-stage-clean-overlay-ci-only.mjs');
+test('CI mount guards both upstream chat anchors and binds content-free activity',()=>{
+  const source=readFileSync(SCRIPT,'utf8');
+  assert.match(source,/EXPECTED_CHATVIEW_BLOB='ef6949da36ab2ebbebaa3dd9faaca63a6297ef99'/);
+  assert.match(source,/uniqueOccurrence\(chatView,CHATVIEW_ANCHOR,'CHATVIEW_PRESENTATION'\)/);
+  assert.match(source,/activity=\{\{/);
+  assert.match(source,/messages,/);
+  const projection=readFileSync(resolve('src/cockpit/conversationActivity.ts'),'utf8');
+  assert.match(projection,/hasStoredOutput/);
+  assert.match(projection,/toolCalls\.slice\(-6\)/);
+  assert.doesNotMatch(projection,/functionCall\.arguments/);
+});
 function run(cwd,env,argv=['--stage']) {
   return spawnSync(process.execPath,[SCRIPT,...argv],{
     cwd,env:{...process.env,...env},encoding:'utf8',timeout:15000

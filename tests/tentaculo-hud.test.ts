@@ -7,7 +7,25 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {projectTentaculoHud, createTentaculoHubTree, hubAgentCandidate}
   from '../src/hud/tentaculoHud';
+import {summarizeVxConversation} from '../src/cockpit/conversationActivity';
 const t=Date.parse('2026-11-09T20:00:00.000Z');
+test('conversation activity is content-free and distinguishes calls from stored outputs',()=>{
+  const summary=summarizeVxConversation({
+    conversationId:'conversation-1',endpoint:'agents',agentId:'agent-1',model:'qwen2.5:3b',
+    isSubmitting:false,messages:[
+      {content:[{type:'text',text:'private text'}]},
+      {content:[{type:'tool_call',tool_call:{type:'function',function:{
+        name:'nostromo_estado',arguments:'private args',output:'{"ready":true}'
+      }}}]},
+    ],
+  });
+  assert.equal(summary.messageCount,2);
+  assert.equal(summary.toolCallCount,1);
+  assert.deepEqual(summary.toolCalls,[{name:'nostromo_estado',hasStoredOutput:true}]);
+  assert.equal(JSON.stringify(summary).includes('private text'),false);
+  assert.equal(JSON.stringify(summary).includes('private args'),false);
+  assert.equal(JSON.stringify(summary).includes('{"ready":true}'),false);
+});
 test('three target HUD surfaces are stable even without services configured',()=>{
   const result=projectTentaculoHud([],t);
   assert.deepEqual(result.map(x=>x.system),['MANOJOS','VX13','ORACULO']);

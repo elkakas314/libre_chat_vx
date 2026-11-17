@@ -6,22 +6,25 @@ import {
   TentaculoHub,
   projectTentaculoHud,
   nostromoHubSourceSnapshot,
+  summarizeVxConversation,
 } from '@librechat/vx';
-import type { HudSystem } from '@librechat/vx';
+import type { HudSystem, VxConversationActivityInput } from '@librechat/vx';
 import './VXCockpit.css';
 
 export interface VXCockpitBridgeProps {
   onClose?: () => void;
+  activity: VxConversationActivityInput;
 }
 
 /** One requested contextual view inside LibreChat's own panel. No target authority. */
-export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
+export default function VXCockpitBridge({ onClose, activity: activityInput }: VXCockpitBridgeProps) {
   const [showTechnical, setShowTechnical] = useState(false);
   const [showAutonomous, setShowAutonomous] = useState(false);
   const [showHub, setShowHub] = useState(false);
   const [activeMode, setActiveMode] = useState<'AUTONOMO'|HudSystem>('AUTONOMO');
   const activeSystem:HudSystem|null = activeMode==='AUTONOMO'?null:activeMode;
   const returnButtonRef = useRef<HTMLButtonElement>(null);
+  const activity = summarizeVxConversation(activityInput);
 
   useEffect(() => { returnButtonRef.current?.focus(); }, []);
 
@@ -55,6 +58,29 @@ export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
             Consulta el inventario desde tu conversación. El estado LIVE requiere una lectura autenticada.
           </p>
         </div>
+
+        <section className="vx-live-activity" aria-label="Actividad de LibreChat" data-testid="vx-live-activity">
+          <div className="vx-live-activity-grid">
+            <div><span>Conversación</span><strong>{activity.conversationId ? 'Cargada' : 'Chat nuevo'}</strong></div>
+            <div><span>Agente</span><strong>{activity.endpoint === 'agents' && activity.agentId ? activity.agentId : 'No seleccionado'}</strong></div>
+            <div><span>Generación</span><strong>{activity.isSubmitting ? 'En ejecución' : 'En espera'}</strong></div>
+            <div><span>Mensajes cargados</span><strong>{activity.messageCount}</strong></div>
+            <div><span>Llamadas de herramienta</span><strong>{activity.toolCallCount}</strong></div>
+            <div><span>Modelo de conversación</span><strong>{activity.model ?? 'No disponible en esta vista'}</strong></div>
+          </div>
+          {activity.toolCalls.length > 0 ? (
+            <ul className="vx-live-tool-list" aria-label="Últimas llamadas registradas">
+              {activity.toolCalls.map((call, index) => (
+                <li key={`${call.name}-${index}`}>
+                  <code>{call.name}</code>
+                  <span>{call.hasStoredOutput ? 'Salida guardada' : 'Sin salida guardada en el mensaje'}</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="vx-live-activity-empty">No hay llamadas de herramienta en los mensajes cargados de esta conversación.</p>
+          )}
+        </section>
 
         <nav aria-label="Modos de NOSTROMO" className="vx-mode-switcher" data-testid="nostromo-mode-switcher">
           {([

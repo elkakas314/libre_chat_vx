@@ -16,9 +16,14 @@ import {resolve,join,dirname} from 'node:path';
 
 const EXPECTED_UPSTREAM='f10b1d91f1eee3a2c82d5247bf620351486b7c1b';
 const EXPECTED_PRESENTATION_BLOB='46a176099fa1e6ae1afae709c559a42a19c719fa';
+const EXPECTED_CHATVIEW_BLOB='ef6949da36ab2ebbebaa3dd9faaca63a6297ef99';
 const SOURCE_ENTRIES=['package.json','tsconfig.json','src','contracts','config'];
 const UI_NAMES=['VXCockpitBridge.tsx','VXCockpit.css'];
 const IMPORT_ANCHOR="import AppChatSurface from '~/components/Chat/Surface';";
+const PRESENTATION_SIGNATURE='export default function Presentation({ children }: { children: React.ReactNode }) {';
+const CHATVIEW_ANCHOR='<Presentation>';
+const MODEL_IMPORT_ANCHOR="import { EModelEndpoint, FileSources, LocalStorageKeys } from 'librechat-data-provider';";
+const CONVERSATION_ID_ANCHOR='  const conversationId = useRecoilValue(store.conversationIdByIndex(0));';
 const REACT_IMPORT_ANCHOR="import { lazy, Suspense, useCallback, useEffect, useMemo, useRef } from 'react';";
 const REF_ANCHOR='  const previousConversationIdRef = useRef<string | null>(null);';
 const MAIN_ANCHOR='            <main className="flex h-full flex-col overflow-y-auto" role="main">\n              {children}';
@@ -81,13 +86,22 @@ function main(argv=process.argv.slice(2),env=process.env){
   const bridgeRoot=join(bridgeParent,'VX');
   const marker=join(upstream,'.librechat-vx-overlay.json');
   const presentationPath=join(upstream,'client/src/components/Chat/Presentation.tsx');
+  const chatViewPath=join(upstream,'client/src/components/Chat/ChatView.tsx');
   const clientPackagePath=join(upstream,'client/package.json');
   directory(packages);directory(bridgeParent);
   for(const target of [packageRoot,bridgeRoot,marker])
     if(existsSync(target))refuse('TARGET_ALREADY_EXISTS_PRESERVE');
-  regular(presentationPath);regular(clientPackagePath);
+  regular(presentationPath);regular(chatViewPath);regular(clientPackagePath);
+  if(git(upstream,'rev-parse','HEAD:client/src/components/Chat/ChatView.tsx')
+      !==EXPECTED_CHATVIEW_BLOB)
+    refuse('CHATVIEW_BLOB_MISMATCH');
   const presentation=readFileSync(presentationPath,'utf8');
+  const chatView=readFileSync(chatViewPath,'utf8');
+  uniqueOccurrence(chatView,CHATVIEW_ANCHOR,'CHATVIEW_PRESENTATION');
   uniqueOccurrence(presentation,IMPORT_ANCHOR,'IMPORT_ANCHOR');
+  uniqueOccurrence(presentation,PRESENTATION_SIGNATURE,'PRESENTATION_SIGNATURE');
+  uniqueOccurrence(presentation,MODEL_IMPORT_ANCHOR,'MODEL_IMPORT');
+  uniqueOccurrence(presentation,CONVERSATION_ID_ANCHOR,'CONVERSATION_ID');
   uniqueOccurrence(presentation,REACT_IMPORT_ANCHOR,'REACT_IMPORT');
   uniqueOccurrence(presentation,REF_ANCHOR,'REF_ANCHOR');
   uniqueOccurrence(presentation,MAIN_ANCHOR,'MAIN_CONTENT');
@@ -123,10 +137,17 @@ function main(argv=process.argv.slice(2),env=process.env){
   pkg.dependencies['@librechat/vx']='*';
   writeFileSync(clientPackagePath,JSON.stringify(pkg,null,2)+'\n',{flag:'w'});
   const newPresentation=presentation
-    .replace(REACT_IMPORT_ANCHOR,
-      "import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';")
+    .replace(PRESENTATION_SIGNATURE,
+      'export default function Presentation({ children, messages }: { children: React.ReactNode; messages?: TMessage[] | null }) {')
+    .replace(MODEL_IMPORT_ANCHOR,
+      MODEL_IMPORT_ANCHOR+"\nimport type { TMessage } from 'librechat-data-provider';")
     .replace(IMPORT_ANCHOR,
       IMPORT_ANCHOR+"\nimport VXCockpitBridge from '~/components/VX/VXCockpitBridge';")
+    .replace(REACT_IMPORT_ANCHOR,
+      "import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';")
+    .replace(CONVERSATION_ID_ANCHOR,
+      '  const conversation = useRecoilValue(store.conversationByIndex(0));\n'+
+      '  const conversationId = useRecoilValue(store.conversationIdByIndex(0));')
     .replace(REF_ANCHOR, REF_ANCHOR + `
   const [vxEnabled,setVxEnabled] = useState(false);
   const [vxPanelOpen,setVxPanelOpen] = useState(false);
@@ -140,10 +161,16 @@ function main(argv=process.argv.slice(2),env=process.env){
     window.requestAnimationFrame(() => vxLauncherRef.current?.focus());
   }, []);
   useEffect(() => { setVxPanelOpen(false); }, [conversationId]);`)
-    .replace(PANEL_ANCHOR,
-      'const vxCockpitElement = vxEnabled && vxPanelOpen\n'+
-      '    ? <VXCockpitBridge onClose={closeVxPanel} /> : null;\n  '+
-      'const panelElement = artifactsElement ?? subagentElement ?? vxCockpitElement;')
+    .replace(PANEL_ANCHOR, `const vxCockpitElement = vxEnabled && vxPanelOpen
+    ? <VXCockpitBridge onClose={closeVxPanel} activity={{
+        conversationId: conversationId ?? null,
+        endpoint: conversationEndpoint ?? null,
+        agentId: conversationAgentId ?? null,
+        model: conversation?.model ?? null,
+        isSubmitting,
+        messages,
+      }} /> : null;
+  const panelElement = artifactsElement ?? subagentElement ?? vxCockpitElement;`)
     .replace(MAIN_ANCHOR,
       `            <main className="flex h-full flex-col overflow-y-auto" role="main">
               {vxEnabled ? (
@@ -158,7 +185,9 @@ function main(argv=process.argv.slice(2),env=process.env){
                 >Contexto NOSTROMO</button>
               ) : null}
               {children}`);
+  const newChatView=chatView.replace(CHATVIEW_ANCHOR,'<Presentation messages={messages}>');
   writeFileSync(presentationPath,newPresentation,{flag:'w'});
+  writeFileSync(chatViewPath,newChatView,{flag:'w'});
   writeFileSync(marker,JSON.stringify({
     schema:'nostromo.ci-only.overlay-stage.v1',
     upstreamCommit:EXPECTED_UPSTREAM,
@@ -170,7 +199,8 @@ function main(argv=process.argv.slice(2),env=process.env){
 
   if(!existsSync(join(packageRoot,'src'))||
      !existsSync(join(bridgeRoot,'VXCockpitBridge.tsx'))||
-     !readFileSync(presentationPath,'utf8').includes('VXCockpitBridge'))
+     !readFileSync(presentationPath,'utf8').includes('activity={{')||
+     !readFileSync(chatViewPath,'utf8').includes('<Presentation messages={messages}>'))
     refuse('STAGED_READBACK_FAILED');
   console.log(JSON.stringify({
     schema:'nostromo.ci-only.overlay-stage.v1',
