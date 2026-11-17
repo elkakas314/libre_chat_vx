@@ -167,3 +167,26 @@ jobs:
           elapsed="$(( $(date +%s) - started ))"
           test "$elapsed" -lt 30
           echo "PASS canary-self-test elapsed_seconds=$elapsed; offline SOURCE only"
+
+  switchboard-native:
+    name: Switchboard native NOSTROMO
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Fetch pinned public Switchboard source
+        run: |
+          git init switchboard
+          git -C switchboard remote add origin https://github.com/elkakas314/Librechat-Mobile.git
+          git -C switchboard fetch --depth=1 origin 9fe9960cbeeb53f61f769091d5d79ed6ea97fde1
+          git -C switchboard checkout --detach FETCH_HEAD
+          test "$(git -C switchboard rev-parse HEAD)" = 9fe9960cbeeb53f61f769091d5d79ed6ea97fde1
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+      - name: Compile the native Android app and run unit tests
+        working-directory: switchboard
+        run: ./gradlew :app:assembleDebug test
