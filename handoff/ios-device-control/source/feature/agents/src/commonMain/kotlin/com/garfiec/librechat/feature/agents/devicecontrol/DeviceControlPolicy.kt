@@ -94,6 +94,7 @@ internal data class DeviceActionRequest(
     val nativePermissionGranted: Boolean = false,
     val scopedOneTimeApproval: Boolean = false,
     val destinationIsAuthenticatedNostromoBackend: Boolean = false,
+    val outboundTelemetryConsent: Boolean = false,
     val attemptsMaterialEffectOnRemoteSystem: Boolean = false,
 )
 
@@ -105,7 +106,8 @@ internal object IOSDevicePolicy {
             contract.state == FeatureState.NOT_AVAILABLE_TO_APP ||
             request.attemptsMaterialEffectOnRemoteSystem) return ControlDecision.DENY
         if (request.target != TargetSystem.NOSTROMO &&
-            (!request.deviceOnline || !request.destinationIsAuthenticatedNostromoBackend)) return ControlDecision.DENY
+            (!request.deviceOnline || !request.destinationIsAuthenticatedNostromoBackend ||
+                !request.outboundTelemetryConsent)) return ControlDecision.DENY
         if (contract.foregroundOnly && !request.appForeground) return ControlDecision.DENY
         if (contract.risk == DeviceOperationRisk.READ_ONLY) return ControlDecision.ALLOW_R0_LOCAL
         if (!request.userInitiated) return ControlDecision.DENY
