@@ -32,6 +32,20 @@ test('M3 native agent remains candidate; tools are existing server, not new exec
  assert.equal(candidate.createVia,'LIBRECHAT_NATIVE_AGENT_BUILDER');
 });
 
+test('M3 agent metadata matches the persistent job journal and conservative restart recovery',()=>{
+ assert.equal(candidate.taskExecution.cliAsync,'SOURCE_BOUNDED_JOBS_PERSIST_WHEN_PRIVATE_STATE_DIR_CONFIGURED');
+ assert.equal(candidate.taskExecution.cliAsyncLedger,
+   'PRIVATE_HOST_LOCAL_JSON_SNAPSHOTS_FSYNC_RENAME_WHEN_STATE_DIR_CONFIGURED');
+ assert.equal(candidate.taskExecution.restartRecovery,
+   'SOURCE_COMPLETED_HISTORY_RESTORED_RUNNING_TO_UNKNOWN_OUTCOME_NO_REPLAY_WHEN_STATE_DIR_CONFIGURED');
+ const jobs=readFileSync(new URL('../async-jobs.mjs',import.meta.url),'utf8');
+ const server=readFileSync(new URL('../server.mjs',import.meta.url),'utf8');
+ assert.match(server,/const taskStateDir=approvalDir\?path\.join\(approvalDir,'jobs'\):''/);
+ assert.match(jobs,/persistent snapshots live in a private host-local directory/i);
+ assert.match(jobs,/row\.status='UNKNOWN_OUTCOME'/);
+ assert.match(jobs,/retrySafe:false/);
+});
+
 test('M3 safe R0 canary offers preview + file read but not any process execution',()=>{
  const allow=selectedTools('nostromo_terminal_preparar,nostromo_archivo_leer');
  assert.deepEqual([...allow].sort(),[
