@@ -2,16 +2,19 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {catalog,selectedTools,describeTools} from '../tools.mjs';
 
-test('single MCP catalog includes health, tool management and terminal preview/execute',()=>{
+test('single MCP catalog includes health, audit, tool management and terminal preview/execute',()=>{
   const set=selectedTools(undefined);
-  assert.equal(catalog.length,10);
-  assert.deepEqual([...set].sort(),catalog.slice(0,4).map(x=>x.name).sort());
-  assert.equal(describeTools(set).filter(x=>x.enabled).length,4);
+  assert.equal(catalog.length,11);
+  assert.deepEqual([...set].sort(),[
+    'nostromo_estado','nostromo_herramientas','nostromo_auditoria_r0',
+    'nostromo_terminal_preparar','nostromo_terminal_ejecutar'
+  ].sort());
+  assert.equal(describeTools(set).filter(x=>x.enabled).length,5);
 });
 test('owner may disable terminal while retaining introspection',()=>{
   const set=selectedTools('');
-  assert.deepEqual([...set].sort(),['nostromo_estado','nostromo_herramientas']);
-  assert.equal(describeTools(set).filter(x=>x.enabled).length,2);
+  assert.deepEqual([...set].sort(),['nostromo_estado','nostromo_herramientas','nostromo_auditoria_r0'].sort());
+  assert.equal(describeTools(set).filter(x=>x.enabled).length,3);
 });
 test('unknown, duplicate or interpolated tool names fail closed',()=>{
   for(const s of ['host_exec','nostromo_estado,nostromo_estado',
@@ -23,7 +26,7 @@ test('unknown, duplicate or interpolated tool names fail closed',()=>{
 test('inspection tools remain opt-in and owner-configured',()=>{
   const set=selectedTools('nostromo_archivo_leer,nostromo_git_inspeccionar,nostromo_metricas');
   assert.deepEqual([...set].sort(),[
-    'nostromo_estado','nostromo_herramientas','nostromo_archivo_leer',
+    'nostromo_estado','nostromo_herramientas','nostromo_auditoria_r0','nostromo_archivo_leer',
     'nostromo_git_inspeccionar','nostromo_metricas'
   ].sort());
   assert.equal(set.has('nostromo_terminal_ejecutar'),false);

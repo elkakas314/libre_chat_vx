@@ -47,7 +47,7 @@ test('M3 SDK stdio handshake and bounded R0 tool invocation; no exec capability'
   const announced=await client.listTools();
   const names=announced.tools.map(x=>x.name);
   assert.deepEqual(names.sort(),[
-   'nostromo_estado','nostromo_herramientas','nostromo_terminal_preparar','nostromo_archivo_leer'
+   'nostromo_estado','nostromo_herramientas','nostromo_auditoria_r0','nostromo_terminal_preparar','nostromo_archivo_leer'
   ].sort());
   assert.equal(names.includes('nostromo_terminal_ejecutar'),false);
   assert.equal(names.includes('nostromo_tarea_iniciar'),false);

@@ -35,7 +35,7 @@ test('M3 native agent remains candidate; tools are existing server, not new exec
 test('M3 safe R0 canary offers preview + file read but not any process execution',()=>{
  const allow=selectedTools('nostromo_terminal_preparar,nostromo_archivo_leer');
  assert.deepEqual([...allow].sort(),[
-  'nostromo_estado','nostromo_herramientas','nostromo_terminal_preparar','nostromo_archivo_leer'
+  'nostromo_estado','nostromo_herramientas','nostromo_auditoria_r0','nostromo_terminal_preparar','nostromo_archivo_leer'
  ].sort());
  assert.equal(allow.has('nostromo_terminal_ejecutar'),false);
  assert.equal(allow.has('nostromo_tarea_iniciar'),false);

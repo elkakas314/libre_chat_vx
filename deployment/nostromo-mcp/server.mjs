@@ -6,17 +6,20 @@
 import {McpServer} from '@modelcontextprotocol/sdk/server/mcp.js';
 import {StdioServerTransport} from '@modelcontextprotocol/sdk/server/stdio.js';
 import {z} from 'zod';
+import path from 'node:path';
 import {normalizeRequest,preview,consumeApproval,executeLocal} from './policy.mjs';
 import {selectedTools,describeTools} from './tools.mjs';
 import {readScopedText,readHostMetrics,readGitSnapshot} from './inspect.mjs';
 import {createAsyncJobs} from './async-jobs.mjs';
+import {auditoriaR0} from './audit.mjs';
 
 const enabled=process.env.NOSTROMO_MCP_ENABLED==='1';
 const allowedRoots=(process.env.NOSTROMO_ALLOWED_ROOTS||'').split(':').filter(Boolean);
 const approvalDir=process.env.NOSTROMO_APPROVAL_DIR||'';
 const settings={enabled,roots:allowedRoots};
 const server=new McpServer({name:'nostromo-autonomo',version:'0.3.0'});
-const jobs=createAsyncJobs();
+const taskStateDir=approvalDir?path.join(approvalDir,'jobs'):'';
+const jobs=createAsyncJobs({stateDir:taskStateDir});
 /** Preserve Node's default signal-exit behavior. At process exit abort local
  * children synchronously (SIGKILL cannot be intercepted; outcome may be unknown).
  */
@@ -37,7 +40,7 @@ if(activeTools.has('nostromo_estado')) server.registerTool('nostromo_estado',{
   inputSchema:{}
 },async()=>result({
   kind:'nostromo.autonomous.local-mcp.v1',mode:'TERMINAL',
-  enabled,rootsConfigured:allowedRoots.length,approvalConfigured:!!approvalDir,
+  enabled,rootsConfigured:allowedRoots.length,approvalConfigured:!!approvalDir,taskPersistence:jobs.storageStatus(),
   principal:'CURRENT_OS_USER',hostExecutionAuthority:false,
   chatgptBinding:'SEPARATE_OAUTH_NOT_VERIFIED',mcpLive:true,
   linkedProjects:'FUTURE_DISABLED'
@@ -99,7 +102,7 @@ if(activeTools.has('nostromo_metricas'))server.registerTool('nostromo_metricas',
   }catch(e){return result({status:'DENIED',reason:String(e?.message||'METRICS_FAILED')},true);}
 });
 if(activeTools.has('nostromo_tarea_iniciar'))server.registerTool('nostromo_tarea_iniciar',{
-  description:'Inicia hasta una tarea CLI a la vez. R0 permitido; R2 exige aprobación física hash-bound. Responde inmediatamente con jobId; NO persiste tras reinicio MCP.',
+  description:'Inicia una tarea CLI a la vez. R0 permitido; R2 exige aprobación física hash-bound. Persiste estado local privado; tras reinicio un RUNNING pasa a UNKNOWN_OUTCOME sin reintento.',
   inputSchema
 },async args=>{
   try{
@@ -108,20 +111,24 @@ if(activeTools.has('nostromo_tarea_iniciar'))server.registerTool('nostromo_tarea
   }catch(e){return result({status:'DENIED',reason:String(e?.message||'ASYNC_START_FAILED'),started:false},true);}
 });
 if(activeTools.has('nostromo_tarea_estado'))server.registerTool('nostromo_tarea_estado',{
-  description:'Lee estado y resultado final de tarea asíncrona de esta sesión MCP; no implica verificación material.',
+  description:'Lee estado/resultados persistidos por jobId; UNKNOWN_OUTCOME nunca se reintenta automáticamente.',
   inputSchema:{jobId:z.string().uuid()}
 },async ({jobId})=>{
   const state=jobs.status(jobId);
   return result(state,state.status==='NOT_FOUND');
 });
 if(activeTools.has('nostromo_tarea_cancelar'))server.registerTool('nostromo_tarea_cancelar',{
-  description:'Solicita terminar grupo de procesos de una tarea; un resultado material puede quedar desconocido.',
+  description:'Solicita terminar el grupo de procesos; el resultado material puede quedar UNKNOWN_OUTCOME hasta readback independiente.',
   inputSchema:{jobId:z.string().uuid()}
 },async ({jobId})=>{
   const state=jobs.cancel(jobId);
   return result(state,state.status==='NOT_FOUND');
 });
 
+if(activeTools.has('nostromo_auditoria_r0')) server.registerTool('nostromo_auditoria_r0',{
+  description:'R0: auditoría determinista única — backend, puertos, ollama, git, host, systemd, mcp. Read-only, no modifica nada.',
+  inputSchema:{}
+},async()=>result(await auditoriaR0(settings)));
 server.registerTool('nostromo_herramientas',{
  description:'Catálogo de herramientas del único MCP NOSTROMO; sólo administrable desde configuración local confiable.',
  inputSchema:{}
