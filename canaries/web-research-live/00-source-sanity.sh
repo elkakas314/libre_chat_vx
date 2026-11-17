@@ -22,7 +22,9 @@ for doc in "$here"/*.json "$here"/expected-outputs/*.json; do
 done
 jq -e '.gate_id=="LC-WEB-RESEARCH-LIVE" and .gate_state=="OPEN" and
  .runtime_status=="NO_DEPLOYMENT_EVIDENCE"' "$here/evidence-template.json" >/dev/null
-jq -e '.nativeCapabilities.web_search.status=="SOURCE_CONFIG_ONLY_NOT_INSTALLED" and
+jq -e '(.skillRefs|index("nostromo-research")) != null and
+ (.optionalNativeTools|index("web_search")) != null and
+ .nativeCapabilities.web_search.status=="SOURCE_CONFIG_ONLY_NOT_INSTALLED" and
  .nativeCapabilities.web_search.skillRef=="nostromo-research" and
  .nativeCapabilities.web_search.provider.searchProvider=="keenable" and
  .nativeCapabilities.web_search.provider.scraperProvider=="keenable" and

@@ -11,7 +11,8 @@
   "createVia": "LIBRECHAT_NATIVE_AGENT_BUILDER",
   "instructionsRef": "skills/nostromo-autonomo/SKILL.md",
   "skillRefs": [
-    "nostromo-autonomo"
+    "nostromo-autonomo",
+    "nostromo-research"
   ],
   "mcpRefs": [
     "nostromo-autonomo"
@@ -79,6 +80,9 @@
     "nostromo_archivo_leer",
     "nostromo_git_inspeccionar",
     "nostromo_metricas"
+  ],
+  "optionalNativeTools": [
+    "web_search"
   ],
   "nativeCapabilities": {
     "web_search": {
