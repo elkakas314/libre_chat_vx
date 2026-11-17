@@ -115,7 +115,7 @@ test('MCP async tool calls return jobId, permit polling and bound R2 without app
       arguments:{cwd:root,argv:['pwd'],timeout_s:5,max_output:1024}
     }));
     assert.equal(started.status,'RUNNING');
-    assert.equal(started.persisted,false);
+    assert.equal(started.persisted,true);
     assert.equal(started.started,true);
     let final;
     for(let i=0;i<100;i++){
@@ -182,4 +182,37 @@ test('MCP persistent async task survives server restart without replay',async()=
    assert.equal(recovered.materialVerified,false);
   });
  }finally{await rm(root,{recursive:true,force:true});}
+});
+
+test('MCP uses private default task state and restores results when approval storage is unset',async()=>{
+ const home=await mkdtemp(path.join(tmpdir(),'nostromo-default-home-'));
+ const env={
+   HOME:home,NOSTROMO_MCP_ENABLED:'1',NOSTROMO_ALLOWED_ROOTS:home,
+   NOSTROMO_APPROVAL_DIR:'',
+   NOSTROMO_TOOL_SET:'nostromo_tarea_iniciar,nostromo_tarea_estado,nostromo_tarea_cancelar'
+ };
+ try{
+  let jobId;
+  await withServer(env,async client=>{
+   const state=parse(await client.callTool({name:'nostromo_estado',arguments:{}}));
+   assert.equal(state.taskPersistence,'READY');
+   const started=parse(await client.callTool({name:'nostromo_tarea_iniciar',arguments:{
+    cwd:home,argv:['pwd'],timeout_s:5,max_output:1024
+   }}));
+   assert.equal(started.persisted,true);
+   jobId=started.jobId;
+   let final;
+   for(let i=0;i<100;i++){
+    const value=parse(await client.callTool({name:'nostromo_tarea_estado',arguments:{jobId}}));
+    if(value.finishedAt){final=value;break;}
+    await new Promise(resolve=>setTimeout(resolve,20));
+   }
+   assert.equal(final?.status,'EXIT_0');
+  });
+  await withServer(env,async client=>{
+   const recovered=parse(await client.callTool({name:'nostromo_tarea_estado',arguments:{jobId}}));
+   assert.equal(recovered.status,'EXIT_0');
+   assert.equal(recovered.persisted,true);
+  });
+ }finally{await rm(home,{recursive:true,force:true});}
 });

@@ -6,6 +6,7 @@
 import {McpServer} from '@modelcontextprotocol/sdk/server/mcp.js';
 import {StdioServerTransport} from '@modelcontextprotocol/sdk/server/stdio.js';
 import {z} from 'zod';
+import {homedir} from 'node:os';
 import path from 'node:path';
 import {normalizeRequest,preview,consumeApproval,executeLocal} from './policy.mjs';
 import {selectedTools,describeTools} from './tools.mjs';
@@ -18,7 +19,8 @@ const allowedRoots=(process.env.NOSTROMO_ALLOWED_ROOTS||'').split(':').filter(Bo
 const approvalDir=process.env.NOSTROMO_APPROVAL_DIR||'';
 const settings={enabled,roots:allowedRoots};
 const server=new McpServer({name:'nostromo-autonomo',version:'0.3.0'});
-const taskStateDir=approvalDir?path.join(approvalDir,'jobs'):'';
+const taskStateDir=approvalDir?path.join(approvalDir,'jobs'):
+  path.join(homedir(),'.local','state','nostromo','jobs');
 const jobs=createAsyncJobs({stateDir:taskStateDir});
 /** Preserve Node's default signal-exit behavior. At process exit abort local
  * children synchronously (SIGKILL cannot be intercepted; outcome may be unknown).

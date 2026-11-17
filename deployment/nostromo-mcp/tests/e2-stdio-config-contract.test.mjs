@@ -33,14 +33,14 @@ test('M3 native agent remains candidate; tools are existing server, not new exec
 });
 
 test('M3 agent metadata matches the persistent job journal and conservative restart recovery',()=>{
- assert.equal(candidate.taskExecution.cliAsync,'SOURCE_BOUNDED_JOBS_PERSIST_WHEN_PRIVATE_STATE_DIR_CONFIGURED');
+ assert.equal(candidate.taskExecution.cliAsync,'SOURCE_BOUNDED_JOBS_PERSISTED_BY_DEFAULT_PRIVATE_STATE_DIR_OVERRIDE_APPROVAL_DIR');
  assert.equal(candidate.taskExecution.cliAsyncLedger,
-   'PRIVATE_HOST_LOCAL_JSON_SNAPSHOTS_FSYNC_RENAME_WHEN_STATE_DIR_CONFIGURED');
+   'PRIVATE_HOST_LOCAL_JSON_SNAPSHOTS_FSYNC_RENAME_DEFAULT_HOME_STATE_DIR_OR_APPROVAL_JOBS_DIR');
  assert.equal(candidate.taskExecution.restartRecovery,
-   'SOURCE_COMPLETED_HISTORY_RESTORED_RUNNING_TO_UNKNOWN_OUTCOME_NO_REPLAY_WHEN_STATE_DIR_CONFIGURED');
+   'SOURCE_COMPLETED_HISTORY_RESTORED_RUNNING_TO_UNKNOWN_OUTCOME_NO_REPLAY');
  const jobs=readFileSync(new URL('../async-jobs.mjs',import.meta.url),'utf8');
  const server=readFileSync(new URL('../server.mjs',import.meta.url),'utf8');
- assert.match(server,/const taskStateDir=approvalDir\?path\.join\(approvalDir,'jobs'\):''/);
+ assert.match(server,/const taskStateDir=approvalDir\?path\.join\(approvalDir,'jobs'\):\s*path\.join\(homedir\(\),'\.local','state','nostromo','jobs'\)/);
  assert.match(jobs,/persistent snapshots live in a private host-local directory/i);
  assert.match(jobs,/row\.status='UNKNOWN_OUTCOME'/);
  assert.match(jobs,/retrySafe:false/);

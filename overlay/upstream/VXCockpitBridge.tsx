@@ -80,6 +80,9 @@ export default function VXCockpitBridge({ onClose, activity: activityInput }: VX
           ) : (
             <p className="vx-live-activity-empty">No hay llamadas de herramienta en los mensajes cargados de esta conversación.</p>
           )}
+          <p className="vx-live-activity-empty">
+            Este recuento refleja los mensajes cargados; no confirma la ejecución ni el éxito de MCP.
+          </p>
         </section>
 
         <nav aria-label="Modos de NOSTROMO" className="vx-mode-switcher" data-testid="nostromo-mode-switcher">
@@ -94,19 +97,19 @@ export default function VXCockpitBridge({ onClose, activity: activityInput }: VX
         </nav>
         <p className="vx-mode-boundary" role="note">
           {activeMode==='AUTONOMO'
-            ? 'Modo local candidato: agente y MCP propio de terminal sin enlace LIVE acreditado.'
+            ? 'El panel no consulta el estado operativo del agente ni del MCP. La ejecución chat→MCP sigue sin verificarse.'
             : 'Sistema externo: conserva su propio MCP y permisos. No recibe la terminal local automáticamente.'}
         </p>
         {activeMode==='AUTONOMO' ? (
         <section className="vx-autonomy-card" aria-labelledby="vx-autonomy-heading">
           <div className="vx-autonomy-topline">
             <span className="vx-autonomy-label"><span className="vx-autonomy-beacon" aria-hidden="true"/> NOSTROMO · AUTÓNOMO</span>
-            <span className="vx-autonomy-stage">ENLACE NO VERIFICADO</span>
+            <span className="vx-autonomy-stage">CHAT→MCP NO VERIFICADO</span>
           </div>
           <div className="vx-autonomy-main">
             <div>
               <h3 id="vx-autonomy-heading">Habla. Encarga. Comprueba.</h3>
-              <p>Agente candidato de terminal para el Lenovo: una conversación y un único MCP local pendientes de verificación.</p>
+              <p>El contexto de conversación aparece arriba. Este panel no confirma el registro del agente, el estado del MCP ni el resultado de sus herramientas.</p>
             </div>
             <div className="vx-autonomy-terminal-glyph" aria-hidden="true">&gt;_</div>
           </div>
@@ -130,7 +133,7 @@ export default function VXCockpitBridge({ onClose, activity: activityInput }: VX
                 <span>Evidencia</span>
               </div>
               <p><strong>ChatGPT:</strong> pendiente de autorización OAuth; puede sustituirse por LLM gratuito o local verificado.</p>
-              <p><strong>Terminal:</strong> MCP con pruebas SOURCE, sin enlace LIVE con LibreChat comprobado. R0 limitado y R2 con permiso local de un uso.</p>
+              <p><strong>Terminal:</strong> el catálogo describe un MCP local gobernado. La ejecución desde una conversación real todavía requiere verificación; R2 mantiene su permiso local independiente.</p>
               <div className="vx-mode-tools" data-testid="nostromo-tools-source">
                 <strong>Único MCP · catálogo SOURCE</strong>
                 <ul>
