@@ -20,6 +20,8 @@ IOS_SWIFT = (
     "NostromoDocumentExport.swift",
 )
 ID_START = 21
+PRIVACY_SOURCE = "NostromoDeviceControl/PrivacyInfo.xcprivacy"
+PRIVACY_ID = ID_START + len(IOS_SWIFT)
 PERMISSION_KEY = "NSBluetoothAlwaysUsageDescription"
 PERMISSION_TEXT = (
     "NOSTROMO usa Bluetooth LE únicamente cuando pides buscar "
@@ -39,10 +41,11 @@ def one(text: str, anchor: str, replacement: str) -> str:
 
 def patch_xcode(text: str) -> str:
     if "NostromoDeviceControl/NostromoIOSProbe.swift" in text:
-        if all(f"NostromoDeviceControl/{name}" in text for name in IOS_SWIFT):
+        if (all(f"NostromoDeviceControl/{name}" in text for name in IOS_SWIFT)
+            and PRIVACY_SOURCE in text):
             return text
         raise ValueError("Partial Xcode registration; fix manually before retrying")
-    for i in range(ID_START, ID_START + len(IOS_SWIFT)):
+    for i in range(ID_START, ID_START + len(IOS_SWIFT) + 1):
         if f"AAA{i:05X}" in text or f"BBB{i:05X}" in text:
             raise ValueError("Xcode id collision")
     builds = "".join(
@@ -64,12 +67,21 @@ def patch_xcode(text: str) -> str:
         f'\t\t\t\tAAA{i:05X} /* {name} in Sources */,\n'
         for i, name in enumerate(IOS_SWIFT, ID_START)
     )
+    builds += (f'\t\tAAA{PRIVACY_ID:05X} /* PrivacyInfo.xcprivacy in Resources */ = '
+               f'{{isa = PBXBuildFile; fileRef = BBB{PRIVACY_ID:05X}; }};\n')
+    refs += (f'\t\tBBB{PRIVACY_ID:05X} /* PrivacyInfo.xcprivacy */ = '
+             f'{{isa = PBXFileReference; lastKnownFileType = text.xml; '
+             f'path = {PRIVACY_SOURCE}; sourceTree = "<group>"; }};\n')
+    groups += f'\t\t\t\tBBB{PRIVACY_ID:05X} /* PrivacyInfo.xcprivacy */,\n'
     text = one(text, "/* End PBXBuildFile section */", builds + "/* End PBXBuildFile section */")
     text = one(text, "/* End PBXFileReference section */", refs + "/* End PBXFileReference section */")
     text = one(text, '\t\t\t\tBBB00014 /* ScheduleCheckTask.swift */,\n',
                '\t\t\t\tBBB00014 /* ScheduleCheckTask.swift */,\n' + groups)
     text = one(text, '\t\t\t\tAAA00014 /* ScheduleCheckTask.swift in Sources */,\n',
                '\t\t\t\tAAA00014 /* ScheduleCheckTask.swift in Sources */,\n' + sources)
+    text = one(text, '\t\t\t\tAAA0000C /* Assets.xcassets in Resources */,\n',
+               '\t\t\t\tAAA0000C /* Assets.xcassets in Resources */,\n' +
+               f'\t\t\t\tAAA{PRIVACY_ID:05X} /* PrivacyInfo.xcprivacy in Resources */,\n')
     return text
 
 
@@ -186,9 +198,9 @@ def main() -> int:
 
     planned: list[tuple[Path, Path]] = []
     for src in sorted(source.rglob("*")):
-        if not src.is_file() or src.suffix not in (".kt", ".swift"):
+        if not src.is_file() or src.suffix not in (".kt", ".swift", ".xcprivacy"):
             continue
-        if src.suffix == ".swift" and not args.xcode:
+        if src.suffix in (".swift", ".xcprivacy") and not args.xcode:
             continue
         dst = target / src.relative_to(source)
         if dst.is_symlink() or any(parent.is_symlink() for parent in dst.parents if parent != target and target in parent.parents):
@@ -228,7 +240,7 @@ def main() -> int:
         print(("NAV_PATCH" if args.apply else "WOULD_PATCH_NAV"), len(nav_changes), "files")
     if args.xcode:
         print(("XCODE_PATCH" if args.apply else "WOULD_PATCH_XCODE"),
-              "4 Swift source files + Bluetooth usage description")
+              "4 Swift source files, PrivacyInfo.xcprivacy, and Bluetooth usage description")
     if not args.apply:
         print(f"DRY_RUN_ONLY files={len(planned)} (no changes)")
         return 0
