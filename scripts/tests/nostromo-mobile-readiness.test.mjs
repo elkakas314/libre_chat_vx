@@ -6,9 +6,20 @@ import {tmpdir} from 'node:os';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 const script=fileURLToPath(new URL('../audit-nostromo-mobile-readiness.mjs',import.meta.url));
+const mobileCurrent=JSON.parse(readFileSync(new URL('../../config/nostromo_mobile_legacy.current.json',import.meta.url),'utf8'));
 function fixture(fn){const p=mkdtempSync(path.join(tmpdir(),'nostromo-mobile-test-'));
  try{return fn(p);}finally{rmSync(p,{recursive:true,force:true});}}
 const inspect=p=>spawnSync(process.execPath,[script,'--upstream='+p],{encoding:'utf8',timeout:15000});
+test('Switchboard native base matches pinned LibreChat core but not the VX overlay',()=>{
+ const client=mobileCurrent.realNativeClient;
+ assert.equal(client.architecture,'KOTLIN_MULTIPLATFORM_COMPOSE_NATIVE_IOS');
+ assert.equal(client.license,'Apache-2.0');
+ assert.equal(client.localPinnedLibreChatVersion,'v0.8.8');
+ assert.equal(client.coreVersionInTestedRange,true);
+ assert.equal(client.customVXApiAndHud,'NOT_VERIFIED');
+ assert.equal(client.reusableAsNativeBase,true);
+ assert.equal(client.installed,false);
+});
 test('absent PWA build is never claimed installed',()=>fixture(p=>{
  const x=inspect(p);assert.equal(x.status,0,x.stderr);
  const v=JSON.parse(x.stdout);
