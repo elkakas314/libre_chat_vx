@@ -1,0 +1,24 @@
+name: NOSTROMO iOS device control (deferred source)
+on:
+  push:
+    branches:
+      - deferred/nostromo-ios-device-control-20261117
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deferred-source-check:
+    name: Device control offline contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify device-control source, import guards and Apple privacy reason
+        run: python3 handoff/ios-device-control/verify_source.py
+      - name: Validate no active fork or runtime is modified
+        run: |
+          git diff --check
+          test -f handoff/ios-device-control/README.md
+          test ! -e feature/agents/src/commonMain/kotlin/com/garfiec/librechat/feature/agents/devicecontrol/DeviceControlPolicy.kt
