@@ -79,4 +79,27 @@ class DeviceControlPolicyTest {
         )))
     }
 
+    @Test fun diskSpaceNeverLeavesTheIphoneByRemoteControl() {
+        assertEquals(ControlDecision.DENY, IOSDevicePolicy.decide(DeviceActionRequest(
+            DeviceCapability.VOLUME_CAPACITY, deviceOnline = true,
+            destinationIsAuthenticatedNostromoBackend = true,
+            outboundTelemetryConsent = true, transmitsTelemetryOffDevice = true
+        )))
+        assertEquals(ControlDecision.ALLOW_R0_LOCAL, IOSDevicePolicy.decide(
+            DeviceActionRequest(DeviceCapability.VOLUME_CAPACITY)
+        ))
+    }
+
+    @Test fun evenNostromoBackendNeedsExplicitConsentForOutboundTelemetry() {
+        assertEquals(ControlDecision.DENY, IOSDevicePolicy.decide(DeviceActionRequest(
+            DeviceCapability.BATTERY_PERCENT, transmitsTelemetryOffDevice = true,
+            deviceOnline = true, destinationIsAuthenticatedNostromoBackend = true,
+        )))
+        assertEquals(ControlDecision.ALLOW_R0_LOCAL, IOSDevicePolicy.decide(DeviceActionRequest(
+            DeviceCapability.BATTERY_PERCENT, transmitsTelemetryOffDevice = true,
+            deviceOnline = true, destinationIsAuthenticatedNostromoBackend = true,
+            outboundTelemetryConsent = true
+        )))
+    }
+
 }
