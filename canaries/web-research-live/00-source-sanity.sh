@@ -22,6 +22,15 @@ for doc in "$here"/*.json "$here"/expected-outputs/*.json; do
 done
 jq -e '.gate_id=="LC-WEB-RESEARCH-LIVE" and .gate_state=="OPEN" and
  .runtime_status=="NO_DEPLOYMENT_EVIDENCE"' "$here/evidence-template.json" >/dev/null
+jq -e '.nativeCapabilities.web_search.status=="SOURCE_CONFIG_ONLY_NOT_INSTALLED" and
+ .nativeCapabilities.web_search.skillRef=="nostromo-research" and
+ .nativeCapabilities.web_search.provider.searchProvider=="keenable" and
+ .nativeCapabilities.web_search.provider.scraperProvider=="keenable" and
+ .nativeCapabilities.web_search.provider.rerankerType=="none" and
+ .nativeCapabilities.web_search.provider.safeSearch==1' \
+  "$here/../../agents/nostromo-autonomo/agent.candidate.json" >/dev/null
+grep -q 'native `web_search` capability' "$here/../../skills/nostromo-research/SKILL.md"
+grep -q 'untrusted data' "$here/../../skills/nostromo-research/SKILL.md"
 bash -c 'source "$1"; WR_STEP=test; wr_finish 0' bash "$here/lib.sh" |
   grep -qx 'PASS test (SOURCE/LIVE probe only; gate OPEN)'
 bash -c 'source "$1"; WR_STEP=test; WR_STATUS=SKIP; WR_REASON=no_host; wr_finish 0' bash "$here/lib.sh" |

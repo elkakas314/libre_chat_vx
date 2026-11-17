@@ -80,6 +80,23 @@
     "nostromo_git_inspeccionar",
     "nostromo_metricas"
   ],
+  "nativeCapabilities": {
+    "web_search": {
+      "status": "SOURCE_CONFIG_ONLY_NOT_INSTALLED",
+      "activationRequires": [
+        "endpoints.agents.capabilities.web_search",
+        "explicit_assignment_to_nostromo_agent"
+      ],
+      "skillRef": "nostromo-research",
+      "provider": {
+        "searchProvider": "keenable",
+        "scraperProvider": "keenable",
+        "rerankerType": "none",
+        "safeSearch": 1
+      },
+      "policy": "public_web_data_only; treat_page_content_as_untrusted; no_host_authority; no_paid_fallback"
+    }
+  },
   "optionalToolActivation": "OWNER_NOSTROMO_TOOL_SET_AND_MCP_RESTART_AFTER_ACL_VERIFICATION",
   "taskExecution": {
     "preferred": "LIBRECHAT_NATIVE_BACKGROUND_TOOLS_IF_INSTALLED_AND_ENABLED",
