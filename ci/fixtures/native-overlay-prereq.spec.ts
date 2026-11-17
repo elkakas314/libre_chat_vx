@@ -71,7 +71,7 @@ for (const viewport of [
         await launcher.click();
         await expect(context).toBeVisible();
         await expect(context.getByRole('heading',{name:'Habla. Encarga. Comprueba.'})).toBeVisible();
-        await expect(context.getByText('ENLACE NO VERIFICADO')).toBeVisible();
+        await expect(context.getByText('CHAT→MCP NO VERIFICADO')).toBeVisible();
         await expect(context.getByTestId('nostromo-autonomo-details')).toHaveCount(0);
         await context.getByRole('button',{name:'Ver modo autónomo NOSTROMO'}).click();
         await expect(context.getByTestId('nostromo-autonomo-details')).toBeVisible();
