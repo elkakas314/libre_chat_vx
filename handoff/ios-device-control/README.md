@@ -49,3 +49,57 @@ La rama contiene contratos y código SOURCE sin conexión a la app en marcha. No
 - Fotos: https://developer.apple.com/documentation/photokit
 - Atajos: https://developer.apple.com/documentation/appintents
 - Wi-Fi Aware: https://developer.apple.com/documentation/wifiaware (iPhone 12+ y entitlement)
+
+
+## Integración reproducible en Switchboard sin pisar PR #1
+
+El paquete ha pasado un workflow SOURCE aislado: `NOSTROMO iOS device control
+(deferred source)`, run `44084369531`, SUCCESS (commit `8e2f641`). La
+validación es **offline**: NO certifica compilación Xcode contra SDK de Apple,
+instalación iPhone, sensor BLE ni transmisión de datos.
+
+Work debe actuar **DESPUÉS** de estabilizar el CI/PR móvil actual, usando un
+worktree nuevo desde el HEAD fresco de `elkakas314/Librechat-Mobile`:
+
+```bash
+# No ejecutar contra el árbol que Work está compilando.
+git -C /ruta/Librechat-Mobile fetch origin nostromo/tentaculo-native
+git -C /ruta/Librechat-Mobile worktree add -b feat/ios-device-control \
+  /ruta/Librechat-Mobile-device-control origin/nostromo/tentaculo-native
+
+# Obtener la rama diferida del backend en otra copia o worktree,
+# sin fusionarla en la PR principal.
+git -C /ruta/libre_chat_vx fetch origin deferred/nostromo-ios-device-control-20261117
+
+# Sustituir /ruta/handoff por la ruta REAL a handoff/ios-device-control
+# en la rama diferida publicada.
+python3 /ruta/handoff/install_into_switchboard.py \
+  --target /ruta/Librechat-Mobile-device-control --navigation --xcode
+
+# Solo si el preflight termina limpio:
+python3 /ruta/handoff/install_into_switchboard.py \
+  --target /ruta/Librechat-Mobile-device-control --navigation --xcode --apply
+
+git -C /ruta/Librechat-Mobile-device-control diff --check
+git -C /ruta/Librechat-Mobile-device-control status --short
+python3 /ruta/handoff/verify_source.py
+```
+
+El instalador falla cerrado si encuentra colisiones de archivos o cambios de
+estructura de navegación/Xcode; es idempotente y no modifica otra ruta que
+el worktree móvil autorizado. Incluye una pantalla Compose `Control del iPhone`
+con lectura nativa `expect/actual` y estado UNKNOWN antes de READBACK, cuatro
+fuentes Swift con sonda/diagnóstico/manifiesto/exportación, declaración
+`PrivacyInfo.xcprivacy` y permiso Bluetooth.
+
+**Backend/data safety:** los botones de limpieza, exportación y BLE quedan
+DESHABILITADOS en UI mientras no existan puentes tipados+permisos+pruebas. No se
+instalan apps ajenas ni se borran cachés de terceros. La vista de espacio libre
+se presenta solo localmente conforme al motivo Apple 85F4.1. No compartir
+telemetría remota sin opt-in. La futura relación con MANOJOS3, ORÁCULO y VX13
+pasa por NOSTROMO autenticado sin mezclar repositorios ni autoridades.
+
+Tras el staging, **requerido antes de cualquier CLAIM**: Kotlin/Android tests
+en CI, iOS Simulator Xcode build + typecheck Swift (macOS runner), unidad de
+política y navegación, permisos BLE en dispositivo físico, exportación con
+restore SHA256 probado. Un `manifest` SHA256 por sí solo NO es un backup.
