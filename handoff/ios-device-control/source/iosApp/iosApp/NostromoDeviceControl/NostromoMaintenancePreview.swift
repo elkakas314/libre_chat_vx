@@ -64,7 +64,7 @@ final class NostromoMaintenancePlanner {
     }
 
     private func preview(root: URL, scope: String, maxEntries: Int) throws -> NostromoMaintenancePreview {
-        let rootURL = root.standardizedFileURL
+        let rootURL = root.resolvingSymlinksInPath().standardizedFileURL
         let cap = min(max(1, maxEntries), 500)
         let keys: [URLResourceKey] = [
             .isRegularFileKey, .isDirectoryKey, .isSymbolicLinkKey, .fileSizeKey
@@ -80,20 +80,23 @@ final class NostromoMaintenancePlanner {
         var truncated = false
         for case let fileURL as URL in enumerator {
             guard entries.count < cap else { truncated = true; break }
-            let url = fileURL.standardizedFileURL
-            guard url.path.hasPrefix(rootURL.path + "/") else {
-                enumerator.skipDescendants()
-                continue
-            }
-            let values = try? url.resourceValues(forKeys: Set(keys))
+            let raw = fileURL.standardizedFileURL
+            let values = try? raw.resourceValues(forKeys: Set(keys))
+            // Do not enumerate symlinks or follow paths outside the app's own root.
             if values?.isSymbolicLink == true {
                 enumerator.skipDescendants()
                 continue
             }
+            let url = raw.resolvingSymlinksInPath().standardizedFileURL
+            guard url.path.hasPrefix(rootURL.path + "/") else {
+                enumerator.skipDescendants()
+                continue
+            }
             let relative = String(url.path.dropFirst(rootURL.path.count + 1))
+            // Directory metadata size is NOT reclaimed bytes; count only regular files.
+            let bytes = values?.isRegularFile == true ? Int64(values?.fileSize ?? 0) : 0
             entries.append(.init(displayPath: relative,
-                byteCount: Int64(values?.fileSize ?? 0),
-                isDirectory: values?.isDirectory == true))
+                byteCount: max(0, bytes), isDirectory: values?.isDirectory == true))
         }
         return NostromoMaintenancePreview(
             sampledAt: Date(), scope: scope, entries: entries,
