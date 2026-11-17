@@ -38,7 +38,7 @@ const inputSchema={
   max_output:z.number().int().min(256).max(16384).default(8192)
 };
 if(activeTools.has('nostromo_estado')) server.registerTool('nostromo_estado',{
-  description:'Estado del MCP local (configured no implica installed ni live de ChatGPT).',
+  description:'R0 read-only, structured status of this running NOSTROMO MCP. Call this when the user explicitly asks for nostromo_estado or asks whether this MCP is configured, enabled, live, or has persistent task state. Reports only this MCP process; it does not verify LibreChat, the selected model, other MCP servers, or host services.',
   inputSchema:{}
 },async()=>result({
   kind:'nostromo.autonomous.local-mcp.v1',mode:'TERMINAL',

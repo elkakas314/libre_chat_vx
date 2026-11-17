@@ -22,14 +22,19 @@ function parse(result) {
 }
 test('MCP handshake, exactly three terminal tools, fail-closed by default',async()=>{
  await withServer({NOSTROMO_MCP_ENABLED:'0',NOSTROMO_ALLOWED_ROOTS:''},async client=>{
-  const names=(await client.listTools()).tools.map(t=>t.name).sort();
+  const toolList=(await client.listTools()).tools;
+  const names=toolList.map(t=>t.name).sort();
   assert.deepEqual(names.sort(),['nostromo_auditoria_r0','nostromo_estado','nostromo_herramientas','nostromo_terminal_ejecutar','nostromo_terminal_preparar']);
+  assert.match(toolList.find(t=>t.name==='nostromo_estado').description,/R0 read-only, structured status/i);
+  assert.match(toolList.find(t=>t.name==='nostromo_estado').description,/explicitly asks for nostromo_estado/i);
   const toolView=parse(await client.callTool({name:'nostromo_herramientas',arguments:{}}));
   assert.equal(toolView.tools.length,11);
   assert.equal(toolView.tools.filter(t=>t.enabled).length,5);
   assert.equal(toolView.mutableByModel,false);
   const state=parse(await client.callTool({name:'nostromo_estado',arguments:{}}));
+  assert.equal(state.kind,'nostromo.autonomous.local-mcp.v1');
   assert.equal(state.enabled,false);
+  assert.equal(state.mcpLive,true);
   const call=await client.callTool({name:'nostromo_terminal_ejecutar',arguments:{cwd:'/tmp',argv:['pwd']}});
   assert.equal(call.isError,true);
   assert.equal(parse(call).status,'DISABLED');
