@@ -13,6 +13,10 @@ for script in "$here"/*.sh; do
   bash -n "$script"
   grep -Eq '^[[:space:]]*set -euo pipefail[[:space:]]*$' "$script"
 done
+! grep -q 'wr_safe_baseline' "$here/02-verify-search-provider.sh"
+! grep -q 'wr_safe_baseline' "$here/03-verify-scraper-provider.sh"
+grep -q 'host_config_verified:false' "$here/02-verify-search-provider.sh"
+grep -q 'host_config_verified:false' "$here/03-verify-scraper-provider.sh"
 for doc in "$here"/*.json "$here"/expected-outputs/*.json; do
   jq -e 'type=="object"' "$doc" >/dev/null
 done
