@@ -12,6 +12,7 @@ test('CI mount guards both upstream chat anchors and binds content-free activity
   assert.match(source,/uniqueOccurrence\(chatView,CHATVIEW_ANCHOR,'CHATVIEW_PRESENTATION'\)/);
   assert.match(source,/activity=\{\{/);
   assert.match(source,/messages,/);
+  assert.match(source,/getItem\('librechat-vx-cockpit'\) !== '0'/);
   const projection=readFileSync(resolve('src/cockpit/conversationActivity.ts'),'utf8');
   assert.match(projection,/hasStoredOutput/);
   assert.match(projection,/toolCalls\.slice\(-6\)/);

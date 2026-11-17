@@ -153,7 +153,7 @@ function main(argv=process.argv.slice(2),env=process.env){
   const [vxPanelOpen,setVxPanelOpen] = useState(false);
   const vxLauncherRef = useRef<HTMLButtonElement>(null);
   useEffect(() => {
-    try { setVxEnabled(window.localStorage.getItem('librechat-vx-cockpit') === '1'); }
+    try { setVxEnabled(window.localStorage.getItem('librechat-vx-cockpit') !== '0'); }
     catch { setVxEnabled(false); }
   }, []);
   const closeVxPanel = useCallback(() => {
