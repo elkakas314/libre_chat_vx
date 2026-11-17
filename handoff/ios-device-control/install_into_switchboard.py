@@ -78,6 +78,7 @@ def atomic_write(path: Path, data: bytes) -> None:
     try:
         with os.fdopen(fd, "wb") as stream:
             stream.write(data)
+        os.chmod(tmp, path.stat().st_mode & 0o777)
         os.replace(tmp, path)
     finally:
         if os.path.exists(tmp):
@@ -107,6 +108,9 @@ def main() -> int:
         if src.suffix == ".swift" and not args.xcode:
             continue
         dst = target / src.relative_to(source)
+        if dst.is_symlink() or any(parent.is_symlink() for parent in dst.parents if parent != target and target in parent.parents):
+            print(f"CONFLICT: symlink target path {dst}", file=sys.stderr)
+            return 2
         if dst.exists():
             if sha(src) == sha(dst):
                 continue
@@ -125,11 +129,14 @@ def main() -> int:
         plist = plist_path.read_text()
         if PERMISSION_KEY not in plist:
             marker = "</dict>"
-            if plist.count(marker) != 1:
+            last_close = plist.rfind(marker)
+            if last_close < 0 or "</plist>" not in plist[last_close:]:
                 parser.error("unexpected iOS Info.plist structure")
             import html
             escaped = html.escape(PERMISSION_TEXT)
-            patched_plist = plist.replace(marker, f"\t<key>{PERMISSION_KEY}</key>\n\t<string>{escaped}</string>\n{marker}")
+            patched_plist = (plist[:last_close] +
+                             f"\t<key>{PERMISSION_KEY}</key>\n\t<string>{escaped}</string>\n" +
+                             plist[last_close:])
 
     for src, dst in planned:
         print(("COPY" if args.apply else "WOULD_COPY"), dst.relative_to(target))
