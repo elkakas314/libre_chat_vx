@@ -85,11 +85,94 @@ def atomic_write(path: Path, data: bytes) -> None:
             os.remove(tmp)
 
 
+
+def navigation_patches(target: Path) -> list[tuple[Path, bytes]]:
+    """Prepare exact-match navigation and resource edits; no writes until preflight succeeds."""
+    root = target / "feature/agents/src/commonMain"
+    paths = {
+        "navigation": root / "kotlin/com/garfiec/librechat/feature/agents/navigation/AgentsNavigation.kt",
+        "hub": root / "kotlin/com/garfiec/librechat/feature/agents/screen/NostromoHubScreen.kt",
+        "resources": root / "composeResources/values/strings.xml",
+        "routes": target / "shared/src/commonMain/kotlin/com/garfiec/librechat/shared/navigation/WorkspaceRoutes.kt",
+    }
+    for file in paths.values():
+        if not file.is_file() or file.is_symlink():
+            raise ValueError(f"Navigation path unavailable/symlink: {file}")
+    nav = paths["navigation"].read_text()
+    hub = paths["hub"].read_text()
+    xml = paths["resources"].read_text()
+    routes = paths["routes"].read_text()
+
+    if "@Serializable data object NostromoDeviceControl : AgentsRoute" in nav:
+        if ('NostromoDeviceControlRoute' in nav and
+            'onOpenDeviceControl' in hub and
+            'nostromo_device_control' in xml and
+            'NostromoDeviceControl -> WorkspaceDestination.NOSTROMO' in routes):
+            return []
+        raise ValueError("Partial navigation integration; manual audit required")
+
+    nav = one(nav,
+        "import com.garfiec.librechat.feature.agents.screen.NostromoHubScreen",
+        "import com.garfiec.librechat.feature.agents.screen.NostromoHubScreen\n"
+        "import com.garfiec.librechat.feature.agents.devicecontrol.NostromoDeviceControlRoute")
+    nav = one(nav,
+        "@Serializable data object NostromoHub : AgentsRoute",
+        "@Serializable data object NostromoHub : AgentsRoute\n\n"
+        "@Serializable data object NostromoDeviceControl : AgentsRoute")
+    nav = one(nav,
+        "            onStartChatWithPrompt = onStartChatWithPrompt,\n        )\n    }\n    entry<AgentMarketplace>",
+        "            onStartChatWithPrompt = onStartChatWithPrompt,\n"
+        "            onOpenDeviceControl = { onNavigate(NostromoDeviceControl) },\n"
+        "        )\n    }\n"
+        "    entry<NostromoDeviceControl> { NostromoDeviceControlRoute(onBack = onBack) }\n"
+        "    entry<AgentMarketplace>")
+    nav = one(nav,
+        "        subclass(NostromoHub::class, NostromoHub.serializer())",
+        "        subclass(NostromoHub::class, NostromoHub.serializer())\n"
+        "        subclass(NostromoDeviceControl::class, NostromoDeviceControl.serializer())")
+
+    hub = one(hub,
+        "import com.garfiec.librechat.feature.agents.resources.nostromo_title",
+        "import com.garfiec.librechat.feature.agents.resources.nostromo_title\n"
+        "import com.garfiec.librechat.feature.agents.resources.nostromo_device_control")
+    hub = one(hub,
+        "    onStartChatWithPrompt: (agentId: String, prompt: String) -> Unit,\n)",
+        "    onStartChatWithPrompt: (agentId: String, prompt: String) -> Unit,\n"
+        "    onOpenDeviceControl: () -> Unit,\n)")
+    hub = one(hub,
+        "            Text(stringResource(Res.string.nostromo_agent_not_live), style = MaterialTheme.typography.bodyMedium)",
+        "            Text(stringResource(Res.string.nostromo_agent_not_live), style = MaterialTheme.typography.bodyMedium)\n"
+        "            OutlinedButton(onClick = onOpenDeviceControl,\n"
+        "                modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)) {\n"
+        "                Text(stringResource(Res.string.nostromo_device_control))\n"
+        "            }")
+
+    xml = one(xml,
+        '    <string name="nostromo_title">Tentáculo · NOSTROMO</string>',
+        '    <string name="nostromo_title">Tentáculo · NOSTROMO</string>\n'
+        '    <string name="nostromo_device_control">Control del iPhone</string>')
+
+    routes = one(routes,
+        "import com.garfiec.librechat.feature.agents.navigation.NostromoHub",
+        "import com.garfiec.librechat.feature.agents.navigation.NostromoHub\n"
+        "import com.garfiec.librechat.feature.agents.navigation.NostromoDeviceControl")
+    routes = one(routes,
+        "    NostromoHub -> WorkspaceDestination.NOSTROMO",
+        "    NostromoHub, NostromoDeviceControl -> WorkspaceDestination.NOSTROMO")
+
+    return [
+        (paths["navigation"], nav.encode()),
+        (paths["hub"], hub.encode()),
+        (paths["resources"], xml.encode()),
+        (paths["routes"], routes.encode()),
+    ]
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--target", type=Path, required=True, help="Separate Librechat-Mobile git worktree")
     parser.add_argument("--apply", action="store_true", help="Copy only new, nonconflicting files")
     parser.add_argument("--xcode", action="store_true", help="Also wire Swift source + Bluetooth usage description")
+    parser.add_argument("--navigation", action="store_true", help="Also add NOSTROMO iPhone screen to native navigation")
     args = parser.parse_args()
     home = Path(__file__).resolve().parent
     source = home / "source"
@@ -122,6 +205,7 @@ def main() -> int:
     plist_path = target / "iosApp/iosApp/Info.plist"
     patched_project = None
     patched_plist = None
+    nav_changes = navigation_patches(target) if args.navigation else []
     if args.xcode:
         patched_project = patch_xcode(xcode_path.read_text())
         if not plist_path.is_file():
@@ -140,6 +224,8 @@ def main() -> int:
 
     for src, dst in planned:
         print(("COPY" if args.apply else "WOULD_COPY"), dst.relative_to(target))
+    if args.navigation:
+        print(("NAV_PATCH" if args.apply else "WOULD_PATCH_NAV"), len(nav_changes), "files")
     if args.xcode:
         print(("XCODE_PATCH" if args.apply else "WOULD_PATCH_XCODE"),
               "4 Swift source files + Bluetooth usage description")
@@ -150,12 +236,15 @@ def main() -> int:
     for src, dst in planned:
         dst.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(src, dst)
+    for dst, bytes_ in nav_changes:
+        if dst.read_bytes() != bytes_:
+            atomic_write(dst, bytes_)
     if patched_project is not None and patched_project != xcode_path.read_text():
         atomic_write(xcode_path, patched_project.encode())
     if patched_plist is not None:
         atomic_write(plist_path, patched_plist.encode())
-    print(f"STAGED_SOURCE_ONLY files={len(planned)} xcode={bool(args.xcode)}")
-    print("NEXT: compile Android/KMP + iOS, wire NativeDeviceControlRoute into navigation;")
+    print(f"STAGED_SOURCE_ONLY files={len(planned)} xcode={bool(args.xcode)} navigation={bool(args.navigation)}")
+    print("NEXT: compile Android/KMP + iOS on a macOS runner;")
     print("verify permissions/hardware before enabling BLE, cache clean or backup.")
     return 0
 
