@@ -3,6 +3,8 @@
 import {lstatSync,readFileSync} from 'node:fs';
 import {homedir} from 'node:os';
 import path from 'node:path';
+const mobileConfig=JSON.parse(readFileSync(new URL('../config/nostromo_mobile_legacy.current.json',import.meta.url),'utf8'));
+const nativeSource=mobileConfig.realNativeClient;
 const param=process.argv.find(x=>x.startsWith('--upstream='));
 const up=path.resolve(param?param.slice('--upstream='.length):path.join(homedir(),'librechat','upstream'));
 if(process.argv.includes('--help')){
@@ -48,11 +50,22 @@ if(process.argv.includes('--help')){
    const x=lstatSync(path.join(sibling,'.env'));return x.isFile()&&!x.isSymbolicLink();}
   catch{return false;}
  })();
- console.log(JSON.stringify({schema:'nostromo.mobile.preflight.r0.v1',readOnly:true,
+ const nativeBaseCompatible=nativeSource.reusableAsNativeBase===true&&
+  nativeSource.coreVersionInTestedRange===true;
+ console.log(JSON.stringify({schema:'nostromo.mobile.preflight.r0.v2',readOnly:true,
   mutations:0,upstream:up,thirdCheckout:sibling,thirdCheckoutHasEnv:thirdEnv,
+  nativeClient:{name:nativeSource.name,architecture:nativeSource.architecture,
+    minIOS:nativeSource.minIOS,license:nativeSource.license,
+    pinnedLibreChatVersion:nativeSource.localPinnedLibreChatVersion,
+    testedLibreChatRange:nativeSource.testedLibreChatRange,
+    coreVersionCompatible:nativeBaseCompatible,
+    customVXApiAndHud:nativeSource.customVXApiAndHud,
+    installed:nativeSource.installed===true,
+    finalProductReady:false},
   pwa:{pathScopeSafe:distScopeSafe,indexHtml,manifest,serviceWorker:worker,healingWorker,
-    manifestSummary:summary,compiled:built},
-  status:built?'PWA_BUILD_PRESENT_NOT_INSTALLED':'PWA_BUILD_INCOMPLETE',
+    manifestSummary:summary,compiled:built,finalProductAccepted:false,
+    status:built?'PWA_PRESENT_NOT_ACCEPTED_AS_FINAL':'PWA_NOT_PRESENT_NOT_ACCEPTED_AS_FINAL'},
+  status:nativeBaseCompatible?'NATIVE_BASE_COMPATIBLE_NOT_INSTALLED':'NATIVE_BASE_REVIEW_REQUIRED',
   backendLiveVerified:false,mobileAuthenticated:false,mobileE2EVerified:false,
-  tailscaleServeVerified:false,next:'VERIFY_BACKEND_AUTH_AND_PRIVATE_HTTPS_BEFORE_MOBILE_INSTALL'},null,2));
+  tailscaleServeVerified:false,next:'INTEGRATE_VX_HUD_AND_VERIFY_AGENT_MCP_BEFORE_NATIVE_INSTALL'},null,2));
 }

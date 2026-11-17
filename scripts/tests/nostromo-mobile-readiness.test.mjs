@@ -23,7 +23,10 @@ test('Switchboard native base matches pinned LibreChat core but not the VX overl
 test('absent PWA build is never claimed installed',()=>fixture(p=>{
  const x=inspect(p);assert.equal(x.status,0,x.stderr);
  const v=JSON.parse(x.stdout);
- assert.equal(v.status,'PWA_BUILD_INCOMPLETE');assert.equal(v.readOnly,true);
+ assert.equal(v.status,'NATIVE_BASE_COMPATIBLE_NOT_INSTALLED');assert.equal(v.readOnly,true);
+ assert.equal(v.nativeClient.installed,false);
+ assert.equal(v.nativeClient.finalProductReady,false);
+ assert.equal(v.pwa.finalProductAccepted,false);
  assert.equal(v.mobileE2EVerified,false);
 }));
 test('built PWA remains separate from live backend/auth/mobile canaries',()=>fixture(p=>{
@@ -34,7 +37,9 @@ test('built PWA remains separate from live backend/auth/mobile canaries',()=>fix
   JSON.stringify({name:'NOSTROMO',display:'standalone',icons:[{src:'/icon.png'}]}));
  const x=inspect(p);assert.equal(x.status,0,x.stderr);
  const v=JSON.parse(x.stdout);
- assert.equal(v.status,'PWA_BUILD_PRESENT_NOT_INSTALLED');
+ assert.equal(v.status,'NATIVE_BASE_COMPATIBLE_NOT_INSTALLED');
+ assert.equal(v.pwa.status,'PWA_PRESENT_NOT_ACCEPTED_AS_FINAL');
+ assert.equal(v.pwa.finalProductAccepted,false);
  assert.equal(v.backendLiveVerified,false);
  assert.equal(v.mobileAuthenticated,false);
  assert.equal(v.tailscaleServeVerified,false);
@@ -50,7 +55,7 @@ test('symlinked client parent does not read external manifest or report a PWA',(
  const before=readFileSync(mf,'utf8');
  const x=inspect(p);assert.equal(x.status,0,x.stderr);
  const v=JSON.parse(x.stdout);
- assert.equal(v.status,'PWA_BUILD_INCOMPLETE');
+ assert.equal(v.status,'NATIVE_BASE_COMPATIBLE_NOT_INSTALLED');
  assert.equal(v.pwa.pathScopeSafe,false);
  assert.equal(v.pwa.manifestSummary,null);
  assert.equal(v.pwa.manifest,false);
