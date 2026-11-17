@@ -177,9 +177,9 @@ jobs:
         run: |
           git init switchboard
           git -C switchboard remote add origin https://github.com/elkakas314/Librechat-Mobile.git
-          git -C switchboard fetch --depth=1 origin 7979610109f618415b10a2aa39ac37f1b78b4fa9
+          git -C switchboard fetch --depth=1 origin 191859fad57b093dbf2a2bdb82dbcb05226f6792
           git -C switchboard checkout --detach FETCH_HEAD
-          test "$(git -C switchboard rev-parse HEAD)" = 7979610109f618415b10a2aa39ac37f1b78b4fa9
+          test "$(git -C switchboard rev-parse HEAD)" = 191859fad57b093dbf2a2bdb82dbcb05226f6792
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
