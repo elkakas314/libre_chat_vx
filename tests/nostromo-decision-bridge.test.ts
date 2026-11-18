@@ -47,9 +47,10 @@ test('unresolved target command is blocked, but target read requires readback',(
   assert.equal(unresolved.hybridTurn.targetActionRequested,false);
   assert.equal(unresolved.requiresReadbackBeforeResponse,false);
   const command=bridgeIntentToDecision(interpretIntent({wantsExternalChange:true,explicitTarget:'MANOJOS3'}));
-  assert.equal(command.requiresMaterialExecution,true);
-  assert.equal(command.requiresReadbackBeforeResponse,true);
-  assert.equal(chooseHybridLane(command.hybridTurn),'TARGET_OBJECTIVE');
+  assert.equal(command.requiresMaterialExecution,false);
+  assert.equal(command.requiresGoalAgreement,true);
+  assert.equal(command.requiresReadbackBeforeResponse,false);
+  assert.equal(chooseHybridLane(command.hybridTurn),'REMOTE_INFERENCE');
   const read=bridgeIntentToDecision(interpretIntent({wantsSystemRead:true,explicitTarget:'MANOJOS3'}));
   assert.equal(read.requiresMaterialExecution,false);
   assert.equal(read.requiresReadbackBeforeResponse,true);
@@ -71,4 +72,36 @@ test('local GPU voice preference never swallows complex tasks or target commands
   assert.equal(vision.hybridTurn.needsVision,true);
   const bypass={...simple.hybridTurn,needsResearch:true,preferLocalVoice:true};
   assert.equal(chooseHybridLane(bypass),'REMOTE_INFERENCE');
+});
+
+test('target request stays conversational until a matching native objective agreement',()=>{
+  const intent=interpretIntent({wantsExternalChange:true,explicitTarget:'MANOJOS3',wantsResearch:true});
+  const pending=bridgeIntentToDecision(intent);
+  assert.equal(pending.requiresMaterialExecution,false);
+  assert.equal(pending.requiresGoalAgreement,true);
+  assert.equal(chooseHybridLane(pending.hybridTurn),'REMOTE_INFERENCE');
+  assert.equal(pending.inferenceSignals.needsResearch,true);
+  const h={
+    source:'HOST_AUTHENTICATED_USER_AGREEMENT' as const,
+    targetId:'MANOJOS3' as const,objectiveRef:'objective-42',
+    planHash:'a'.repeat(64),sessionRef:'session-5',
+  };
+  const ready=bridgeIntentToDecision(intent,{agreedTaskHandoff:h});
+  assert.equal(ready.requiresGoalAgreement,false);
+  assert.equal(ready.requiresMaterialExecution,true);
+  assert.equal(ready.authority,false);
+  assert.equal(chooseHybridLane(ready.hybridTurn),'TARGET_OBJECTIVE');
+  const invalid=[
+    {...h,targetId:'VX13' as const},
+    {...h,objectiveRef:'  '},
+    {...h,sessionRef:''},
+    {...h,planHash:'stale'},
+    {...h,source:'UNTRUSTED_LLM' as unknown as typeof h.source},
+  ];
+  for(const entry of invalid){
+    const d=bridgeIntentToDecision(intent,{agreedTaskHandoff:entry});
+    assert.equal(d.requiresMaterialExecution,false);
+    assert.equal(d.requiresGoalAgreement,true);
+    assert.equal(d.authority,false);
+  }
 });
