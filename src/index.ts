@@ -105,6 +105,7 @@ export * from './operating/reconcile';
 export * from './operating/bootstrap';
 
 export { resolveFocus, participantsForFocus } from './cockpit/currentFocus';
+export * from './cockpit/conversationActivity';
 export type {
   CurrentFocus as CockpitCurrentFocus,
   FocusResolution,

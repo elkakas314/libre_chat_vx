@@ -10,10 +10,11 @@ export const catalog=Object.freeze([
  {name:'nostromo_tarea_iniciar',group:'CLI_ASYNC',description:'Inicia un único proceso CLI gobernado sin bloquear la respuesta MCP'},
  {name:'nostromo_tarea_estado',group:'CLI_ASYNC',description:'Consulta estado y resultado de tarea por ID opaco'},
  {name:'nostromo_tarea_cancelar',group:'CLI_ASYNC',description:'Solicita cancelación del proceso; readback posterior obligatorio'},
+ {name:'nostromo_auditoria_r0',group:'AUDITORIA_R0',description:'Auditoría determinista R0 del sistema completo (backend, puertos, ollama, git, host, systemd, mcp). Read-only, un JSON.'},
 ]);
 const known=new Set(catalog.map(x=>x.name));
 export function selectedTools(raw) {
-  const mandatory=['nostromo_estado','nostromo_herramientas'];
+  const mandatory=['nostromo_estado','nostromo_herramientas','nostromo_auditoria_r0'];
   const names=raw===undefined?catalog.slice(0,4).map(x=>x.name):
     String(raw).split(',').map(x=>x.trim()).filter(Boolean);
   if(new Set(names).size!==names.length||names.some(x=>!known.has(x)))

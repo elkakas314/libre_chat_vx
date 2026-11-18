@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {mkdtemp,rm} from 'node:fs/promises';
+import {mkdtemp,rm,readdir,stat} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
 import {createAsyncJobs} from '../async-jobs.mjs';
@@ -126,5 +126,54 @@ test('R2 admission reservation prevents simultaneous execution while approval pe
   answer(false);
   assert.equal((await first).status,'LOCAL_APPROVAL_REQUIRED');
   assert.equal(jobs.activeCount(),0);
+ }finally{await rm(root,{recursive:true,force:true});}
+});
+
+
+test('persistent job history survives a new MCP job manager and files stay private',async()=>{
+ const root=await mkdtemp(path.join(tmpdir(),'nostromo-job-store-'));
+ const stateDir=path.join(root,'state');
+ try{
+  const jobs=createAsyncJobs({stateDir});
+  assert.equal(jobs.storageStatus(),'READY');
+  const started=await jobs.start({cwd:root,argv:['pwd'],timeout_s:5,max_output:1024},
+    {settings:{enabled:true,roots:[root]},approvalDir:''});
+  assert.equal(started.status,'RUNNING');
+  assert.equal(started.persisted,true);
+  const final=await wait(()=>{const v=jobs.status(started.jobId);return v.finishedAt?v:null;});
+  assert.equal(final.status,'EXIT_0');
+  assert.equal(final.persisted,true);
+  const names=await readdir(stateDir);
+  assert.deepEqual(names,[started.jobId+'.json']);
+  const file=await stat(path.join(stateDir,names[0]));
+  assert.equal(file.mode&0o077,0);
+  const recovered=createAsyncJobs({stateDir});
+  const readback=recovered.status(started.jobId);
+  assert.equal(readback.status,'EXIT_0');
+  assert.equal(readback.result.exitCode,0);
+  assert.equal(readback.persisted,true);
+  assert.equal(readback.materialVerified,false);
+ }finally{await rm(root,{recursive:true,force:true});}
+});
+
+test('a persisted RUNNING job becomes UNKNOWN_OUTCOME after restart and is never replayed',async()=>{
+ const root=await mkdtemp(path.join(tmpdir(),'nostromo-job-unknown-'));
+ const stateDir=path.join(root,'state');
+ let settle;
+ try{
+  const jobs=createAsyncJobs({stateDir,execute:()=>new Promise(resolve=>{settle=resolve;})});
+  const started=await jobs.start({cwd:root,argv:['pwd'],timeout_s:5,max_output:1024},
+    {settings:{enabled:true,roots:[root]},approvalDir:''});
+  assert.equal(started.status,'RUNNING');
+  for(let i=0;i<40&&!settle;i++)await new Promise(resolve=>setTimeout(resolve,5));
+  assert.equal(typeof settle,'function');
+  const recovered=createAsyncJobs({stateDir,execute:()=>{throw Error('must not replay');}});
+  const state=recovered.status(started.jobId);
+  assert.equal(state.status,'UNKNOWN_OUTCOME');
+  assert.equal(state.result.status,'UNKNOWN_OUTCOME');
+  assert.equal(state.persisted,true);
+  assert.equal(state.materialVerified,false);
+  settle({status:'CANCELLED',materialVerified:false});
+  await wait(()=>jobs.status(started.jobId).finishedAt?true:null);
  }finally{await rm(root,{recursive:true,force:true});}
 });

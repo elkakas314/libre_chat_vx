@@ -24,5 +24,6 @@ mcpServers:
     # Asíncrono opt-in, MISMO proceso MCP, 1 tarea activa; sin Worker ni daemon:
     # NOSTROMO_TOOL_SET: 'nostromo_terminal_preparar,nostromo_archivo_leer,nostromo_git_inspeccionar,nostromo_metricas,nostromo_tarea_iniciar,nostromo_tarea_estado,nostromo_tarea_cancelar'
     # El trío iniciar/estado/cancelar debe habilitarse completo. `timeout` 130 s no
-    # garantiza persistencia; el gestor retiene resultados sólo mientras vive el MCP.
+    # usa snapshots privados en NOSTROMO_APPROVAL_DIR/jobs; recupera resultados
+    # terminales tras reinicio y RUNNING como UNKNOWN_OUTCOME sin replay.
     # Activar NOSTROMO_MCP_ENABLED=1 sólo tras ACL y rutas host verificadas.
