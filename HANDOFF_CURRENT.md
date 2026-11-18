@@ -380,3 +380,9 @@ PRECEDENCE: this update supersedes older `PR26 DRAFT` or ChatGPT usage assumptio
 - TypeScript compile passed; focused HUD suite passed **12/12**. The first candidate run exposed a test selector matching the section label rather than the button; the assertion was corrected to inspect the button and fixture locator directly, then the focused suite passed.
 - No browser, host, service, OAuth, or conversation state changed. This only protects SOURCE consistency; native browser, HUD LIVE, and mobile remain unverified. Current-head GitHub jobs could not start runner steps, so no CI claim applies to this change.
 - Bounded Lenovo resource readback around the focused test at 22:29:55–22:29:56 UTC: load `1.10/1.15/1.02`; CPU PSI some avg10 2.55%, full 0%; memory PSI 0%; about 9.79 GB available of 16.27 GB; swap used 768 KB; GeForce 840M 5/4096 MiB at 0%; Ollama idle. The test took 0.165 s, Node RSS peaked around 48 MiB. Available RAM moved about 36 MiB during the brief sample; this does not indicate pressure or establish a trend.
+
+## 2026-11-18 — backend HTTP health R0 readback
+
+- HOST_CONTROL R0 confirms `vx-backend.service` is active/running (MainPID 5074), its local listener is `127.0.0.1:3080` (Node worker PID 5098), `GET /health` returns `200 OK`, and `GET /` returns LibreChat application HTML.
+- Read-only only; no host files, configuration, Mongo data, service, or process changed. This verifies local HTTP health only, not SIWC, an authenticated chat, MCP, Mongo recovery, or mobile.
+- Do not infer an R2 grant from `kernel_authority=false`; the actual grant state remains unavailable in the R0 status surface.
