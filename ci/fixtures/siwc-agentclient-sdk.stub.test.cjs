@@ -5,6 +5,8 @@ const { ChatOpenAI } = require('@librechat/agents/llm/openai');
 const siwcModule = process.env.NOSTROMO_SIWC_MODULE;
 if (!siwcModule) throw new Error('NOSTROMO_SIWC_MODULE_REQUIRED');
 const { createSiwcAgentClientRunAgent, createSiwcAgentClientRunBindingResolver } = require(siwcModule);
+const { registerSiwcAgentClientResolver } = require(
+  siwcModule.replace(/siwcOpenAiFetch\.js$/, 'siwcConnectionService.js'));
 const now = 1_800_000_000_000;
 const record = {
   clientId: 'oaiapp_fixture', hostId: 'urn:uuid:11111111-2222-4333-8444-555555555555',
@@ -42,13 +44,15 @@ test('installed LibreChat Agents SDK streams through the SIWC user-bound Respons
       : null;
     }, transport, now: () => now,
   });
+  const app = { locals: {} };
+  const unregister = registerSiwcAgentClientResolver(app, resolver);
   const persistedAgent = {
     id: 'nostromo-fixture', provider: 'ollama', model: 'qwen2.5:3b',
     instructions: 'Identidad persistente NOSTROMO',
     toolDefinitions: [{ name: 'nostromo_estado' }],
     model_parameters: { model: 'qwen2.5:3b', temperature: 0.1 },
   };
-  const binding = await resolver.resolveAgentClientRunBinding({
+  const binding = await app.locals.nostromoSiwc.resolveAgentClientRunBinding({
     authenticatedUserId: 'librechat-user-fixture', agentId: persistedAgent.id,
     agent: persistedAgent, conversationId: 'conversation-fixture', messages: ['Hola'],
   });
@@ -70,4 +74,6 @@ test('installed LibreChat Agents SDK streams through the SIWC user-bound Respons
   assert.equal(JSON.stringify(runAgent).includes(record.accessToken), false);
   assert.equal(persistedAgent.model, 'qwen2.5:3b');
   assert.equal(persistedAgent.model_parameters.temperature, 0.1);
+  unregister();
+  assert.equal(app.locals.nostromoSiwc, undefined);
 });
