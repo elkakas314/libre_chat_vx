@@ -65,22 +65,61 @@ export function resolveCloudflareGatewayBinding(
 }
 
 export interface CloudflareChatMessage {
-  role: 'system' | 'user' | 'assistant';
+  role: 'system' | 'user' | 'assistant' | 'tool';
   content: unknown;
+  name?: string;
+  tool_call_id?: string;
+  tool_calls?: readonly CloudflareToolCall[];
+}
+
+export interface CloudflareToolCall {
+  id: string;
+  type: 'function';
+  function: { name: string; arguments: string };
+}
+
+export interface CloudflareChatTool {
+  type: 'function';
+  function: {
+    name: string;
+    description?: string;
+    parameters: Readonly<Record<string,unknown>>;
+    strict?: boolean;
+  };
+}
+
+export type CloudflareChatToolChoice =
+  | 'none'
+  | 'auto'
+  | 'required'
+  | { type:'function'; function:{ name:string } };
+
+export interface CloudflareChatOptions {
+  tools?: readonly CloudflareChatTool[];
+  toolChoice?: CloudflareChatToolChoice;
 }
 
 export interface CloudflareChatRequest {
   model: string;
   messages: readonly CloudflareChatMessage[];
   stream: boolean;
+  tools?: readonly CloudflareChatTool[];
+  tool_choice?: CloudflareChatToolChoice;
 }
 
 export function buildCloudflareChatRequest(
   profile: SemanticProfileId,
   messages: readonly CloudflareChatMessage[],
   stream=true,
+  options: CloudflareChatOptions = {},
 ): CloudflareChatRequest {
-  return { model:CLOUDFLARE_SEMANTIC_ROUTES[profile], messages, stream };
+  return {
+    model:CLOUDFLARE_SEMANTIC_ROUTES[profile],
+    messages,
+    stream,
+    ...(options.tools ? {tools:options.tools} : {}),
+    ...(options.toolChoice ? {tool_choice:options.toolChoice} : {}),
+  };
 }
 
 export interface CloudflareNonSecretHeaders {
@@ -128,6 +167,7 @@ export class CloudflareAiGatewayClient {
     profile: SemanticProfileId,
     messages: readonly CloudflareChatMessage[],
     stream=true,
+    options: CloudflareChatOptions = {},
   ): Promise<CloudflareHttpResponse> {
     if (this.binding.state!=='CONFIGURED_SOURCE_ONLY' || !this.binding.baseURL) {
       throw new Error('CLOUDFLARE_AI_GATEWAY_UNCONFIGURED');
@@ -145,7 +185,7 @@ export class CloudflareAiGatewayClient {
         'Content-Type':'application/json',
         ...nonSecret,
       },
-      body:JSON.stringify(buildCloudflareChatRequest(profile,messages,stream)),
+      body:JSON.stringify(buildCloudflareChatRequest(profile,messages,stream,options)),
     });
   }
 }
