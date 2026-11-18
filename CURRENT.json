@@ -67,10 +67,10 @@
       "backend_started_local": "2026-11-18T07:31:15+01:00",
       "error_messages": 0,
       "generation_jobs_collection_present": false,
-      "interpretation": "The three rows are unfinished before the current backend start. Issue #37 comment 6970191036 correlates one row to a Qwen3 generation manually stopped after two minutes due CPU load; this is not evidence of an Ollama/provider exception. The other two rows remain uncorrelated. Do not auto-migrate or mutate them. The reported Ollama error is not tied to any row.",
+      "interpretation": "Three prior unfinished rows were observed: one is correlated to a manually stopped Qwen3 generation (issue #37 comment 6970191036), and two remain uncorrelated. A new same-chat retry was manually stopped after 120 seconds in this turn; its Mongo row state has not been read back. None of these observations proves the reported Ollama provider error. No Mongo mutation was performed.",
       "manual_mongo_mutation": false,
       "classification": "THREE_PRE_RESTART_UNFINISHED_ROWS; ONE CORRELATED TO A MANUALLY STOPPED GENERATION; TWO UNCORRELATED",
-      "known_manual_stop_count": 1,
+      "known_manual_stop_count": 2,
       "uncorrelated_count": 2
     },
     "host_resource_readback": {
@@ -83,35 +83,54 @@
     },
     "remaining_blockers": [
       "Specific Ollama provider failure remains uncorrelated and unreproduced",
-      "Normal latency for a real LibreChat turn is unverified; prior successful two-tool turn took about five minutes",
-      "Swap currently has only 468 kB free",
-      "One known manual-stop response and two uncorrelated unfinished rows remain; the known manual stop is not proof of provider error",
-      "Recovery after a fresh real provider error is not verified"
+      "Same-chat retry after preflight error was accepted but produced no visible text in 120s; CPU-heavy latency remains",
+      "Normal response completion and recovery after a real provider error are unverified",
+      "Swap remains saturated (64 kB free during post-stop readback)",
+      "Mongo readback for the newly stopped assistant turn is missing"
     ],
     "overall": "PARTIAL_PASS_NOT_FINAL",
     "latest_runtime_readback": {
-      "verified_at_utc": "2026-11-18T07:38:49Z",
+      "verified_at_utc": "2026-11-18T07:50:13Z",
       "backend_service": "ACTIVE",
-      "backend_pid": 383222,
+      "backend_api_pid": 383247,
+      "backend_cwd": "/home/elkakas314/librechat/upstream",
       "production_upstream_head": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
       "agents_package_version": "4.0.1",
-      "ollama_api_ps": "no model currently loaded (idle readback)",
-      "qwen3_model_installed": true,
-      "qwen3_current_loaded_context": null,
-      "last_completed_live_context": 6144,
-      "ram_available_mb": 9464,
+      "deferred_patch_reapplied_by": "ExecStartPre",
+      "ollama_api_ps": "qwen3:4b-instruct-2507-q4_K_M loaded during same-chat retry; remained loaded but idle after cancellation",
+      "ollama_context_length": 6144,
+      "ollama_model_bytes": 3983320021,
+      "ollama_vram_bytes": 3049091235,
+      "ram_available_mb": 8155,
       "swap_total_mb": 2047,
-      "swap_free_mb": 0,
-      "active_hostcontrol_grant_for_install_or_restart": "not observed in local grants directory; no write or restart attempted",
-      "ui_readback": {
-        "conversation_id": "37c3579f-0371-5694-b713-bfe68830ae16",
-        "preflight_error_visible": true,
-        "follow_up_message_present": true,
-        "assistant_follow_up_empty": true,
-        "composer_enabled": true,
-        "source_of_blank_follow_up": "previously documented manual stop; not a provider error"
+      "swap_free_kb": 64,
+      "llama_server": {
+        "pid": 411176,
+        "state_after_stop": "S",
+        "cpu_seconds": 143.84,
+        "rss_mb": 1268,
+        "threads": 14
       },
-      "swap_free_kb": 468
+      "active_hostcontrol_grant_for_install_or_restart": "not observed; no install/restart performed"
+    },
+    "same_chat_retry_20261118": {
+      "conversation_id": "37c3579f-0371-5694-b713-bfe68830ae16",
+      "user_message_id": "dbb90235-85d3-4f17-ab07-99e6cc27ed9f",
+      "assistant_message_id": "dbb90235-85d3-4f17-ab07-99e6cc27ed9f_",
+      "request_accepted": true,
+      "ui_context_tokens": 5468,
+      "ui_context_window_approx": 5800,
+      "ui_context_percent": 94,
+      "ollama_context_length": 6144,
+      "visible_text_produced": false,
+      "stopped_manually_after_seconds": 120,
+      "provider_error_visible": false,
+      "assistant_row_mongo_state": "NOT_READ_BACK",
+      "after_stop_runner_idle": true,
+      "swap_free_after_stop_kb": 64,
+      "conclusion": "Same-chat follow-up accepted and dispatched, but no answer within 120s; this is not a reproduced provider error and does not pass completion/recovery.",
+      "user_requested_tools": 0,
+      "outbound_tool_definitions_count": "NOT_READ_BACK"
     }
   },
   "repository": "elkakas314/libre_chat_vx",
