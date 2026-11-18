@@ -109,12 +109,14 @@ export default function VXCockpitBridge({ onClose, activity: activityInput, phon
         <section className="vx-autonomy-card" aria-labelledby="vx-autonomy-heading">
           <div className="vx-autonomy-topline">
             <span className="vx-autonomy-label"><span className="vx-autonomy-beacon" aria-hidden="true"/> NOSTROMO · AUTÓNOMO</span>
-            <span className="vx-autonomy-stage">CHAT→MCP NO VERIFICADO</span>
+            <span className="vx-autonomy-stage">
+              {activity.toolCallCount > 0 ? 'LLAMADAS REGISTRADAS EN EL CHAT' : 'SIN LLAMADAS REGISTRADAS EN ESTE CHAT'}
+            </span>
           </div>
           <div className="vx-autonomy-main">
             <div>
               <h3 id="vx-autonomy-heading">Habla. Encarga. Comprueba.</h3>
-              <p>El contexto de conversación aparece arriba. Este panel no confirma el registro del agente, el estado del MCP ni el resultado de sus herramientas.</p>
+              <p>Esta tarjeta refleja los mensajes cargados arriba; no representa la salud global del MCP ni verifica el efecto material de sus llamadas.</p>
             </div>
             <div className="vx-autonomy-terminal-glyph" aria-hidden="true">&gt;_</div>
           </div>
