@@ -826,5 +826,40 @@
       "vmstat_cpu_idle_percent": 97
     },
     "result": "LIVE_REMOTE_ROUTING_AND_MEMORY_NOT_VERIFIED; PRODUCT_INCOMPLETE"
+  },
+  "e3_node24_runtime_readback_20261118": {
+    "evidence_class": "HOST_R0_PROCESS_MAPS_SYSTEMD_AND_GITHUB_READBACK",
+    "verified_at_utc": "2026-11-18T13:45:23Z",
+    "source_review_head_at_observation": "d51025c50303efe40b185303bff8aba4a85f3569",
+    "production_upstream_head": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
+    "service": {
+      "unit": "vx-backend.service",
+      "state": "active",
+      "main_pid": 503674,
+      "systemd_path": "/home/elkakas314/.config/systemd/user/vx-backend.service",
+      "node_path_from_maps": "/home/elkakas314/.nvm/versions/node/v24.21.0/bin/node",
+      "node_version": "24.21.0",
+      "restart_needed_for_node24": false
+    },
+    "mcp": {
+      "pid": 503777,
+      "cmdline_path": "/home/elkakas314/libre_chat_vx-clean/deployment/nostromo-mcp/server.mjs",
+      "in_backend_cgroup": true
+    },
+    "host_control": {
+      "kernel_authority": false,
+      "grants_directory_entries": [
+        "restart-canary.lock",
+        "test-grant-0001.lock"
+      ],
+      "persistent_r2_grant": "NOT_OBSERVED"
+    },
+    "pr": {
+      "number": 54,
+      "state": "OPEN_DRAFT",
+      "merged": false
+    },
+    "workflow_runs_associated_by_connector": [],
+    "result": "NODE24_AND_MCP_RUNTIME_PATH_VERIFIED; HOST_WRITE_GRANT_NOT_OBSERVED; PRODUCT_INCOMPLETE"
   }
 }
