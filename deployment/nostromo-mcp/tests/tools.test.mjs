@@ -4,7 +4,7 @@ import {catalog,selectedTools,describeTools} from '../tools.mjs';
 
 test('single MCP catalog includes health, audit, tool management and terminal preview/execute',()=>{
   const set=selectedTools(undefined);
-  assert.equal(catalog.length,11);
+  assert.equal(catalog.length,12);
   assert.deepEqual([...set].sort(),[
     'nostromo_estado','nostromo_herramientas','nostromo_auditoria_r0',
     'nostromo_terminal_preparar','nostromo_terminal_ejecutar'

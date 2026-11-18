@@ -162,3 +162,8 @@ npm --prefix deployment/nostromo-mcp run check
 Los tests recorren el MCP real por \`stdio\`, ejercitan almacenamiento privado,
 readback tras reinicio y recuperación \`UNKNOWN_OUTCOME\` sin replay. **No
 prueban vinculación al agente LibreChat ni una conversación real**.
+
+
+## Listado R0 de directorios (SOURCE en rama de revisión, no despliegue)
+
+La capacidad opcional nostromo_directorio_listar pertenece al MCP stdio existente; no crea segundo servidor, puerto ni worker. Administrador: añadir el nombre a NOSTROMO_TOOL_SET solo tras comparar con el MCP activo del Lenovo. Input: directory absoluta, maxEntries entre 1 y 64. Verifica el directorio real a través de /proc/self/fd en Linux, restringe NOSTROMO_ALLOWED_ROOTS y filtra nombres sensibles. Entrega nombres y tipos sin contenido ni enlaces resueltos; no otorga permisos ni emite materialVerified=true. El proceso activo puede contener una implementación local más nueva: realizar semdiff y preservar su código antes de desplegar. No usar como sustituto del diagnóstico de tool-selection del agente Ollama.

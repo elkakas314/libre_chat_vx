@@ -28,7 +28,7 @@ test('MCP handshake, exactly three terminal tools, fail-closed by default',async
   assert.match(toolList.find(t=>t.name==='nostromo_estado').description,/R0 read-only, structured status/i);
   assert.match(toolList.find(t=>t.name==='nostromo_estado').description,/explicitly asks for nostromo_estado/i);
   const toolView=parse(await client.callTool({name:'nostromo_herramientas',arguments:{}}));
-  assert.equal(toolView.tools.length,11);
+  assert.equal(toolView.tools.length,12);
   assert.equal(toolView.tools.filter(t=>t.enabled).length,5);
   assert.equal(toolView.mutableByModel,false);
   const state=parse(await client.callTool({name:'nostromo_estado',arguments:{}}));
@@ -39,6 +39,29 @@ test('MCP handshake, exactly three terminal tools, fail-closed by default',async
   assert.equal(call.isError,true);
   assert.equal(parse(call).status,'DISABLED');
  });
+});
+test('MCP stdio scoped directory listing is opt-in, R0 and never reveals secret names',async()=>{
+ const root=await mkdtemp(path.join(tmpdir(),'nostromo-mcp-dir-'));
+ try{
+  await writeFile(path.join(root,'public.md'),'SAFE');
+  await writeFile(path.join(root,'.env'),'TOKEN=PRIVATE');
+  await writeFile(path.join(root,'secret-token.txt'),'HIDDEN');
+  await withServer({NOSTROMO_MCP_ENABLED:'1',NOSTROMO_ALLOWED_ROOTS:root,
+      NOSTROMO_TOOL_SET:'nostromo_directorio_listar'},async client=>{
+    const listed=(await client.listTools()).tools.map(x=>x.name);
+    assert.equal(listed.includes('nostromo_directorio_listar'),true);
+    assert.equal(listed.includes('nostromo_terminal_ejecutar'),false);
+    const response=await client.callTool({name:'nostromo_directorio_listar',
+      arguments:{directory:root,maxEntries:12}});
+    assert.notEqual(response.isError,true);
+    const data=parse(response);
+    assert.equal(data.status,'READ_OK');
+    assert.equal(data.entries.some(e=>e.name==='public.md'),true);
+    assert.equal(data.entries.some(e=>e.name==='.env'),false);
+    assert.equal(data.entries.some(e=>e.name==='secret-token.txt'),false);
+    assert.equal(data.materialVerified,false);
+  });
+ }finally{await rm(root,{recursive:true,force:true});}
 });
 test('MCP stdio R0 command executes in allowlisted temporary directory',async()=>{
  const root=await mkdtemp(path.join(tmpdir(),'nostromo-mcp-'));

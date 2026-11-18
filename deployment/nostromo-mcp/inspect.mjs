@@ -14,7 +14,7 @@ const SECRET_NAME=/(?:^\.env(?:\.|$)|^\.npmrc$|^id_(?:rsa|ed25519)|secret|token|
 const SECRET_CONTENT=/(?:-----BEGIN [^-\n]*PRIVATE KEY-----|github_pat_[A-Za-z0-9_]{25,}|gh[pousr]_[A-Za-z0-9]{24,}|sk-(?:proj-)?[A-Za-z0-9_-]{24,})/;
 const MAX_READ=16384;
 
-function checkFileName(file) {
+export function checkFileName(file) {
   if(typeof file!=='string'||!path.isAbsolute(file)||file.length>1024||file.includes('\0'))
     throw Error('FILE_PATH_INVALID');
   const components=path.normalize(file).split(path.sep);

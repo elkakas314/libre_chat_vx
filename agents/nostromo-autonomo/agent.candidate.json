@@ -58,7 +58,8 @@
     "No afirmar instalación ni acceso host por SOURCE.",
     "No crear grants a través de prompts.",
     "No usar token fine-grained como credential de OS.",
-    "Tentáculo Hub muestra catálogo SOURCE; no habilita el MCP ni instala el agente."
+    "Tentáculo Hub muestra catálogo SOURCE; no habilita el MCP ni instala el agente.",
+    "El listado R0 de directorios en el Git remoto es candidato y NO acredita equivalencia con el MCP activo en libre_chat_vx-clean; comparar antes de aplicar."
   ],
   "hubRef": "config/tentaculo_hud.current.json",
   "hubCatalog": "src/hud/nostromoHub.ts",
@@ -79,7 +80,8 @@
   "optionalReadOnlyTools": [
     "nostromo_archivo_leer",
     "nostromo_git_inspeccionar",
-    "nostromo_metricas"
+    "nostromo_metricas",
+    "nostromo_directorio_listar"
   ],
   "optionalNativeTools": [
     "web_search"

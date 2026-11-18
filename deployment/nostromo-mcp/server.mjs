@@ -11,6 +11,7 @@ import path from 'node:path';
 import {normalizeRequest,preview,consumeApproval,executeLocal} from './policy.mjs';
 import {selectedTools,describeTools} from './tools.mjs';
 import {readScopedText,readHostMetrics,readGitSnapshot} from './inspect.mjs';
+import {listScopedDirectory} from './directory.mjs';
 import {createAsyncJobs} from './async-jobs.mjs';
 import {auditoriaR0} from './audit.mjs';
 
@@ -84,6 +85,16 @@ if(activeTools.has('nostromo_archivo_leer'))server.registerTool('nostromo_archiv
     const data=await readScopedText(args,settings);
     return result(data,data.status!=='READ_OK');
   }catch(e){return result({status:'DENIED',reason:String(e?.message||'FILE_READ_FAILED')},true);}
+});
+if(activeTools.has('nostromo_directorio_listar'))server.registerTool('nostromo_directorio_listar',{
+  description:'R0: lista hasta 64 nombres públicos, sin leer archivos ni seguir symlinks. Alcance por directorio canónico y descriptor comprobado; filtra nombres sensibles.',
+  inputSchema:{directory:z.string().min(1).max(1024),
+    maxEntries:z.number().int().min(1).max(64).default(20)}
+},async args=>{
+  try{
+    const data=await listScopedDirectory(args,settings);
+    return result(data,data.status!=='READ_OK');
+  }catch(e){return result({status:'DENIED',reason:String(e?.message||'DIRECTORY_LIST_FAILED')},true);}
 });
 if(activeTools.has('nostromo_git_inspeccionar'))server.registerTool('nostromo_git_inspeccionar',{
   description:'R0: obtener HEAD, rama, cambios y diff --stat de Git bajo raíces permitidas.',
