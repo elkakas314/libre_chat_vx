@@ -1305,4 +1305,92 @@
     "result": "NODE24_AND_DEFERRED_FILTER_INSTALLED_READBACK_VERIFIED; NO_CONVERSATION_OR_MCP_E2E_PASS",
     "next": "Do one bounded real-agent hello/MCP canary through an authenticated UI when interaction is available and host load remains safe; verify final response, Mongo persistence and reload. Keep PR #54 DRAFT."
   }
+,
+  "e3_live_short_hello_canary_resource_readback_20261118": {
+    "evidence_class": "LIVE_AUTHENTICATED_AGENT_UI_CANARY_AND_HOST_RESOURCE_READBACK",
+    "verified_at_utc": "2026-11-18T15:33:51Z",
+    "head_before_receipt": "dd5194dd11ecb618ac2e55db68696592a4a16937",
+    "canary": {
+      "agent_surface": "LibreChat Agent R0 / My Agents",
+      "model_from_ollama_readback": "qwen3:4b-instruct-2507-q4_K_M",
+      "ollama_runtime": {
+        "runner": "llamacpp",
+        "context_length": 6144,
+        "size_vram_bytes": 3049091235
+      },
+      "turns": {
+        "user_messages": 2,
+        "assistant_rows": 2,
+        "assistant_nonempty_responses": 0,
+        "mcp_calls": 0
+      },
+      "context_ui_tokens": {
+        "first_turn_used": 5347,
+        "first_turn_available_budget": 5800,
+        "second_turn_used": 5380,
+        "second_turn_available_budget": 5800,
+        "after_reload_before_next_turn": 37
+      },
+      "outcome": {
+        "first_turn": "no final text after 22s; stopped",
+        "second_turn_same_chat": "accepted; no final text after 35s; stopped",
+        "reload": "same conversation and both user/assistant row pairs reappeared; assistant rows empty",
+        "direct_mongodb_field_readback": "NOT_PERFORMED"
+      }
+    },
+    "resource_samples": {
+      "before_first": {
+        "mem_available_kb": 9393928,
+        "swap_free_kb": 7388,
+        "cpu_psi_some_avg10_percent": 3.98,
+        "memory_psi_full_avg10_percent": 0,
+        "loadavg_1m": 1.13,
+        "ollama_models": []
+      },
+      "first_during": {
+        "mem_available_kb": 8949268,
+        "swap_free_kb": 16,
+        "cpu_psi_some_avg10_percent": 16.53,
+        "memory_psi_full_avg10_percent": 0.65,
+        "loadavg_1m": 2.97
+      },
+      "after_first_stop": {
+        "mem_available_kb": 8136516,
+        "swap_free_kb": 44,
+        "cpu_psi_some_avg10_percent": 3.38,
+        "memory_psi_full_avg10_percent": 0.03,
+        "loadavg_1m": 2.67
+      },
+      "second_during_peak": {
+        "mem_available_kb": 8075952,
+        "swap_free_kb": 92,
+        "cpu_psi_some_avg10_percent": 18.68,
+        "memory_psi_full_avg10_percent": 0,
+        "loadavg_1m": 4.44
+      },
+      "after_second_stop": {
+        "mem_available_kb": 8189056,
+        "swap_free_kb": 96,
+        "cpu_psi_some_avg10_percent": 3.21,
+        "memory_psi_full_avg10_percent": 0,
+        "loadavg_1m": 3.57,
+        "ollama_model_still_loaded_vram_bytes": 3049091235
+      },
+      "after_natural_unload": {
+        "mem_available_kb": 9542608,
+        "swap_free_kb": 104,
+        "cpu_psi_some_avg10_percent": 1.59,
+        "memory_psi_full_avg10_percent": 0,
+        "loadavg_1m": 1.15,
+        "ollama_models": []
+      }
+    },
+    "interpretation": {
+      "verified": "two short user turns were accepted in one persisted chat; both generated assistant rows remained empty after reload; Ollama unloaded itself and MemAvailable recovered by 1.35GB after expiry",
+      "not_proven": "direct Mongo row fields; exact role/token breakdown of the backend-to-Ollama payload; whether fixed 5.3k UI context is instructions, tools, or both",
+      "safety": "both test turns stopped when response did not arrive and CPU pressure rose; no more inference run"
+    },
+    "result": "LIVE_CHAT_RECOVERY_AND_CONTEXT_ACCEPTANCE_PARTIAL; CONVERSATION_RESPONSE_FAIL; MCP_NOT_EXERCISED; NO_PASS",
+    "next": "Inspect a sanitized request/preflight breakdown by role and source; reduce only demonstrated fixed instruction/tool overhead while preserving catalog and guardrails. Do not repeat inference until the payload/config correction is evidenced. Mongo direct readback remains pending."
+  }
 }
