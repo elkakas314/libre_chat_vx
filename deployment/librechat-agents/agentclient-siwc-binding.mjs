@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { createHash } from 'node:crypto';
-import { copyFileSync, readFileSync, renameSync, writeFileSync } from 'node:fs';
+import { constants, copyFileSync, readFileSync, renameSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { execFileSync } from 'node:child_process';
 
@@ -102,7 +102,7 @@ function stage(upstreamRoot) {
     return;
   }
   const backup = `${file}.nostromo-siwc-preimage-${BASE_SHA256.slice(0, 12)}.bak`;
-  copyFileSync(file, backup, { flag: 'wx' });
+  copyFileSync(file, backup, constants.COPYFILE_EXCL);
   const temporary = `${file}.nostromo-siwc-stage.tmp`;
   writeFileSync(temporary, updated, { mode: 0o644, flag: 'wx' });
   renameSync(temporary, file);
