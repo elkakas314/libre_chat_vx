@@ -110,7 +110,7 @@ for (const viewport of [
         await expect(context.getByTestId('tentaculo-focus').getByRole('heading',{name:'ORÁCULO'})).toBeVisible();
         await modes.getByRole('button',{name:'MANOJOS'}).click();
         await expect(context.getByTestId('tentaculo-focus').getByRole('heading',{name:'MANOJOS'})).toBeVisible();
-        await context.getByRole('button',{name:'Volver a NOSTROMO'}).click();
+        await context.getByRole('button',{name:'Volver al contexto'}).click();
         await expect(context.getByTestId('tentaculo-focus')).toHaveCount(0);
         await expect(modes.getByRole('button',{name:'NOSTROMO Autónomo'})).toHaveAttribute('aria-pressed','true');
         await expect(context.getByRole('heading',{name:'Estado de la conversación'})).toBeVisible();
