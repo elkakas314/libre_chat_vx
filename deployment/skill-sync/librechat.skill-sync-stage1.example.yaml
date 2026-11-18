@@ -1,5 +1,6 @@
 # SOURCE EXAMPLE ONLY — do not merge blindly into an existing librechat.yaml.
-# LibreChat GitHub Skill Sync: stage 1; private repo, token injected only at host runtime.
+# LibreChat GitHub Skill Sync stage 1 discovers 14 SOURCE roots (no auto-activation).
+# Preserve LIVE sourceId, freeze reviewed SHA and verify ACL before enabling.
 skillSync:
   github:
     enabled: true
@@ -9,7 +10,7 @@ skillSync:
       - id: nostromo-vx-skills
         owner: elkakas314
         repo: libre_chat_vx
-        ref: handoff_current_bootstrps
+        ref: integration/nostromo-canon-20261118-r1
         paths:
           - skills
         skillDiscoveryDepth: 1

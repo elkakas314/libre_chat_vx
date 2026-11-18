@@ -1,5 +1,6 @@
 # SOURCE EXAMPLE ONLY — do not merge blindly into an existing librechat.yaml.
-# LibreChat GitHub Skill Sync: stage 2; private repo, token injected only at host runtime.
+# LibreChat GitHub Skill Sync stage 2 mirrors 10 canonical roots only.
+# Preserve LIVE sourceId, freeze reviewed SHA, canary and rollback first.
 skillSync:
   github:
     enabled: true
@@ -9,7 +10,7 @@ skillSync:
       - id: nostromo-vx-skills
         owner: elkakas314
         repo: libre_chat_vx
-        ref: handoff_current_bootstrps
+        ref: integration/nostromo-canon-20261118-r1
         paths:
           - skills/nostromo-core
           - skills/nostromo-visualization

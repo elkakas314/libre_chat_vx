@@ -5,7 +5,7 @@
 ## SOURCE y dos etapas
 
 - Canon: `SPEC.json#/backlog/active_live/1`, `#/meta/reglas_evidencia_runtime`; `config/skills.current.json#/catalog`, `#/legacy_compatibility`, `#/counts`.
-- Config staged: `deployment/skill-sync/README.md` y sus dos YAML de ejemplo. Stage 1 descubre las 12 carpetas físicas mediante `paths=["skills"]`, depth 1; stage 2 selecciona 10 activas, depth 0, reteniendo en Git las dos heredadas.
+- Config staged: `deployment/skill-sync/README.md` y sus dos YAML de ejemplo. Stage 1 descubre las 14 carpetas físicas mediante `paths=["skills"]`, depth 1; stage 2 selecciona 10 activas, depth 0, reteniendo en Git las dos heredadas y las dos opcionales de agente.
 - Upstream fijado: `f10b1d91f1eee3a2c82d5247bf620351486b7c1b`; el admin status devuelve `sources[].sourceId` (camelCase), normalizado a `source_id` en la evidencia.
 - **Conflicto abierto:** ejemplo antiguo `librechat-vx-skills` y staged `nostromo-vx-skills`. Ningún ID se presume LIVE: leer admin `sourceId` y resolver el mirror preexistente sin renombrarlo.
 
@@ -49,14 +49,14 @@ bash canaries/skill-sync-live/04-permissions-and-visibility.sh
 ## Qué considera cada PASS
 
 1. **01:** endpoint admin autenticado HTTP 200 con sourceId/paths válidos y fuente seleccionada sin ambigüedad. Un 200 solo acredita lectura, no coherencia del mirror.
-2. **02:** inventario físico de 12, catálogo de 10 activos y 2 heredados, sin cambiar archivos; registra JSON aunque haya discrepancia y acaba FAIL.
-3. **03:** estado `succeeded`, paths de etapa correcta, 0 skipped, contadores de 12/10, HEAD checkout igual al GitHub ref autenticado; los 12/10 mirror IDs se obtienen de un readback externo privado. Para cada `SKILL.md`, `git_blob_sha` remoto y `sha256` del body del mirror deben coincidir. Un `sourceMetadata.commitSha` histórico debe ser antecesor del HEAD: no confundir git_commit_sha con git_blob_sha. Falla cerrado si falta acceso a `GET /api/skills/:id`.
+2. **02:** inventario físico de 14, catálogo de 10 activos, 2 heredados y 2 opcionales de agente, sin cambiar archivos; registra JSON aunque haya discrepancia y acaba FAIL.
+3. **03:** estado `succeeded`, paths de etapa correcta, 0 skipped, contadores de 14/10, HEAD checkout igual al GitHub ref autenticado; los 14/10 mirror IDs se obtienen de un readback externo privado. Para cada `SKILL.md`, `git_blob_sha` remoto y `sha256` del body del mirror deben coincidir. Un `sourceMetadata.commitSha` histórico debe ser antecesor del HEAD: no confundir git_commit_sha con git_blob_sha. Falla cerrado si falta acceso a `GET /api/skills/:id`.
 4. **04:** dos cuentas de roles distintos (GET `/api/user`) prueban lectura 200 y denegación 403/404 del mismo Skill. Comprobar que no es público. Esto prueba **visibilidad efectiva de los dos testigos**, no un inventario exhaustivo de ACL internas.
 5. **Gate LIVE:** además de los cuatro PASS, exigir confirmación de permisos y tenant, snapshot previo y posterior, auditoría de ACL completa cuando esté disponible, origen de los IDs, ausencia de aliases en el mirror stage 2, rollback readback y aceptación operativa. La fuente Source no prueba que la sincronización material haya ocurrido. Sin estas pruebas, **OPEN**.
 
 ## Rollback
 
-`05-rollback.md`: no ejecuta rollback. En stage 2, conservar las 2 carpetas heredadas en Git aunque los mirrors se retiren mediante acción de admin separada y autorizada. Ante UNKNOWN_OUTCOME, readback del mismo estado/ejecución antes de reintentar materialmente.
+`05-rollback.md`: no ejecuta rollback. En stage 2, conservar las 2 carpetas heredadas y las 2 opcionales de agente en Git aunque los mirrors se retiren mediante acción de admin separada y autorizada. Ante UNKNOWN_OUTCOME, readback del mismo estado/ejecución antes de reintentar materialmente.
 
 ## Notas de seguridad
 
