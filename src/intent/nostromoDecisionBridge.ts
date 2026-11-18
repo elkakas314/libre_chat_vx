@@ -52,6 +52,7 @@ export function bridgeIntentToDecision(
       needsResearch:intent.needsResearch,
       needsVisualization:intent.needsVisualization,
       needsLongContext,
+      needsVision,
       targetActionRequested:materialReady,
       preferLocalVoice,
     },

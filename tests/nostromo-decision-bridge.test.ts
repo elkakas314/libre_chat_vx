@@ -54,3 +54,21 @@ test('unresolved target command is blocked, but target read requires readback',(
   assert.equal(read.requiresMaterialExecution,false);
   assert.equal(read.requiresReadbackBeforeResponse,true);
 });
+
+test('local GPU voice preference never swallows complex tasks or target commands',()=>{
+  const simple=bridgeIntentToDecision(interpretIntent({}),{preferLocalVoice:true});
+  assert.equal(chooseHybridLane(simple.hybridTurn),'LOCAL_VOICE');
+  for(const signals of [
+    {wantsResearch:true},
+    {wantsVisualization:true},
+    {wantsExternalChange:true,explicitTarget:'MANOJOS3' as const},
+  ]) {
+    const decision=bridgeIntentToDecision(interpretIntent(signals),{preferLocalVoice:true});
+    assert.notEqual(chooseHybridLane(decision.hybridTurn),'LOCAL_VOICE');
+  }
+  const vision=bridgeIntentToDecision(interpretIntent({}),{preferLocalVoice:true,needsVision:true});
+  assert.equal(chooseHybridLane(vision.hybridTurn),'REMOTE_INFERENCE');
+  assert.equal(vision.hybridTurn.needsVision,true);
+  const bypass={...simple.hybridTurn,needsResearch:true,preferLocalVoice:true};
+  assert.equal(chooseHybridLane(bypass),'REMOTE_INFERENCE');
+});
