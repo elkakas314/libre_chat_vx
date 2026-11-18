@@ -1061,5 +1061,74 @@
     },
     "interpretation": "The Builder confirms full MCP catalog selection with 2 direct and 9 deferred; Tools 2 in the summary means two selected sources, not two MCP functions. This is authenticated UI state, not a direct Mongo read or proof of a tool call.",
     "next_action": "Use a supported authenticated R0 agent/database readback channel or have the host owner expose one; then validate the already configured tool selection with a bounded conversation only after a low-cost provider route is verified."
+  },
+  "e3_cabin_activity_truth_20261118": {
+    "evidence_class": "HOST_LIVE_UI_READBACK_SOURCE_TEST_AND_RESOURCE_R0",
+    "verified_at_utc": "2026-11-18 14:34:28 UTC",
+    "live_ui": {
+      "agent_id": "agent_9ex2a9buul2cwzyo",
+      "chat": "new chat, 0 messages, 0 tool calls, idle",
+      "cabin": "opened successfully inside LibreChat",
+      "observed_source_runtime_copy": "The local dirty upstream overlay claimed Qwen2.5 3B and first chat pending; this conflicts with authenticated Builder readback showing Qwen3 4B and with prior MCP conversation receipts.",
+      "agent_model": "Ollama qwen3:4b-instruct-2507-q4_K_M"
+    },
+    "unique_runtime_work": {
+      "path": "/home/elkakas314/librechat/upstream/client/src/components/VX/VXCockpitBridge.tsx",
+      "status": "dirty local difference from PR overlay source; preserved and not overwritten",
+      "contains_phone_changes": true
+    },
+    "source_fix": {
+      "file": "overlay/upstream/VXCockpitBridge.tsx",
+      "commit": "0cd0cf19cb8e4f033614fcfbe70a029162ad7ff1",
+      "blob": "b6553941bc089b910e75296077e93dbcccaa2084",
+      "change": "Cabin badge now describes tool calls in currently loaded chat; copy explicitly says the card does not prove MCP health or material tool effects. Removes a global unverified label."
+    },
+    "tests": {
+      "tentaculo_hud": {
+        "passed": 11,
+        "failed": 0,
+        "node": "24.21.0"
+      },
+      "native_visual_gate": {
+        "passed": 3,
+        "failed": 0,
+        "node": "24.21.0"
+      },
+      "git_diff_check": "PASS",
+      "dependencies_installed": false
+    },
+    "exact_head_ci": {
+      "head": "0cd0cf19cb8e4f033614fcfbe70a029162ad7ff1",
+      "workflow_runs": []
+    },
+    "resources_after_source_test": {
+      "mem_total_kb": 16267088,
+      "mem_available_kb": 9368196,
+      "swap_total_kb": 2097148,
+      "swap_free_kb": 8,
+      "memory_psi_some_avg10_percent": 0,
+      "memory_psi_full_avg10_percent": 0,
+      "cpu_psi_some_avg10_percent": 2.37,
+      "loadavg_1m": 0.81,
+      "pswpin_pages_since_14_14_utc": 41,
+      "pswpout_pages_since_14_14_utc": 1749,
+      "known_process_pss_kb": {
+        "backend_node": 27905,
+        "nostromo_mcp": 31339,
+        "ollama_daemon": 21870
+      },
+      "known_chrome_swap_kb": [
+        27052,
+        51756,
+        65148
+      ],
+      "ollama_api_ps": "models=[]",
+      "gpu": "not measured"
+    },
+    "interpretation": "Available RAM remains about 8.93 GiB and memory PSI is zero. Swap is effectively full; the 19-minute vmstat delta is about 164 kB in and 6.84 MiB out, not a high sustained rate. Main backend/MCP/Ollama PSS is stable and small; several Chrome processes currently have swapped pages. This does not prove a leak.",
+    "host_changes": false,
+    "agent_settings_saved": false,
+    "live_overlay_deployed": false,
+    "product_status": "INCOMPLETE"
   }
 }
