@@ -31,6 +31,19 @@ METRICS="$(mktemp)"
 RESULT='FAIL'
 STARTED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 MONITOR_PID=''
+NODE_MODULES_LINKED='false'
+
+if [[ ! -e "$ROOT/node_modules" && -n "${NOSTROMO_CI_NODE_MODULES:-}" ]]; then
+  if [[ ! -d "$NOSTROMO_CI_NODE_MODULES" ]]; then
+    echo 'LOCAL_CI_PRECONDITION=provided_node_modules_path_unavailable' >&2
+    exit 6
+  fi
+  ln -s "$NOSTROMO_CI_NODE_MODULES" "$ROOT/node_modules"
+  NODE_MODULES_LINKED='true'
+fi
+if [[ -d "$ROOT/node_modules/.bin" ]]; then
+  export PATH="$ROOT/node_modules/.bin:$PATH"
+fi
 
 cpu_ticks() {
   awk '/^cpu / { total=0; for(i=2;i<=NF;i++) total+=$i; idle=$5+$6; printf "total=%d idle=%d", total, idle }' /proc/stat 2>/dev/null || printf 'unavailable'
@@ -74,6 +87,9 @@ finish() {
     -e 's/(github_pat_|gho_|ghp_)[A-Za-z0-9_]{8,}/[REDACTED]/g' \
     -e 's/(sk-[A-Za-z0-9_-]{8,})/[REDACTED]/g' >> "$LOG"
   rm -f "$METRICS"
+  if [[ "$NODE_MODULES_LINKED" == 'true' && -L "$ROOT/node_modules" ]]; then
+    unlink "$ROOT/node_modules"
+  fi
   cat > "$RECEIPT_DIR/local-ci-$SHORT_SHA.json" <<EOF
 {
   "head": "$EXPECTED_SHA",
@@ -92,6 +108,10 @@ trap finish EXIT
 
 : > "$LOG"
 echo "LOCAL_CI_BEGIN sha=$EXPECTED_SHA" | tee -a "$LOG"
+if ! command -v tsc >/dev/null 2>&1; then
+  echo 'LOCAL_CI_PRECONDITION=typescript_compiler_unavailable' | tee -a "$LOG"
+  exit 6
+fi
 snapshot
 (
   while sleep 2; do snapshot; done
