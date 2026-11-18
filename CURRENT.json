@@ -2150,7 +2150,11 @@
       },
       "swap_total_kb": 2097148,
       "swap_free_kb": 2096380,
-      "cpu_loadavg_1_5_15m": [1.1, 1.15, 1.02],
+      "cpu_loadavg_1_5_15m": [
+        1.1,
+        1.15,
+        1.02
+      ],
       "cpu_psi_some_avg10_pct": 2.55,
       "cpu_psi_full_avg10_pct": 0,
       "memory_psi_some_avg10_pct": 0,
@@ -2301,7 +2305,9 @@
     },
     "other_host_readback": {
       "libre_chat_vx_clean_exists": true,
-      "libre_chat_vx_clean_root_entries": ["deployment"],
+      "libre_chat_vx_clean_root_entries": [
+        "deployment"
+      ],
       "libre_chat_vx_clean_is_git_repository": false,
       "nostromo_reports_directory_has_named_20261118_receipts": false
     },
@@ -2337,5 +2343,178 @@
       "Owner hints and acceptance links remain unassigned or documentary where source matrices do not explicitly provide a mapping; no LIVE status is inferred."
     ],
     "runtime_status": "DOCUMENTARY_CANONICAL_INVENTORY; no host mutations or LIVE claims."
+  },
+  "e3_local_ci_and_source_baseline_20261119": {
+    "observed_at_local": "2026-11-19",
+    "source_head": "7ed1863246f6942c570eca68e5569740b8c2250c",
+    "branch": "integration/nostromo-canon-20261118-r1",
+    "pr54": "DRAFT",
+    "pr58": {
+      "head": "74f3da64095ec39b5b820bceeb0e5901943f6c33",
+      "state": "OPEN_DRAFT_NOT_MERGED",
+      "integrated_changes": [
+        "public repository visibility accepted when permissions.push=true",
+        "unknown visibility rejected",
+        "public visibility emits secret-history review warning",
+        "offline 4-case preflight test"
+      ],
+      "external_report_copied": false,
+      "reason": "kept the existing CURRENT/HANDOFF as the single continuity source"
+    },
+    "local_ci": {
+      "runner": "ci/nostromo-local-ci.sh",
+      "runner_commit": "7ed1863246f6942c570eca68e5569740b8c2250c",
+      "lock": "flock on the existing checkout Git dir",
+      "exact_sha": "7ed1863246f6942c570eca68e5569740b8c2250c",
+      "result": "PASS",
+      "exit_code": 0,
+      "scope": [
+        "npm test: TypeScript build + 268 tests",
+        "SIWC npm artifact inclusion: 1/1",
+        "public/private R0 preflight: 4/4",
+        "nostromo check tests: 3",
+        "workspace tests: 7",
+        "local audit tests: 1",
+        "NOSTROMO MCP package/stdio suite: 48/48"
+      ],
+      "receipt": "operating/sync-receipts/local-ci-7ed1863246f6.json",
+      "sanitized_log": "operating/sync-receipts/local-ci-7ed1863246f6.log",
+      "log_sha256": "5ea24c795f43b5cf99ae5e9ea8ad179f42966f69786fa11a64ecfad34d08dd52",
+      "failed_attempt": {
+        "sha": "646bcebf78b0267cc5108a976e5f5b3d03749849",
+        "result": "FAIL",
+        "exit_code": 127,
+        "cause": "workspace had no local tsc; npm clean removed ignored generated dist before the command failed",
+        "recovery": "rerun reused existing TypeScript 5.9.3/dependencies from upstream node_modules through a temporary worktree symlink; successful build recreated dist; symlink removed",
+        "receipt": "operating/sync-receipts/local-ci-646bcebf78b0.json",
+        "sanitized_log_sha256": "50440c1cc9aaf076436907bfe70e8977b5625f2ab740cca4b6a647bc71c8a733"
+      },
+      "resources": {
+        "samples": 15,
+        "minimum_mem_available_kb": 9206144,
+        "minimum_swap_free_kb": 1992444,
+        "maximum_cpu_psi_some_avg10_percent": 23.32,
+        "maximum_cpu_psi_full_avg10_percent": 0.0,
+        "maximum_memory_psi_some_avg10_percent": 0.0,
+        "maximum_memory_psi_full_avg10_percent": 0.0,
+        "node_max_cpu_percent": 286.0,
+        "node_max_rss_kb": 398356,
+        "interpretation": "short build/test load; available memory remained >9 GB and memory PSI stayed zero; no sustained leak inferred"
+      },
+      "host_runtime_modified": false,
+      "github_actions": false
+    },
+    "github_actions_on_prior_sha": {
+      "sha": "2a9b878ca7984e246cab14ee49151f4d5f706f34",
+      "runs": [
+        {
+          "id": 44420952360,
+          "name": "source-check",
+          "result": "CANCELLED"
+        },
+        {
+          "id": 44420952083,
+          "name": "nostromo-native-runtime-ci-canary",
+          "result": "CANCELLED"
+        }
+      ],
+      "reason": "owner requested local CI instead of GitHub Actions; subsequent commits use skip-ci"
+    },
+    "source_baseline": [
+      {
+        "component": "LibreChat native interface and persistence",
+        "source": [
+          "pinned upstream f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
+          "native AgentClient initialize.js"
+        ],
+        "contract": "use the single authenticated native LibreChat conversation and Mongo persistence",
+        "tests": "upstream native browser/live integration not run by local CI",
+        "receipt": "CURRENT.json:e3_host_siwc_runtime_delta_r0_20261118",
+        "material_state": "backend active per host receipt; no authenticated SIWC turn or current Mongo recovery claim"
+      },
+      {
+        "component": "NOSTROMO cockpit, HUD, Hub and system selector",
+        "source": [
+          "src/ui/NostromoCockpit.tsx",
+          "src/ui/TentaculoHud.tsx",
+          "src/ui/TentaculoHub.tsx",
+          "src/ui/ControlDeckView.tsx"
+        ],
+        "contract": "native embedded UI surfaces; no second chat or executor",
+        "tests": "included in 268 SOURCE tests on local CI SHA",
+        "receipt": "operating/sync-receipts/local-ci-7ed1863246f6.json",
+        "material_state": "SOURCE_TESTED; LIVE event wiring not verified"
+      },
+      {
+        "component": "AgentClient SIWC binding",
+        "source": [
+          "deployment/librechat-agents/agentclient-siwc-binding.mjs",
+          "src/llm/siwcOpenAiFetch.ts"
+        ],
+        "contract": "per-authenticated-user ephemeral AgentClient binding before initializeAgent",
+        "tests": "prior focused AgentClient canary 5/5; SIWC SOURCE suite in 268 tests",
+        "receipt": "CURRENT.json:e3_siwc_agentclient_binding_source_20261118",
+        "material_state": "SOURCE_TESTED; productive binding absent"
+      },
+      {
+        "component": "Inference and semantic routing",
+        "source": [
+          "src/llm/inferenceGateway.ts",
+          "src/librechat/nativeInferenceRouteAdapter.ts",
+          "src/intent/intentInterpreter.ts",
+          "src/intent/nostromoDecisionBridge.ts"
+        ],
+        "contract": "one provider router and separate semantic decision; only evidence-backed admission",
+        "tests": "included in 268 SOURCE tests on local CI SHA",
+        "receipt": "operating/sync-receipts/local-ci-7ed1863246f6.json",
+        "material_state": "SOURCE_TESTED; SIWC route reader unavailable and no LIVE routing claim"
+      },
+      {
+        "component": "NOSTROMO MCP",
+        "source": [
+          "deployment/nostromo-mcp/server.mjs",
+          "deployment/nostromo-mcp/tools.mjs"
+        ],
+        "contract": "single existing MCP catalog with scoped, typed tools",
+        "tests": "48/48 package and stdio tests",
+        "receipt": "operating/sync-receipts/local-ci-7ed1863246f6.json",
+        "material_state": "SOURCE_TESTED; active Lenovo MCP consumer not verified"
+      },
+      {
+        "component": "SIWC OAuth, vault and Responses transport",
+        "source": [
+          "src/llm/siwcConnectionApi.ts",
+          "src/llm/siwcConnectionService.ts",
+          "src/llm/siwcProtectedVault.ts",
+          "src/llm/siwcResponsesClient.ts",
+          "src/llm/siwcSession.ts",
+          "src/llm/siwcIdentity.ts",
+          "src/llm/siwcProviderRoutes.ts"
+        ],
+        "contract": "OAuth user isolation, Responses store=false/stream=true, terminal events and local functions",
+        "tests": "included in 268 SOURCE tests; artifact modules included 1/1",
+        "receipt": "operating/sync-receipts/local-ci-7ed1863246f6.json",
+        "material_state": "SOURCE_TESTED; no owner consent, no installed package, no SIWC LIVE"
+      },
+      {
+        "component": "Conversation context, memory and recovery",
+        "source": [
+          "LibreChat native history/Mongo flow",
+          "src/llm/nativeInferenceRouteAdapter.ts"
+        ],
+        "contract": "preserve original conversation history and recover after reconnect",
+        "tests": "local unit suite only; no Mongo-backed recovery run in this batch",
+        "receipt": "CURRENT.json:p0_live_readback (historical host-reported receipt)",
+        "material_state": "NOT_REVERIFIED_LIVE"
+      }
+    ],
+    "next_gates": [
+      "finish request-scoped trusted route input without inventing context/quota/health/privacy",
+      "obtain owner OAuth consent through official flow",
+      "obtain exact HOST_CONTROL grants for package/bootstrap/AgentClient files and backend restart",
+      "run the actual authorized LibreChat SIWC+MCP+Mongo recovery canary",
+      "continue physical inventory and cleanup independently after evidence and grants"
+    ],
+    "live_status": "NOT_VERIFIED; no host mutation, OAuth consent, backend restart, MCP conversation, Mongo recovery, HUD event or mobile test was performed in this batch"
   }
 }

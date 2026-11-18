@@ -1,0 +1,10 @@
+{
+  "head": "646bcebf78b0267cc5108a976e5f5b3d03749849",
+  "startedAt": "2026-11-18T23:34:29Z",
+  "result": "FAIL",
+  "exitCode": 127,
+  "log": "operating/sync-receipts/local-ci-646bcebf78b0.log",
+  "scope": ["npm test", "MCP stdio/package suite"],
+  "hostRuntimeModified": false,
+  "githubActions": false
+}
