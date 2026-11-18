@@ -101,7 +101,9 @@ for (const viewport of [
         await expect(context.getByTestId('tentaculo-focus')).toHaveCount(0);
         await modes.getByRole('button',{name:'VX13'}).click();
         await expect(modes.getByRole('button',{name:'VX13'})).toHaveAttribute('aria-pressed','true');
-        await expect(context.getByRole('heading',{name:'Estado de la conversación'})).toHaveCount(0);
+        // Encabezado y telemetría de chat son globales; no desaparecen al enfocar VX13.
+        await expect(context.getByRole('heading',{name:'Estado de la conversación'})).toBeVisible();
+        await expect(context.getByTestId('vx-live-activity')).toBeVisible();
         await expect(context.getByTestId('nostromo-tentaculo-hub')).toHaveCount(0);
         await expect(context.getByTestId('tentaculo-focus').getByText('Enlace sin verificar')).toBeVisible();
         await modes.getByRole('button',{name:'ORÁCULO'}).click();

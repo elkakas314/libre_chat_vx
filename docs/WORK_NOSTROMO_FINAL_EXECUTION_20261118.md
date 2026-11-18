@@ -4,6 +4,40 @@
 
 **Precedencia:** READBACK host actual (CWD/PID/Mongo/servicio/CLI) > datos y hashes locales únicos > GitHub SOURCE HEAD exacto/CI > Drive CURRENT contrastado > memorias y handoffs anteriores.
 
+## RECONCILIACIÓN DE SOURCE Y WORK CLI — 18/11/2026 (NUEVO; prevalece sobre notas antiguas de este fichero)
+
+**Base verificada antes de escritura:** rama de PR #54 `6f205d8a2a8cae833a5a0fa3ac6b30d6a641674a` contra `main@8e642eb`. En esa base, source-check run **44364160187** completó **6/6 SUCCESS**; native-mock-E2E run **44364160206** falló solo en fixture visual desktop/mobile línea 104: el encabezado «Estado de la conversación» es GLOBAL en `overlay/upstream/VXCockpitBridge.tsx:58-66` y el test exigía indebidamente ocultarlo en VX13. Este lote cambia solo la expectativa y conserva la telemetría. **No declarar CI PASS del nuevo commit hasta comprobar los runs del nuevo HEAD exacto**.
+
+**P0 HOST reportado, NO nuevo readback de Lenovo desde esta modificación:** `CURRENT.json.p0_live_readback` contiene recibo fechado 2026-11-18T07:02:56Z con conversación `2da11982-20a5-5b32-a18c-0dd00413cba8`, 2 MCP R0, respuesta completada, Mongo sin error y recuperación tras recarga con Qwen3 4B/Ollama 6144; episodio de ~300 s. No volver a afirmar «no funciona nada»; tampoco declarar TOTAL PASS. Falta corroborar de nuevo la instancia, latencia, error/retry, proveedor gratuito real, SIWC, memoria, HUD, backup/restore y disponibilidad móvil.
+
+**Árbol canónico LÓGICO, no consolidación destructiva:** 1 SOURCE versionada (PR #54); 1 backend LibreChat instalado reportado en `~/librechat/upstream`; 1 MCP NOSTROMO activo reportado en `~/libre_chat_vx-clean`; 1 árbol de datos/volúmenes sensibles reportado en `~/LibreChat` (diferente de `~/librechat`); `~/librechat/nostromo` para evidencias/worktrees; `~/upstream`, `~/vx-audit`, `~/vx-backup`, `~/nostromo-workspace-backup.gngRsx`, `~/bin` **UNKNOWN_PRESERVE**. `~/librechat/vx` reportada ausente; no crear por inercia. Excluir `~/manojos_3` y `~/MANOJOS`. Identificar PID/CWD/mounts y semdiff; NO mover Mongo/Meili/RAG ni datos secretos en caliente. Ninguna ruta se archiva solo por el nombre o tamaño.
+
+**Work ya iniciado:** un solo escritor a la vez. Si E3 sigue operativo, continuar su objetivo/recibos, no crear un segundo controlador que altere el mismo checkout. La ruta `gh` del Lenovo está autenticada según salida del usuario, pero el acceso GitHub de ChatGPT es **otra identidad OAuth**; verificación local efectiva previa es obligatoria. No guardar PAT en Git, log, argumentos ni chat. Ejecutar el preflight R0 añadido en este mismo commit desde un checkout del repositorio:
+```bash
+set -euo pipefail; set +x
+bash scripts/nostromo-gh-work-preflight-r0.sh
+```
+`gh` lee login, visibilidad, permiso push y SHA remoto; `git` lee SHA local, rama, dirty y `diff --check`. NO cambia el sistema ni ejecuta inferencia. Para preparar lote seguro, sólo después de confirmar checkout correcto y preservar exclusivas:
+```bash
+set -euo pipefail; set +x
+REPO='elkakas314/libre_chat_vx'; BR='integration/nostromo-canon-20261118-r1'
+REMOTE="$(gh api "repos/$REPO/git/ref/heads/$BR" --jq '.object.sha')"
+git fetch origin "$BR"
+test "$(git rev-parse FETCH_HEAD)" = "$REMOTE" || { echo REMOTE_DRIFT; exit 3; }
+git status --short; git diff --check
+# Aplicar en WORKTREE STAGING limpio, nunca sobre backend/MCP LIVE sucios.
+# TEST + commit atómico + readback HEAD fresco antes de publicar.
+test "$(gh api "repos/$REPO/git/ref/heads/$BR" --jq '.object.sha')" = "$REMOTE" || { echo LEASE_DRIFT; exit 4; }
+# git push origin HEAD:"refs/heads/$BR"   # sólo si FAST-FORWARD, sin force ni reset.
+# gh pr checks 54                  # revalidar SHA/run/conclusión y artefactos.
+```
+
+**Correcciones DeepSeek vinculantes para Work:** no crear segundo provider/AgentClient/Kernel/router. Reutilizar `siwcOpenAiFetch.ts`, `siwcResponsesClient.ts`, `agentclient-siwc-binding.mjs` y hook REAL `api/server/services/Endpoints/agents/initialize.js` (upstream pin/Agents 4.0.1), verificando contrato SSE, identidad, consentimiento, cuota y tool calls `function/custom`; no hosted `tool_search` ni fallback pagado. `toolApproval` usa `allow/ask/deny/mode` en upstream, **NO** `rules:[{match,action}]`. Context reserveRatio no es reserva universal de salida ni fija 80%. Filtrar esquemas por intención sin perder catálogo, test negativo `Hola` sin tools. P1 SIWC, P2 contexto, P3 HOST preflight, P4-P9 instalación/memoria/MCP/HUD/árbol/reinicio con grants genuinos y backup restore; fases independientes avanzan aunque otra se bloquee. No repetir el P0 ya acreditado como si no existiera.
+
+**Aceptación material:** CI source-check + E2E nativo **mismo HEAD**, SIWC autenticado/con consentimiento y SSE completado, dos tools con call_id/output/receipt, Mongo persistente tras reload, host único PID/CWD/servicio, backup+restauración ensayada, seguridad y costes 0€ comprobados, recursos medidos, ausencia de pérdidas. Cada efecto con `CHANGE→TEST→READBACK→VERIFY→RECEIPT`. `SOURCE` no acredita `LIVE`.
+
+---
+
 ## Identidad y estado
 
 - GitHub: `elkakas314/libre_chat_vx`; `main@8e642eb1238f9b35f18a070d6a754fede4b432fb` preservada. Rama aislada `integration/nostromo-canon-20261118-r1`, PR #54 DRAFT hacia `main` (NO MERGE hasta gates).
