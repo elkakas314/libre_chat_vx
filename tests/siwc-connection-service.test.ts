@@ -43,6 +43,33 @@ test('LibreChat registration publishes the same consent-aware service to routes 
   assert.equal(app.locals.nostromoSiwc,undefined);
 });
 
+test('service route resolver delegates readback inputs to the existing inference gateway',async()=>{
+  const vault={readForUser:async()=>null} as unknown as import('../src/llm/siwcSession').SiwcCredentialVault;
+  const service=new SiwcConnectionService({hostId,actualAppName:'NOSTROMO',vault,now:()=>now});
+  let readbackUser='';
+  const resolveRoute=service.createNativeInferenceRouteResolver(async(context)=>{
+    readbackUser=context.authenticatedUserId;
+    return {
+      intentSignals:{},
+      routes:[{id:'siwc:visible-model',profile:'RAPIDO',provider:'CHATGPT_OAUTH_PLAN',
+        model:'visible-model',routeModel:'visible-model',locality:'REMOTE',capabilities:['TEXT'],
+        health:'READY',quotaState:'AVAILABLE',zeroCost:'UNKNOWN',billingClass:'SUBSCRIPTION_SHARED',
+        planUsageConsent:'AUTHORIZED',contextWindowTokens:8192,privacyAllowed:true,
+        paidFallbackAllowed:false,observedAtMs:now-1000,evidence:'LIVE_READBACK',authority:false}],
+      bindModel:(route)=>({endpoint:'openAI',model:route.model}),
+      estimatedInputTokens:100,reservedOutputTokens:100,nowMs:now,
+    };
+  });
+  const result=await resolveRoute({authenticatedUserId:'librechat-user-A',agentId:'nostromo-agent',
+    agent:{id:'nostromo-agent'},conversationId:'conversation-A',messages:[]});
+  assert.equal(readbackUser,'librechat-user-A');
+  assert.equal(result.kind,'INFERENCE_ROUTE');
+  if(result.kind==='INFERENCE_ROUTE'){
+    assert.equal(result.provider,'CHATGPT_OAUTH_PLAN');
+    assert.equal(result.nativeModel,'visible-model');
+  }
+});
+
 function signedIdToken(nonce:string){
   const header=Buffer.from(JSON.stringify({alg:'RS256',typ:'JWT',kid:'siwc-test-key'})).toString('base64url');
   const payload=Buffer.from(JSON.stringify({iss:'https://auth.openai.com',aud:clientId,

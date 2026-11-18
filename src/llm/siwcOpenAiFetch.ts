@@ -121,13 +121,20 @@ export function createSiwcAgentClientRunBindingResolver(dependencies:{
   return {
     async resolveAgentClientRunBinding(context) {
       if(!context.authenticatedUserId)throw Error('SIWC_AUTHENTICATED_USER_REQUIRED');
-      const route=await dependencies.resolveRoute(context);
-      if(route.kind!=='INFERENCE_ROUTE'||route.provider!=='CHATGPT_OAUTH_PLAN'||
-        route.endpoint!=='openAI'||!route.nativeModel)return null;
       const account=await dependencies.resolveAccount(context.authenticatedUserId);
+      if(!account)return null;
       const now=(dependencies.now??(()=>Date.now()))();
-      if(!account||siwcAccountPermission(account.record,now)!=='AUTHORIZED'||
-        !account.visibleModels.some(model=>model.slug===route.nativeModel))return null;
+      if(siwcAccountPermission(account.record,now)!=='AUTHORIZED'||!account.record.accessToken)
+        throw Error('SIWC_USER_CONSENT_REQUIRED');
+      const route=await dependencies.resolveRoute(context);
+      if(route.kind==='NO_ADMITTED_ROUTE')throw Error('SIWC_NATIVE_ROUTE_UNAVAILABLE');
+      if(route.kind==='GOVERNED_HANDOFF_CANDIDATE')throw Error('SIWC_GOVERNED_HANDOFF_REQUIRED');
+      if(route.kind!=='INFERENCE_ROUTE')throw Error('SIWC_NATIVE_ROUTE_RESULT_INVALID');
+      if(route.provider!=='CHATGPT_OAUTH_PLAN'||route.endpoint!=='openAI')
+        throw Error('SIWC_NATIVE_ROUTE_PROVIDER_UNSUPPORTED');
+      if(!route.nativeModel)throw Error('SIWC_NATIVE_ROUTE_MODEL_REQUIRED');
+      if(!account.visibleModels.some(model=>model.slug===route.nativeModel))
+        throw Error('SIWC_MODEL_NOT_ACCOUNT_VISIBLE');
       return {
         route,
         fetch:createSiwcOpenAiFetch(context.authenticatedUserId,

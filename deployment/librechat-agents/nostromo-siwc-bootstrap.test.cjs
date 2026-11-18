@@ -27,6 +27,7 @@ test('bootstrap is disabled by default and validates owner-only host material be
     let registeredService;
     let capturedRouteResolver;
     let capturedKey;
+    let capturedRouteInput;
     class FakeVault {
       constructor(_path, key) { capturedKey = key; }
     }
@@ -38,6 +39,12 @@ test('bootstrap is disabled by default and validates owner-only host material be
         app.locals.nostromoSiwcConnectionService = this;
         return () => { delete app.locals.nostromoSiwcConnectionService; };
       }
+      createNativeInferenceRouteResolver(readInput) {
+        return async (context) => {
+          capturedRouteInput = await readInput(context);
+          return 'central-router-result';
+        };
+      }
     }
     Module._load = function(request, parent, isMain) {
       if (request.endsWith('/siwcProtectedVault.js')) return { SiwcProtectedFileVault: FakeVault };
@@ -45,7 +52,8 @@ test('bootstrap is disabled by default and validates owner-only host material be
       return originalLoad.call(this, request, parent, isMain);
     };
     try {
-      const app = { locals: { nostromoResolveNativeInferenceRoute: async () => 'route-readback' } };
+      const routeInput = { routes: [{ evidence: 'LIVE_READBACK' }] };
+      const app = { locals: { nostromoReadNativeInferenceRouteInput: async () => routeInput } };
       const result = initializeNostromoSiwc(app, {
         NOSTROMO_SIWC_ENABLED: '1',
         NOSTROMO_SIWC_HOST_ID_FILE: hostIdFile,
@@ -55,10 +63,13 @@ test('bootstrap is disabled by default and validates owner-only host material be
       assert.equal(result.state, 'CONFIGURED');
       assert.equal(app.locals.nostromoSiwcConnectionService, registeredService);
       assert.equal(registeredService.options.hostId, 'urn:uuid:11111111-2222-4333-8444-555555555555');
-      assert.equal(await capturedRouteResolver({}), 'route-readback');
+      assert.equal(await capturedRouteResolver({}), 'central-router-result');
+      assert.equal(capturedRouteInput, routeInput);
       assert.deepEqual([...capturedKey], Array(32).fill(0), 'bootstrap zeroes its in-memory key buffer');
       result.unregister();
       assert.equal(app.locals.nostromoSiwcConnectionService, undefined);
+      delete app.locals.nostromoReadNativeInferenceRouteInput;
+      await assert.rejects(capturedRouteResolver({}), /SIWC_ROUTE_READBACK_SOURCE_UNAVAILABLE/);
     } finally {
       Module._load = originalLoad;
     }

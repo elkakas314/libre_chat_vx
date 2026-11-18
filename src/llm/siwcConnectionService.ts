@@ -19,7 +19,9 @@ import {
   type SiwcAgentClientRunBindingResolver,
   type SiwcAgentClientRunContext,
 } from './siwcOpenAiFetch';
-import type { NativeInferenceRouteResult } from '../librechat/nativeInferenceRouteAdapter';
+import { resolveNativeInferenceRoute,
+  type NativeInferenceRouteInput,
+  type NativeInferenceRouteResult } from '../librechat/nativeInferenceRouteAdapter';
 
 export interface SiwcConnectCompletion {
   state:ReturnType<typeof siwcPublicState>;
@@ -44,6 +46,9 @@ export interface SiwcAgentClientHostApp {
   locals: {
     nostromoSiwc?: SiwcAgentClientRunBindingResolver;
     nostromoSiwcConnectionService?: SiwcConnectionService;
+    nostromoReadNativeInferenceRouteInput?: (
+      context:SiwcAgentClientRunContext,
+    )=>Promise<NativeInferenceRouteInput>;
   };
 }
 
@@ -207,6 +212,14 @@ export class SiwcConnectionService {
       transport:this.transport,
       now:this.now,
     });
+  }
+
+  /** Applies the single existing router to a host-readback input source. */
+  createNativeInferenceRouteResolver(readInput:(
+    context:SiwcAgentClientRunContext,
+  )=>Promise<NativeInferenceRouteInput>){
+    return async(context:SiwcAgentClientRunContext)=>
+      resolveNativeInferenceRoute(await readInput(context));
   }
 
   /** Installs this service's authenticated, per-user binding into LibreChat app.locals. */

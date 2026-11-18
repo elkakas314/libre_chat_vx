@@ -37,12 +37,35 @@ test('native AgentClient resolver binds only a fresh account-visible SIWC route 
   assert.equal(readUser,context.authenticatedUserId);
   assert.equal(accountReads,1);
   assert.equal(routeReads,1);
+  const unlinked=createSiwcAgentClientRunBindingResolver({
+    resolveRoute:async()=>{routeReads++;return route;},
+    resolveAccount:async()=>null,
+    now:()=>now,
+  });
+  assert.equal(await unlinked.resolveAgentClientRunBinding(context),null);
+  assert.equal(routeReads,1,'unlinked account must not request an SIWC route');
   const denied=createSiwcAgentClientRunBindingResolver({
     resolveRoute:async()=>route,
     resolveAccount:async()=>({...account,visibleModels:[{slug:'different-model',label:'Different'}]}),
     now:()=>now,
   });
-  assert.equal(await denied.resolveAgentClientRunBinding(context),null);
+  await assert.rejects(denied.resolveAgentClientRunBinding(context),/SIWC_MODEL_NOT_ACCOUNT_VISIBLE/);
+  const noAdmittedRoute=createSiwcAgentClientRunBindingResolver({
+    resolveRoute:async()=>({kind:'NO_ADMITTED_ROUTE',lane:'REMOTE_INFERENCE',profile:'NORMAL',
+      admissions:[],reason:'NO_FRESH_ZERO_COST_ROUTE',requiresGoalAgreement:false,
+      requiresReadbackBeforeResponse:false,authority:false}),
+    resolveAccount:async()=>account,
+    now:()=>now,
+  });
+  await assert.rejects(noAdmittedRoute.resolveAgentClientRunBinding(context),
+    /SIWC_NATIVE_ROUTE_UNAVAILABLE/);
+  const unsupportedProvider=createSiwcAgentClientRunBindingResolver({
+    resolveRoute:async()=>({...route,provider:'CLOUDFLARE_AI_GATEWAY'}),
+    resolveAccount:async()=>account,
+    now:()=>now,
+  });
+  await assert.rejects(unsupportedProvider.resolveAgentClientRunBinding(context),
+    /SIWC_NATIVE_ROUTE_PROVIDER_UNSUPPORTED/);
 });
 
 test('SIWC Responses fetch injects a user-consented bearer and preserves native SSE transport',async()=>{

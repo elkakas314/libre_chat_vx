@@ -49,12 +49,12 @@ function initializeNostromoSiwc(app, env = process.env) {
       actualAppName: 'LibreChat VX NOSTROMO',
       vault,
     });
-    const resolveRoute = (context) => {
-      const resolver = app.locals?.nostromoResolveNativeInferenceRoute;
-      if (typeof resolver !== 'function') throw new Error('SIWC_NATIVE_ROUTE_ADAPTER_UNAVAILABLE');
-      return resolver(context);
+    const readInput = async (context) => {
+      const routeInputReader = app.locals?.nostromoReadNativeInferenceRouteInput;
+      if (typeof routeInputReader !== 'function') throw new Error('SIWC_ROUTE_READBACK_SOURCE_UNAVAILABLE');
+      return routeInputReader(context);
     };
-    const unregister = service.registerLibreChat(app, resolveRoute);
+    const unregister = service.registerLibreChat(app, service.createNativeInferenceRouteResolver(readInput));
     return { state: 'CONFIGURED', unregister };
   } finally {
     masterKey.fill(0);
