@@ -90,6 +90,7 @@ test('SIWC transport fails closed for missing consent, wrong models, system role
     fetchSiwc(url,{method:'POST',body:JSON.stringify(body)});
   await assert.rejects(make({...allowedBody,model:'hidden-model'}),/POLICY_REJECTED/);
   await assert.rejects(make({...allowedBody,input:[{type:'message',role:'system',content:'x'}]}),/SYSTEM_ROLE_REJECTED/);
+  await assert.rejects(make({...allowedBody,input:[{role:'system',content:'x'}]}),/SYSTEM_ROLE_REJECTED/);
   await assert.rejects(make({...allowedBody,previous_response_id:'resp_fixture'}),/FIELD_REJECTED/);
   await assert.rejects(make({...allowedBody,tools:[{type:'mcp',server_label:'remote'}]}),/TOOL_POLICY_REJECTED/);
   await assert.rejects(make(allowedBody,'https://api.openai.com/v1/chat/completions'),/ENDPOINT_REJECTED/);

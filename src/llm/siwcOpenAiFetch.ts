@@ -43,7 +43,7 @@ function assertAllowedBody(body:Record<string,unknown>,visibleModels:readonly {s
   for(const item of body.input){
     if(!item||typeof item!=='object'||Array.isArray(item))throw Error('SIWC_INPUT_ITEM_REJECTED');
     const value=item as Record<string,unknown>;
-    if(value.type==='message'&&value.role==='system')throw Error('SIWC_SYSTEM_ROLE_REJECTED');
+    if(value.role==='system')throw Error('SIWC_SYSTEM_ROLE_REJECTED');
     if(value.type==='mcp_call'||value.type==='tool_search_call'||value.type==='computer_call')
       throw Error('SIWC_HOSTED_TOOL_REJECTED');
   }

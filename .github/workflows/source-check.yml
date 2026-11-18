@@ -113,6 +113,8 @@ jobs:
           mkdir -p node_modules/@librechat
           ln -s ../../packages/librechat-vx node_modules/@librechat/vx
           ./node_modules/.bin/tsc -p packages/librechat-vx/tsconfig.json
+          NOSTROMO_SIWC_MODULE=./packages/librechat-vx/dist/src/llm/siwcOpenAiFetch.js \
+            node --test ../vx/ci/fixtures/siwc-agentclient-sdk.stub.test.cjs
           npm run frontend:ci
       - name: Validate ephemeral overlay staged identity and compiled package
         working-directory: upstream
