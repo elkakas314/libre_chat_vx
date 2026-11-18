@@ -5,6 +5,7 @@ on:
     branches:
       - e2/nostromo-source-final-mcp-gates-20261112
       - e2/nostromo-final-candidate-e2e-20261112
+      - integration/nostromo-canon-20261118-r1
   workflow_dispatch:
 
 permissions:
