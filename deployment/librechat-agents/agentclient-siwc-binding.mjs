@@ -5,9 +5,9 @@ import { resolve } from 'node:path';
 import { execFileSync } from 'node:child_process';
 
 export const PINNED_UPSTREAM = 'f10b1d91f1eee3a2c82d5247bf620351486b7c1b';
-export const TARGET = 'api/server/controllers/agents/client.js';
-export const BASE_SHA256 = '9b2f6accf56544096aa530d5bccff4b1cc5b76651a746da2a8aee94cc20020e1';
-const MARKER = 'NOSTROMO_SIWC_AGENTCLIENT_BINDING_V1';
+export const TARGET = 'api/server/services/Endpoints/agents/initialize.js';
+export const BASE_SHA256 = '104e4c945a5e008e5ca476c033ed3115260c3c1e15aafa86eb04a9bcc2387522';
+const MARKER = 'NOSTROMO_SIWC_AGENTCLIENT_INITIALIZATION_V1';
 
 export function patchAgentClientSource(source) {
   if (source.includes(MARKER)) {
@@ -20,35 +20,63 @@ export function patchAgentClientSource(source) {
   const sourceHash = createHash('sha256').update(source).digest('hex');
   if (sourceHash !== BASE_SHA256) throw new Error('SIWC_AGENTCLIENT_SOURCE_MISMATCH');
 
-  const importAnchor = "const { logger, MAX_AGENT_EVENT_ACTOR_ENCODING_LENGTH } = require('@librechat/data-schemas');";
-  const runAnchor = '      const runAgents = async (messages) => {\n        const agents = [this.options.agent];';
-  if (source.split(importAnchor).length !== 2 || source.split(runAnchor).length !== 2) {
+  const importAnchor = "const { logger } = require('@librechat/data-schemas');";
+  const primaryAgentAnchor = `    toolRoleGrantsPromise,
+  ]);
+  /** Preserve the owner-scoped fallback for loaders that share this request. */`;
+  const initializedAgentAnchor = `  );
+
+  /** Price emitted usage with the primary agent's resolved endpoint config`;
+  if (source.split(importAnchor).length !== 2 || source.split(primaryAgentAnchor).length !== 2 ||
+      source.split(initializedAgentAnchor).length !== 2) {
     throw new Error('SIWC_AGENTCLIENT_CONTEXT_MISMATCH');
   }
   const withImport = source.replace(importAnchor,
     `${importAnchor}\nconst { createSiwcAgentClientRunAgent } = require('@librechat/vx/dist/src/llm/siwcOpenAiFetch.js');`);
-  return withImport.replace(runAnchor, `      const runAgents = async (messages) => {
-        const agents = [this.options.agent];
-        // ${MARKER}: a host-authenticated resolver may attach a per-user SIWC route.
-        // No configured resolver means the existing model route is left untouched.
-        const siwcResolver = this.options.req?.app?.locals?.nostromoSiwc?.resolveAgentClientRunBinding;
-        if (typeof siwcResolver === 'function') {
-          const authenticatedUserId = this.options.req?.user?.id?.toString?.();
-          if (!authenticatedUserId) throw new Error('SIWC_AUTHENTICATED_USER_REQUIRED');
-          const resolved = await siwcResolver({
-            authenticatedUserId,
-            agentId: agents[0]?.id?.toString?.(),
-            agent: agents[0],
-            conversationId: this.conversationId,
-            messages,
-          });
-          if (resolved != null) {
-            if (!resolved.route || typeof resolved.fetch !== 'function') {
-              throw new Error('SIWC_AGENTCLIENT_BINDING_INVALID');
-            }
-            agents[0] = createSiwcAgentClientRunAgent(agents[0], resolved.route, resolved.fetch);
-          }
-        }`);
+  const withPrimaryBinding = withImport.replace(primaryAgentAnchor, `    toolRoleGrantsPromise,
+  ]);
+  // ${MARKER}: choose a consented per-user SIWC provider before initializeAgent fixes the LLM.
+  let siwcRunBinding;
+  const siwcResolver = req.app?.locals?.nostromoSiwc?.resolveAgentClientRunBinding;
+  if (typeof siwcResolver === 'function') {
+    const authenticatedUserId = req.user?.id?.toString?.();
+    if (!authenticatedUserId) throw new Error('SIWC_AUTHENTICATED_USER_REQUIRED');
+    const resolved = await siwcResolver({
+      authenticatedUserId,
+      agentId: primaryAgent?.id?.toString?.(),
+      agent: primaryAgent,
+      conversationId,
+      messages: runtimeRequestBody,
+    });
+    if (resolved != null) {
+      if (!resolved.route || typeof resolved.fetch !== 'function') {
+        throw new Error('SIWC_AGENTCLIENT_BINDING_INVALID');
+      }
+      Object.assign(primaryAgent, createSiwcAgentClientRunAgent(primaryAgent, resolved.route, resolved.fetch));
+      endpointOption.model_parameters = {
+        ...endpointOption.model_parameters,
+        ...primaryAgent.model_parameters,
+      };
+      siwcRunBinding = resolved;
+    }
+  }
+  /** Preserve the owner-scoped fallback for loaders that share this request. */`);
+  return withPrimaryBinding.replace(initializedAgentAnchor, `  );
+
+  if (siwcRunBinding) {
+    const route = siwcRunBinding.route;
+    primaryConfig.model_parameters = {
+      ...primaryConfig.model_parameters,
+      model: route.nativeModel,
+      useResponsesApi: true,
+      configuration: {
+        ...(primaryConfig.model_parameters?.configuration ?? {}),
+        fetch: siwcRunBinding.fetch,
+      },
+    };
+  }
+
+  /** Price emitted usage with the primary agent's resolved endpoint config`);
 }
 
 export function rollbackAgentClientSource(current, preimage) {

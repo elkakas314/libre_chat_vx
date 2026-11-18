@@ -1,5 +1,5 @@
 import { constants } from 'node:fs';
-import { open, lstat, unlink, rename } from 'node:fs/promises';
+import { open, lstat, unlink, rename, readdir } from 'node:fs/promises';
 import { createHash, randomUUID, randomBytes, createCipheriv, createDecipheriv } from 'node:crypto';
 import { resolve, join, isAbsolute } from 'node:path';
 import type { SiwcAccountCredentials, SiwcCredentialVault } from './siwcSession';
@@ -80,6 +80,21 @@ export class SiwcProtectedFileVault implements SiwcCredentialVault {
   async read(clientId:string){
     await this.directory();
     return this.readUnsafe(clientId);
+  }
+  async readForUser(userId:string){
+    if(!userId||userId.length>256)throw Error('SIWC_USER_BINDING_INVALID');
+    await this.directory();
+    const entries=await readdir(this.root,{withFileTypes:true});
+    let match:{version:string;record:SiwcAccountCredentials}|null=null;
+    for(const entry of entries){
+      if(!entry.isFile()||!/^oaiapp_[A-Za-z0-9_-]{1,160}\.json$/.test(entry.name))continue;
+      const clientId=entry.name.slice(0,-5);
+      const record=await this.readUnsafe(clientId);
+      if(record?.record.libreChatUserId!==userId)continue;
+      if(match)throw Error('SIWC_VAULT_USER_BINDING_AMBIGUOUS');
+      match=record;
+    }
+    return match;
   }
   async update(clientId:string,expectedVersion:string|null,record:SiwcAccountCredentials){
     if(record.clientId!==clientId||!record.subject||!record.hostId)

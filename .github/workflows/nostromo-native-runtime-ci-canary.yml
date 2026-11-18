@@ -50,7 +50,7 @@ jobs:
           ./node_modules/.bin/tsc -p packages/librechat-vx/tsconfig.json
           NOSTROMO_UPSTREAM_ROOT="$PWD" node --test ../vx/deployment/librechat-agents/agentclient-siwc-binding.test.mjs
           NOSTROMO_CI_EPHEMERAL_STAGE=1 node ../vx/deployment/librechat-agents/agentclient-siwc-binding.mjs --apply .
-          node --check api/server/controllers/agents/client.js
+          node --check api/server/services/Endpoints/agents/initialize.js
           npm run frontend:ci
           # frontend:ci deliberately skips the API/data-schema builds. The
           # genuine LibreChat E2E backend imports compiled API credentials.

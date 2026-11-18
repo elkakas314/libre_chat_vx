@@ -5,6 +5,8 @@ import { verifySiwcIdToken, type SiwcJwks } from './siwcIdentity';
 /** All credentials must stay in a host-side, access-controlled persistent vault. */
 export interface SiwcAccountCredentials {
   clientId:string;hostId:string;subject:string;identity:SiwcVerifiedIdentity;
+  /** LibreChat user binding is encrypted with the credential record; older host-only records remain unbound. */
+  libreChatUserId?:string;
   scopes:readonly string[];savedAtMs:number;tokenExpiresAtMs:number;
   earliestRefreshAtMs:number;accessToken:string|null;refreshToken:string|null;
   idToken:string;
@@ -14,6 +16,8 @@ export interface SiwcCredentialVault {
   update(clientId:string,expectedVersion:string|null,record:SiwcAccountCredentials):
     Promise<{version:string}>;
   read(clientId:string):Promise<{version:string;record:SiwcAccountCredentials}|null>;
+  /** Optional for legacy vault adapters; native SIWC activation requires this user-scoped lookup. */
+  readForUser?(userId:string):Promise<{version:string;record:SiwcAccountCredentials}|null>;
 }
 type TokenData={
   id_token?:unknown;access_token?:unknown;refresh_token?:unknown;
@@ -40,7 +44,7 @@ function planTokens(d:TokenData):{accessToken:string|null;refreshToken:string|nu
 }
 export function authorizeSiwcTokens(args:{
   pending:SiwcPending;issuedClientId:string;response:unknown;jwks:SiwcJwks;
-  nowMs:number;previous?:SiwcAccountCredentials;
+  nowMs:number;previous?:SiwcAccountCredentials;authenticatedUserId?:string;
 }):SiwcAccountCredentials {
   const {pending,issuedClientId,nowMs}=args;
   if(!/^oaiapp_[\w-]+$/.test(issuedClientId)||!Number.isSafeInteger(nowMs))
@@ -50,6 +54,12 @@ export function authorizeSiwcTokens(args:{
   if(args.previous && (args.previous.clientId!==issuedClientId||
       args.previous.hostId!==pending.hostId))
     throw new Error('SIWC_ACCOUNT_MISMATCH');
+  const authenticatedUserId=args.authenticatedUserId??args.previous?.libreChatUserId;
+  if(authenticatedUserId!==undefined&&(!authenticatedUserId||authenticatedUserId.length>256))
+    throw new Error('SIWC_USER_BINDING_INVALID');
+  if(args.previous?.libreChatUserId&&authenticatedUserId&&
+    args.previous.libreChatUserId!==authenticatedUserId)
+    throw new Error('SIWC_USER_BINDING_MISMATCH');
   const d=credentials(args.response);
   if(typeof d.id_token!=='string'||!d.id_token)throw new Error('SIWC_ID_TOKEN_REQUIRED');
   const identity=verifySiwcIdToken({
@@ -61,6 +71,7 @@ export function authorizeSiwcTokens(args:{
     throw new Error('SIWC_PLAN_TOKENS_MISSING');
   return {
     clientId:issuedClientId,hostId:pending.hostId,subject:identity.subject,identity,
+    ...(authenticatedUserId===undefined?{}:{libreChatUserId:authenticatedUserId}),
     scopes,savedAtMs:nowMs,tokenExpiresAtMs:nowMs+tokens.expiresIn*1000,
     earliestRefreshAtMs:typeof d.earliest_refresh_at==='number'&&
       Number.isFinite(d.earliest_refresh_at) ? d.earliest_refresh_at*1000 : nowMs,

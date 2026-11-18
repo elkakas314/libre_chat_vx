@@ -48,7 +48,8 @@ test('OIDC rejects key substitution, alg none, private JWKS, invalid signature',
 });
 test('OAuth exchange admits only account-bound signed identity',()=>{
   const s=authorizeSiwcTokens({pending,issuedClientId:clientId,response:token(),
-    jwks,nowMs:now*1000});
+    jwks,nowMs:now*1000,authenticatedUserId:'librechat-user-A'});
+  assert.equal(s.libreChatUserId,'librechat-user-A');
   assert.equal(s.subject,'subject-A');assert.equal(siwcAccountPermission(s,now*1000),'AUTHORIZED');
   assert.equal(siwcPublicState(s,now*1000).subjectRef,'REDACTED');
   assert.equal(JSON.stringify(siwcPublicState(s,now*1000)).includes('a-token'),false);
@@ -60,6 +61,8 @@ test('OAuth exchange admits only account-bound signed identity',()=>{
   assert.throws(()=>authorizeSiwcTokens({pending,issuedClientId:clientId,
     response:{...token(),scope:'openid'},jwks,nowMs:now*1000,
     previous:{...s,hostId:'urn:uuid:22222222-2222-4333-8444-555555555555'}}),/MISMATCH/);
+  assert.throws(()=>authorizeSiwcTokens({pending,issuedClientId:clientId,
+    response:token(),jwks,nowMs:now*1000,previous:s,authenticatedUserId:'librechat-user-B'}),/USER_BINDING_MISMATCH/);
 });
 test('Plan authorization and refresh are separate and rotate token atomically',()=>{
   const record=authorizeSiwcTokens({pending,issuedClientId:clientId,response:token(),
