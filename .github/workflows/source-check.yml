@@ -63,6 +63,8 @@ jobs:
           npm --prefix deployment/nostromo-mcp run check
       - name: Validate agent event SOURCE projection with compiled runtime
         run: node --test canaries/agent-events-live/01-local-delivery.test.cjs
+      - name: Validate deferred AgentContext filtering patch
+        run: node --test deployment/librechat-agents/deferred-instance-filter.test.mjs
 
   pinned-upstream-ci-native-mount:
     needs: build-test
@@ -89,6 +91,10 @@ jobs:
       - name: Verify pinned upstream exact HEAD and source identity
         working-directory: vx
         run: npm run verify:upstream -- ../upstream
+      - name: Apply and read back exact AgentContext compatibility patch in disposable upstream
+        run: |
+          node vx/deployment/librechat-agents/deferred-instance-filter.mjs --apply --package-root upstream/node_modules/@librechat/agents
+          node vx/deployment/librechat-agents/deferred-instance-filter.mjs --package-root upstream/node_modules/@librechat/agents
       - name: Verify CI staging fail-closed preconditions
         working-directory: vx
         run: node --test ci/tests/nostromo-stage-clean-overlay-ci-only.test.mjs
