@@ -4,8 +4,9 @@ set -euo pipefail
 source "$(dirname -- "$0")/lib.sh"
 ss_start "02-inventory-skills"; ss_root
 jq -e '.schema=="libre-chat-vx.skill-catalog.v3" and .counts.active_catalog==10 and
- .counts.legacy_on_disk==2 and .counts.physical_skills==12 and
- (.catalog|type=="array" and length==10) and (.legacy_compatibility|type=="array" and length==2)' \
+ .counts.legacy_on_disk==2 and .counts.optional_agent_skills==2 and .counts.physical_skills==14 and
+ (.catalog|type=="array" and length==10) and (.legacy_compatibility|type=="array" and length==2) and
+ (.optional_agent_skills|type=="array" and length==2)' \
  "$SS_CATALOG" >/dev/null || ss_fail "Invalid 10+2 canonical catalog"
 mapfile -t physical < <(find "$SS_SKILLS" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | LC_ALL=C sort)
 for name in "${physical[@]}"; do
@@ -19,13 +20,15 @@ jq -n --argjson physical "$actual" --arg head "$head" --slurpfile cat "$SS_CATAL
  {schema:"libre-chat-vx.skill-sync-physical-inventory.v1",
   source_git_commit_sha:$head,physical:$physical,active:($cat[0].catalog|map(.name)),
   legacy:($cat[0].legacy_compatibility|map(.name)),
-  expected_physical:12,expected_active:10,expected_legacy:2,
-  matched:((($cat[0].catalog|map(.name))+($cat[0].legacy_compatibility|map(.name))|sort)==($physical|sort)
-    and ($physical|length)==12 and ($cat[0].catalog|length)==10 and
-    ($cat[0].legacy_compatibility|length)==2)}' > "$SS_DIR/02-inventory.json"
+  optional:($cat[0].optional_agent_skills|map(.name)),
+  expected_physical:14,expected_active:10,expected_legacy:2,expected_optional:2,
+  matched:((($cat[0].catalog|map(.name))+($cat[0].legacy_compatibility|map(.name))+
+    ($cat[0].optional_agent_skills|map(.name))|sort)==($physical|sort)
+    and ($physical|length)==14 and ($cat[0].catalog|length)==10 and
+    ($cat[0].legacy_compatibility|length)==2 and ($cat[0].optional_agent_skills|length)==2)}' > "$SS_DIR/02-inventory.json"
 chmod 600 -- "$SS_DIR/02-inventory.json"
 jq -e '.matched==true' "$SS_DIR/02-inventory.json" >/dev/null ||
- ss_fail "12 physical folders / 10 active / 2 legacy mismatch (recorded; not modified)"
+ ss_fail "14 physical folders / 10 active / 2 legacy / 2 optional mismatch (recorded; not modified)"
 git -C "$SS_ROOT" diff --quiet HEAD -- skills config/skills.current.json ||
  ss_fail "Source Skill/catalog working tree differs from git_commit_sha"
-echo 'READ source folders: 12 physical, 10 active, 2 legacy retained'
+echo 'READ source folders: 14 physical, 10 active, 2 legacy and 2 optional retained'

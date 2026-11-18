@@ -12,12 +12,12 @@ jq -e --argjson stage "$SKILL_SYNC_STAGE" --slurpfile inv "$SS_DIR/02-inventory.
  --slurpfile src "$SS_DIR/01-source.json" '
  .schema=="libre-chat-vx.skill-sync-mirror-ids.v1" and .source_id==$src[0].source_id and
  (.skills|type=="array") and
- ((.skills|map(.name)|sort)==(if $stage==1 then ($inv[0].active+$inv[0].legacy|sort)
+ ((.skills|map(.name)|sort)==(if $stage==1 then ($inv[0].active+$inv[0].legacy+$inv[0].optional|sort)
   else ($inv[0].active|sort) end)) and
  ([.skills[].id]|unique|length)==(.skills|length) and
  all(.skills[]; (.id|type=="string" and test("^[a-fA-F0-9]{24}$")))' \
  "$SKILL_MIRROR_IDS_FILE" >/dev/null ||
- ss_fail "Expected 12/10 unique mirrored IDs absent or incompatible"
+ ss_fail "Expected 14/10 unique mirrored IDs absent or incompatible"
 owner="$(jq -r '.owner // empty' "$SS_DIR/01-source.json")"
 repo="$(jq -r '.repo // empty' "$SS_DIR/01-source.json")"
 ref="$(jq -r '.ref // empty' "$SS_DIR/01-source.json")"
@@ -26,7 +26,7 @@ ref="$(jq -r '.ref // empty' "$SS_DIR/01-source.json")"
 jq -e --argjson stage "$SKILL_SYNC_STAGE" --slurpfile inv "$SS_DIR/02-inventory.json" '
  .enabled==true and .run_on_startup==false and .sync_status=="succeeded" and
  .skipped_skill_count==0 and .skipped_file_count==0 and
- .synced_skill_count==(if $stage==1 then 12 else 10 end) and
+ .synced_skill_count==(if $stage==1 then 14 else 10 end) and
  ((.paths|sort)==(if $stage==1 then ["skills"] else ($inv[0].active|map("skills/"+.)|sort) end))' \
  "$SS_DIR/01-source.json" >/dev/null || ss_fail "Admin sync status/paths/counts do not match selected stage"
 head="$(jq -r '.source_git_commit_sha' "$SS_DIR/02-inventory.json")"; ss_sha "$head"
