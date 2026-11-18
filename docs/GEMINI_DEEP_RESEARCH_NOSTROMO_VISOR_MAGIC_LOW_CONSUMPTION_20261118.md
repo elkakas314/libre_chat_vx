@@ -57,3 +57,6 @@ D6: Lo que esté sólo en SOURCE debe permanecer NO_VERIFICADO: no declara insta
 
 ## CRITERIO FINAL
 La mejor solución no es la más minimalista visualmente, sino la más **capaz, expresiva, continua, autónoma y mediblemente eficiente**. Mantener experiencia rica y completa; reducir coste de lo que NO se está usando, no sus prestaciones. No confundir animación/visor rico con ejecución material o permisos.
+
+## ADENDA DE USUARIO 2026-11-18: CONVERSAR ANTES DE TAREAS
+El objetivo ahora es chat→comprensión/sugerencias/web R0→plan acordado→handoff a tarea gobernada→decisiones reales/ToolApproval→readback/verified. Nada de ejecución del agente o MCP material por una intención inferida. Deep Research detallado `docs/GEMINI_DEEP_RESEARCH_NOSTROMO_DIALOGUE_TO_TASK_20261118.md`. Conserva la magia visual sin recortar funciones y no inventes React paths. 
