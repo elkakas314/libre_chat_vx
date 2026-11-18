@@ -100,3 +100,95 @@ I. Revisión adversarial: enumera al menos 10 modos de fallo de tu propia propue
 J. Preguntas solo si bloquean materialmente la corrección SOURCE; no pedir al usuario datos que constan en los recursos.
 
 Precisión: todo hallazgo debe identificarse como SOURCE_VERIFIED, CI_VERIFIED, HOST_REPORTED, LIVE_VERIFIED, INFERRED o EXTERNAL_BOUNDARY. Si no puedes abrir el código, dilo y produce informe parcial: NO rellenes vacíos con arquitectura inventada. No publiques commits, no modifiques el host ni solicites credenciales. Este texto es una consulta arquitectónica. **Devuelve la propuesta detallada para que el implementador pueda incorporarla casi directamente a GitHub y a un solo Work local.**
+
+---
+
+## AMPLIACIÓN V3.1 — MCP, FLUJOS OPERATIVOS Y AUTONOMÍA DEL AGENTE
+
+**Solicitud adicional expresa del usuario (18/11/2026):** pide que el propio agente NOSTROMO gestione herramientas y flujos ya configurados en el MCP, que descubra autónomamente lo que puede hacer y que proponga o acometa trabajo seguro útil sin que el usuario tenga que conocer la arquitectura ni pedir cada paso. Buscar funciones aún NO cubiertas por el Work Lenovo, con el menor consumo de memoria y la mayor fluidez. Desarrolla esta parte con detalle técnico, no solo ideas de producto.
+
+### 9.1. Audita el MCP real y separa inventario de disponibilidad
+
+En GitHub SOURCE del único servidor `deployment/nostromo-mcp` aparecen **12 nombres** en `tools.mjs`. No implica que los 12 estén habilitados en el proceso activo, seleccionados en el agente o sean invocables desde la conversación:
+
+- Base y descubrimiento: `nostromo_estado`, `nostromo_herramientas`, `nostromo_auditoria_r0`.
+- CLI: `nostromo_terminal_preparar`, `nostromo_terminal_ejecutar` (ejecución directa opcional).
+- Lecturas: `nostromo_archivo_leer`, `nostromo_directorio_listar`, `nostromo_git_inspeccionar`, `nostromo_metricas`.
+- Tareas asíncronas: `nostromo_tarea_iniciar`, `nostromo_tarea_estado`, `nostromo_tarea_cancelar`.
+
+**Contratos SOURCE a verificar:** `selectedTools(NOSTROMO_TOOL_SET)` exige el trío asíncrono indivisible; no admite activarlo junto al ejecutor terminal directo. Hay herramientas obligatorias aun cuando el selector no las menciona. La persistencia `async-jobs.mjs` está limitada a 1 tarea en ejecución, 96 registros, 7 días, 120 s y salida acotada; `RUNNING` recuperado tras reinicio es `UNKNOWN_OUTCOME`. `nostromo_auditoria_r0` realiza una observación global de lectura de los ámbitos permitidos, **no** un self-healing ni un PASS material. Verifica diferencias entre documentación antigua y código vigente (p.ej. descripción antigua del listado de directorios vs validación actual 1–50 entradas). El MCP SOURCE está separado del MCP LIVE reportado en `~/libre_chat_vx-clean`. Sin readback del Lenovo NO declarar `INSTALLED`, `CONFIGURED`, `LIVE` ni `VERIFIED`.
+
+Para cada herramienta devuelve una ficha: ID exacto, finalidad natural, scope/ACL/riesgo, schema de entrada/salida, tool-description para selección semántica, condiciones de registro, estado SOURCE/CONFIG/LIVE conocido, dependencias, límite de recursos, prueba `stdio` y prueba de invocación desde Agent Builder, receipt requerido, degradación y alternativas. No mezclar el catálogo de MCP NOSTROMO con las 287 capacidades registradas en MANOJOS3: fuentes y permisos son independientes.
+
+### 9.2. Propón un paquete pequeño de FLUJOS MCP REUTILIZABLES
+
+No crear un segundo MCP ni exponer 20 herramientas directas al LLM. Priorización: **flujos compositivos tipados sobre las 12 herramientas existentes + acciones nativas de LibreChat + adapters externos autenticados**, seleccionados con catalogo diferido o búsqueda a demanda. Sólo añadir herramientas nuevas si el upstream fijado no ofrece forma segura de componerlas y la medición muestra valor neto. Diferencia claramente "flujo" de "tool" y "target action". Cada flujo debe incluir `workflow_id`, intent/human description, trigger, prerequisite/check, tools reales y secuencia, inputs tipados, salidas, riesgo, autorización, timeout, cancellation, idempotency, readback/verifier, estado terminal, retry seguro y coste CPU/tokens.
+
+Incluye como mínimo candidatos de bajo consumo, indicando cuáles se logran **sin añadir código nuevo**:
+1. `nostromo.que_puedes_hacer`: autodescubrimiento focal real (catálogo, capacidades nativas, estados y permisos); explicar al usuario "puedo X ahora / puedo configurar Y / no puedo Z" con ejemplos relevantes. No cargar los 12 esquemas de golpe.
+2. `nostromo.diagnostico`: preflight R0 de LibreChat, MCP, modelo, Mongo, conectividad, versiones, jobs y recursos; resumir blockers comprobados, riesgos y acción segura siguiente sin scans ni inferencia pesada por defecto.
+3. `nostromo.contexto`: retomar "eso/lo anterior", recabar solo archivos/fragmentos autorizados pertinentes, no reiniciar la conversación ni volver a leer corpus entero.
+4. `nostromo.revisar_codigo`: inspección Git/read-only, HEAD/dirty/arquitectura/diff/tests existentes; sugerir parche o PR en ramas aisladas; no ejecutar escrituras ni reset sin autorización.
+5. `nostromo.tarea`: preparar → estimar riesgo y recurso → ejecutar vía trío `nostromo_tarea_*` si está habilitado → consultar a intervalos razonables → verificar efecto → persistir receipt/handoff; no vender `EXIT_0` como aplicación verificada.
+6. `nostromo.reparacion_segura`: diagnosticar un fallo, reutilizar script/procedimiento probado, comprobar preimagen+scope+grant real, cambio acotado, test/readback/rollback. Un nodo denegado no bloquea lo independiente. No dar al MCP permiso autónomo para emitir grants locales.
+7. `nostromo.buscar_y_sintetizar`: búsqueda web y lectura pública con herramienta nativa LibreChat, recabar fuentes y proponer acciones; usar navegador sólo para interacciones que lo exijan.
+8. `nostromo.documento`: localizar, comparar y resumir Drive/archivos mediante conectores nativos con ACL, sin copiar token ni indexar todo en local.
+9. `nostromo.seguimiento`: aprovechar background tasks / notifications / native scheduling SOLO si el pin de LibreChat lo soporta, sin crear daemon, cron, Redis ni segundo TaskLedger; deduplicar alertas, no disparar inferencia continua.
+10. `nostromo.recuperacion`: al recargar o cambiar iPhone/PC, recuperar conversación y actividad de Mongo, inspeccionar trabajos y estados `UNKNOWN_OUTCOME`, no reemitir efectos; conservar `parentMessageId` y barreras oficiales de error.
+11. `nostromo.cierre_operativo`: pruebas y evidencias por lote, inventario de archivos únicos, propuesta de consolidación/backups, limpieza reversible de archivos demostrablemente redundantes con grant exacto y restore test; no borrar `UNKNOWN_PRESERVE`.
+12. `nostromo.manojos_enlace`: sólo tras disponibilidad y consentimiento externo, descubrir health/capabilities y tramitar objetivo con MANOJOS3 por adaptador gobernado, seguir run/receipt y distinguir cierre del producto MANOJOS. NOSTROMO no gobierna ni verifica por sí mismo el Kernel externo.
+
+Para cada candidato decidir: `NATIVE_REUSE`, `MCP_COMPOSITION`, `SMALL_WRAPPER_REQUIRED`, `EXTERNAL_ADAPTER`, `DEFER` o `UNSAFE`. **No** proponer nuevos nombres `nostromo_x` como si existieran ya; si hace falta un nombre de herramienta nuevo, declararlo explícitamente `PROPOSED_NOT_INSTALLED`, con schema y pruebas.
+
+### 9.3. Iniciativa real: el agente propone qué hacer sin que el usuario lo adivine
+
+Diseña un contrato de iniciativa **event-driven, no polling LLM**:
+- A partir de intención + foco de conversación + catálogo LIVE de herramientas + estado del host + tareas pendientes + consentimientos vigentes, priorizar 1–3 sugerencias breves realmente ejecutables y de utilidad demostrable.
+- Ejemplo: "Puedo comprobar las dependencias del frontend y detectar el bloqueo antes de instalar nada"; al aceptar, seleccionar el flujo disponible, sin preguntarle al usuario qué comando usar.
+- En una auditoría, el agente puede continuar automáticamente con lecturas autorizadas, análisis, pruebas SOURCE y recuperación de errores internos; **no** esperar "continúa" para cada paso no material.
+- En un fallo acotado, intentar diagnóstico y reparación **solo dentro de los grants/autorizaciones ya existentes**, conservar original/rollback y verificar. Una frontera `CONFIG_GAP` no paraliza otro flujo seguro.
+- Descubrir nuevas capacidades cuando hay una necesidad real, por nombre o categoría, sin importar 287 definiciones al contexto ni revelar secretos. Catálogo no es permiso. Mostrar `AVAILABLE`, `CONFIGURED`, `LIVE` y `VERIFIED` separados.
+- Proactividad sobria: deduplicación, TTL, seguimiento de sugerencias aceptadas/descartadas, "no molestar", sin notificaciones intrusivas ni prompts infinitos. Medir coste tokens, inferencias, TTFT, RSS, CPU, consumo energético y frecuencia de tareas.
+- Voz/personalidad natural constante en español, respuestas breves por defecto, explicaciones si se piden, continuidad de referentes y memoria de tareas; no asumir que el usuario conoce NOSTROMO, MANOJOS, YAML, tool IDs, Git o arquitectura.
+- Incorporar "capability gap awareness": cuando el sistema no puede, sugerir al usuario la opción más cercana ya disponible o señalar la autorización exacta pendiente, sin inventar ejecución.
+- Definir diferencias entre recomendación, plan, dispatch, ejecución, efecto y verificación; favorecer resultados, evitar "simulación de trabajo" con resúmenes repetidos y pseudo-PASS.
+
+### 9.4. Ingeniería para añadir/componer flujos sin colapsar el contexto 6144
+
+El principal P0 es que 13 esquemas/5302 tokens + instrucciones/3152 > 6144. La arquitectura de flujos **no puede empeorarlo**. Requerir:
+- Indexar nombres/descripciones mínimos (manifest tipado y compacto) con búsqueda diferida por necesidad; cargar 1–2 schemas precisos por turno, conservar resto en catálogo sin pérdida funcional. Comprobar qué hace realmente `tool_search` y `defer_loading` del upstream EXACTO; el Builder muestra 8 diferidas y 3 directas, pero el preflight histórico muestra 13 schemas.
+- Definir presupuesto dinámico `system + context + selectedSchemas + user + maxOutput + safetyMargin <= effectiveContext`; identificar cuándo el runtime puede detectar sobrecoste antes de Ollama sin realizar otra inferencia.
+- Describir un `workflow registry` liviano (JSON en SOURCE o conjunto existente de Skills) con `id, version, intentTags, capabilities, prerequisites, risk, cost, steps, verify` y no autoridad; evitar crear tablas de DB, servicio residente, segundo router ni carga global de cientos de YAML.
+- Adaptar selección del agente a `NOSTROMO_TOOL_SET` y al inventario REAL de LibreChat Agent Builder sin editar Mongo a mano ni sobrescribir las 11 herramientas persistidas.
+- Comparar dos vías: composición a nivel agente nativo/Skill vs wrapper de flujo tipado en el MCP stdio actual, escoger menor complejidad/consumo y documentar por qué. Cualquier wrapper debe ejecutar sólo operaciones fijadas y autorizadas; no aceptar DSL arbitrario ni `eval`/shell de modelos.
+- Manejar progreso de flujos con jobId de `async-jobs` existente si alcanza; no declarar orquestación duradera por el mero hecho de que sea persistente un snapshot CLI. Si un flujo excede 120s, usar fanout cognitivo/segmentación o el plano externo especializado, no ampliar timeout ni lanzar daemon por inercia.
+- Fijar máximos de herramientas directas y coste total de instrucciones, suite de regresión, precondiciones `HEAD` exacto y rollback. Medir antes/después en el Lenovo para aceptar ahorro de CPU/RAM/tokens.
+
+### 9.5. Capacidades faltantes que el Work aún NO ha cerrado
+
+Haz una tabla `NECESIDAD → EXISTE SOURCE → ACTIVE HOST REPORTADO → EVIDENCIA → GAP → CAMBIO MÍNIMO → TEST → OWNER/GRANT`. Cubrir:
+- selección contextual de herramientas efectivas vs 8 defer/3 direct, tool_search event-driven y modelo de respuesta vacío/lento;
+- bridge de intención `nostromoDecisionBridge.ts` SOURCE (no binding runtime), autoselección de proveedores realmente GRATIS y garantía sin fallback facturable;
+- descubrimiento de capacidades y sugerencias naturales apoyadas en readback (no listas de marketing);
+- tareas gobernadas, progreso visible, interrupción, persistencia de jobs y reconciliación `UNKNOWN_OUTCOME`;
+- agent loop sin confirmaciones artificiales pero con autorización externa real para R2/R3;
+- integración por rutas mínimas GitHub, Drive, Web Search, correo/calendario si están **conectados**; acceso a ChatGPT/SIWC y móvil únicamente si hay concesión y LIVE;
+- recuperación de conversación original con error preflight y retry real completado sin estancamiento;
+- memoria operativa y continuidad de hilos/tareas, summaries/compaction con retención de identidades, evidencias, bloqueos y `next_action`;
+- construcción/ejecución segura a petición: cuándo usar herramientas nativas del agente, `nostromo_tarea_*` o enviar objetivo a MANOJOS3; no duplicar trabajadores;
+- chequeo de observabilidad de recursos, swap activa (si/so), PSI, limitaciones VRAM, latencia/TTFT y criterios de dormir Ollama;
+- interfaz proactiva, estados exactos, accesibilidad y responsive móvil sin replicar Artifacts/Subagents;
+- cierre de NOSTROMO y coordinación posterior con MANOJOS3/MANOJOS como producto independiente.
+
+### 9.6. Entregables ampliados obligatorios para poder implementar SIN otro rediseño
+
+Añade a tu informe original los apartados:
+K. **Matriz completa de las 12 herramientas existentes:** catálogo fuente vs `NOSTROMO_TOOL_SET` vs Agent Builder vs llamada real; diferencias, schema y límites sin fingir readback HOST.
+L. **Flujos tipados y workflow registry mínimo:** prioridad P0/P1/P2; para los primeros 6 da schema JSON concreto, secuencias de llamadas, manejo de fallos, dedupe, riesgo/grant, receipts y 2 casos de prueba por flujo.
+M. **Diseño de agente autónomo natural:** contrato `Discover → Understand → Plan → ActWithinGrants → Readback → Verify → Explain → Suggest`, reconexión de UI, herramientas diferidas, criterio "sólo una pregunta cuando sea obligatoria", ejemplo de 10 diálogos naturales e iniciativa razonable.
+N. **Plan de implementación precisa:** ruta de cada archivo ya existente, diff propuesto en el upstream pin o repo, imports reales, configuración agent/YAML, tests NODE + CI, tests LIVE sin saturar swap, rollback y versionado. Declarar `NO CHANGE` donde ya exista.
+O. **Lista de mejoras nuevas respecto al Work detenido:** qué resolvió el Work (E2E MCP previo, parche instalado, Mongo) y qué sigue sin cerrar (P0, selección efectiva, latencia, retry, iniciativa, binding, autonomía, ahorro, limpieza); evitar repetir lo ya resuelto.
+P. **Handoff Work Lenovo autosuficiente:** misma sesión preferida si recuperable, readback y ownership, HEAD/CI exacto, pruebas de 2 herramientas MCP y memoria, capacidad de descubrir y orquestar un flujo, consumo/latencia, cierre sin pérdida de datos, conexión posterior MANOJOS3 gobernada. Solo declarar `FULLY_FUNCTIONAL` con recibos reales.
+
+**No hay autorización implícita para modificar producción.** Este anexo demanda propuestas detalladas, no que DeepSeek o el modelo posean nuevas credenciales/autoridad. Si la solución requiere privilegios locales, diseñar preflight y tratamiento del bloqueo, no burlar el gate. Evitar GitHub Actions adicionales si no aportan valor: ya existen CI SOURCE; los tests en host deben ser muy acotados.
+
