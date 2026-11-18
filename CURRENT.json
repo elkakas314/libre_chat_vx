@@ -1433,4 +1433,32 @@
     "result": "LOCAL_QWEN_IDLE_AND_GPU_IDLE; RAM_PRESSURE_NOT_OBSERVED; SWAP_NEAR_FULL; HYBRID_REMOTE_ROUTE_AND_PERSISTENT_MEMORY_NOT_LIVE",
     "next": "Bind the existing decision/inference route into the native agent request path in reproducible source, then use only an already authorized zero-cost provider or official user OAuth consent for a bounded live conversation test."
   }
+,
+  "e3_native_inference_route_adapter_20261118": {
+    "evidence_class": "SOURCE_IMPLEMENTATION_AND_TARGETED_TESTS",
+    "verified_at_utc": "2026-11-18T15:59:36Z",
+    "component": "src/librechat/nativeInferenceRouteAdapter.ts",
+    "behavior": [
+      "reuses interpretIntent, bridgeIntentToDecision, NostromoInferenceGateway and chooseHybridLane",
+      "requires a fresh LIVE_READBACK, VERIFIED_ZERO_COST, healthy, quota-available route with capability and context fit",
+      "reserves measured completion tokens before route admission",
+      "maps an admitted route to a native endpoint/model only after admission",
+      "keeps explicit local use limited to simple chat and prevents local selection for tool turns",
+      "returns a non-authoritative handoff candidate only after the existing matching host handoff contract"
+    ],
+    "tests": {
+      "targeted_typescript_check": "PASS",
+      "package_export_typescript_check": "PASS",
+      "native_inference_route_adapter_cases": "6/6 PASS",
+      "git_diff_check": "PASS"
+    },
+    "status": "SOURCE_ADAPTER_IMPLEMENTED; NATIVE_AGENT_CALLSITE_AND_LIVE_PROVIDER_BINDING_PENDING",
+    "limitations": [
+      "no LibreChat native service calls this adapter yet",
+      "no fresh free remote provider or authorized SIWC session is configured",
+      "tests use synthetic route fixtures and do not prove LIVE or HOST behavior"
+    ],
+    "runtime_or_agent_changed": false,
+    "next": "Wire the adapter into the native AgentClient turn initialization using authenticated intent/handoff state, measured context and current provider readbacks; do not silently fall back to the saved local model when no route is admitted."
+  }
 }
