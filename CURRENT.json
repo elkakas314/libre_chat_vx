@@ -2197,5 +2197,19 @@
       "This verifies the current local backend/frontend HTTP health only; it does not verify the SIWC patch, authenticated conversation, MCP execution, Mongo persistence, or mobile access.",
       "kernel_authority=false is not evidence about path-scoped HOST_CONTROL R2 grants."
     ]
+  },
+  "e3_reboot_preflight_r0_20261118": {
+    "observed_at_utc": "2026-11-18T22:38:45Z",
+    "host": "elkakas314-Lenovo-Z50-70",
+    "plane": "HOST_CONTROL",
+    "checks": {
+      "run_directory_reboot_required_marker": "NOT_PRESENT_IN_BOUNDED_DIRECTORY_READBACK",
+      "kernel_authority": false,
+      "installed_updates_pending_reboot": "NOT_CHECKED",
+      "reboot_grant": "NOT_EXPOSED_BY_R0_STATUS"
+    },
+    "decision": "DO_NOT_REBOOT",
+    "reason": "R0 did not establish pending-update state or exact reboot authorization; arbitrary host command requires a real local grant.",
+    "change": "Read-only host status and bounded /run directory listing. No reboot, package operation, host write, or service change."
   }
 }

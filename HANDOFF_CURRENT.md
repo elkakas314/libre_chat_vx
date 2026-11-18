@@ -386,3 +386,9 @@ PRECEDENCE: this update supersedes older `PR26 DRAFT` or ChatGPT usage assumptio
 - HOST_CONTROL R0 confirms `vx-backend.service` is active/running (MainPID 5074), its local listener is `127.0.0.1:3080` (Node worker PID 5098), `GET /health` returns `200 OK`, and `GET /` returns LibreChat application HTML.
 - Read-only only; no host files, configuration, Mongo data, service, or process changed. This verifies local HTTP health only, not SIWC, an authenticated chat, MCP, Mongo recovery, or mobile.
 - Do not infer an R2 grant from `kernel_authority=false`; the actual grant state remains unavailable in the R0 status surface.
+
+## 2026-11-18 — reboot preflight R0 boundary
+
+- HOST_CONTROL still identifies `elkakas314-Lenovo-Z50-70`. A bounded `/run` listing did not contain `reboot-required`; installed-update state was not checked because no R0 tool exposes that query and arbitrary host execution requires a real local grant.
+- No reboot or package operation was attempted. R0 status does not expose an exact reboot grant, and `kernel_authority=false` is not a grant inventory. Decision: do not reboot until update state, recovery path, and exact host authorization are verified.
+- Receipt is recorded in `CURRENT.json` as `e3_reboot_preflight_r0_20261118`; this is not `HOST_REBOOT_VERIFIED`.
