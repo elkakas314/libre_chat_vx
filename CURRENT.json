@@ -131,6 +131,32 @@
       "conclusion": "Same-chat follow-up accepted and dispatched, but no answer within 120s; this is not a reproduced provider error and does not pass completion/recovery.",
       "user_requested_tools": 0,
       "outbound_tool_definitions_count": "NOT_READ_BACK"
+    },
+    "post_stop_reload_readback_20261118": {
+      "verified_at_utc": "2026-11-18T07:56:39Z",
+      "conversation_id": "37c3579f-0371-5694-b713-bfe68830ae16",
+      "user_message_id": "dbb90235-85d3-4f17-ab07-99e6cc27ed9f",
+      "assistant_message_id_after_reload": "bb81170a-77a2-490e-b5bb-939be356ffb9",
+      "user_follow_up_visible": true,
+      "assistant_row_visible": true,
+      "assistant_text_empty": true,
+      "regenerate_control_visible": true,
+      "composer_available": true,
+      "parent_rejection_visible": false,
+      "mongo_direct_readback": false,
+      "interpretation": "The app reloaded the stopped follow-up and assistant row. This proves UI recovery/persistence through the app but not direct Mongo state or a completed answer."
+    },
+    "agent_builder_readback_20261118": {
+      "verified_at_utc": "2026-11-18T07:56:39Z",
+      "agent": "NOSTROMO",
+      "model": "qwen3:4b-instruct-2507-q4_K_M",
+      "instruction_text_is_concise": true,
+      "selected_tool_sources": [
+        "Artefactos",
+        "nostromo-local MCP"
+      ],
+      "skills": "Off; 0 available",
+      "scope_note": "The UI showed two selected tool sources, not two individual MCP tools; no tool removal or catalog reduction was performed."
     }
   },
   "repository": "elkakas314/libre_chat_vx",
