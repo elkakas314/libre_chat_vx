@@ -1,5 +1,5 @@
 # SOURCE EXAMPLE ONLY — do not merge blindly into an existing librechat.yaml.
-# LibreChat GitHub Skill Sync stage 1 discovers 14 SOURCE roots (no auto-activation).
+# LibreChat GitHub Skill Sync stage 1 mirrors only the 12 canonical+legacy roots, excluding 2 optional agent Skills.
 # Preserve LIVE sourceId, freeze reviewed SHA and verify ACL before enabling.
 skillSync:
   github:
@@ -12,8 +12,19 @@ skillSync:
         repo: libre_chat_vx
         ref: integration/nostromo-canon-20261118-r1
         paths:
-          - skills
-        skillDiscoveryDepth: 1
+          - skills/nostromo-core
+          - skills/nostromo-visualization
+          - skills/nostromo-research
+          - skills/nostromo-event-triage
+          - skills/nostromo-evidence-first
+          - skills/nostromo-resource-navigation
+          - skills/manojos3-nostromo
+          - skills/vx13-nostromo
+          - skills/cross-target-read
+          - skills/nostromo-extension-review
+          - skills/nostromo-intent-translation
+          - skills/nostromo-tool-budget
+        skillDiscoveryDepth: 0
         token: '${GITHUB_SKILLS_TOKEN}'
 
 # No LIVE deployment or credential is implied by this example.
