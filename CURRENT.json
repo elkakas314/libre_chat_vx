@@ -1132,5 +1132,62 @@
     "agent_settings_saved": false,
     "live_overlay_deployed": false,
     "product_status": "INCOMPLETE"
+  },
+  "e3_routing_memory_resource_20261118": {
+    "evidence_class": "HOST_LIVE_READBACK_SOURCE_STATUS_RESOURCE_R0",
+    "verified_at_utc": "2026-11-18T14:39:18Z",
+    "source_branch_head": "f0b83d31ddbfdb147f5094f3ed52e815e91cdace",
+    "pr_54": {
+      "state": "OPEN_DRAFT_UNMERGED",
+      "head": "f0b83d31ddbfdb147f5094f3ed52e815e91cdace",
+      "combined_statuses": []
+    },
+    "runtime": {
+      "backend_service": "vx-backend.service ACTIVE",
+      "backend_pid": 503674,
+      "api_pid": 503699,
+      "mcp_pid": 503777,
+      "upstream": "/home/elkakas314/librechat/upstream",
+      "mcp_source": "/home/elkakas314/libre_chat_vx-clean/deployment/nostromo-mcp/server.mjs",
+      "effective_yaml_sha256": "8ff54c6e4ea8fb1efae786ee8e90c140fb9a65b7ba14fc747585ddcede4be0b9"
+    },
+    "routing_and_memory": {
+      "agent_builder_model_previous_authenticated_readback": "qwen3:4b-instruct-2507-q4_K_M",
+      "yaml_endpoint": "Ollama local only",
+      "title_model": "qwen2.5:3b",
+      "remote_router_or_siwc_configured": false,
+      "native_memory_or_summarization_configured": false,
+      "source_router_binding_to_native_agent": "NOT_FOUND_IN_BRANCH_SOURCE",
+      "free_remote_provider_live_verified": false,
+      "ollama_api_ps": "models=[]",
+      "ollama_effective_context_during_inference": "NOT_MEASURED_NO_INFERENCE"
+    },
+    "resources": {
+      "mem_available_kb_before_after": [9346528, 9320796],
+      "swap_free_kb": 60,
+      "memory_psi_some_full_avg10_percent": 0,
+      "cpu_psi_some_avg10_percent": 2.08,
+      "cpu_psi_full_avg10_percent": 0,
+      "loadavg": [0.96, 1.0, 0.82],
+      "vmstat_sample_swap_in_pages": 0,
+      "vmstat_sample_swap_out_pages": 96,
+      "gpu": "GeForce 840M, 0%, 5/4096 MiB",
+      "interpretation": "Swap remains nearly full; no recent memory PSI full pressure or sufficient evidence of a leak. No inference was launched."
+    },
+    "receipt_links": {
+      "issue_37_router_receipt_comment_id": 6981776917,
+      "issue_37_phone_provenance_corrected_comment_id": 6981658685,
+      "drive_document_id": "1oOiFTIrMD5Lnd05frGZ3HuZf3LgZHBEnAdhkoZvOwFA",
+      "drive_revision_id": "AHj4eMTD0T5tkTkQffdKdWdezf3xrGp4_xFmfrQb2knPjUD3_JEi-bNVHhZPf5BLdilUyxoAHr7aCWlusLxdZEU9eRCeenU4xLR2G4n9KkY"
+    },
+    "local_worktree": {
+      "dirty_checkout_preserved": "/tmp/nostromo-e3-20261118",
+      "dirty_checkout_head": "d51025c50303efe40b185303bff8aba4a85f3569",
+      "dirty_checkout_behind_remote_by_commits": 4,
+      "clean_remote_worktree": "/tmp/nostromo-e3-remote-f0b83d31"
+    },
+    "host_mutation": false,
+    "inference_or_mcp_canary": false,
+    "product_status": "INCOMPLETE_NOT_PASS"
   }
 }
