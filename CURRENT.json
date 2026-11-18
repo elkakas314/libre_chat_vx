@@ -1790,5 +1790,107 @@
     },
     "result": "SIWC_REFRESH_ROTATION_SOURCE_TESTED; EXACT_HEAD_CI_BLOCKED_BY_GITHUB_ACCOUNT_BILLING; HOST_ACTIVATION_PENDING",
     "next": "Implement the authenticated native route-readback callback using verified effective provider/model context and quota evidence; do not infer capabilities/context from model names or the /v1/models catalogue. Reboot remains blocked by absent HOST_CONTROL kernel authority."
+  },
+  "e3_host_inventory_delta_20261118": {
+    "evidence_class": "REUSED_HOST_R0_RECEIPTS_PLUS_BOUNDED_LIVE_READBACK",
+    "verified_at_utc": "2026-11-18T21:33:00Z",
+    "source_receipt": "/home/elkakas314/librechat/nostromo/receipts/20261118-root-sizes-readback.json",
+    "live_readback": {
+      "backend_service": "vx-backend.service ACTIVE",
+      "docker_service": "docker.service ACTIVE",
+      "data_node_path": "present",
+      "meili_data_path": "present",
+      "active_runtime_git": "uncommitted tracked and untracked overlay/source changes; preserved",
+      "third_upstream_git": "deleted package-lock.json; no change made",
+      "current_mcp_source": "existing receipt identifies active process; no new source change"
+    },
+    "cleanup": {
+      "directories_deleted": 0,
+      "bytes_recovered": 0,
+      "redundancy_proven": 0
+    },
+    "reboot": {
+      "kernel_authority": false,
+      "reboot_required_marker": "UNREADABLE_VIA_R0",
+      "performed": false
+    },
+    "limitations": [
+      "Sizes reused from same-day R0 receipt rather than rerun.",
+      "Host-exec size/process probes require exact local authorization unavailable in current HOST_CONTROL readback.",
+      "No root was moved, modified, or deleted."
+    ],
+    "next": "Resolve the authenticated SIWC native-route readback gap, then continue source-vs-host differential reconciliation under an exact R0/R2-capable host grant. Do not reboot until recovery and authority are verified.",
+    "tracked_paths": [
+      {
+        "path": "/home/elkakas314/librechat/upstream",
+        "size": "2.9G nested / 3.2G root",
+        "status": "KEEP_ACTIVE; fresh service active; dirty overlay preserved"
+      },
+      {
+        "path": "/home/elkakas314/librechat/vx",
+        "status": "ABSENT"
+      },
+      {
+        "path": "/home/elkakas314/librechat/nostromo",
+        "size": "285M",
+        "status": "KEEP_DATA; tools/backups/worktrees/receipts/runtime"
+      },
+      {
+        "path": "/home/elkakas314/libre_chat_vx-clean",
+        "size": "29M",
+        "status": "KEEP_ACTIVE_SOURCE; active MCP per receipt"
+      },
+      {
+        "path": "/home/elkakas314/LibreChat",
+        "size": "657M",
+        "status": "ACTIVE_DEPENDENCY; Mongo/Meili/RAG data preserved"
+      },
+      {
+        "path": "/home/elkakas314/upstream",
+        "size": "567M",
+        "status": "UNKNOWN_PRESERVE; fresh status still has deleted package-lock.json"
+      },
+      {
+        "path": "/home/elkakas314/bin",
+        "size": "332K",
+        "status": "PRESERVE_SHARED_EXECUTABLES"
+      },
+      {
+        "path": "/home/elkakas314/vx-audit",
+        "size": "244K",
+        "status": "UNKNOWN_PRESERVE"
+      },
+      {
+        "path": "/home/elkakas314/vx-backup",
+        "size": "6.2M",
+        "status": "PRESERVE_BACKUP"
+      },
+      {
+        "path": "/home/elkakas314/nostromo-workspace-backup.gngRsx",
+        "size": "4.2M",
+        "status": "PRESERVE_BACKUP"
+      },
+      {
+        "path": "/home/elkakas314/servicios-ia",
+        "size": "8.4M",
+        "status": "UNKNOWN_PRESERVE; OpenClaw data retained"
+      },
+      {
+        "path": "/home/elkakas314/openclaw-b-paquete",
+        "size": "80K",
+        "status": "PRESERVE_RECOVERY_STATE"
+      },
+      {
+        "path": "/home/elkakas314/MANOJOS",
+        "size": "141M",
+        "status": "EXCLUDED_OTHER_PROJECT"
+      },
+      {
+        "path": "/home/elkakas314/manojos_3",
+        "size": "50G",
+        "status": "EXCLUDED_ACTIVE_AUXILIARY_PROJECT"
+      }
+    ],
+    "size_receipt_documented_root_count": 12
   }
 }
