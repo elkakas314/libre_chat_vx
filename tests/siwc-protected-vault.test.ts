@@ -38,6 +38,10 @@ test('vault CAS protects multi-version credentials and writes owner-only file',a
     assert.equal(persisted.includes('new-private-refresh'),false);
     assert.equal(persisted.includes('siwc-aes256gcm-v1'),true);
     assert.equal(persisted.includes('private-refresh-test-only'),false);
+    await assert.rejects(vault.remove(client,first.version),/VERSION_CONFLICT/);
+    assert.deepEqual(await vault.remove(client,next.version),{removed:true});
+    assert.equal(await vault.read(client),null);
+    assert.equal(await vault.readForUser('librechat-user-secure'),null);
   }finally{await rm(dir,{recursive:true,force:true});}
 });
 test('vault prevents symlink reads, broad access and client path traversal',async()=>{

@@ -335,6 +335,21 @@ export class SiwcConnectionService {
     await attempt.close();
   }
 
+  /** Stops pending consent and deletes only this authenticated user's CAS-verified vault record. */
+  async disconnectForUser(userId:string):Promise<SiwcPublicConnectionState>{
+    if(!userId||userId.length>256)throw Error('SIWC_AUTHENTICATED_USER_REQUIRED');
+    await this.cancelForUser(userId);
+    const current=await this.options.vault.readForUser!(userId);
+    if(!current)return {status:'DISCONNECTED'};
+    if(current.record.libreChatUserId!==userId)throw Error('SIWC_USER_BINDING_MISMATCH');
+    if(typeof this.options.vault.remove!=='function')throw Error('SIWC_VAULT_DISCONNECT_UNAVAILABLE');
+    const result=await this.options.vault.remove(current.record.clientId,current.version);
+    if(!result.removed)throw Error('SIWC_VAULT_DISCONNECT_READBACK_FAILED');
+    const readback=await this.options.vault.readForUser!(userId);
+    if(readback)throw Error('SIWC_VAULT_DISCONNECT_READBACK_FAILED');
+    return {status:'DISCONNECTED'};
+  }
+
   /** Public, token-free session state for the authenticated LibreChat account. */
   async publicStateForUser(userId:string):Promise<SiwcPublicConnectionState>{
     if(!userId||userId.length>256)throw Error('SIWC_AUTHENTICATED_USER_REQUIRED');

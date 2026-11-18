@@ -134,9 +134,15 @@ test('SIWC connect binds signed plan consent to the LibreChat user and reads it 
     assert.equal(await service.resolveAccount('librechat-user-B'),null);
     const already=await service.startForUser('librechat-user-A');
     assert.equal(already.status,'CONNECTED');
+    assert.deepEqual(await service.disconnectForUser('librechat-user-B'),{status:'DISCONNECTED'});
+    assert.equal((await vault.readForUser('librechat-user-A'))?.record.clientId,clientId);
     assert.equal(tokenExchangeCount,1);
     assert.equal(modelReadCount,3);
     assert.ok(closed>=1);
+    assert.deepEqual(await service.disconnectForUser('librechat-user-A'),{status:'DISCONNECTED'});
+    assert.equal(await vault.readForUser('librechat-user-A'),null);
+    assert.equal(await service.resolveAccount('librechat-user-A'),null);
+    assert.deepEqual(await service.publicStateForUser('librechat-user-A'),{status:'DISCONNECTED'});
   }finally{await rm(directory,{recursive:true,force:true});}
 });
 

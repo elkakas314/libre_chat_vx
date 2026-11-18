@@ -63,6 +63,22 @@ export function SiwcConnectionControl(){
     }finally{setBusy(false);}
   };
 
+  const disconnect=async()=>{
+    setBusy(true);setError(undefined);
+    try{
+      const response=await fetch('/api/nostromo/siwc/disconnect',{
+        method:'POST',credentials:'same-origin',cache:'no-store',
+        headers:{Accept:'application/json','Content-Type':'application/json'},body:'{}',
+      });
+      const result=await readReply(response);
+      if(!response.ok)throw Error(typeof result.error==='string'?result.error:'SIWC_DISCONNECT_FAILED');
+      if(result.status!=='DISCONNECTED')throw Error('SIWC_DISCONNECT_READBACK_FAILED');
+      setState('DISCONNECTED');
+    }catch(cause){
+      setError(cause instanceof Error?cause.message:'SIWC_DISCONNECT_FAILED');
+    }finally{setBusy(false);}
+  };
+
   return <section aria-label="Conexión de ChatGPT para NOSTROMO" data-testid="siwc-connection-control">
     <h5>ChatGPT mediante Sign in with ChatGPT</h5>
     <p role="status">Estado: {state}</p>
@@ -72,6 +88,12 @@ export function SiwcConnectionControl(){
       {state==='CONNECTED'?'Conectado con ChatGPT':'Continuar con ChatGPT'}
     </button>
     <button type="button" onClick={()=>void refresh()} disabled={busy}>Actualizar estado</button>
+    {state==='CONNECTED'||state==='REAUTH_REQUIRED'
+      ?<>
+        <p>Desconectar elimina las credenciales locales guardadas; la revocación de la autorización se gestiona en la cuenta de OpenAI.</p>
+        <button type="button" onClick={()=>void disconnect()} disabled={busy}>Desconectar cuenta ChatGPT</button>
+      </>
+      :null}
     {error?<p role="alert">No se pudo conectar: {error}</p>:null}
   </section>;
 }

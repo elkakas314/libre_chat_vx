@@ -3,12 +3,12 @@ import assert from 'node:assert/strict';
 import { mountSiwcConnectionApi, type SiwcConnectionRouter,
   type SiwcHttpHandler, type SiwcHttpResponse } from '../src/llm/siwcConnectionApi';
 
-type Route={method:'GET'|'POST';handlers:SiwcHttpHandler[]};
+type Route={method:'GET'|'POST';path:string;handlers:SiwcHttpHandler[]};
 function harness(){
   const routes:Route[]=[];
   const router:SiwcConnectionRouter={
-    get(_path,...handlers){routes.push({method:'GET',handlers});},
-    post(_path,...handlers){routes.push({method:'POST',handlers});},
+    get(path,...handlers){routes.push({method:'GET',path,handlers});},
+    post(path,...handlers){routes.push({method:'POST',path,handlers});},
   };
   let statusCode=200;
   let body:unknown;
@@ -17,9 +17,7 @@ function harness(){
     json(value){body=value;return value;},
   };
   async function call(method:Route['method'],path:string,userId?:string){
-    // The API registers state, connect, cancel in this order.
-    const index=path==='/state'?0:path==='/connect'?1:2;
-    const selected=routes[index];
+    const selected=routes.find(route=>route.method===method&&route.path===path);
     assert.equal(selected?.method,method);
     statusCode=200;body=undefined;
     const request={user:userId?{id:userId}:undefined,body:{userId:'attacker-controlled'}};
@@ -65,6 +63,7 @@ test('SIWC account routes require auth and CSRF and derive the account only from
       userIds.push(userId);return {status:'DISCONNECTED' as const};
     },
     cancelForUser:async(userId:string)=>{userIds.push(userId);},
+    disconnectForUser:async(userId:string)=>{userIds.push(userId);return {status:'DISCONNECTED' as const};},
   };
   mountSiwcConnectionApi({router:h.router,service,requireAuthenticatedUser:auth,verifyCsrf:csrf});
 
@@ -74,9 +73,11 @@ test('SIWC account routes require auth and CSRF and derive the account only from
     authorizationURL:'https://auth.openai.com/api/accounts/authorize?client_id=public-client'});
   await h.call('GET','/state','librechat-user-1');
   await h.call('POST','/cancel','librechat-user-1');
-  assert.deepEqual(userIds,['librechat-user-1','librechat-user-1','librechat-user-1','librechat-user-1']);
-  assert.equal(authCalls,3);
-  assert.equal(csrfCalls,2);
+  const disconnect=await h.call('POST','/disconnect','librechat-user-1');
+  assert.deepEqual(disconnect.body,{status:'DISCONNECTED'});
+  assert.deepEqual(userIds,Array(5).fill('librechat-user-1'));
+  assert.equal(authCalls,4);
+  assert.equal(csrfCalls,3);
 });
 
 test('SIWC account routes reject missing user identity and never echo submitted identity',async()=>{
@@ -87,6 +88,7 @@ test('SIWC account routes reject missing user identity and never echo submitted 
     startForUser:async()=>{serviceCalls++;throw Error('must not run');},
     publicStateForUser:async()=>{serviceCalls++;return {status:'DISCONNECTED' as const};},
     cancelForUser:async()=>{serviceCalls++;},
+    disconnectForUser:async()=>{serviceCalls++;return {status:'DISCONNECTED' as const};},
   };
   mountSiwcConnectionApi({router:h.router,service,requireAuthenticatedUser:pass,verifyCsrf:pass});
   const result=await h.call('POST','/connect');
@@ -105,6 +107,7 @@ test('SIWC connect never returns a non-OpenAI authorization target',async()=>{
           hostId:'fixture',subjectRef:'REDACTED',expiresAtMs:0},models:[]}),cancel:async()=>{}}),
     publicStateForUser:async()=>({status:'DISCONNECTED' as const}),
     cancelForUser:async()=>{},
+    disconnectForUser:async()=>({status:'DISCONNECTED' as const}),
   };
   mountSiwcConnectionApi({router:h.router,service,requireAuthenticatedUser:pass,verifyCsrf:pass});
   const result=await h.call('POST','/connect','librechat-user-1');

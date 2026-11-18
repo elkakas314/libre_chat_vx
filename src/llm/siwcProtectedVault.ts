@@ -133,4 +133,27 @@ export class SiwcProtectedFileVault implements SiwcCredentialVault {
       await unlink(lock).catch(()=>{});
     }
   }
+  async remove(clientId:string,expectedVersion:string):Promise<{removed:boolean}>{
+    if(!/^[a-f0-9]{64}$/.test(expectedVersion))throw Error('SIWC_VAULT_VERSION_REQUIRED');
+    await this.directory();
+    const lock=this.file(clientId)+'.lock';
+    let lockFd;
+    try{lockFd=await open(lock,constants.O_CREAT|constants.O_EXCL|
+      constants.O_NOFOLLOW|constants.O_WRONLY,0o600);}
+    catch{throw Error('SIWC_VAULT_BUSY');}
+    try{
+      const current=await this.readUnsafe(clientId);
+      if(!current)return {removed:false};
+      if(current.version!==expectedVersion)throw Error('SIWC_VAULT_VERSION_CONFLICT');
+      await unlink(this.file(clientId));
+      if(await this.readUnsafe(clientId))throw Error('SIWC_VAULT_REMOVE_READBACK_FAILED');
+      return {removed:true};
+    }catch(error){
+      if(error instanceof Error&&error.message.startsWith('SIWC_VAULT_'))throw error;
+      throw Error('SIWC_VAULT_REMOVE_FAILED');
+    }finally{
+      await lockFd.close();
+      await unlink(lock).catch(()=>{});
+    }
+  }
 }

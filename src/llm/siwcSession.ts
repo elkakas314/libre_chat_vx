@@ -23,6 +23,8 @@ export interface SiwcCredentialVault {
   read(clientId:string):Promise<{version:string;record:SiwcAccountCredentials}|null>;
   /** Optional for legacy vault adapters; native SIWC activation requires this user-scoped lookup. */
   readForUser?(userId:string):Promise<{version:string;record:SiwcAccountCredentials}|null>;
+  /** Removes exactly the CAS version after the caller has verified its user binding. */
+  remove?(clientId:string,expectedVersion:string):Promise<{removed:boolean}>;
 }
 type TokenData={
   id_token?:unknown;access_token?:unknown;refresh_token?:unknown;

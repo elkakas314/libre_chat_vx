@@ -23,6 +23,7 @@ export interface SiwcConnectionApiService {
   startForUser(userId:string):Promise<SiwcConnectionStart>;
   publicStateForUser(userId:string):Promise<SiwcPublicConnectionState>;
   cancelForUser(userId:string):Promise<void>;
+  disconnectForUser(userId:string):Promise<SiwcPublicConnectionState>;
 }
 export type SiwcConnectionApiServiceResolver=(
   request:SiwcAuthenticatedRequest,
@@ -47,6 +48,7 @@ function publicError(error:unknown):string {
     'SIWC_HOST_CONFIGURATION_REQUIRED',
     'SIWC_USER_VAULT_LOOKUP_REQUIRED',
     'SIWC_AUTHORIZATION_URL_REJECTED',
+    'SIWC_VAULT_DISCONNECT_UNAVAILABLE',
   ]);
   return allowed.has(error.message)?error.message:'SIWC_OPERATION_FAILED';
 }
@@ -115,6 +117,19 @@ export function mountSiwcConnectionApi(input:{
         if(!service)return response.status(503).json({error:'SIWC_RUNTIME_UNAVAILABLE'});
         await service.cancelForUser(userId);
         return response.status(200).json(await service.publicStateForUser(userId));
+      } catch(error) {
+        return response.status(503).json({error:publicError(error)});
+      }
+    });
+
+  input.router.post('/disconnect',input.requireAuthenticatedUser,input.verifyCsrf,
+    async(request,response)=>{
+      const userId=authenticatedUserId(request);
+      if(!userId)return response.status(401).json({error:'SIWC_AUTHENTICATED_USER_REQUIRED'});
+      try {
+        const service=serviceFor(request);
+        if(!service)return response.status(503).json({error:'SIWC_RUNTIME_UNAVAILABLE'});
+        return response.status(200).json(await service.disconnectForUser(userId));
       } catch(error) {
         return response.status(503).json({error:publicError(error)});
       }
