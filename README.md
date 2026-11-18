@@ -49,3 +49,8 @@ tests/       scaffolding de pruebas
 `READBACK/LIVE > SOURCE > CURRENT > HANDOFF > BLUEPRINT > DOCUMENTACIÓN > MEMORIA > INFERENCIA`
 
 No declarar PASS material sin target exacto + readback + verifier + receipt.
+
+
+## Corte de integración NOSTROMO — 18/11/2026
+
+La rama de revisión `integration/nostromo-canon-20261118-r1` incorpora `main` y Director/E2 mediante [PR #53](https://github.com/elkakas314/libre_chat_vx/pull/53); `main` no se modificó. Leer [canon de integración y forense](docs/NOSTROMO_INTEGRATION_CANON_20261118.md) y el [delta canónico Drive](https://docs.google.com/document/d/1oOiFTIrMD5Lnd05frGZ3HuZf3LgZHBEnAdhkoZvOwFA/edit). Los SOURCE y QA previos no sustituyen la prueba LIVE del Lenovo ni la recuperación del delta MCP local. `NOSTROMO_FULLY_FUNCTIONAL=NOT_VERIFIED`.
