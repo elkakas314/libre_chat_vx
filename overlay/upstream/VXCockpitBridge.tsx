@@ -8,10 +8,9 @@ import {
   nostromoHubSourceSnapshot,
   PhoneModuleView,
   createPhoneModuleSnapshot,
+  summarizeVxConversation,
 } from '@librechat/vx';
-import type { HudSystem, PhoneModuleSnapshot } from '@librechat/vx';
-import type { VxConversationActivityInput } from './state';
-import { summarizeVxConversation } from './state';
+import type { HudSystem, PhoneModuleSnapshot, VxConversationActivityInput } from '@librechat/vx';
 import './VXCockpit.css';
 
 export interface VXCockpitBridgeProps {
@@ -142,8 +141,8 @@ export default function VXCockpitBridge({ onClose, activity: activityInput, phon
                 <span>Terminal</span><span aria-hidden="true">→</span>
                 <span>Evidencia</span>
               </div>
-              <p><strong>ChatGPT:</strong> pendiente de autorización OAuth; el agente funciona con Ollama local.</p>
-              <p><strong>Terminal:</strong> MCP local LIVE. R0 permite lecturas acotadas; las tareas R2 requieren aprobación local exacta y no se repiten automáticamente tras un resultado incierto.</p>
+              <p><strong>ChatGPT:</strong> OAuth pendiente; las rutas se confirmarán tras una lectura del host.</p>
+              <p><strong>Terminal:</strong> la vista no consulta el servicio MCP. Una llamada y su salida se verifican en la conversación y en el receipt del MCP. Las decisiones R2 requieren autorización local exacta.</p>
               <div className="vx-mode-tools" data-testid="nostromo-tools-source">
                 <strong>Único MCP · catálogo SOURCE</strong>
                 <ul>

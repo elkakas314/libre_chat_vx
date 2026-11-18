@@ -23,7 +23,10 @@ test('M4 phone module remains connected as an honest SOURCE-only view',()=>{
  const bridge=read('overlay/upstream/VXCockpitBridge.tsx');
  const phone=read('src/mobile/phoneModule.ts');
  assert.match(bridge,/PhoneModuleView/);
- assert.match(bridge,/phone\s*\?\?\s*createPhoneModuleSnapshot\(\)/);
+ assert.match(bridge,/phone\s*\?\?\s*createPhoneModuleSnapshot\(undefined,\s*\[\],\s*activity\.conversationId\)/);
+ assert.match(bridge,/summarizeVxConversation/);
+ assert.match(bridge,/VxConversationActivityInput.*from '@librechat\/vx'/);
+ assert.doesNotMatch(bridge,/from ['"]\.\/state['"]/);
  assert.match(phone,/if\(!observation\)return[\s\S]*sourceOnly:true/);
  assert.match(phone,/iosRemoteControlAvailable:false/);
 });
@@ -38,12 +41,11 @@ test('M4 merged cabin styling keeps activity, hub keyboard focus, and mobile rul
 
 test('M4 neutral labels and offline text do not assert an installed agent/MCP',()=>{
  const bridge=read('overlay/upstream/VXCockpitBridge.tsx');
- assert.match(bridge,/El contexto de conversación aparece arriba/);
- assert.match(bridge,/el resultado de sus herramientas/);
- assert.match(bridge,/La ejecución chat→MCP sigue sin verificarse/);
- assert.match(bridge,/CHAT→MCP NO VERIFICADO/);
- assert.match(bridge,/no confirma la ejecución ni el éxito de MCP/);
- assert.match(bridge,/ChatGPT:<\/strong> pendiente de autorización OAuth/);
+ assert.match(bridge,/La cabina muestra el contexto de chat cargado/);
+ assert.match(bridge,/Terminal:<\/strong> la vista no consulta el servicio MCP/);
+ assert.match(bridge,/Una llamada y su salida se verifican en la conversación/);
+ assert.match(bridge,/ChatGPT:<\/strong> OAuth pendiente/);
+ assert.doesNotMatch(bridge,/MCP local LIVE/);
  assert.match(bridge,/Esta cabina no inicia procesos ni concede permisos/);
  assert.doesNotMatch(bridge,/Tu agente de terminal en el Lenovo/);
 });
