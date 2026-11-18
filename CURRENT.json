@@ -861,5 +861,29 @@
     },
     "workflow_runs_associated_by_connector": [],
     "result": "NODE24_AND_MCP_RUNTIME_PATH_VERIFIED; HOST_WRITE_GRANT_NOT_OBSERVED; PRODUCT_INCOMPLETE"
+  },
+  "e3_siwc_fetch_test_compatibility_20261118": {
+    "evidence_class": "SOURCE_LOCAL_TEST_AND_GITHUB_READBACK",
+    "verified_at_utc": "2026-11-18T14:00:00Z",
+    "source_commit": "36c6986b0ae4fabcae821230689686e68fbbf054",
+    "source_file": "tests/siwc-responses-client.test.ts",
+    "change": "test fetch stubs use an unknown intermediary cast to accept the extended global fetch type without changing runtime behavior",
+    "typescript_version": "5.9.3",
+    "compilation": "tsc -p tsconfig.json PASS in isolated clone using preinstalled upstream node_modules; no dependency installation",
+    "focused_tests": {
+      "files": [
+        "inference-gateway.test.ts",
+        "nostromo-decision-bridge.test.ts",
+        "siwc-responses-client.test.ts"
+      ],
+      "passed": 19,
+      "failed": 0
+    },
+    "ci": {
+      "connector_pr_workflow_runs": []
+    },
+    "pr_state": "OPEN_DRAFT",
+    "live_router_status": "NOT_CONNECTED_OR_VERIFIED",
+    "product_status": "INCOMPLETE"
   }
 }
