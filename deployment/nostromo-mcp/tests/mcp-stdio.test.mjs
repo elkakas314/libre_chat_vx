@@ -56,9 +56,9 @@ test('MCP stdio scoped directory listing is opt-in, R0 and never reveals secret 
     assert.notEqual(response.isError,true);
     const data=parse(response);
     assert.equal(data.status,'READ_OK');
-    assert.equal(data.entries.some(e=>e.name==='public.md'),true);
-    assert.equal(data.entries.some(e=>e.name==='.env'),false);
-    assert.equal(data.entries.some(e=>e.name==='secret-token.txt'),false);
+    assert.equal(data.entries.includes('public.md'),true);
+    assert.equal(data.entries.includes('.env'),false);
+    assert.equal(data.entries.includes('secret-token.txt'),false);
     assert.equal(data.materialVerified,false);
   });
  }finally{await rm(root,{recursive:true,force:true});}

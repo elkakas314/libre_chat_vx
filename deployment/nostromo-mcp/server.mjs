@@ -87,9 +87,9 @@ if(activeTools.has('nostromo_archivo_leer'))server.registerTool('nostromo_archiv
   }catch(e){return result({status:'DENIED',reason:String(e?.message||'FILE_READ_FAILED')},true);}
 });
 if(activeTools.has('nostromo_directorio_listar'))server.registerTool('nostromo_directorio_listar',{
-  description:'R0: lista hasta 64 nombres públicos, sin leer archivos ni seguir symlinks. Alcance por directorio canónico y descriptor comprobado; filtra nombres sensibles.',
+  description:'R0: lista hasta 50 nombres inmediatos no sensibles dentro de raíces permitidas. Omite symlinks, no recorre subdirectorios ni lee contenido.',
   inputSchema:{directory:z.string().min(1).max(1024),
-    maxEntries:z.number().int().min(1).max(64).default(20)}
+    maxEntries:z.number().int().min(1).max(50).default(50)}
 },async args=>{
   try{
     const data=await listScopedDirectory(args,settings);

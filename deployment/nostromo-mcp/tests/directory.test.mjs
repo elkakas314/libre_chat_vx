@@ -20,8 +20,9 @@ test('R0 directory listing is bounded and filters sensitive leaves',async()=>{
    const x=await listScopedDirectory({directory:root,maxEntries:20},settings(root));
    assert.equal(x.status,'READ_OK');
    assert.equal(x.materialVerified,false);
-   assert.ok(x.entries.some(y=>y.name==='public.md'&&y.kind==='file'));
-   assert.ok(x.entries.some(y=>y.name==='external-link'&&y.kind==='symlink'));
+   assert.ok(x.entries.includes('public.md'));
+   assert.equal(x.entries.includes('external-link'),false);
+   assert.ok(x.entries.every(name=>typeof name==='string'));
    assert.ok(!x.entries.some(y=>['.env','token.txt','secrets'].includes(y.name)));
    assert.equal(x.filteredSensitiveCount>=3,true);
    const small=await listScopedDirectory({directory:root,maxEntries:1},settings(root));
