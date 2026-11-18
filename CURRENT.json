@@ -781,5 +781,50 @@
       "chat_reloaded_and_rows_restored": true,
       "this_is_not_an_ollama_provider_error": true
     }
+  },
+  "e3_conversation_architecture_readback_20261118": {
+    "evidence_class": "HOST_R0_CONFIG_SOURCE_AND_RESOURCE_READBACK",
+    "verified_at_utc": "2026-11-18T13:41:32Z",
+    "pr_head_before_update": "f0993a695678a02c5042b2aa7d2ff79a65586552",
+    "runtime_upstream_head": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
+    "agent_route": {
+      "configured_endpoint": "Ollama",
+      "remote_free_provider": "NOT_CONFIGURED_OR_VERIFIED",
+      "decision_bridge": "SOURCE_PURE_NOT_BOUND_TO_NATIVE_AGENT_REQUEST",
+      "cloudflare_gateway": "SOURCE_ONLY_NOT_CONFIGURED_IN_RUNTIME_YAML",
+      "siwc": "DISABLED; SOURCE_CLIENT_TEXT_ONLY_NO_TOOLCALLS",
+      "openrouter_mcp": "UNAVAILABLE_IN_CURRENT_WORK_TOOL_INVENTORY"
+    },
+    "memory_and_context": {
+      "native_memory": "DISABLED; runtime YAML has no memory block",
+      "summarization": "ENABLED_BY_PINNED_DEFAULT; falls back to agent provider/model",
+      "modelSpecs": "ABSENT_FROM_RUNTIME_YAML",
+      "no_new_inference_or_compaction": true
+    },
+    "management": {
+      "agent_management_oidc_m2m": "ABSENT_FROM_RUNTIME_YAML",
+      "host_control_kernel_authority": false,
+      "persistent_r2_grant": "NOT_OBSERVED; grants directory had lock files only"
+    },
+    "resources": {
+      "service": "vx-backend.service",
+      "service_state": "active",
+      "main_pid": 503674,
+      "mem_available_kb": 9671564,
+      "mem_total_kb": 16267088,
+      "swap_free_kb": 60,
+      "swap_total_kb": 2097148,
+      "memory_psi_some_avg10_percent": 0,
+      "memory_psi_full_avg10_percent": 0,
+      "gpu_utilization_percent": 0,
+      "vram_used_mib": 5,
+      "vram_total_mib": 4096,
+      "gpu_temperature_c": 41,
+      "ollama_loaded_model": false,
+      "vmstat_swap_in_kb_per_s": 0,
+      "vmstat_swap_out_kb_per_s": 0,
+      "vmstat_cpu_idle_percent": 97
+    },
+    "result": "LIVE_REMOTE_ROUTING_AND_MEMORY_NOT_VERIFIED; PRODUCT_INCOMPLETE"
   }
 }
