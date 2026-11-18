@@ -1268,4 +1268,41 @@
     "result": "NO_CURRENT_MEMORY_PRESSURE; SWAP_REMAINS_NEARLY_FULL; ROUTER_AND_REMOTE_CONVERSATION_NOT_LIVE_VERIFIED",
     "next": "Use only an already authorized and verified zero-cost route or wait for official user OAuth consent; then perform one resource-bounded native conversation canary and read back MongoDB/backend. Do not increase local context or run long Qwen3 turns."
   }
+,
+  "e3_node24_and_deferred_filter_runtime_readback_20261118": {
+    "evidence_class": "HOST_R0_PROCESS_SERVICE_AND_INSTALLED_SDK_READBACK",
+    "verified_at_utc": "2026-11-18T15:21:10Z",
+    "head_before_receipt": "9a9b397429e492a0224da25007608b4f494615a8",
+    "service": {
+      "unit": "vx-backend.service",
+      "state": "active",
+      "main_pid": 503674,
+      "loaded_unit_path": "/home/elkakas314/.config/systemd/user/vx-backend.service",
+      "loaded_unit_sha256": "8a6be723fa6114f44da17f47bf2f9985685add3d98b2dc65a2b5e30b0d7996fe",
+      "node_binary_from_process_maps": "/home/elkakas314/.nvm/versions/node/v24.21.0/bin/node",
+      "exec_start_pre": "deferred-instance-filter.mjs --apply --package-root .../node_modules/@librechat/agents",
+      "host_control_r2_grant": "NOT_PRESENT"
+    },
+    "agents_sdk": {
+      "name": "@librechat/agents",
+      "version": "4.0.1",
+      "installed_filter_script_sha256": "df61585464616452899fe3f41601334f69a5b8e07d29b4bdafd1bad7dbae6f5c",
+      "patched_target_files": {
+        "src/agents/AgentContext.ts": "485efdf8f400451e00f19daf41d396ce28cbff63ca00e73a7764edfe204b6e9b",
+        "dist/cjs/agents/AgentContext.cjs": "baf1ed2ad430c6a4df3def5eb479cf61c9916e5817cf985ad175848993ecd23a",
+        "dist/esm/agents/AgentContext.mjs": "2da375f4534cbff1e34101c48dfed93ef504f617911a8a0e335f0e8ef0e1c969"
+      },
+      "patched_pattern_readback": "PASS; old pattern absent in all three files"
+    },
+    "ollama": {
+      "api_ps_models": []
+    },
+    "mutation": {
+      "backup_created": false,
+      "file_changed": false,
+      "service_restarted": false
+    },
+    "result": "NODE24_AND_DEFERRED_FILTER_INSTALLED_READBACK_VERIFIED; NO_CONVERSATION_OR_MCP_E2E_PASS",
+    "next": "Do one bounded real-agent hello/MCP canary through an authenticated UI when interaction is available and host load remains safe; verify final response, Mongo persistence and reload. Keep PR #54 DRAFT."
+  }
 }
