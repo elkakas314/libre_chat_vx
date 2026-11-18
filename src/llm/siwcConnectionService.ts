@@ -34,6 +34,10 @@ export interface SiwcConnectAttempt {
 export type SiwcConnectionStart=
   |{status:'CONNECTED';value:SiwcConnectCompletion}
   |SiwcConnectAttempt;
+export type SiwcPublicConnectionState=
+  |{status:'CONSENT_PENDING';state?:ReturnType<typeof siwcPublicState>}
+  |{status:'DISCONNECTED'}
+  |{status:'CONNECTED'|'REAUTH_REQUIRED';state:ReturnType<typeof siwcPublicState>};
 type LoopbackFactory=(input:Parameters<typeof openSiwcLoopback>[0])=>Promise<SiwcLoopbackAttempt>;
 
 export interface SiwcAgentClientHostApp {
@@ -216,5 +220,19 @@ export class SiwcConnectionService {
     if(!attempt)return;
     this.pending.delete(userId);
     await attempt.close();
+  }
+
+  /** Public, token-free session state for the authenticated LibreChat account. */
+  async publicStateForUser(userId:string):Promise<SiwcPublicConnectionState>{
+    if(!userId||userId.length>256)throw Error('SIWC_AUTHENTICATED_USER_REQUIRED');
+    const current=await this.options.vault.readForUser!(userId);
+    const pending=this.pending.has(userId);
+    if(!current||current.record.libreChatUserId!==userId)
+      return {status:pending?'CONSENT_PENDING':'DISCONNECTED'};
+    const state=siwcPublicState(current.record,this.now());
+    if(pending)return {status:'CONSENT_PENDING',state};
+    return state.planUsage==='AUTHORIZED'
+      ?{status:'CONNECTED',state}
+      :{status:'REAUTH_REQUIRED',state};
   }
 }

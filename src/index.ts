@@ -76,6 +76,7 @@ export * from './librechat/nativeSurfaceBinding';
 export * from './librechat/nativeInferenceRouteAdapter';
 export * from './llm/siwcOpenAiFetch';
 export * from './llm/siwcConnectionService';
+export * from './llm/siwcConnectionApi';
 export * from './librechat/panelArbiter';
 export * from './librechat/approvalBridge';
 export * from './librechat/resumableBoundary';
