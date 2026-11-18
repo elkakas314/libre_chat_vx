@@ -463,5 +463,52 @@
       "external_ORACULO"
     ],
     "note": "Historical top-level SOURCE/LIVE fields below retain their prior evidence cutoff; they are not 2026-11-18 runtime readbacks."
+  },
+  "live_host_receipt_20261118": {
+    "evidence_class": "HOST_LIVE_READBACK_AND_CONVERSATION_RESULT",
+    "pr": 54,
+    "head": "cdd03135f4f749181ae5e277e3bd138b53436cb5",
+    "ci": "IN_PROGRESS_AT_READBACK",
+    "agent": {
+      "id": "agent_9ex2a9buul2cwzyo",
+      "provider": "Ollama",
+      "model": "qwen3:4b-instruct-2507-q4_K_M",
+      "maxContextTokens": 6144,
+      "catalog_selected": 11,
+      "deferred_schemas": 9,
+      "legacy_or_other_authority_tools_selected": 0
+    },
+    "backend": {
+      "service": "vx-backend.service",
+      "state": "ACTIVE_AFTER_ONE_RESTART",
+      "compatibility_patch": "APPLIED_AND_READ_BACK_IN_AGENTS_4.0.1_SOURCE_CJS_ESM",
+      "health": "HTTP_200"
+    },
+    "ollama": {
+      "context_length": 6144,
+      "state": "ACTIVE_AFTER_ONE_RESTART",
+      "health": "API_VERSION_0.40.16"
+    },
+    "conversation_test": {
+      "first_attempt": "PREFLIGHT_REJECTED_13_TOOLS_8454_INSTRUCTION_TOKENS",
+      "second_conversation_id": "7aa3da6f-8e7e-5c04-9b44-b054daee4eeb",
+      "context_used": 5381,
+      "result": "STOPPED_AFTER_4_MINUTES_WITHOUT_RESPONSE_OR_MCP_CALL",
+      "mongo_user_message_persisted": true,
+      "mongo_assistant_text_length": 0,
+      "mcp_pass": false
+    },
+    "resource_readback": {
+      "MemAvailable_kb": 8725860,
+      "SwapFree_kb": 6272,
+      "llama_server_cpu_percent": 98.5,
+      "llama_server_rss_kb": 1297340,
+      "load_average_1m": 6.76
+    },
+    "cleanup": {
+      "bytes_reclaimed": 0,
+      "deletions": 0
+    },
+    "overall": "INCOMPLETE_NO_LIVE_MCP_PASS"
   }
 }
