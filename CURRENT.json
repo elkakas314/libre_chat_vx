@@ -1163,12 +1163,19 @@
       "ollama_effective_context_during_inference": "NOT_MEASURED_NO_INFERENCE"
     },
     "resources": {
-      "mem_available_kb_before_after": [9346528, 9320796],
+      "mem_available_kb_before_after": [
+        9346528,
+        9320796
+      ],
       "swap_free_kb": 60,
       "memory_psi_some_full_avg10_percent": 0,
       "cpu_psi_some_avg10_percent": 2.08,
       "cpu_psi_full_avg10_percent": 0,
-      "loadavg": [0.96, 1.0, 0.82],
+      "loadavg": [
+        0.96,
+        1.0,
+        0.82
+      ],
       "vmstat_sample_swap_in_pages": 0,
       "vmstat_sample_swap_out_pages": 96,
       "gpu": "GeForce 840M, 0%, 5/4096 MiB",
@@ -1212,7 +1219,10 @@
       "bridge_candidate_sha256": "25c08769d970c6cfa541580da1f90f0dbf4ccf8ae7f23453581c652be7f44d65",
       "css_preimage_sha256": "9a647efc4238e51221fe1681cd6351f3d0c7ca1e3e87b112adaac0b941028ea2",
       "css_candidate_sha256": "30f51dba5a145e015eaf14d04e966aa08d0eb66ed31699017edf00f1513bb8a1",
-      "unique_runtime_state_files_preserved": ["state.ts", "state.spec.ts"],
+      "unique_runtime_state_files_preserved": [
+        "state.ts",
+        "state.spec.ts"
+      ],
       "deployment_or_restart": false
     },
     "github_readback": {
@@ -1223,9 +1233,8 @@
       "workflow_runs": []
     },
     "next": "Reconcile the dirty runtime bridge by an explicit reviewed three-way merge; do not apply/restart without the exact local grant."
-  }
-,
-  "e3_interim_r0_resource_and_route_readback_20261118":   {
+  },
+  "e3_interim_r0_resource_and_route_readback_20261118": {
     "evidence_class": "HOST_R0_RESOURCE_AND_SERVICE_READBACK_PLUS_SOURCE_STATUS",
     "verified_at_utc": "2026-11-18T15:10:54Z",
     "related_issue_comment": 6979493485,
@@ -1267,8 +1276,7 @@
     },
     "result": "NO_CURRENT_MEMORY_PRESSURE; SWAP_REMAINS_NEARLY_FULL; ROUTER_AND_REMOTE_CONVERSATION_NOT_LIVE_VERIFIED",
     "next": "Use only an already authorized and verified zero-cost route or wait for official user OAuth consent; then perform one resource-bounded native conversation canary and read back MongoDB/backend. Do not increase local context or run long Qwen3 turns."
-  }
-,
+  },
   "e3_node24_and_deferred_filter_runtime_readback_20261118": {
     "evidence_class": "HOST_R0_PROCESS_SERVICE_AND_INSTALLED_SDK_READBACK",
     "verified_at_utc": "2026-11-18T15:21:10Z",
@@ -1304,8 +1312,7 @@
     },
     "result": "NODE24_AND_DEFERRED_FILTER_INSTALLED_READBACK_VERIFIED; NO_CONVERSATION_OR_MCP_E2E_PASS",
     "next": "Do one bounded real-agent hello/MCP canary through an authenticated UI when interaction is available and host load remains safe; verify final response, Mongo persistence and reload. Keep PR #54 DRAFT."
-  }
-,
+  },
   "e3_live_short_hello_canary_resource_readback_20261118": {
     "evidence_class": "LIVE_AUTHENTICATED_AGENT_UI_CANARY_AND_HOST_RESOURCE_READBACK",
     "verified_at_utc": "2026-11-18T15:33:51Z",
@@ -1432,8 +1439,7 @@
     },
     "result": "LOCAL_QWEN_IDLE_AND_GPU_IDLE; RAM_PRESSURE_NOT_OBSERVED; SWAP_NEAR_FULL; HYBRID_REMOTE_ROUTE_AND_PERSISTENT_MEMORY_NOT_LIVE",
     "next": "Bind the existing decision/inference route into the native agent request path in reproducible source, then use only an already authorized zero-cost provider or official user OAuth consent for a bounded live conversation test."
-  }
-,
+  },
   "e3_native_inference_route_adapter_20261118": {
     "evidence_class": "SOURCE_IMPLEMENTATION_AND_TARGETED_TESTS",
     "verified_at_utc": "2026-11-18T15:59:36Z",
@@ -1541,7 +1547,7 @@
       "Cached_kb": 7674172,
       "SwapFree_kb": 6020,
       "SwapTotal_kb": 2097148,
-      "cpu_psi_some_avg10_percent": 6.20,
+      "cpu_psi_some_avg10_percent": 6.2,
       "cpu_psi_some_avg60_percent": 6.24,
       "memory_psi_some_avg10_percent": 0,
       "memory_psi_full_avg10_percent": 0
@@ -1561,5 +1567,40 @@
     },
     "result": "NO_CURRENT_OLLAMA_MODEL_LOAD_OR_MEMORY_PRESSURE_OBSERVED; SWAP_NEARLY_FULL; REMOTE_ROUTING_AND_PERSISTENT_MEMORY_NOT_LIVE_VERIFIED",
     "next": "Obtain a secret-safe presence-only readback of the effective config override and persisted agent route, then bind the existing semantic and inference routers to the native turn using a genuinely live zero-cost route or consented SIWC session."
+  },
+  "e3_siwc_streaming_source_20261118": {
+    "evidence_class": "SOURCE_CHANGE_AND_TARGETED_STUB_TESTS",
+    "verified_at_utc": "2026-11-18T17:05:00Z",
+    "branch": "integration/nostromo-canon-20261118-r1",
+    "head": "75777387b00b7cc17d56bbd92bf2ed7264efe7e5",
+    "pr": {
+      "number": 54,
+      "state": "OPEN",
+      "draft": true,
+      "merged": false
+    },
+    "change": [
+      "SiwcResponsesClient forwards output_text deltas incrementally to a native stream adapter.",
+      "AbortSignal is passed to the Responses fetch request.",
+      "The stream remains unsuccessful until response.completed; truncated stream remains fail-closed."
+    ],
+    "tests": {
+      "targeted_typescript_compile": "PASS using installed upstream TypeScript; no dependencies installed",
+      "siwc_responses_client_tests": "2/2 PASS using a local Responses SSE stub",
+      "git_diff_check": "PASS"
+    },
+    "runtime": {
+      "oauth_account": "NOT_READ_BACK",
+      "consent": "NOT_VERIFIED",
+      "librechat_agentclient_binding": "NOT_CONNECTED",
+      "live_chat": false,
+      "runtime_changed": false
+    },
+    "ci": {
+      "source_sha": "75777387b00b7cc17d56bbd92bf2ed7264efe7e5",
+      "status": "IN_PROGRESS"
+    },
+    "result": "SOURCE_STREAMING_PRIMITIVE_VERIFIED; SIWC_PROVIDER_TO_AGENTCLIENT_BINDING_AND_OFFICIAL_USER_CONSENT_PENDING",
+    "activation_path": "Finish the server-side AgentClient/provider binding and authenticated host-user SIWC connection; then present the official Continue with ChatGPT consent flow in LibreChat."
   }
 }
