@@ -5,6 +5,8 @@ import {TentaculoHub} from '../src/ui/TentaculoHub';
 import {nostromoHubSourceSnapshot} from '../src/hud/nostromoHub';
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {resolve} from 'node:path';
 import {projectTentaculoHud, createTentaculoHubTree, hubAgentCandidate}
   from '../src/hud/tentaculoHud';
 import {summarizeVxConversation} from '../src/cockpit/conversationActivity';
@@ -89,6 +91,16 @@ test('organic HUD renders no UI without a requested focus and never renders a 3-
   const off=renderToStaticMarkup(React.createElement(TentaculoHud,
     {cards,activeSystem:null}));
   assert.equal(off,'');
+});
+
+test('native visual fixture uses the HUD return button accessible label',()=>{
+  const cards=projectTentaculoHud([],t);
+  const html=renderToStaticMarkup(React.createElement(TentaculoHud,
+    {cards,activeSystem:'VX13',onClose:()=>{}}));
+  const renderedLabel=html.match(/<button\b[^>]*aria-label="([^"]+)"/)?.[1];
+  const fixture=readFileSync(resolve(process.cwd(),'ci/fixtures/native-overlay-prereq.spec.ts'),'utf8');
+  assert.equal(renderedLabel,'Volver al contexto');
+  assert.ok(fixture.includes(`context.getByRole('button',{name:'${renderedLabel}'}).click()`));
 });
 
 test('Tentáculo Hub retains NOSTROMO local agent/MCP before separate external targets',()=>{

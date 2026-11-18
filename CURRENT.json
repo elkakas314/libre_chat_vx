@@ -2100,5 +2100,27 @@
       "main_head": "8e642eb1238f9b35f18a070d6d754fede4b432fb"
     },
     "next": "Obtain a consented SIWC account and a real authenticated route-readback source (context, tool need, native model binding, privacy, and current provider admission). Then test SOURCE/native CI on the same current SHA and deploy only with the target-scoped HOST_CONTROL R2 grants."
+  },
+  "e3_native_hud_label_guard_20261118": {
+    "change": "Added a regression test that compares the server-rendered TentaculoHud return button accessible label with the exact locator used by the native desktop/mobile Playwright fixture.",
+    "test": {
+      "typescript_compile": "PASS",
+      "focused_suite": "tests/tentaculo-hud.test.ts",
+      "passed": 12,
+      "failed": 0,
+      "result": "PASS",
+      "output": "/tmp/nostromo-hud-test.log"
+    },
+    "readback": {
+      "fixture_label": "Volver al contexto",
+      "component_label": "Volver al contexto",
+      "runtime_modified": false,
+      "host_modified": false
+    },
+    "limits": [
+      "The test guards SOURCE consistency only; it is not a browser/host visual pass.",
+      "Current exact-head GitHub Actions could not start job steps, so the new test has not run in CI."
+    ],
+    "next": "Run exact-head source and native visual CI when GitHub starts jobs; keep HUD LIVE and mobile gates open until real runtime/mobile evidence is available."
   }
 }

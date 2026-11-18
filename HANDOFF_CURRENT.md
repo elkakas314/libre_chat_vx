@@ -373,3 +373,9 @@ PRECEDENCE: this update supersedes older `PR26 DRAFT` or ChatGPT usage assumptio
 - SIWC bootstrap still requires `app.locals.nostromoReadNativeInferenceRouteInput`, absent from the pinned live backend. Official SIWC `/v1/models` returns visible model `slug`/`display_name`; neither model capability/context nor current shared-plan quota can be inferred from that listing or the model name. Quota errors may arrive during stream; surface failure and do not silently fall back.
 - No host files/services changed, no OAuth consent or live SIWC call, no backend restart. PR #54 remains OPEN/DRAFT/unmerged. Do not deploy until route evidence exists and the exact HOST_CONTROL R2 grants cover files and the one required service restart.
 - Next: implement/verify an authenticated, request-scoped route readback from actual LibreChat context and provider evidence; preserve fail-closed behavior for missing model capability, context, privacy, consent, or quota admission. Re-run same-HEAD SOURCE/native CI only when GitHub permits job startup; then complete governed deployment and live SIWC canary.
+
+## 2026-11-18 — native HUD accessible-label regression guard
+
+- Added a test proving the rendered TentaculoHud return button's accessible label matches the locator in `ci/fixtures/native-overlay-prereq.spec.ts`. Both currently read `Volver al contexto`.
+- TypeScript compile passed; focused HUD suite passed **12/12**. The first candidate run exposed a test selector matching the section label rather than the button; the assertion was corrected to inspect the button and fixture locator directly, then the focused suite passed.
+- No browser, host, service, OAuth, or conversation state changed. This only protects SOURCE consistency; native browser, HUD LIVE, and mobile remain unverified. Current-head GitHub jobs could not start runner steps, so no CI claim applies to this change.
