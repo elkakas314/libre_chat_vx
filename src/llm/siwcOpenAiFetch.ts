@@ -64,15 +64,18 @@ function assertAllowedBody(body:Record<string,unknown>,visibleModels:readonly {s
  * it is never copied into model options, request JSON, errors, or browser data.
  */
 export function createSiwcOpenAiFetch(
-  resolveAccount:()=>Promise<SiwcFetchAccount|null>,
+  authenticatedUserId:string,
+  resolveAccount:(userId:string)=>Promise<SiwcFetchAccount|null>,
   transport:typeof fetch=fetch,
   now:()=>number=()=>Date.now(),
 ):typeof fetch {
+  if(!authenticatedUserId||authenticatedUserId.length>256)
+    throw Error('SIWC_AUTHENTICATED_USER_REQUIRED');
   const wrapped=async (input:RequestInfo|URL,init:RequestInit={})=>{
     responseURL(input);
     if((init.method??(input instanceof Request?input.method:'GET')).toUpperCase()!=='POST')
       throw Error('SIWC_METHOD_REJECTED');
-    const account=await resolveAccount();
+    const account=await resolveAccount(authenticatedUserId);
     if(!account||siwcAccountPermission(account.record,now())!=='AUTHORIZED'||!account.record.accessToken)
       throw Error('SIWC_USER_CONSENT_REQUIRED');
     const body=await requestBody(input,init);

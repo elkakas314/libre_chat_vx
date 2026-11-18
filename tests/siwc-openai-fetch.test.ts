@@ -25,13 +25,17 @@ test('SIWC Responses fetch injects a user-consented bearer and preserves native 
       headers:{'Content-Type':'text/event-stream'},
     });
   }) as unknown as typeof fetch;
-  const fetchSiwc=createSiwcOpenAiFetch(async()=>account,transport,()=>now);
+  let resolvedUserId='';
+  const fetchSiwc=createSiwcOpenAiFetch('librechat-user-fixture',async(userId)=>{
+    resolvedUserId=userId;return account;
+  },transport,()=>now);
   const controller=new AbortController();
   const response=await fetchSiwc('https://api.openai.com/v1/responses',{
     method:'POST',headers:{Authorization:'Bearer stale-key'},body:JSON.stringify(allowedBody),
     signal:controller.signal,
   });
   assert.equal(response.status,200);
+  assert.equal(resolvedUserId,'librechat-user-fixture');
   assert.equal(captured?.url,'https://api.openai.com/v1/responses');
   const headers=new Headers(captured?.init?.headers);
   assert.equal(headers.get('authorization'),'Bearer test-oauth-bearer');
@@ -43,7 +47,7 @@ test('SIWC Responses fetch injects a user-consented bearer and preserves native 
 });
 
 test('AgentClient binding is ephemeral, route-bound, and contains no OAuth credentials',()=>{
-  const fetchSiwc=createSiwcOpenAiFetch(async()=>account);
+  const fetchSiwc=createSiwcOpenAiFetch('librechat-user-fixture',async()=>account);
   const binding=bindSiwcRouteToAgentClient({
     kind:'INFERENCE_ROUTE',lane:'REMOTE_INFERENCE',profile:'NORMAL',routeId:'siwc:fixture',
     provider:'CHATGPT_OAUTH_PLAN',model:'visible-model',endpoint:'openAI',nativeModel:'visible-model',
@@ -81,7 +85,7 @@ test('AgentClient binding is ephemeral, route-bound, and contains no OAuth crede
 test('SIWC transport fails closed for missing consent, wrong models, system role, hosted tools, and forbidden fields',async()=>{
   let requests=0;
   const transport=(async()=>{requests++;return new Response('ok');}) as unknown as typeof fetch;
-  const fetchSiwc=createSiwcOpenAiFetch(async()=>account,transport,()=>now);
+  const fetchSiwc=createSiwcOpenAiFetch('librechat-user-fixture',async()=>account,transport,()=>now);
   const make=(body:Record<string,unknown>,url='https://api.openai.com/v1/responses')=>
     fetchSiwc(url,{method:'POST',body:JSON.stringify(body)});
   await assert.rejects(make({...allowedBody,model:'hidden-model'}),/POLICY_REJECTED/);
@@ -89,7 +93,7 @@ test('SIWC transport fails closed for missing consent, wrong models, system role
   await assert.rejects(make({...allowedBody,previous_response_id:'resp_fixture'}),/FIELD_REJECTED/);
   await assert.rejects(make({...allowedBody,tools:[{type:'mcp',server_label:'remote'}]}),/TOOL_POLICY_REJECTED/);
   await assert.rejects(make(allowedBody,'https://api.openai.com/v1/chat/completions'),/ENDPOINT_REJECTED/);
-  const denied=createSiwcOpenAiFetch(async()=>({...account,record:{...record,scopes:['openid']}}),transport,()=>now);
+  const denied=createSiwcOpenAiFetch('librechat-user-fixture',async()=>({...account,record:{...record,scopes:['openid']}}),transport,()=>now);
   await assert.rejects(denied('https://api.openai.com/v1/responses',{
     method:'POST',body:JSON.stringify(allowedBody),
   }),/CONSENT_REQUIRED/);

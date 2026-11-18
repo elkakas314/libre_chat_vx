@@ -1639,7 +1639,7 @@
     "branch": "integration/nostromo-canon-20261118-r1",
     "base_head": "753aa5167117be2579d23be9013c83c6a49d73a8",
     "changes": [
-      "Added a server-only SIWC fetch wrapper that resolves the authenticated account per request, enforces explicit plan consent and account-visible model selection, forces the official Responses endpoint, store:false and streaming, and injects bearer authorization only at transport time.",
+      "Added a server-only SIWC fetch wrapper bound to the authenticated LibreChat user ID; it resolves that user's account per request, enforces explicit plan consent and account-visible model selection, forces the official Responses endpoint, store:false and streaming, and injects bearer authorization only at transport time.",
       "Added an ephemeral AgentClient run-agent clone adapter that preserves NOSTROMO identity, instructions, tools and permissions while leaving the saved agent untouched.",
       "Exported the binding adapter from the VX package."
     ],
