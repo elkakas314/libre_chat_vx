@@ -409,3 +409,11 @@ PRECEDENCE: this update supersedes older `PR26 DRAFT` or ChatGPT usage assumptio
 - Resource sample: MemAvailable `9,010,416 → 8,543,052 kB`, swap free steady at `2,096,380 kB`, memory PSI some/full `0.00%`; the short compile/test lowered available RAM by ~456 MiB without swap churn or PSI pressure. This is not leak evidence.
 - SOURCE only. The pinned live backend still lacks trusted `app.locals.nostromoReadNativeInferenceRouteInput`, so route selection fails closed; no real AgentClient conversation, MCP execution, Mongo persistence, or SIWC LIVE status is claimed. No production file/service/host state changed.
 - Durable receipt is `CURRENT.json:e3_siwc_sse_tool_namespace_source_20261118`.
+
+## 2026-11-19 — productive SIWC runtime delta R0
+
+- HOST_CONTROL R0 confirms `vx-backend.service` is active/running from `/home/elkakas314/librechat/upstream` (`npm run backend`); its pre-start applies the guarded deferred-instance filter only.
+- The productive AgentClient `initialize.js` has neither the SIWC binding marker nor `nostromoReadNativeInferenceRouteInput`. The installed `packages/librechat-vx/dist/src/llm` contains earlier SIWC primitives but is missing compiled `siwcConnectionService.js`, `siwcConnectionApi.js`, `siwcOpenAiFetch.js`, and `siwcProviderRoutes.js`. This is a concrete deployment gap beyond the route-evidence callback.
+- `/home/elkakas314/libre_chat_vx-clean` currently lists only `deployment/` at its root and is not a Git worktree; do not treat it as proof of the active MCP process source. The reports directory does not contain the named 2026-11-18 receipts from issue #56; the available entries are older and are not substituted for them.
+- No host writes, process changes, service restart, OAuth, or MCP run. Required next: stage the reproducible SIWC package/bootstrap/AgentClient candidate, then acquire/verify the exact local HOST_CONTROL grant before any productive install or restart; native route-input readbacks and owner OAuth consent remain separate gates.
+- Durable host readback: `CURRENT.json:e3_host_siwc_runtime_delta_r0_20261118`.

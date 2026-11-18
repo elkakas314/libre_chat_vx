@@ -2269,5 +2269,43 @@
       "The backend still lacks app.locals.nostromoReadNativeInferenceRouteInput; route selection remains fail-closed until a trusted request-scoped host readback is wired."
     ],
     "runtime_status": "SOURCE_ONLY; no production files, services, account, or host state changed."
+  },
+  "e3_host_siwc_runtime_delta_r0_20261118": {
+    "observed_at_utc": "2026-11-18T23:02:26Z",
+    "plane": "HOST_CONTROL_R0",
+    "host": "elkakas314-Lenovo-Z50-70",
+    "service": {
+      "unit": "vx-backend.service",
+      "state": "active/running",
+      "working_directory": "/home/elkakas314/librechat/upstream",
+      "entrypoint": "npm run backend",
+      "exec_start_pre": "deferred-instance-filter.mjs applies the guarded @librechat/agents package patch"
+    },
+    "installed_runtime": {
+      "agentclient_initialize_source_contains_siwc_binding": false,
+      "agentclient_initialize_source_contains_native_route_input_callback": false,
+      "librechat_vx_dist_contains": [
+        "siwcProtectedVault.js",
+        "siwcResponsesClient.js",
+        "chatgptAuthorized.js",
+        "siwcIdentity.js",
+        "siwcLoopback.js",
+        "siwcSession.js"
+      ],
+      "librechat_vx_dist_missing": [
+        "siwcConnectionService.js",
+        "siwcConnectionApi.js",
+        "siwcOpenAiFetch.js",
+        "siwcProviderRoutes.js"
+      ]
+    },
+    "other_host_readback": {
+      "libre_chat_vx_clean_exists": true,
+      "libre_chat_vx_clean_root_entries": ["deployment"],
+      "libre_chat_vx_clean_is_git_repository": false,
+      "nostromo_reports_directory_has_named_20261118_receipts": false
+    },
+    "decision": "SIWC cannot be enabled in this productive runtime: both the guarded AgentClient binding and required compiled SIWC service modules are absent. Do not patch/restart until a governed candidate and exact HOST_CONTROL grant are available.",
+    "scope": "Read-only bounded R0 checks; no host files, services, databases, or processes changed."
   }
 }
