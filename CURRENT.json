@@ -886,5 +886,65 @@
     "live_router_status": "NOT_CONNECTED_OR_VERIFIED",
     "product_status": "INCOMPLETE",
     "readback_status": "CURRENT_ENTRY_READ_FROM_GITHUB_AFTER_TESTS"
+  },
+  "e3_resource_and_hybrid_route_readback_20261118": {
+    "evidence_class": "HOST_R0_EFFECTIVE_CONFIG_RESOURCE_READBACK_PLUS_SOURCE_TEST",
+    "verified_at_utc": "2026-11-18 14:14:00 UTC",
+    "source_head_before_receipt": "17d6b9b3b0b998efb3e9f8df3d291e04f530a413",
+    "mcp_metrics_source": {
+      "files": [
+        "deployment/nostromo-mcp/inspect.mjs",
+        "deployment/nostromo-mcp/tests/inspect.test.mjs"
+      ],
+      "commits": [
+        "c1a240d78445de5d0221f979bdd6719b1d607d72",
+        "17d6b9b3b0b998efb3e9f8df3d291e04f530a413"
+      ],
+      "focused_test": "8/8 PASS; Node 24.21.0",
+      "runtime_deployed": false
+    },
+    "ci": {
+      "workflow_runs": []
+    },
+    "live_route": {
+      "backend": "vx-backend.service active; PID 503674",
+      "runtime_node": "24.21.0",
+      "mcp": "PID 503777; existing live tree retained",
+      "effective_yaml": {
+        "provider": "Ollama",
+        "title_model": "qwen2.5:3b",
+        "nostromo_local_mcp": true,
+        "remote_router": "not configured",
+        "memory_block": "absent",
+        "summarization_block": "absent",
+        "modelSpecs": "absent"
+      },
+      "agent_builder_and_mongo": "not read in this lot; no R0 database query tool; no host exec grant used"
+    },
+    "inference": {
+      "ollama_api_ps": "models=[]",
+      "test_inference": "not run; no long Qwen3 canary"
+    },
+    "resources": {
+      "mem_total_kb": 16267088,
+      "mem_available_kb": 9573064,
+      "mem_available_delta_since_13_41_utc_kb": -98500,
+      "swap_total_kb": 2097148,
+      "swap_free_kb": 6836,
+      "memory_psi_some_avg10_percent": 0,
+      "memory_psi_full_avg10_percent": 0,
+      "cpu_psi_some_avg10_percent": 0.92,
+      "loadavg_1m": 0.07,
+      "process_pss_kb": {
+        "backend_node": 27877,
+        "nostromo_mcp": 31287,
+        "ollama_daemon": 21978
+      },
+      "ollama_daemon_swap_kb": 2100,
+      "runner": "not present in /api/ps; GPU utilization/VRAM not read this snapshot"
+    },
+    "interpretation": "No current evidence of active memory pressure or a sustained leak; one prior/current pair shows about 96 MiB lower MemAvailable, with high file cache. Swap remains almost full, but no interval delta for swap-in/out was measured. This is a snapshot comparison, not a leak test.",
+    "host_change": "none; no install, restart, Mongo mutation, or model inference",
+    "source_product_status": "hybrid router and native persistent memory remain unbound/unverified; product incomplete"
   }
 }
