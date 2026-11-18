@@ -1074,8 +1074,10 @@
     },
     "unique_runtime_work": {
       "path": "/home/elkakas314/librechat/upstream/client/src/components/VX/VXCockpitBridge.tsx",
-      "status": "dirty local difference from PR overlay source; preserved and not overwritten",
-      "contains_phone_changes": true
+      "status": "dirty local file preserved; do not overwrite without reconciliation",
+      "candidate_source_contains_phone_module": true,
+      "runtime_file_contains_phone_module": false,
+      "differences": "Runtime file carries distinct activity/status copy, including stale Qwen2.5 3B and first-chat-pending claims; the PR candidate contains PhoneModule integration not present in this runtime file. The files were not merged or deployed."
     },
     "source_fix": {
       "file": "overlay/upstream/VXCockpitBridge.tsx",
