@@ -1,6 +1,6 @@
 {
   "schema": "libre-chat-vx.current.v2",
-  "status": "SOURCE_MAIN_PR25_FOUR_MODES_TENTACULO_HUB_LOCAL_MCP_LIVE_GATED",
+  "status": "P0_LIVE_MCP_AND_RECOVERY_VERIFIED_ERROR_PATH_PENDING",
   "repository": "elkakas314/libre_chat_vx",
   "branch": "main",
   "source_evidence_cutoff_head": "8a341487f5694997744e8012c36056d705ca5138",
@@ -467,8 +467,8 @@
   "live_host_receipt_20261118": {
     "evidence_class": "HOST_LIVE_READBACK_AND_CONVERSATION_RESULT",
     "pr": 54,
-    "head": "cdd03135f4f749181ae5e277e3bd138b53436cb5",
-    "ci": "IN_PROGRESS_AT_READBACK",
+    "head": "16a184348b8ad78eb1bd627b24fb1ef22fcc199d",
+    "ci": "NO_PR_TRIGGERED_RUNS_RETURNED_FOR_CURRENT_HEAD; PRIOR_RUN_RECEIPT_REMAINS_IN_PROGRESS",
     "agent": {
       "id": "agent_9ex2a9buul2cwzyo",
       "provider": "Ollama",
@@ -482,12 +482,20 @@
       "service": "vx-backend.service",
       "state": "ACTIVE_AFTER_ONE_RESTART",
       "compatibility_patch": "APPLIED_AND_READ_BACK_IN_AGENTS_4.0.1_SOURCE_CJS_ESM",
-      "health": "HTTP_200"
+      "health": "HTTP_200",
+      "main_pid": 324302,
+      "runtime_head": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
+      "official_pr_14118_fix": "PRESENT_IN_ACTIVE_SOURCE",
+      "service_exec_start_pre": "DEFERRED_FILTER_APPLY_AND_READBACK"
     },
     "ollama": {
       "context_length": 6144,
       "state": "ACTIVE_AFTER_ONE_RESTART",
-      "health": "API_VERSION_0.40.16"
+      "health": "API_VERSION_0.40.16",
+      "model": "qwen3:4b-instruct-2507-q4_K_M",
+      "runner": "llamacpp",
+      "size_vram_bytes": 3049091235,
+      "live_model_loaded_during_tool_test": true
     },
     "conversation_test": {
       "first_attempt": "PREFLIGHT_REJECTED_13_TOOLS_8454_INSTRUCTION_TOKENS",
@@ -525,6 +533,67 @@
       "SwapFree_kb": 6156,
       "llama_server_in_top5": false
     },
-    "overall": "INCOMPLETE_NO_LIVE_MCP_PASS"
+    "overall": "PARTIAL_PASS_LIVE_MCP_AND_SAME_CHAT_RECOVERY; OLLAMA_ERROR_PATH_NOT_REPRODUCED; PRODUCT_INCOMPLETE",
+    "patch": {
+      "package": "@librechat/agents",
+      "version": "4.0.1",
+      "source_commit": "cdd03135f4f749181ae5e277e3bd138b53436cb5",
+      "startup_hook": "ACTIVE_AND_IDEMPOTENT",
+      "script_sha256": "df61585464616452899fe3f41601334f69a5b8e07d29b4bdafd1bad7dbae6f5c",
+      "preimage_ts_sha256": "2955bf1b2365856b47e24be5f1f58c2f7d2f5b18097d1f83e3cb5839763ebf21",
+      "installed_cjs_sha256": "baf1ed2ad430c6a4df3def5eb479cf61c9916e5817cf985ad175848993ecd23a",
+      "installed_esm_sha256": "2da375f4534cbff1e34101c48dfed93ef504f617911a8a0e335f0e8ef0e1c969",
+      "source_matches_installed_script": true
+    },
+    "conversation_test_latest": {
+      "conversation_id": "36dc49fd-bfe9-585b-8d08-79adb2ca1e43",
+      "chat_reloaded": true,
+      "recovery_after_manual_stop": "FOLLOW_UP_ACCEPTED_AND_COMPLETED",
+      "assistant_tool_message_id": "2978ce6a-f05e-45ba-b2ab-b54c5ad45002",
+      "mcp_tool": "nostromo_estado_mcp_nostromo-local",
+      "mcp_tool_duration_seconds": 0.1,
+      "visible_result": true,
+      "mongo_rows": 6,
+      "mongo_error_rows": 0,
+      "manual_stop_row": {
+        "message_id": "36a712ce-7473-45e5-ae4c-9975195e6b9d",
+        "text_length": 0,
+        "error": false,
+        "unfinished": true
+      },
+      "follow_up_row": {
+        "message_id": "3c23fe24-0b39-4bc1-a922-ed6ff87d1306",
+        "text_length": 2,
+        "error": false,
+        "unfinished": false
+      },
+      "tool_reply_row": {
+        "message_id": "2978ce6a-f05e-45ba-b2ab-b54c5ad45002",
+        "content_types": [
+          "tool_call",
+          "text"
+        ],
+        "tool_names": [
+          "nostromo_estado_mcp_nostromo-local"
+        ],
+        "error": false,
+        "unfinished": false
+      },
+      "user_text_not_recorded": true
+    },
+    "resource_readback_latest": {
+      "llama_server_cpu_percent": 47.3,
+      "llama_server_rss_kb": 1302184,
+      "MemAvailable_gib": 8.0,
+      "SwapFree_kib": 0,
+      "model_context_length": 6144
+    },
+    "error_path": {
+      "reported_ollama_exception_reproduced": false,
+      "official_error_turn_persistence_fix_in_live_source": true,
+      "manual_stop_is_not_generation_error": true,
+      "exact_reported_failure_conversation_id_available": false,
+      "status": "PENDING_AUTHENTIC_ERROR_PATH_TEST"
+    }
   }
 }
