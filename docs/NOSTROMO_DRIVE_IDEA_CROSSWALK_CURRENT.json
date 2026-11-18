@@ -1,0 +1,1896 @@
+{
+  "schema": "nostromo-drive-idea-crosswalk/v1",
+  "source": {
+    "drive_file_id": "1Xg712HfFHts11pZrl2JHjIt4v-b452Ye",
+    "drive_file_title": "MATRIZ MAESTRA LIBRECHAT — CAPACIDADES + INTEGRACIÓN — CURRENT.xlsx",
+    "drive_modified_at": "2026-10-07T02:51:33.290Z",
+    "sheet": "IDEA-LC → capacidad(es) maestra(s)",
+    "source_catalog": "IDEA-LC-001…IDEA-LC-112",
+    "target_catalog": "LC-001…LC-119"
+  },
+  "reconciliation": {
+    "idea_rows": 112,
+    "unique_idea_ids": 112,
+    "rows_without_drive_capability": 0,
+    "explicit_github_links": 20,
+    "github_requirement_catalog": "LC-R001…LC-R120",
+    "source_feature_catalog": "39 original source rows; no direct stable-ID mapping supplied; no numeric merge"
+  },
+  "crosswalk": [
+    {
+      "idea_id": "IDEA-LC-001",
+      "drive_capability_ids": [
+        "LC-001"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_SOURCE",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-002",
+      "drive_capability_ids": [
+        "LC-001",
+        "LC-065"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO | REUTILIZAR_UPSTREAM",
+        "integration_strategy": "THIN_SOURCE | CONFIG_MODEL_SPECS",
+        "backlog_action": "MANTENER | NO_DESARROLLAR",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-003",
+      "drive_capability_ids": [
+        "LC-003"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_SOURCE",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-004",
+      "drive_capability_ids": [
+        "LC-002"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "CONFIG_YAML + FEATURE_FLAG",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [
+        "LC-R081",
+        "LC-R116"
+      ],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-005",
+      "drive_capability_ids": [
+        "LC-005"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_SOURCE",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [
+        "LC-R082"
+      ],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-006",
+      "drive_capability_ids": [
+        "LC-004"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_SOURCE + LAZY_UI",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-007",
+      "drive_capability_ids": [
+        "LC-003"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_SOURCE",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [
+        "LC-R083"
+      ],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-008",
+      "drive_capability_ids": [
+        "LC-005"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_SOURCE",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-009",
+      "drive_capability_ids": [
+        "LC-006"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_SOURCE",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [
+        "LC-R084"
+      ],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-010",
+      "drive_capability_ids": [
+        "LC-006"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_SOURCE",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-011",
+      "drive_capability_ids": [
+        "LC-011"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "SKILL + THIN_UI",
+        "backlog_action": "REDUCIR_CODIGO",
+        "result": "MIXTA_REUSO + WRAPPER_FINO"
+      },
+      "explicit_github_requirement_ids": [
+        "LC-R085"
+      ],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-012",
+      "drive_capability_ids": [
+        "LC-010"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "REUTILIZAR_UPSTREAM",
+        "integration_strategy": "NATIVE_TOOL_APPROVAL + WRAPPER_FINO",
+        "backlog_action": "REDUCIR_CODIGO",
+        "result": "MIXTA_REUSO + WRAPPER_FINO"
+      },
+      "explicit_github_requirement_ids": [
+        "LC-R086"
+      ],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-013",
+      "drive_capability_ids": [
+        "LC-015",
+        "LC-016"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "REUTILIZAR_UPSTREAM | YA_DESARROLLADO",
+        "integration_strategy": "NATIVE_LIBRECHAT | THIN_SOURCE_SECURITY",
+        "backlog_action": "NO_DESARROLLAR | MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-014",
+      "drive_capability_ids": [
+        "LC-014"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "NATIVE_ARTIFACTS + THIN_DOCK",
+        "backlog_action": "REDUCIR_CODIGO",
+        "result": "MIXTA_REUSO + WRAPPER_FINO"
+      },
+      "explicit_github_requirement_ids": [
+        "LC-R087"
+      ],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-015",
+      "drive_capability_ids": [
+        "LC-017"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_SOURCE_MANIFEST",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [
+        "LC-R088"
+      ],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-016",
+      "drive_capability_ids": [
+        "LC-018"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_SOURCE",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-017",
+      "drive_capability_ids": [
+        "LC-083"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "MCP_RESOURCE/TOOL_METADATA + THIN_UI",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-018",
+      "drive_capability_ids": [
+        "LC-026"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "NATIVE_RESUMABLE_STREAMS + THIN_RESYNC",
+        "backlog_action": "REDUCIR_CODIGO",
+        "result": "MIXTA_REUSO + WRAPPER_FINO"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-019",
+      "drive_capability_ids": [
+        "LC-026"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "NATIVE_RESUMABLE_STREAMS + THIN_RESYNC",
+        "backlog_action": "REDUCIR_CODIGO",
+        "result": "MIXTA_REUSO + WRAPPER_FINO"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-020",
+      "drive_capability_ids": [
+        "LC-026"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "NATIVE_RESUMABLE_STREAMS + THIN_RESYNC",
+        "backlog_action": "REDUCIR_CODIGO",
+        "result": "MIXTA_REUSO + WRAPPER_FINO"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-021",
+      "drive_capability_ids": [
+        "LC-013"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_SOURCE",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [
+        "LC-R089"
+      ],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-022",
+      "drive_capability_ids": [
+        "LC-013"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_SOURCE",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-023",
+      "drive_capability_ids": [
+        "LC-010",
+        "LC-013"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "REUTILIZAR_UPSTREAM | YA_DESARROLLADO",
+        "integration_strategy": "NATIVE_TOOL_APPROVAL + WRAPPER_FINO | THIN_SOURCE",
+        "backlog_action": "REDUCIR_CODIGO | MANTENER",
+        "result": "MIXTA_REUSO + WRAPPER_FINO"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-024",
+      "drive_capability_ids": [
+        "LC-013"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_SOURCE",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [
+        "LC-R090"
+      ],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-025",
+      "drive_capability_ids": [
+        "LC-037"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_UI",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [
+        "LC-R091"
+      ],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-026",
+      "drive_capability_ids": [
+        "LC-038"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "DIFERIDO",
+        "integration_strategy": "TARGET_CAPABILITY",
+        "backlog_action": "DIFERIR",
+        "result": "DIFERIDA"
+      },
+      "explicit_github_requirement_ids": [
+        "LC-R092"
+      ],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-027",
+      "drive_capability_ids": [
+        "LC-036"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_SOURCE + TARGET_ADAPTER",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [
+        "LC-R093"
+      ],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-028",
+      "drive_capability_ids": [
+        "LC-036",
+        "LC-029"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_SOURCE + TARGET_ADAPTER | THIN_SOURCE",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-029",
+      "drive_capability_ids": [
+        "LC-032"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_SOURCE + BROWSER_ADAPTER",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-030",
+      "drive_capability_ids": [
+        "LC-033"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_SOURCE_RECOVERY",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-031",
+      "drive_capability_ids": [
+        "LC-035"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_SOURCE",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [
+        "LC-R094"
+      ],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-032",
+      "drive_capability_ids": [
+        "LC-035",
+        "LC-080"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_SOURCE | MCP_ADAPTER_FINO",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [
+        "LC-R095"
+      ],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-033",
+      "drive_capability_ids": [
+        "LC-031",
+        "LC-096"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "REUTILIZAR_UPSTREAM | YA_DESARROLLADO",
+        "integration_strategy": "NATIVE_FILES + CLOUD_ADAPTERS | NATIVE_TREE_PATTERN + THIN_SOURCE",
+        "backlog_action": "REDUCIR_CODIGO | MANTENER",
+        "result": "MIXTA_REUSO + WRAPPER_FINO"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-034",
+      "drive_capability_ids": [
+        "LC-039"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "NATIVE_PROJECTS/STREAMS + THIN_CONTINUITY",
+        "backlog_action": "REDUCIR_CODIGO",
+        "result": "MIXTA_REUSO + WRAPPER_FINO"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-035",
+      "drive_capability_ids": [
+        "LC-039"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "NATIVE_PROJECTS/STREAMS + THIN_CONTINUITY",
+        "backlog_action": "REDUCIR_CODIGO",
+        "result": "MIXTA_REUSO + WRAPPER_FINO"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-036",
+      "drive_capability_ids": [
+        "LC-040"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "NATIVE_RESUME + THIN_FENCE",
+        "backlog_action": "REDUCIR_CODIGO",
+        "result": "MIXTA_REUSO + WRAPPER_FINO"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-037",
+      "drive_capability_ids": [
+        "LC-041"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "NATIVE_NOTIFICATION_PATH + THIN_POLICY",
+        "backlog_action": "REDUCIR_CODIGO",
+        "result": "MIXTA_REUSO + WRAPPER_FINO"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-038",
+      "drive_capability_ids": [
+        "LC-060"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "REUTILIZAR_UPSTREAM",
+        "integration_strategy": "NATIVE_SPEECH",
+        "backlog_action": "NO_DESARROLLAR",
+        "result": "ABSORBIDA_POR_UPSTREAM_CONFIG_SKILL_MCP"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-039",
+      "drive_capability_ids": [
+        "LC-091"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "DIFERIDO",
+        "integration_strategy": "TARGET_CAPABILITY",
+        "backlog_action": "DIFERIR",
+        "result": "DIFERIDA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-040",
+      "drive_capability_ids": [
+        "LC-051"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "REUTILIZAR_UPSTREAM",
+        "integration_strategy": "NATIVE_MCP_UI",
+        "backlog_action": "NO_DESARROLLAR",
+        "result": "ABSORBIDA_POR_UPSTREAM_CONFIG_SKILL_MCP"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-041",
+      "drive_capability_ids": [
+        "LC-051",
+        "LC-081"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "REUTILIZAR_UPSTREAM | DIFERIDO",
+        "integration_strategy": "NATIVE_MCP_UI | TARGET_ADAPTER_FINO",
+        "backlog_action": "NO_DESARROLLAR | DIFERIR_HASTA_VX13",
+        "result": "DIFERIDA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-042",
+      "drive_capability_ids": [
+        "LC-047",
+        "LC-048",
+        "LC-051",
+        "LC-056",
+        "LC-057"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "REUTILIZAR_UPSTREAM",
+        "integration_strategy": "NATIVE_DEFERRED_TOOLS | NATIVE_SKILLS | NATIVE_MCP_UI | NATIVE_BACKGROUND_TASKS | NATIVE_FILES_RAG_CONTEXT",
+        "backlog_action": "NO_DESARROLLAR",
+        "result": "ABSORBIDA_POR_UPSTREAM_CONFIG_SKILL_MCP"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-043",
+      "drive_capability_ids": [
+        "LC-046"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "REUTILIZAR_UPSTREAM",
+        "integration_strategy": "NATIVE_SUBAGENTS",
+        "backlog_action": "NO_DESARROLLAR",
+        "result": "ABSORBIDA_POR_UPSTREAM_CONFIG_SKILL_MCP"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-044",
+      "drive_capability_ids": [
+        "LC-034"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "REUTILIZAR_UPSTREAM",
+        "integration_strategy": "NATIVE_WEB_SEARCH + SKILL_POLICY",
+        "backlog_action": "NO_DESARROLLAR_COMO_MODULO",
+        "result": "ABSORBIDA_POR_UPSTREAM_CONFIG_SKILL_MCP"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-045",
+      "drive_capability_ids": [
+        "LC-017",
+        "LC-096"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_SOURCE_MANIFEST | NATIVE_TREE_PATTERN + THIN_SOURCE",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-046",
+      "drive_capability_ids": [
+        "LC-017",
+        "LC-096"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_SOURCE_MANIFEST | NATIVE_TREE_PATTERN + THIN_SOURCE",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-047",
+      "drive_capability_ids": [
+        "LC-017",
+        "LC-096"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_SOURCE_MANIFEST | NATIVE_TREE_PATTERN + THIN_SOURCE",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-048",
+      "drive_capability_ids": [
+        "LC-017",
+        "LC-096"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_SOURCE_MANIFEST | NATIVE_TREE_PATTERN + THIN_SOURCE",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-049",
+      "drive_capability_ids": [
+        "LC-017",
+        "LC-096"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_SOURCE_MANIFEST | NATIVE_TREE_PATTERN + THIN_SOURCE",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-050",
+      "drive_capability_ids": [
+        "LC-017",
+        "LC-096"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_SOURCE_MANIFEST | NATIVE_TREE_PATTERN + THIN_SOURCE",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-051",
+      "drive_capability_ids": [
+        "LC-017",
+        "LC-096"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_SOURCE_MANIFEST | NATIVE_TREE_PATTERN + THIN_SOURCE",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-052",
+      "drive_capability_ids": [
+        "LC-017",
+        "LC-096"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_SOURCE_MANIFEST | NATIVE_TREE_PATTERN + THIN_SOURCE",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-053",
+      "drive_capability_ids": [
+        "LC-017",
+        "LC-096"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_SOURCE_MANIFEST | NATIVE_TREE_PATTERN + THIN_SOURCE",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-054",
+      "drive_capability_ids": [
+        "LC-014"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "NATIVE_ARTIFACTS + THIN_DOCK",
+        "backlog_action": "REDUCIR_CODIGO",
+        "result": "MIXTA_REUSO + WRAPPER_FINO"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-055",
+      "drive_capability_ids": [
+        "LC-014",
+        "LC-016"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "NATIVE_ARTIFACTS + THIN_DOCK | THIN_SOURCE_SECURITY",
+        "backlog_action": "REDUCIR_CODIGO | MANTENER",
+        "result": "MIXTA_REUSO + WRAPPER_FINO"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-056",
+      "drive_capability_ids": [
+        "LC-030",
+        "LC-047"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO | REUTILIZAR_UPSTREAM",
+        "integration_strategy": "SKILL_POLICY + ROUTING_CONFIG | NATIVE_DEFERRED_TOOLS",
+        "backlog_action": "REDUCIR_CODIGO | NO_DESARROLLAR",
+        "result": "MIXTA_REUSO + WRAPPER_FINO"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-057",
+      "drive_capability_ids": [
+        "LC-094",
+        "LC-095"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "CI_TEST_GATE | CANON_RULE",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-058",
+      "drive_capability_ids": [
+        "LC-083"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "MCP_RESOURCE/TOOL_METADATA + THIN_UI",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-059",
+      "drive_capability_ids": [
+        "LC-099"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "REUTILIZAR_UPSTREAM",
+        "integration_strategy": "NATIVE_ADMIN_PANEL",
+        "backlog_action": "NO_DESARROLLAR",
+        "result": "ABSORBIDA_POR_UPSTREAM_CONFIG_SKILL_MCP"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-060",
+      "drive_capability_ids": [
+        "LC-022"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "BACKEND_CONFIG",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-061",
+      "drive_capability_ids": [
+        "LC-028",
+        "LC-029",
+        "LC-047"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO | REUTILIZAR_UPSTREAM",
+        "integration_strategy": "THIN_SOURCE + LAZY_SUBSCRIPTIONS | THIN_SOURCE | NATIVE_DEFERRED_TOOLS",
+        "backlog_action": "MANTENER | NO_DESARROLLAR",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-062",
+      "drive_capability_ids": [
+        "LC-024"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "NATIVE_UI + THIN_ACCESSIBILITY",
+        "backlog_action": "REDUCIR_CODIGO",
+        "result": "MIXTA_REUSO + WRAPPER_FINO"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-063",
+      "drive_capability_ids": [
+        "LC-043"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "REUTILIZAR_UPSTREAM",
+        "integration_strategy": "NATIVE_ACL",
+        "backlog_action": "NO_DESARROLLAR_COMO_MODULO",
+        "result": "ABSORBIDA_POR_UPSTREAM_CONFIG_SKILL_MCP"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-064",
+      "drive_capability_ids": [
+        "LC-039"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "NATIVE_PROJECTS/STREAMS + THIN_CONTINUITY",
+        "backlog_action": "REDUCIR_CODIGO",
+        "result": "MIXTA_REUSO + WRAPPER_FINO"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-065",
+      "drive_capability_ids": [
+        "LC-039"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "NATIVE_PROJECTS/STREAMS + THIN_CONTINUITY",
+        "backlog_action": "REDUCIR_CODIGO",
+        "result": "MIXTA_REUSO + WRAPPER_FINO"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-066",
+      "drive_capability_ids": [
+        "LC-018",
+        "LC-019"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_SOURCE",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-067",
+      "drive_capability_ids": [
+        "LC-011",
+        "LC-012"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "SKILL + THIN_UI | THIN_UI",
+        "backlog_action": "REDUCIR_CODIGO | MANTENER",
+        "result": "MIXTA_REUSO + WRAPPER_FINO"
+      },
+      "explicit_github_requirement_ids": [
+        "LC-R096"
+      ],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-068",
+      "drive_capability_ids": [
+        "LC-023"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "CONFIG_FILTERS + THIN_POLICY",
+        "backlog_action": "REDUCIR_CODIGO",
+        "result": "MIXTA_REUSO + WRAPPER_FINO"
+      },
+      "explicit_github_requirement_ids": [
+        "LC-R097"
+      ],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-069",
+      "drive_capability_ids": [
+        "LC-021"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "NATIVE_ACL + THIN_CACHE_POLICY",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-070",
+      "drive_capability_ids": [
+        "LC-016"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_SOURCE_SECURITY",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-071",
+      "drive_capability_ids": [
+        "LC-094"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "CI_TEST_GATE",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-072",
+      "drive_capability_ids": [
+        "LC-025"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "NATIVE_OBSERVABILITY + THIN_CLIENT_METRICS",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-073",
+      "drive_capability_ids": [
+        "LC-029"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_SOURCE",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-074",
+      "drive_capability_ids": [
+        "LC-001",
+        "LC-067",
+        "LC-065"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO | REUTILIZAR_UPSTREAM",
+        "integration_strategy": "THIN_SOURCE | CONFIG_MODEL_SPECS",
+        "backlog_action": "MANTENER | NO_DESARROLLAR",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-075",
+      "drive_capability_ids": [
+        "LC-009"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "NATIVE_UI_COMPOSITION",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-076",
+      "drive_capability_ids": [
+        "LC-008",
+        "LC-096"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_SOURCE + LAZY_UI | NATIVE_TREE_PATTERN + THIN_SOURCE",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-077",
+      "drive_capability_ids": [
+        "LC-012"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_UI",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-078",
+      "drive_capability_ids": [
+        "LC-026"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "NATIVE_RESUMABLE_STREAMS + THIN_RESYNC",
+        "backlog_action": "REDUCIR_CODIGO",
+        "result": "MIXTA_REUSO + WRAPPER_FINO"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-079",
+      "drive_capability_ids": [
+        "LC-006"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_SOURCE",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-080",
+      "drive_capability_ids": [
+        "LC-007"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_SOURCE",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [
+        "LC-R098"
+      ],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-081",
+      "drive_capability_ids": [
+        "LC-011"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "SKILL + THIN_UI",
+        "backlog_action": "REDUCIR_CODIGO",
+        "result": "MIXTA_REUSO + WRAPPER_FINO"
+      },
+      "explicit_github_requirement_ids": [
+        "LC-R099"
+      ],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-082",
+      "drive_capability_ids": [
+        "LC-100"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_SOURCE",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-083",
+      "drive_capability_ids": [
+        "LC-027"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_SOURCE",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-084",
+      "drive_capability_ids": [
+        "LC-019"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_SOURCE",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-085",
+      "drive_capability_ids": [
+        "LC-020"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "CONFIG_FILTERS + THIN_UI",
+        "backlog_action": "REDUCIR_CODIGO",
+        "result": "MIXTA_REUSO + WRAPPER_FINO"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-086",
+      "drive_capability_ids": [
+        "LC-100"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_SOURCE",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-087",
+      "drive_capability_ids": [
+        "LC-027"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_SOURCE",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-088",
+      "drive_capability_ids": [
+        "LC-019"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_SOURCE",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-089",
+      "drive_capability_ids": [
+        "LC-020",
+        "LC-023"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "CONFIG_FILTERS + THIN_UI | CONFIG_FILTERS + THIN_POLICY",
+        "backlog_action": "REDUCIR_CODIGO",
+        "result": "MIXTA_REUSO + WRAPPER_FINO"
+      },
+      "explicit_github_requirement_ids": [
+        "LC-R100"
+      ],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-090",
+      "drive_capability_ids": [
+        "LC-025",
+        "LC-029"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "NATIVE_OBSERVABILITY + THIN_CLIENT_METRICS | THIN_SOURCE",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-091",
+      "drive_capability_ids": [
+        "LC-002",
+        "LC-094"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "CONFIG_YAML + FEATURE_FLAG | CI_TEST_GATE",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-092",
+      "drive_capability_ids": [
+        "LC-002",
+        "LC-094"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "CONFIG_YAML + FEATURE_FLAG | CI_TEST_GATE",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-093",
+      "drive_capability_ids": [
+        "LC-021"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "NATIVE_ACL + THIN_CACHE_POLICY",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-094",
+      "drive_capability_ids": [
+        "LC-095"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "CANON_RULE",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-095",
+      "drive_capability_ids": [
+        "LC-042"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_SOURCE_SECURITY",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-096",
+      "drive_capability_ids": [
+        "LC-028"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_SOURCE + LAZY_SUBSCRIPTIONS",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-097",
+      "drive_capability_ids": [
+        "LC-079",
+        "LC-082"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_IN_PROCESS_FACADE | THIN_SOURCE",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-098",
+      "drive_capability_ids": [
+        "LC-083",
+        "LC-096"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "MCP_RESOURCE/TOOL_METADATA + THIN_UI | NATIVE_TREE_PATTERN + THIN_SOURCE",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-099",
+      "drive_capability_ids": [
+        "LC-084"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_READ_AGGREGATOR",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-100",
+      "drive_capability_ids": [
+        "LC-085",
+        "LC-097"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "REUTILIZAR_UPSTREAM",
+        "integration_strategy": "GITHUB_SKILL_SYNC + MCP_DISCOVERY | CONFIG_YAML",
+        "backlog_action": "NO_CREAR_MIRROR_PROPIO | NO_DESARROLLAR",
+        "result": "ABSORBIDA_POR_UPSTREAM_CONFIG_SKILL_MCP"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-101",
+      "drive_capability_ids": [
+        "LC-071"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_SOURCE_ADMISSION",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-102",
+      "drive_capability_ids": [
+        "LC-039"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "NATIVE_PROJECTS/STREAMS + THIN_CONTINUITY",
+        "backlog_action": "REDUCIR_CODIGO",
+        "result": "MIXTA_REUSO + WRAPPER_FINO"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-103",
+      "drive_capability_ids": [
+        "LC-047",
+        "LC-029"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "REUTILIZAR_UPSTREAM | YA_DESARROLLADO",
+        "integration_strategy": "NATIVE_DEFERRED_TOOLS | THIN_SOURCE",
+        "backlog_action": "NO_DESARROLLAR | MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-104",
+      "drive_capability_ids": [
+        "LC-020",
+        "LC-023"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "CONFIG_FILTERS + THIN_UI | CONFIG_FILTERS + THIN_POLICY",
+        "backlog_action": "REDUCIR_CODIGO",
+        "result": "MIXTA_REUSO + WRAPPER_FINO"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-105",
+      "drive_capability_ids": [
+        "LC-086"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO",
+        "integration_strategy": "THIN_STATUS_PROJECTION",
+        "backlog_action": "MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-106",
+      "drive_capability_ids": [
+        "LC-079",
+        "LC-081",
+        "LC-098"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "YA_DESARROLLADO | DIFERIDO | REUTILIZAR_UPSTREAM",
+        "integration_strategy": "THIN_IN_PROCESS_FACADE | TARGET_ADAPTER_FINO | AGENT_PLUGIN",
+        "backlog_action": "MANTENER | DIFERIR_HASTA_VX13 | FEATURE_FLAG",
+        "result": "DIFERIDA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-107",
+      "drive_capability_ids": [
+        "LC-089"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "DIFERIDO",
+        "integration_strategy": "MCP_SEARCH_ADAPTER",
+        "backlog_action": "DIFERIR",
+        "result": "DIFERIDA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-108",
+      "drive_capability_ids": [
+        "LC-060"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "REUTILIZAR_UPSTREAM",
+        "integration_strategy": "NATIVE_SPEECH",
+        "backlog_action": "NO_DESARROLLAR",
+        "result": "ABSORBIDA_POR_UPSTREAM_CONFIG_SKILL_MCP"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-109",
+      "drive_capability_ids": [
+        "LC-090"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "DIFERIDO",
+        "integration_strategy": "NATIVE_SPEECH/EXTERNAL_STT",
+        "backlog_action": "DIFERIR",
+        "result": "DIFERIDA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-110",
+      "drive_capability_ids": [
+        "LC-092"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "DIFERIDO",
+        "integration_strategy": "CONFIG_CUSTOM_ENDPOINT",
+        "backlog_action": "DIFERIR",
+        "result": "DIFERIDA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-111",
+      "drive_capability_ids": [
+        "LC-093"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "DIFERIDO",
+        "integration_strategy": "CONFIG_CUSTOM_ENDPOINT",
+        "backlog_action": "DIFERIR",
+        "result": "DIFERIDA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    },
+    {
+      "idea_id": "IDEA-LC-112",
+      "drive_capability_ids": [
+        "LC-034",
+        "LC-032"
+      ],
+      "drive_crosswalk": {
+        "coverage": "CUBIERTA",
+        "final_state": "REUTILIZAR_UPSTREAM | YA_DESARROLLADO",
+        "integration_strategy": "NATIVE_WEB_SEARCH + SKILL_POLICY | THIN_SOURCE + BROWSER_ADAPTER",
+        "backlog_action": "NO_DESARROLLAR_COMO_MODULO | MANTENER",
+        "result": "CAPACIDAD_PROPIA_CONSOLIDADA"
+      },
+      "explicit_github_requirement_ids": [],
+      "source_feature_indices": [],
+      "integrity": "IDENTIFIERS_REMAIN_SEPARATE"
+    }
+  ]
+}

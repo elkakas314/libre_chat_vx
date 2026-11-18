@@ -2307,5 +2307,35 @@
     },
     "decision": "SIWC cannot be enabled in this productive runtime: both the guarded AgentClient binding and required compiled SIWC service modules are absent. Do not patch/restart until a governed candidate and exact HOST_CONTROL grant are available.",
     "scope": "Read-only bounded R0 checks; no host files, services, databases, or processes changed."
+  },
+  "e3_canonical_inventory_documentary_20261119": {
+    "observed_at_local": "2026-11-19",
+    "branch_head_before_receipt_commit": "9ad6ec9e1466fcc26648a7078c4b9c0d84435c7d",
+    "artifacts": [
+      "docs/NOSTROMO_CANONICAL_INVENTORY_CURRENT.json",
+      "docs/NOSTROMO_DRIVE_IDEA_CROSSWALK_CURRENT.json"
+    ],
+    "catalogs_kept_separate": {
+      "drive_capabilities": 119,
+      "drive_idea_lc_rows": 112,
+      "github_requirement_ids": 120,
+      "source_feature_rows": 39,
+      "end_to_end_journey_stages": 16
+    },
+    "verification": {
+      "all_drive_capability_ids_unique": true,
+      "all_github_ids_LC_R001_to_LC_R120_present": true,
+      "all_112_drive_idea_ids_mapped_to_at_least_one_drive_capability": true,
+      "source_feature_row_index_is_not_original_id": true,
+      "json_parse_and_inventory_shape_checks": "PASS",
+      "git_diff_check": "PASS"
+    },
+    "limitations": [
+      "The Drive capability workbook is historical (modified 2026-10-07); its SOURCE statuses are not current runtime truth.",
+      "SPEC.json and TOPOLOGY.json have an 2026-10-08 source cut and refer to an older Git HEAD; used for design/authority rules only.",
+      "Drive docs 00/10/20/30/40 and CURRENT were read as context; their older release states do not override the current E3 branch or HOST_CONTROL readbacks.",
+      "Owner hints and acceptance links remain unassigned or documentary where source matrices do not explicitly provide a mapping; no LIVE status is inferred."
+    ],
+    "runtime_status": "DOCUMENTARY_CANONICAL_INVENTORY; no host mutations or LIVE claims."
   }
 }

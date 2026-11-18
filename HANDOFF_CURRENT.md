@@ -417,3 +417,11 @@ PRECEDENCE: this update supersedes older `PR26 DRAFT` or ChatGPT usage assumptio
 - `/home/elkakas314/libre_chat_vx-clean` currently lists only `deployment/` at its root and is not a Git worktree; do not treat it as proof of the active MCP process source. The reports directory does not contain the named 2026-11-18 receipts from issue #56; the available entries are older and are not substituted for them.
 - No host writes, process changes, service restart, OAuth, or MCP run. Required next: stage the reproducible SIWC package/bootstrap/AgentClient candidate, then acquire/verify the exact local HOST_CONTROL grant before any productive install or restart; native route-input readbacks and owner OAuth consent remain separate gates.
 - Durable host readback: `CURRENT.json:e3_host_siwc_runtime_delta_r0_20261118`.
+
+## 2026-11-19 — canonical inventory reconciliation SOURCE receipt
+
+- Added `docs/NOSTROMO_CANONICAL_INVENTORY_CURRENT.json`: 119 Drive capability rows, 120 distinct GitHub requirements (`LC-R001…LC-R120`), 39 SOURCE feature rows, and 16 journey stages. Original catalogs remain separate; each row carries function, source/owner status, flow, integration, acceptance/evidence fields, and explicit unknowns.
+- Added `docs/NOSTROMO_DRIVE_IDEA_CROSSWALK_CURRENT.json`: all 112 `IDEA-LC` rows map to one or more Drive `LC-001…LC-119` capability IDs; where source requirement references match explicitly, `LC-R` links are recorded without numeric-ID merging.
+- Validation: all 119 Drive IDs unique; exact 120 GitHub IDs present; 112/112 IDEA rows mapped with no empty capability mapping; 39 source rows indexed only as local row locators; JSON parse/shape and `git diff --check` pass.
+- Reconciliation exposed temporal disagreement, not a single current-state truth: Drive workbook modified 2026-10-07; `SPEC.json`/`TOPOLOGY.json` cutoff and embedded HEAD are 2026-10-08/older; Drive 00/10/20/30/40 and CURRENT are older documentary cuts. Current E3 branch and fresh HOST_CONTROL readbacks take precedence for present status. No LIVE state is inferred.
+- Durable pointers are in `CURRENT.json:e3_canonical_inventory_documentary_20261119`. Inventory does not yet establish the Lenovo root-by-root physical matrix, unique deltas, or safe cleanup candidates.
