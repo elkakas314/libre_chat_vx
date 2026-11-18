@@ -1971,6 +1971,38 @@
       ]
     },
     "change": "No host files/services changed. Exact host hashes show the deployed AgentClient base is eligible for the existing guarded patch, but the package it would require is stale/incomplete and its bootstrap has no route-readback source.",
-    "next": "Prepare a narrow SIWC package synchronization candidate with exact preimages, tests, and rollback; apply only through HOST_CONTROL exact grants. Preserve the dirty upstream overlay. The broad workspace reconciler cannot be used until its UI synchronization gate is resolved."
+    "next": "Package sync needs a narrow backup+CAS stage; broad reconcile remains blocked by VXCockpitBridge out-of-sync. AgentClient and route bootstrap patches also remain unapplied, route-input readback callback/UI consent unavailable. Request exact HOST_CONTROL write+service-restart grant only after candidate and preimages are ready.",
+    "targeted_build_candidate": {
+      "path": "/tmp/nostromo-siwc-candidate-bbf55b5",
+      "built_from": "current canonical branch SIWC/router source",
+      "typescript": "focused compile with declarations; PASS",
+      "tests": "22/22 PASS across native route adapter, SIWC service, OpenAI fetch, provider routes, Responses client and connection API",
+      "no_host_apply": true
+    },
+    "additional_runtime_drift": {
+      "nostromoHybrid": "runtime chooses LOCAL_VOICE for preferLocalVoice without preserving research/vision/long-context precedence; canonical source has those guards",
+      "source_or_dist_missing": [
+        "intent/nostromoDecisionBridge",
+        "librechat/nativeInferenceRouteAdapter",
+        "llm/siwcConnectionApi",
+        "llm/siwcConnectionService",
+        "llm/siwcOpenAiFetch",
+        "llm/siwcProviderRoutes"
+      ],
+      "source_and_dist_stale": [
+        "llm/inferenceGateway",
+        "llm/nostromoHybrid",
+        "llm/siwcIdentity",
+        "llm/siwcProtectedVault",
+        "llm/siwcResponsesClient",
+        "llm/siwcSession"
+      ],
+      "matching_dependencies": [
+        "intent/intentInterpreter",
+        "cockpit/systemTarget",
+        "llm/chatgptAuthorized",
+        "llm/siwcLoopback"
+      ]
+    }
   }
 }
