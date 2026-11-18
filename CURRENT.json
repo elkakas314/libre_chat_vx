@@ -2004,6 +2004,27 @@
         "llm/chatgptAuthorized",
         "llm/siwcLoopback"
       ]
+    },
+    "resource_readback_after_focused_candidate_tests": {
+      "observed_at_utc": "2026-11-18T22:06:22Z",
+      "scope": "single post-test readback; no before/during sample was captured",
+      "cpu_loadavg_1_5_15m": [
+        0.876,
+        0.718,
+        0.745
+      ],
+      "cpu_psi_some_avg10_pct": 3.49,
+      "cpu_psi_full_avg10_pct": 0,
+      "memory_total_kb": 16267092,
+      "memory_available_kb": 9782764,
+      "memory_psi_some_avg10_pct": 0,
+      "memory_psi_full_avg10_pct": 0,
+      "swap_total_kb": 2097148,
+      "swap_used_kb": 768,
+      "gpu": "NVIDIA GeForce 840M, 4096 MiB total, 5 MiB used, 0% utilization",
+      "ollama_ps": "no model loaded",
+      "backend_process_readback": "service active; node worker RSS about 338 MiB",
+      "interpretation": "No current CPU or memory pressure indicated. No inference model was loaded. Readback does not prove before/during test trend."
     }
   }
 }
