@@ -6,22 +6,25 @@ import {
   TentaculoHub,
   projectTentaculoHud,
   nostromoHubSourceSnapshot,
+  summarizeVxConversation,
 } from '@librechat/vx';
-import type { HudSystem } from '@librechat/vx';
+import type { HudSystem, VxConversationActivityInput } from '@librechat/vx';
 import './VXCockpit.css';
 
 export interface VXCockpitBridgeProps {
   onClose?: () => void;
+  activity: VxConversationActivityInput;
 }
 
 /** One requested contextual view inside LibreChat's own panel. No target authority. */
-export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
+export default function VXCockpitBridge({ onClose, activity: activityInput }: VXCockpitBridgeProps) {
   const [showTechnical, setShowTechnical] = useState(false);
   const [showAutonomous, setShowAutonomous] = useState(false);
   const [showHub, setShowHub] = useState(false);
   const [activeMode, setActiveMode] = useState<'AUTONOMO'|HudSystem>('AUTONOMO');
   const activeSystem:HudSystem|null = activeMode==='AUTONOMO'?null:activeMode;
   const returnButtonRef = useRef<HTMLButtonElement>(null);
+  const activity = summarizeVxConversation(activityInput);
 
   useEffect(() => { returnButtonRef.current?.focus(); }, []);
 
@@ -52,9 +55,35 @@ export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
           <p className="vx-context-overline">CONEXIONES BAJO CONTROL</p>
           <h3>Todo conectado, cuando esté listo.</h3>
           <p className="vx-context-intro">
-            Consulta tus sistemas desde la conversación. Aquí sólo aparecen datos confirmados.
+            Consulta el inventario desde tu conversación. El estado LIVE requiere una lectura autenticada.
           </p>
         </div>
+
+        <section className="vx-live-activity" aria-label="Actividad de LibreChat" data-testid="vx-live-activity">
+          <div className="vx-live-activity-grid">
+            <div><span>Conversación</span><strong>{activity.conversationId ? 'Cargada' : 'Chat nuevo'}</strong></div>
+            <div><span>Agente</span><strong>{activity.endpoint === 'agents' && activity.agentId ? activity.agentId : 'No seleccionado'}</strong></div>
+            <div><span>Generación</span><strong>{activity.isSubmitting ? 'En ejecución' : 'En espera'}</strong></div>
+            <div><span>Mensajes cargados</span><strong>{activity.messageCount}</strong></div>
+            <div><span>Llamadas de herramienta</span><strong>{activity.toolCallCount}</strong></div>
+            <div><span>Modelo de conversación</span><strong>{activity.model ?? 'No disponible en esta vista'}</strong></div>
+          </div>
+          {activity.toolCalls.length > 0 ? (
+            <ul className="vx-live-tool-list" aria-label="Últimas llamadas registradas">
+              {activity.toolCalls.map((call, index) => (
+                <li key={`${call.name}-${index}`}>
+                  <code>{call.name}</code>
+                  <span>{call.hasStoredOutput ? 'Salida guardada' : 'Sin salida guardada en el mensaje'}</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="vx-live-activity-empty">No hay llamadas de herramienta en los mensajes cargados de esta conversación.</p>
+          )}
+          <p className="vx-live-activity-empty">
+            Este recuento refleja los mensajes cargados; no confirma la ejecución ni el éxito de MCP.
+          </p>
+        </section>
 
         <nav aria-label="Modos de NOSTROMO" className="vx-mode-switcher" data-testid="nostromo-mode-switcher">
           {([
@@ -68,19 +97,19 @@ export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
         </nav>
         <p className="vx-mode-boundary" role="note">
           {activeMode==='AUTONOMO'
-            ? 'Modo local independiente: agente y MCP propio de terminal.'
+            ? 'El panel no consulta el estado operativo del agente ni del MCP. La ejecución chat→MCP sigue sin verificarse.'
             : 'Sistema externo: conserva su propio MCP y permisos. No recibe la terminal local automáticamente.'}
         </p>
         {activeMode==='AUTONOMO' ? (
         <section className="vx-autonomy-card" aria-labelledby="vx-autonomy-heading">
           <div className="vx-autonomy-topline">
             <span className="vx-autonomy-label"><span className="vx-autonomy-beacon" aria-hidden="true"/> NOSTROMO · AUTÓNOMO</span>
-            <span className="vx-autonomy-stage">SOURCE · SIN ACTIVAR</span>
+            <span className="vx-autonomy-stage">CHAT→MCP NO VERIFICADO</span>
           </div>
           <div className="vx-autonomy-main">
             <div>
               <h3 id="vx-autonomy-heading">Habla. Encarga. Comprueba.</h3>
-              <p>Tu agente de terminal en el Lenovo: una conversación, un MCP local, resultados verificables.</p>
+              <p>El contexto de conversación aparece arriba. Este panel no confirma el registro del agente, el estado del MCP ni el resultado de sus herramientas.</p>
             </div>
             <div className="vx-autonomy-terminal-glyph" aria-hidden="true">&gt;_</div>
           </div>
@@ -104,13 +133,15 @@ export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
                 <span>Evidencia</span>
               </div>
               <p><strong>ChatGPT:</strong> pendiente de autorización OAuth; puede sustituirse por LLM gratuito o local verificado.</p>
-              <p><strong>Terminal:</strong> SOURCE preparado, sin instalación LIVE acreditada. Comandos R0 limitados, R2 sólo con permiso local de un uso.</p>
+              <p><strong>Terminal:</strong> el catálogo describe un MCP local gobernado. La ejecución desde una conversación real todavía requiere verificación; R2 mantiene su permiso local independiente.</p>
               <div className="vx-mode-tools" data-testid="nostromo-tools-source">
                 <strong>Único MCP · catálogo SOURCE</strong>
                 <ul>
                   <li>Estado y lista de herramientas instalables</li>
                   <li>Preparar comando y comprobar sus límites</li>
                   <li>Ejecutar terminal con stdout, stderr y código de salida</li>
+                  <li>Archivos, Git y métricas: lecturas R0 optativas, sin permisos por defecto</li>
+                  <li>GitHub remoto y Microsoft Graph: conectar como destinos gobernados, con SecretRefs/OAuth propios</li>
                 </ul>
                 <p>El administrador elige las herramientas del MCP. El chat no se concede privilegios.</p>
               </div>
@@ -141,7 +172,7 @@ export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
         </section>
         ) : null}
         <TentaculoHud cards={projectTentaculoHud([])} activeSystem={activeSystem}
-          onClose={() => setActiveMode('AUTONOMO')} />
+          onClose={() => setActiveMode('AUTONOMO')} onCloseLabel="Volver a NOSTROMO" />
 
         {activeMode!=='AUTONOMO' ? <p className="vx-context-note" role="note">
           Este es el estado del enlace con NOSTROMO, no la salud de cada sistema. Se actualizará tras una lectura autenticada.

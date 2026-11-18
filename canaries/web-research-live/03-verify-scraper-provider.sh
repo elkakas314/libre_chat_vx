@@ -2,7 +2,7 @@
 # Keenable public GET fetch for stable public URL. No host config modification.
 set -euo pipefail
 source "$(dirname -- "$0")/lib.sh"
-wr_start "03-verify-scraper-provider"; wr_require curl; wr_safe_baseline
+wr_start "03-verify-scraper-provider"; wr_require curl
 url="${KEENABLE_FETCH_URL:-https://api.keenable.ai/v1/fetch/public}"
 wr_keenable_url "$url" "v1/fetch/public"
 [[ "${KEENABLE_API_KEY:-}" == "" ]] ||
@@ -25,7 +25,7 @@ jq -n --argjson chars "$chars" --arg sha "$sha" --arg when "$(date -u +%FT%TZ)" 
  {schema:"libre-chat-vx.web-research-keenable-fetch.v1",provider:"keenable",
  endpoint:"/v1/fetch/public",url:"https://example.com/",http_code:200,
  content_type:"text/markdown",content_chars:$chars,content_sha256:$sha,
- keyless:true,observed_at_utc:$when,config_mutated:false,gate_closed:false}' > "$WR_DIR/03-result.json"
+ host_config_verified:false,keyless:true,observed_at_utc:$when,config_mutated:false,gate_closed:false}' > "$WR_DIR/03-result.json"
 chmod 600 -- "$WR_DIR/03-result.json"
 mv -- "$tmp" "$WR_DIR/03-fetch-response.PRIVATE.json"
 chmod 600 -- "$WR_DIR/03-fetch-response.PRIVATE.json"

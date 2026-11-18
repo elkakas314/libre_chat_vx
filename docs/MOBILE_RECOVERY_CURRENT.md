@@ -57,6 +57,11 @@ This remains true even if MANOJOS3/VX13 work continues remotely. The UI must not
 
 `INTERACTIVE`
 
+La proyección `mobileLibreChatState` exige `authenticated === true` explícito,
+además de backend alcanzable y snapshot fresco. La omisión del dato o una
+sesión no autenticada devuelve `UNAVAILABLE`; HTTP/TCP por sí solos no
+demuestran autenticación. Es un contrato SOURCE: no verifica ninguna sesión real.
+
 ## Offline draft
 
 Allowed:

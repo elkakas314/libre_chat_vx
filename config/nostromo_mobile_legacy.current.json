@@ -11,9 +11,21 @@
     "source": "https://github.com/garfiec/Librechat-Mobile",
     "distribution": "TestFlight",
     "minIOS": "16.0",
+    "architecture": "KOTLIN_MULTIPLATFORM_COMPOSE_NATIVE_IOS",
+    "license": "Apache-2.0",
+    "testedLibreChatRange": ["v0.8.4", "v0.8.9-rc1"],
+    "localPinnedLibreChatVersion": "v0.8.8",
+    "coreVersionInTestedRange": true,
+    "customVXApiAndHud": "NOT_VERIFIED",
+    "buildRequirements": {
+      "xcode": "15+",
+      "host": "APPLE_SILICON_MAC"
+    },
+    "reusableAsNativeBase": true,
     "eligibleOnIPhoneSE1": false,
     "eligibleOnIPhone6": false,
-    "requiresLiveBackend": true
+    "requiresLiveBackend": true,
+    "installed": false
   },
   "legacyNativeApp": {
     "ios12": "NOT_IMPLEMENTED",

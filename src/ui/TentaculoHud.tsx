@@ -3,7 +3,7 @@ import * as React from 'react';
 
 const states:Record<HudProjection['state'],string>={
   VERIFIED_READ:'Lectura verificada',DESIGN_ONLY:'En diseño',
-  UNCONFIGURED:'Sin conectar',DEGRADED:'Servicio degradado',
+  UNCONFIGURED:'Enlace sin verificar',DEGRADED:'Servicio degradado',
   STALE:'Lectura caducada',NO_VERIFICADO:'No verificado',
 };
 
@@ -16,6 +16,7 @@ export function TentaculoHud(props:{
   cards:readonly HudProjection[];
   activeSystem?:HudSystem|null;
   onClose?:()=>void;
+  onCloseLabel?:string;
   onSelectSystem?:(system:HudSystem)=>void;
 }) {
   const active=props.activeSystem
@@ -39,10 +40,10 @@ export function TentaculoHud(props:{
           <p style={{margin:0,fontSize:13,opacity:0.85}}>{active.subtitle}</p>
         </div>
         {props.onClose&&<button type="button" onClick={props.onClose}
-          aria-label="Volver al chat"
+          aria-label={props.onCloseLabel??'Volver al contexto'}
           style={{font:'inherit',cursor:'pointer',background:'transparent',
             color:'inherit',border:'1px solid var(--border-medium, #7777)',
-            borderRadius:9,padding:'7px 10px'}}>Volver al chat</button>}
+            borderRadius:9,padding:'7px 10px'}}>{props.onCloseLabel??'Volver al contexto'}</button>}
       </header>
       <div role="status" aria-live="polite"
         style={{marginTop:16,fontSize:13}}>

@@ -28,6 +28,20 @@ test('backend down is explicit unavailable even if network exists', () => {
   }), 'UNAVAILABLE');
 });
 
+test('fresh backend requires authenticated session before mobile is interactive', () => {
+  const base={networkReachable:true,backendReachable:true,snapshotFresh:true};
+  assert.equal(mobileLibreChatState(base),'UNAVAILABLE');
+  assert.equal(mobileLibreChatState({...base,authenticated:false}),'UNAVAILABLE');
+  assert.equal(mobileLibreChatState({...base,authenticated:true}),'INTERACTIVE');
+});
+
+test('authenticated mobile with stale history remains read-only', () => {
+  assert.equal(mobileLibreChatState({
+    networkReachable:true,backendReachable:true,authenticated:true,
+    snapshotAvailable:true,snapshotFresh:false,
+  }),'STALE_READONLY');
+});
+
 test('same conversation moves across desktop/mobile without copying execution state', () => {
   const handoff=handoffConversation('c1','DESKTOP_WEB','MOBILE_WEB');
   assert.equal(handoff.conversationId,'c1');

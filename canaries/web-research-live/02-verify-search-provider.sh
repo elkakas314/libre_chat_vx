@@ -2,7 +2,7 @@
 # Keenable keyless POST /v1/search/public: a QUERY, never an admin/config POST.
 set -euo pipefail
 source "$(dirname -- "$0")/lib.sh"
-wr_start "02-verify-search-provider"; wr_require curl; wr_safe_baseline
+wr_start "02-verify-search-provider"; wr_require curl
 url="${KEENABLE_API_URL:-https://api.keenable.ai/v1/search/public}"
 wr_keenable_url "$url" "v1/search/public"
 # The public API has no safeSearch parameter: level 1 is checked in mounted
@@ -27,8 +27,8 @@ count="$(jq '.results|length' "$tmp")"
 jq -n --argjson count "$count" --arg time "$(date -u +%FT%TZ)" '
  {schema:"libre-chat-vx.web-research-keenable-search.v1",
  provider:"keenable",endpoint:"/v1/search/public",http_code:200,query:"test",
- safe_search_yaml:1,provider_parameter_safe_search_verified:false,
- keyless:true,result_count:$count,observed_at_utc:$time,
+ provider_parameter_safe_search_verified:false,
+ host_config_verified:false,keyless:true,result_count:$count,observed_at_utc:$time,
  config_mutated:false,gate_closed:false}' > "$WR_DIR/02-result.json"
 chmod 600 -- "$WR_DIR/02-result.json"
 # Retain public response readback privately for manual corroboration.
