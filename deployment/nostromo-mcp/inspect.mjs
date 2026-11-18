@@ -3,7 +3,7 @@
  */
 import os from 'node:os';
 import path from 'node:path';
-import {open,statfs,realpath} from 'node:fs/promises';
+import {open,statfs,realpath,readFile} from 'node:fs/promises';
 import {constants as fs} from 'node:fs';
 import {createHash} from 'node:crypto';
 import {resolveScope,preview,executeLocal} from './policy.mjs';
@@ -90,13 +90,20 @@ export async function readHostMetrics({cwd},settings) {
   const safeCwd=await resolveScope(cwd,settings.roots);
   if(!safeCwd)return {status:'DENIED',reason:'CWD_OUTSIDE_ALLOWED_ROOTS'};
   const disk=await statfs(safeCwd);
+  const meminfo=await readFile('/proc/meminfo','utf8').catch(()=> '');
+  const meminfoBytes=key=>{
+    const match=meminfo.match(new RegExp(`^${key}:\\s+(\\d+)\\s+kB$`,'m'));
+    return match?Number(match[1])*1024:null;
+  };
   return {status:'READ_OK',observedAt:new Date().toISOString(),scope:safeCwd,
     cpuThreads:os.cpus().length,loadAverage1m:os.loadavg()[0],
     loadAverage5m:os.loadavg()[1],loadAverage15m:os.loadavg()[2],
     memoryTotalBytes:os.totalmem(),memoryFreeBytes:os.freemem(),
+    memoryAvailableBytes:meminfoBytes('MemAvailable'),
+    swapTotalBytes:meminfoBytes('SwapTotal'),swapFreeBytes:meminfoBytes('SwapFree'),
     diskTotalBytes:disk.blocks*disk.bsize,diskAvailableBytes:disk.bavail*disk.bsize,
     gpuVramBytesVerified:null,gpuMockIsHardwareProof:false,
-    note:'loadAverage is not CPU utilization; free memory is not MemAvailable; GPU VRAM is not measured.',
+    note:'loadAverage is not CPU utilization; memoryFreeBytes is distinct from MemAvailable; null MemAvailable/swap means /proc/meminfo is unavailable; GPU VRAM is not measured.',
     materialVerified:false};
 }
 
