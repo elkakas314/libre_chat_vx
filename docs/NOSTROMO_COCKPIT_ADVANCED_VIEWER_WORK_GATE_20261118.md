@@ -48,3 +48,6 @@ Matriz por panel: `RUTA SOURCE | BINDING INSTALLED | AUTH CONFIGURED | LIVE read
 Cambios mínimos con test y GH CLI fast-forward a rama de integración; CI exact SHA; evidencias en issue #37; PR #54 DRAFT hasta cierre completo. Si un visor no puede ser implementado en esta fase, especificar componente/ruta/bloqueo, y continuar por paneles independientes.
 
 **Prioridad:** P0 conversación/agente/MCP/contexto primero; cabina/visor avanzado y móvil son **criterios de cierre final**, no opcionales olvidados.
+
+## Guardrail: «bajo consumo sin perder magia»
+No es aceptable suprimir Tentáculo Hub, renderers visuales, Timeline/COMPARE, grafos, visores de documentos, HUD y móvil para pasar benchmarks. Minimizar recursos de vistas ocultas sin limitar funcionalidades al abrirlas. Prefetch sólo con justificación, lazy render visible, virtualizar listas largas, habilitar caché segura por usuario/ACL, retener foco/scroll/historial y cerrar suscripciones correctamente; medir consumo en idle, uso interactivo y cierre de ventana. Anotar alternativa/revert si React streaming o una librería de PDF/gráficos supera capacidad del Lenovo. Integrar findings de `docs/GEMINI_DEEP_RESEARCH_NOSTROMO_VISOR_MAGIC_LOW_CONSUMPTION_20261118.md` cuando Gemini los entregue, previa auditoría. No congelar el trabajo pendiente de P0 por espera externa.
