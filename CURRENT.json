@@ -439,5 +439,29 @@
     "renamed": false,
     "local_installation": "NO_VERIFICADO",
     "material_verified": false
+  },
+  "integration_review_20261118": {
+    "evidence_class": "SOURCE_REMOTE_AND_EXTERNAL_HOST_REPORT_SEPARATE",
+    "workflow": "REVIEW_BRANCH_NOT_MAIN",
+    "canonical_branch": "integration/nostromo-canon-20261118-r1",
+    "base_main_sha": "8e642eb1238f9b35f18a070d6a754fede4b432fb",
+    "director_merged_sha": "f3de4a3e873ae09a2b48a6509c7278ab764c2e81",
+    "integration_merge_sha": "394f77e7582e3e0fe40658252ef85e21e5005a96",
+    "pr": 53,
+    "evidence": "docs/NOSTROMO_INTEGRATION_CANON_20261118.md",
+    "drive_delta": "https://docs.google.com/document/d/1oOiFTIrMD5Lnd05frGZ3HuZf3LgZHBEnAdhkoZvOwFA/edit",
+    "director_tree_identical_to_integration_at_merge": true,
+    "exact_head_ci": "PENDING_REVALIDATION_AFTER_INTEGRATION",
+    "local_unique_changes": "NOT_YET_IMPORTED_FROM_ACTIVE_MCP",
+    "material_host_evidence": "WORK_REPORTED_NOT_VERIFIED_IN_THIS_GIT_SNAPSHOT",
+    "state": "SOURCE_REVIEW_INTEGRATED_HOST_FULL_CLOSEOUT_INCOMPLETE",
+    "do_not_touch": [
+      "main",
+      "host_runtime",
+      "external_MANOJOS3",
+      "external_VX13",
+      "external_ORACULO"
+    ],
+    "note": "Historical top-level SOURCE/LIVE fields below retain their prior evidence cutoff; they are not 2026-11-18 runtime readbacks."
   }
 }
