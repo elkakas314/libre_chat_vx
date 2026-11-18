@@ -1,6 +1,119 @@
 {
   "schema": "libre-chat-vx.current.v2",
-  "status": "P0_LIVE_MCP_AND_RECOVERY_VERIFIED_ERROR_PATH_PENDING",
+  "status": "P0_LIVE_TWO_TOOL_CHAIN_AND_RECONNECT_VERIFIED_PROVIDER_ERROR_RETRY_AND_LATENCY_PENDING",
+  "p0_live_readback": {
+    "verified_at_utc": "2026-11-18T07:02:56Z",
+    "exact_head_ci": {
+      "head": "dd23d26bf5a6bb2ba9eb7e95856b35d756d1baa3",
+      "run_id": 44249053747,
+      "conclusion": "SUCCESS",
+      "jobs": 6,
+      "verified_at_utc": "2026-11-18T06:51:11Z"
+    },
+    "production_upstream_head": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
+    "official_pr_14118_active_runtime": true,
+    "backend_service": "ACTIVE_AFTER_GOVERNED_HOST_CONTROL_RESTART",
+    "deferred_tools_patch": {
+      "source_commit": "cdd03135f4f749181ae5e277e3bd138b53436cb5",
+      "runtime_script_matches_source": true,
+      "package": "@librechat/agents@4.0.1",
+      "startup_hook": "ExecStartPre",
+      "cjs_sha256": "baf1ed2ad430c6a4df3def5eb479cf61c9916e5817cf985ad175848993ecd23a",
+      "preimages_and_rollback": "PRESERVED"
+    },
+    "conversation": {
+      "conversation_id": "2da11982-20a5-5b32-a18c-0dd00413cba8",
+      "user_message_id": "4e19024f-1eb6-4991-94ca-8190fb06da01",
+      "assistant_message_id": "0321cb30-4c83-47d9-ba00-5fa7b73da4fd",
+      "mcp_actions": 2,
+      "completed": true,
+      "mongo_unfinished": false,
+      "mongo_error": false,
+      "recovered_after_reload": true,
+      "ollama_model": "qwen3:4b-instruct-2507-q4_K_M",
+      "ollama_context_length": 6144,
+      "elapsed_seconds_approx": 300,
+      "bounded_ollama_probe": {
+        "endpoint": "/api/chat",
+        "num_ctx": 6144,
+        "num_predict": 2,
+        "done": true,
+        "done_reason": "length",
+        "prompt_eval_count": 12,
+        "prompt_eval_ms": 2455,
+        "eval_count": 2,
+        "eval_ms": 262,
+        "load_ms": 6686,
+        "total_ms": 9406,
+        "limitation": "Direct bounded Ollama probe; not a LibreChat conversation or provider-error retry"
+      },
+      "openai_compat_route_probe": {
+        "endpoint": "/v1/chat/completions",
+        "http_status": 200,
+        "wall_ms": 8577,
+        "prompt_tokens": 12,
+        "completion_tokens": 2,
+        "total_tokens": 14,
+        "finish_reason": "length",
+        "limitation": "Direct two-token provider request; not a multi-thousand-token LibreChat turn or provider-error retry"
+      }
+    },
+    "orphaned_unfinished_readback": {
+      "verified_at_utc": "2026-11-18T07:18:53Z",
+      "count": 3,
+      "state": "unfinished=true,error=false",
+      "parent_user_messages_complete": true,
+      "predate_current_backend_start": true,
+      "backend_started_local": "2026-11-18T07:31:15+01:00",
+      "error_messages": 0,
+      "generation_jobs_collection_present": false,
+      "interpretation": "The three rows are unfinished before the current backend start. Issue #37 comment 6970191036 correlates one row to a Qwen3 generation manually stopped after two minutes due CPU load; this is not evidence of an Ollama/provider exception. The other two rows remain uncorrelated. Do not auto-migrate or mutate them. The reported Ollama error is not tied to any row.",
+      "manual_mongo_mutation": false,
+      "classification": "THREE_PRE_RESTART_UNFINISHED_ROWS; ONE CORRELATED TO A MANUALLY STOPPED GENERATION; TWO UNCORRELATED",
+      "known_manual_stop_count": 1,
+      "uncorrelated_count": 2
+    },
+    "host_resource_readback": {
+      "ram_total_mb": 15885,
+      "ram_available_mb": 9460,
+      "swap_total_mb": 2047,
+      "swap_used_mb": 2047,
+      "ollama_context_length": 6144,
+      "ollama_vram_bytes": 3049091235
+    },
+    "remaining_blockers": [
+      "Specific Ollama provider failure remains uncorrelated and unreproduced",
+      "Normal latency for a real LibreChat turn is unverified; prior successful two-tool turn took about five minutes",
+      "Swap currently has only 468 kB free",
+      "One known manual-stop response and two uncorrelated unfinished rows remain; the known manual stop is not proof of provider error",
+      "Recovery after a fresh real provider error is not verified"
+    ],
+    "overall": "PARTIAL_PASS_NOT_FINAL",
+    "latest_runtime_readback": {
+      "verified_at_utc": "2026-11-18T07:38:49Z",
+      "backend_service": "ACTIVE",
+      "backend_pid": 383222,
+      "production_upstream_head": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
+      "agents_package_version": "4.0.1",
+      "ollama_api_ps": "no model currently loaded (idle readback)",
+      "qwen3_model_installed": true,
+      "qwen3_current_loaded_context": null,
+      "last_completed_live_context": 6144,
+      "ram_available_mb": 9464,
+      "swap_total_mb": 2047,
+      "swap_free_mb": 0,
+      "active_hostcontrol_grant_for_install_or_restart": "not observed in local grants directory; no write or restart attempted",
+      "ui_readback": {
+        "conversation_id": "37c3579f-0371-5694-b713-bfe68830ae16",
+        "preflight_error_visible": true,
+        "follow_up_message_present": true,
+        "assistant_follow_up_empty": true,
+        "composer_enabled": true,
+        "source_of_blank_follow_up": "previously documented manual stop; not a provider error"
+      },
+      "swap_free_kb": 468
+    }
+  },
   "repository": "elkakas314/libre_chat_vx",
   "branch": "main",
   "source_evidence_cutoff_head": "8a341487f5694997744e8012c36056d705ca5138",
