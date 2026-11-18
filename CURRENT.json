@@ -1892,5 +1892,32 @@
       }
     ],
     "size_receipt_documented_root_count": 12
+  },
+  "e3_siwc_turn_intent_routing_20261118": {
+    "branch": "integration/nostromo-canon-20261118-r1",
+    "source_head": "9436b3cfd348f68b5e017c523c2066c76b37d396",
+    "change": "Renamed the route adapter input from toolCallingRequired to turnNeedsToolExecution. Selected/available Agent tools no longer imply that an ordinary user turn requires research/tools; explicit tool turns still require provider tool capability and completion reserve.",
+    "tests": {
+      "focused_typescript_no_emit": "PASS (focused route adapter test and imported source graph)",
+      "native_inference_adapter": "8/8 PASS (fresh focused compile under /tmp)",
+      "siwc_provider_routes_connection_and_agentclient": "19/19 PASS (existing compiled focused suites)",
+      "git_diff_check": "PASS"
+    },
+    "exact_head_ci": {
+      "run_id": 44405100374,
+      "head": "9436b3cfd348f68b5e017c523c2066c76b37d396",
+      "build_test": "NOT_STARTED; GitHub account billing/spending-limit gate",
+      "canary_self_test": "NOT_STARTED; GitHub account billing/spending-limit gate",
+      "native_switchboard_android_ios": "NOT_STARTED; GitHub account billing/spending-limit gate",
+      "chromium_and_pinned_upstream": "SKIPPED"
+    },
+    "runtime": {
+      "Lenovo_changed": false,
+      "AgentClient_SIWC_binding_live": false,
+      "OAuth_consent": "NOT_VERIFIED",
+      "live_conversation": "NOT_VERIFIED"
+    },
+    "remaining_blocker": "The installed authenticated AgentClient host has no nostromoReadNativeInferenceRouteInput callback supplying fresh model capabilities, context, health, quota, and privacy readbacks. SIWC route selection cannot safely be live-enabled from SOURCE or a model catalog alone.",
+    "next": "Wire the authenticated host readback into the guarded AgentClient binding, then use the existing consent UI; do not activate until real provider evidence and owner consent are available."
   }
 }
