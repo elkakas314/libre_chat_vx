@@ -10,16 +10,18 @@ import {
   PhoneModuleView,
   createPhoneModuleSnapshot,
 } from '@librechat/vx';
-import type { HudSystem, VxConversationActivityInput } from '@librechat/vx';
+import type { HudSystem, VxConversationActivityInput, PhoneModuleSnapshot } from '@librechat/vx';
 import './VXCockpit.css';
 
 export interface VXCockpitBridgeProps {
   onClose?: () => void;
   activity: VxConversationActivityInput;
+  /** Optional authenticated device readback supplied by LibreChat host; never inferred from the browser. */
+  phone?: PhoneModuleSnapshot;
 }
 
 /** One requested contextual view inside LibreChat's own panel. No target authority. */
-export default function VXCockpitBridge({ onClose, activity: activityInput }: VXCockpitBridgeProps) {
+export default function VXCockpitBridge({ onClose, activity: activityInput, phone }: VXCockpitBridgeProps) {
   const [showTechnical, setShowTechnical] = useState(false);
   const [showAutonomous, setShowAutonomous] = useState(false);
   const [showHub, setShowHub] = useState(false);
@@ -163,7 +165,7 @@ export default function VXCockpitBridge({ onClose, activity: activityInput }: VX
               </button>
               {showPhone ? (
                 <div id="vx-nostromo-phone">
-                  <PhoneModuleView snapshot={createPhoneModuleSnapshot()} />
+                  <PhoneModuleView snapshot={phone ?? createPhoneModuleSnapshot()} />
                 </div>
               ) : null}
               {showHub ? (
