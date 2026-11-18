@@ -1189,5 +1189,39 @@
     "host_mutation": false,
     "inference_or_mcp_canary": false,
     "product_status": "INCOMPLETE_NOT_PASS"
+  },
+  "e3_cabin_source_merge_20261118": {
+    "evidence_class": "SOURCE_CHANGE_TESTED_HOST_PRESERVED",
+    "verified_at_utc": "2026-11-18T15:00:56Z",
+    "source_commit": "0c991b778b6ab986d825f2a5393f37541ae1bbe7",
+    "changes": {
+      "bridge_copy": "Replaced stale/generic connection claims with loaded-conversation activity copy; status says recorded calls do not verify the MCP execution.",
+      "css": "Three-way merged candidate styles with the runtime CSS readback; retains candidate mobile/layout rules and the runtime's unique activity-card styles.",
+      "phone": "Candidate PhoneModule remains a SOURCE-only view; no default device observation is fabricated."
+    },
+    "test": {
+      "suite": "scripts/tests/nostromo-m4-visual-source-contract.test.mjs + scripts/tests/reconcile-native-visual.test.mjs",
+      "passed": 10,
+      "failed": 0,
+      "git_diff_check": "PASS",
+      "three_way_css_output_matches_source": true
+    },
+    "host_visual_preview": {
+      "status": "LOCAL_UNIQUE_WORK_PRESERVED",
+      "bridge_preimage_sha256": "cd4e6bc2016af8aced547a800805712fe00558259ce960221a8b441242ddfb2b",
+      "bridge_candidate_sha256": "25c08769d970c6cfa541580da1f90f0dbf4ccf8ae7f23453581c652be7f44d65",
+      "css_preimage_sha256": "9a647efc4238e51221fe1681cd6351f3d0c7ca1e3e87b112adaac0b941028ea2",
+      "css_candidate_sha256": "30f51dba5a145e015eaf14d04e966aa08d0eb66ed31699017edf00f1513bb8a1",
+      "unique_runtime_state_files_preserved": ["state.ts", "state.spec.ts"],
+      "deployment_or_restart": false
+    },
+    "github_readback": {
+      "pr": 54,
+      "head": "0c991b778b6ab986d825f2a5393f37541ae1bbe7",
+      "state": "OPEN_DRAFT_UNMERGED",
+      "combined_statuses": [],
+      "workflow_runs": []
+    },
+    "next": "Reconcile the dirty runtime bridge by an explicit reviewed three-way merge; do not apply/restart without the exact local grant."
   }
 }
