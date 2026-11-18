@@ -6,17 +6,18 @@ import {
   TentaculoHub,
   projectTentaculoHud,
   nostromoHubSourceSnapshot,
-  summarizeVxConversation,
   PhoneModuleView,
   createPhoneModuleSnapshot,
 } from '@librechat/vx';
-import type { HudSystem, VxConversationActivityInput, PhoneModuleSnapshot } from '@librechat/vx';
+import type { HudSystem, PhoneModuleSnapshot } from '@librechat/vx';
+import type { VxConversationActivityInput } from './state';
+import { summarizeVxConversation } from './state';
 import './VXCockpit.css';
 
 export interface VXCockpitBridgeProps {
   onClose?: () => void;
   activity: VxConversationActivityInput;
-  /** Optional authenticated device readback supplied by LibreChat host; never inferred from the browser. */
+  /** Authenticated device readback from the native host; never inferred in the browser. */
   phone?: PhoneModuleSnapshot;
 }
 
@@ -30,6 +31,7 @@ export default function VXCockpitBridge({ onClose, activity: activityInput, phon
   const activeSystem:HudSystem|null = activeMode==='AUTONOMO'?null:activeMode;
   const returnButtonRef = useRef<HTMLButtonElement>(null);
   const activity = summarizeVxConversation(activityInput);
+  const storedToolOutputs = activity.toolCalls.filter((call) => call.hasStoredOutput).length;
 
   useEffect(() => { returnButtonRef.current?.focus(); }, []);
 
@@ -57,10 +59,10 @@ export default function VXCockpitBridge({ onClose, activity: activityInput, phon
       <div className="vx-context-body">
         <div className="vx-context-intro-block">
           <span className="vx-context-mark" aria-hidden="true">◇</span>
-          <p className="vx-context-overline">ACTIVIDAD DE LA CONVERSACIÓN</p>
-          <h3>El contexto de conversación aparece arriba</h3>
+          <p className="vx-context-overline">ACTIVIDAD LEÍDA DESDE LIBRECHAT</p>
+          <h3>Estado de la conversación</h3>
           <p className="vx-context-intro">
-            La cabina resume los mensajes cargados y si el resultado de sus herramientas quedó guardado. La ejecución chat→MCP sigue sin verificarse.
+            La cabina muestra el contexto de chat cargado y separa las llamadas registradas de sus resultados guardados.
           </p>
         </div>
 
@@ -85,9 +87,6 @@ export default function VXCockpitBridge({ onClose, activity: activityInput, phon
           ) : (
             <p className="vx-live-activity-empty">No hay llamadas de herramienta en los mensajes cargados de esta conversación.</p>
           )}
-          <p className="vx-live-activity-empty">
-            Este recuento refleja los mensajes cargados; no confirma la ejecución ni el éxito de MCP.
-          </p>
         </section>
 
         <nav aria-label="Modos de NOSTROMO" className="vx-mode-switcher" data-testid="nostromo-mode-switcher">
@@ -102,7 +101,7 @@ export default function VXCockpitBridge({ onClose, activity: activityInput, phon
         </nav>
         <p className="vx-mode-boundary" role="note">
           {activeMode==='AUTONOMO'
-            ? 'El panel no consulta el estado operativo del agente ni del MCP. La ejecución chat→MCP sigue sin verificarse.'
+            ? 'Resumen del chat cargado. El MCP y sus efectos se verifican en sus recibos de origen.'
             : 'Sistema externo: conserva su propio MCP y permisos. No recibe la terminal local automáticamente.'}
         </p>
         {activeMode==='AUTONOMO' ? (
@@ -110,13 +109,17 @@ export default function VXCockpitBridge({ onClose, activity: activityInput, phon
           <div className="vx-autonomy-topline">
             <span className="vx-autonomy-label"><span className="vx-autonomy-beacon" aria-hidden="true"/> NOSTROMO · AUTÓNOMO</span>
             <span className="vx-autonomy-stage">
-              {activity.toolCallCount > 0 ? 'LLAMADAS REGISTRADAS · CHAT→MCP NO VERIFICADO' : 'CHAT→MCP NO VERIFICADO'}
+              {storedToolOutputs > 0
+                ? `${activity.toolCallCount} LLAMADAS · ${storedToolOutputs} SALIDAS GUARDADAS`
+                : activity.toolCallCount > 0
+                  ? `${activity.toolCallCount} LLAMADAS · SALIDAS NO CONFIRMADAS`
+                  : 'SIN LLAMADAS EN MENSAJES CARGADOS'}
             </span>
           </div>
           <div className="vx-autonomy-main">
             <div>
-              <h3 id="vx-autonomy-heading">Habla. Encarga. Comprueba.</h3>
-              <p>Esta tarjeta refleja los mensajes cargados arriba; no representa la salud global del MCP ni verifica el efecto material de sus llamadas.</p>
+              <h3 id="vx-autonomy-heading">Conversación y ejecución con evidencia de origen.</h3>
+              <p>Este panel resume el chat cargado. Las llamadas registradas y sus salidas no prueban por sí solas que el efecto material se haya verificado.</p>
             </div>
             <div className="vx-autonomy-terminal-glyph" aria-hidden="true">&gt;_</div>
           </div>
@@ -139,16 +142,14 @@ export default function VXCockpitBridge({ onClose, activity: activityInput, phon
                 <span>Terminal</span><span aria-hidden="true">→</span>
                 <span>Evidencia</span>
               </div>
-              <p><strong>ChatGPT:</strong> pendiente de autorización OAuth; puede sustituirse por LLM gratuito o local verificado.</p>
-              <p><strong>Terminal:</strong> el catálogo describe un MCP local gobernado. La ejecución desde una conversación real todavía requiere verificación; R2 mantiene su permiso local independiente.</p>
+              <p><strong>ChatGPT:</strong> pendiente de autorización OAuth; el agente funciona con Ollama local.</p>
+              <p><strong>Terminal:</strong> MCP local LIVE. R0 permite lecturas acotadas; las tareas R2 requieren aprobación local exacta y no se repiten automáticamente tras un resultado incierto.</p>
               <div className="vx-mode-tools" data-testid="nostromo-tools-source">
                 <strong>Único MCP · catálogo SOURCE</strong>
                 <ul>
-                  <li>Estado y lista de herramientas instalables</li>
-                  <li>Preparar comando y comprobar sus límites</li>
-                  <li>Ejecutar terminal con stdout, stderr y código de salida</li>
-                  <li>Archivos, Git y métricas: lecturas R0 optativas, sin permisos por defecto</li>
-                  <li>GitHub remoto y Microsoft Graph: conectar como destinos gobernados, con SecretRefs/OAuth propios</li>
+                  <li>Leer estado, herramientas, métricas y repositorios</li>
+                  <li>Preparar comandos y revisar su riesgo antes de ejecutarlos</li>
+                  <li>Iniciar, consultar y cancelar tareas locales persistentes</li>
                 </ul>
                 <p>El administrador elige las herramientas del MCP. El chat no se concede privilegios.</p>
               </div>
@@ -161,13 +162,13 @@ export default function VXCockpitBridge({ onClose, activity: activityInput, phon
               </button>
               <button type="button" className="vx-autonomy-hub-toggle"
                 aria-expanded={showPhone} aria-controls="vx-nostromo-phone"
-                onClick={() => setShowPhone(value => !value)}>
-                {showPhone ? 'Ocultar módulo de teléfono' : 'Explorar teléfono / iPhone'}
+                onClick={() => setShowPhone((value) => !value)}>
+                {showPhone ? 'Ocultar módulo de teléfono' : 'Abrir módulo de teléfono'}
                 <span aria-hidden="true">{showPhone ? '−' : '↗'}</span>
               </button>
               {showPhone ? (
                 <div id="vx-nostromo-phone">
-                  <PhoneModuleView snapshot={phone ?? createPhoneModuleSnapshot()} />
+                  <PhoneModuleView snapshot={phone ?? createPhoneModuleSnapshot(undefined, [], activity.conversationId)} />
                 </div>
               ) : null}
               {showHub ? (
@@ -190,7 +191,7 @@ export default function VXCockpitBridge({ onClose, activity: activityInput, phon
         </section>
         ) : null}
         <TentaculoHud cards={projectTentaculoHud([])} activeSystem={activeSystem}
-          onClose={() => setActiveMode('AUTONOMO')} onCloseLabel="Volver a NOSTROMO" />
+          onClose={() => setActiveMode('AUTONOMO')} />
 
         {activeMode!=='AUTONOMO' ? <p className="vx-context-note" role="note">
           Este es el estado del enlace con NOSTROMO, no la salud de cada sistema. Se actualizará tras una lectura autenticada.

@@ -1460,5 +1460,56 @@
     ],
     "runtime_or_agent_changed": false,
     "next": "Wire the adapter into the native AgentClient turn initialization using authenticated intent/handoff state, measured context and current provider readbacks; do not silently fall back to the saved local model when no route is admitted."
+  },
+  "e3_native_phone_cabin_binding_20261118": {
+    "evidence_class": "SOURCE_CHANGE_TARGETED_TESTS_HOST_READBACK_NO_DEPLOY",
+    "verified_at_utc": "2026-11-18T16:23:20Z",
+    "source_base_head": "251f9e1506ba6ae7ad89bea2e87feff1342e11df",
+    "pr_before_change": {
+      "number": 54,
+      "state": "OPEN",
+      "draft": true,
+      "merged": false,
+      "head": "251f9e1506ba6ae7ad89bea2e87feff1342e11df"
+    },
+    "changes": [
+      "Visual candidate starts from the exact active Lenovo bridge bytes, preserving its local copy/activity differences; stale Qwen2.5 and first-chat-pending claims replaced with loaded-chat evidence.",
+      "Cabin exposes the phone module and passes the current LibreChat conversation ID into its fallback snapshot without claiming device authentication.",
+      "Phone snapshots without device evidence retain the conversation reference while remaining SOURCE_ONLY, unavailable, unauthenticated, and no-replay."
+    ],
+    "tests": {
+      "phone_module": "6/6 PASS",
+      "native_visual_reconciliation": "4/4 PASS",
+      "targeted_typescript_compile": "PASS using installed upstream TypeScript; no package installation",
+      "git_diff_check": "PASS"
+    },
+    "post_test_resources": {
+      "MemAvailable_kb": 9260060,
+      "SwapFree_kb": 5888,
+      "cpu_psi_some_avg10_percent": 6.81,
+      "cpu_psi_some_avg60_percent": 6.74,
+      "memory_psi_some_avg10_percent": 0,
+      "memory_psi_full_avg10_percent": 0,
+      "vmstat_one_second": {
+        "swap_in_pages": 28,
+        "swap_out_pages": 0,
+        "user_percent": 58,
+        "system_percent": 12,
+        "idle_percent": 30,
+        "io_wait_percent": 1
+      },
+      "gpu": "NVIDIA GeForce 840M; 0%; 5/4096 MiB; 55 C",
+      "ollama_loaded_models": 0
+    },
+    "runtime": {
+      "visual_files_changed": false,
+      "backend_restarted": false,
+      "phone_device_authenticated": false,
+      "phone_live_handoff_verified": false,
+      "llm_router_native_binding": "STILL_PENDING",
+      "inference_run": false
+    },
+    "result": "PHONE_UI_SOURCE_CONNECTED_TO_LOADED_CHAT; DEVICE_AND_RUNTIME_CONNECTIONS_UNVERIFIED",
+    "next": "Keep PR DRAFT; resolve native agent router/provider binding separately. Deploy the visual candidate only through its exact-baseline governed path; authenticate a real phone before claiming mobile connection."
   }
 }

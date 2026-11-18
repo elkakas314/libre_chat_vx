@@ -72,6 +72,7 @@ export function createPhoneModuleSnapshot(
   if(!observation)return {
     sourceOnly:true,platform:'UNKNOWN',state:'UNAVAILABLE',
     access:'UNAVAILABLE',accessReason:'DEVICE_READBACK_MISSING',
+    ...(conversationId?{currentConversationId:conversationId}:{}),
     connectionVerified:false,nativeClientVerified:false,
     shortcutBridgeVerified:false,iosRemoteControlAvailable:false,
     tasks:[],noAutomaticReplay:true,authority:false,

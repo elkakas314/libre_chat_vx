@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
 import {spawnSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 import {visualUpdateDisposition} from '../visual-overlay-gate.mjs';
@@ -25,4 +26,12 @@ test('visual sync refuses unrecognized mutation flags before touching upstream',
  assert.equal(data.status,'VISUAL_SYNC_BLOCKED');
  assert.match(data.reason,/UNKNOWN_FLAG_REFUSED/);
  assert.equal(data.mutated,false);
+});
+test('native cabin connects the loaded chat to a source-only phone view',()=>{
+ const p=fileURLToPath(new URL('../../overlay/upstream/VXCockpitBridge.tsx',import.meta.url));
+ const source=readFileSync(p,'utf8');
+ assert.match(source,/PhoneModuleView/);
+ assert.match(source,/createPhoneModuleSnapshot\(undefined,\s*\[\],\s*activity\.conversationId\)/);
+ assert.match(source,/SALIDAS GUARDADAS/);
+ assert.doesNotMatch(source,/Qwen2\.5 3B|MCP INSTALADO · CHAT PENDIENTE/);
 });

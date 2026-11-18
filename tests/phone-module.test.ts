@@ -12,10 +12,11 @@ const base={
  evidenceRef:'host:receipt-001',observedAt:'2026-11-18T04:15:00Z',
 };
 test('phone without evidence remains SOURCE_ONLY and cannot request work',()=>{
- const p=createPhoneModuleSnapshot();
+ const p=createPhoneModuleSnapshot(undefined,[],'current-chat');
  assert.equal(p.sourceOnly,true);
  assert.equal(p.state,'UNAVAILABLE');
  assert.equal(p.connectionVerified,false);
+ assert.equal(p.currentConversationId,'current-chat');
  assert.equal(planPhoneAction(p,'HANDOFF_CONVERSATION').disposition,'DENIED');
  assert.equal(planPhoneAction(p,'IOS_SHORTCUT').disposition,'DENIED');
 });
