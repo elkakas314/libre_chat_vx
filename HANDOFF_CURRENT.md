@@ -339,3 +339,17 @@ Added `config/nostromo-voice.fragment.yaml`: Spanish browser STT/TTS free defaul
 Native iOS third-party Switchboard requires iOS 16+; SE1 iOS15, iPhone6 iOS12 incompatible. Legacy native app NOT BUILT/INSTALLED and iPhone generation not identified. A browser home screen shortcut is not a native app; user explicitly rejected substitution. No unauthorized mobile exposure of MCP/terminal.
 PR #25 previously merged four contextual modes and admin-selected MCP tool catalog; PR #24 superseded. Keep one agent, one MCP, Tentáculo Hub only UI; do not duplicate. MCP can integrate external tools; durable MANOJOS-level Policy/Worker/RunLedger/Scheduler/recovery are separate runtime requirements.
 PRECEDENCE: this update supersedes older `PR26 DRAFT` or ChatGPT usage assumptions. MANOJOS/live Lenovo has not been touched this turn. Remaining boundaries: careful backup/ff-only overlay reconciliation, backend OAuth login consent, native app compatible with exact device, audio canary and material execution receipt.
+
+
+## 2026-11-18 — CONTINUIDAD EN RAMA DE INTEGRACIÓN, NO MAIN
+
+**Precedencia de lectura para este corte:** [docs/NOSTROMO_INTEGRATION_CANON_20261118.md](docs/NOSTROMO_INTEGRATION_CANON_20261118.md) y [delta Drive](https://docs.google.com/document/d/1oOiFTIrMD5Lnd05frGZ3HuZf3LgZHBEnAdhkoZvOwFA/edit). Los bloques precedentes se preservan como evidencia histórica y no son readback LIVE de noviembre 18.
+
+- `main@8e642eb1238f9b35f18a070d6a754fede4b432fb` preservada. Rama `integration/nostromo-canon-20261118-r1` creada desde main, fusionó Director `f3de4a3e873ae09a2b48a6509c7278ab764c2e81` mediante PR #53. Merge comprobado `394f77e7582e3e0fe40658252ef85e21e5005a96`; GitHub compare: +116/-0 vs main y árbol idéntico al Director.
+- No declarar CI PASS del nuevo HEAD por reutilizar la CI del E2 `915da759`; runs `44174753182` y `44174753161` son evidencia SOURCE válida **para ese candidato**, no para commits documentales/hosting posteriores.
+- El Work independiente reportó backend LIVE desde `~/librechat/upstream`, MCP activo desde `~/libre_chat_vx-clean`, Mongo persistente, Ollama CUDA, 2048 tokens de contexto insuficientes, diferencias locales exclusivas (incluida `nostromo_directorio_listar`) y tests 33/33 con Node22/24 del MCP candidato aún no recargado en proceso. Faltan receipts materialmente leídos aquí; NO asumir cierre P0.
+- Mantener `~/LibreChat` distinto de `~/librechat`, `~/upstream` alterno, backups, `~/vx-audit`, `~/vx-backup`, `~/bin`, `~/manojos_3` y `~/MANOJOS` sin eliminación, hasta clasificación forense individual.
+- `CURRENT.json` incluye objeto `integration_review_20261118` con contrato de rama; otros campos antiguos conservan su corte temporal. Drive matriz 119/112 y 00/10/20/30/40 siguen siendo canon documental, no runtime.
+- **NEXT:** inspeccionar exclusivamente el delta del MCP activo frente a integración, preservar preimágenes y actualizar branch; canario conversación con dos llamadas MCP y Mongo/reconexión; nueva CI exact HEAD; readback y prueba de restore; revisión final antes de PR hacia main. Sin segundo Kernel/Router/Worker ni forced updates.
+
+**Estado:** `REMOTE_BRANCH_INTEGRATED=VERIFIED`; `HOST_CANONICAL_INSTALLATION=IN_PROGRESS_IN_OTHER_WORK`; `NOSTROMO_FULLY_FUNCTIONAL=NOT_VERIFIED`.
