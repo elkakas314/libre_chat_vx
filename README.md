@@ -2,7 +2,13 @@
 
 Repositorio independiente para construir la capa LibreChat de VX13/MANOJOS3/ORÁCULO sin mezclar sus repos, kernels ni autoridades.
 
-## Estado
+## Estado operativo — actualización 18/11/2026 (PR #54)
+
+**Contrato vigente de Work y ejecución:** [NOSTROMO_WORK_OBJECTIVE_CANON_20261118.md](docs/NOSTROMO_WORK_OBJECTIVE_CANON_20261118.md) y [WORK_NOSTROMO_FINAL_EXECUTION_20261118.md](docs/WORK_NOSTROMO_FINAL_EXECUTION_20261118.md). SOURCE en rama `integration/nostromo-canon-20261118-r1`, PR #54 DRAFT. `main` se mantiene sin promover hasta QA + reconciliación HOST.
+
+El runtime en Lenovo y un canario Mongo/MCP tienen evidencia histórica en `CURRENT.json`, pero la instalación integral **no está verificada**. Los apartados de estado de 2026-10 que aparecen más abajo se conservan para trazabilidad, **no son el estado LIVE ni ordenan diferir NOSTROMO a MANOJOS3**. El dueño del host para LibreChat es el Work local cuando realmente tenga terminal autorizada; MANOJOS3 se mantiene externo.
+
+## Estado histórico / SOURCE original (no usar como CURRENT)
 
 `SOURCE_CORE_COMPLETE / GITHUB_FIRST_QA_IN_PROGRESS`
 

@@ -4,6 +4,10 @@
 
 **Precedencia:** READBACK host actual (CWD/PID/Mongo/servicio/CLI) > datos y hashes locales únicos > GitHub SOURCE HEAD exacto/CI > Drive CURRENT contrastado > memorias y handoffs anteriores.
 
+## OBJETIVO CANÓNICO NUEVO PARA WORK (18/11/2026)
+
+**Leer y ejecutar primero [docs/NOSTROMO_WORK_OBJECTIVE_CANON_20261118.md](NOSTROMO_WORK_OBJECTIVE_CANON_20261118.md).** Es el objetivo autosuficiente para sustituir la instrucción E3 pausada en EL MISMO Work. Incluye arquitectura de dos responsabilidades (router proveedor y semántica), SIWC Plus, herramienta GitHub CLI + OAuth/PAT correctamente distinguida, despliegue local/CI, árboles activos, recuperación y gates. Conservar el resto de este archivo como historial de procedimientos; este nuevo objetivo prevalece ante contradicción. No abrir dos escritores.
+
 ## RECONCILIACIÓN DE SOURCE Y WORK CLI — 18/11/2026 (NUEVO; prevalece sobre notas antiguas de este fichero)
 
 **Base verificada antes de escritura:** rama de PR #54 `6f205d8a2a8cae833a5a0fa3ac6b30d6a641674a` contra `main@8e642eb`. En esa base, source-check run **44364160187** completó **6/6 SUCCESS**; native-mock-E2E run **44364160206** falló solo en fixture visual desktop/mobile línea 104: el encabezado «Estado de la conversación» es GLOBAL en `overlay/upstream/VXCockpitBridge.tsx:58-66` y el test exigía indebidamente ocultarlo en VX13. Este lote cambia solo la expectativa y conserva la telemetría. **No declarar CI PASS del nuevo commit hasta comprobar los runs del nuevo HEAD exacto**.
