@@ -2402,7 +2402,24 @@
         "interpretation": "short build/test load; available memory remained >9 GB and memory PSI stayed zero; no sustained leak inferred"
       },
       "host_runtime_modified": false,
-      "github_actions": false
+      "github_actions": false,
+      "package_candidate": {
+        "path": "/tmp/nostromo-librechat-vx-0.1.0-7ed1863.tgz",
+        "source_sha": "7ed1863246f6942c570eca68e5569740b8c2250c",
+        "sha256": "1b3302444159a1ef87a429831c74435e8658d8e8b8936b1cc82e2c3d3464a52d",
+        "size_bytes": 213020,
+        "unpacked_bytes": 867569,
+        "entry_count": 452,
+        "essential_missing_live_modules_included": [
+          "siwcConnectionApi.js",
+          "siwcConnectionService.js",
+          "siwcOpenAiFetch.js",
+          "siwcProviderRoutes.js"
+        ],
+        "verified_archive_listing": true,
+        "installed": false,
+        "deployment_blocker": "trusted native route-input callback, owner OAuth consent and exact HOST_CONTROL grants remain open"
+      }
     },
     "github_actions_on_prior_sha": {
       "sha": "2a9b878ca7984e246cab14ee49151f4d5f706f34",
