@@ -3,7 +3,8 @@ import assert from 'node:assert/strict';
 import { generateKeyPairSync, sign, randomBytes } from 'node:crypto';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { SiwcConnectionService } from '../src/llm/siwcConnectionService';
+import { registerSiwcAgentClientResolver, SiwcConnectionService,
+  type SiwcAgentClientHostApp } from '../src/llm/siwcConnectionService';
 import { SiwcProtectedFileVault } from '../src/llm/siwcProtectedVault';
 import { startSiwc } from '../src/llm/chatgptAuthorized';
 
@@ -13,6 +14,19 @@ const hostId='urn:uuid:11111111-2222-4333-8444-555555555555';
 const {privateKey,publicKey}=generateKeyPairSync('rsa',{modulusLength:2048});
 const signingJwk={...publicKey.export({format:'jwk'}),kid:'siwc-test-key',alg:'RS256',use:'sig'};
 const jwks={keys:[signingJwk]};
+
+test('AgentClient resolver registers once and only its owner can remove it',()=>{
+  const app:SiwcAgentClientHostApp={locals:{}};
+  const resolver={resolveAgentClientRunBinding:async()=>null};
+  const unregister=registerSiwcAgentClientResolver(app,resolver);
+  assert.equal(app.locals.nostromoSiwc,resolver);
+  assert.throws(()=>registerSiwcAgentClientResolver(app,{resolveAgentClientRunBinding:async()=>null}),
+    /SIWC_AGENTCLIENT_RESOLVER_ALREADY_REGISTERED/);
+  app.locals.nostromoSiwc={resolveAgentClientRunBinding:async()=>null};
+  unregister();
+  assert.ok(app.locals.nostromoSiwc);
+});
+
 function signedIdToken(nonce:string){
   const header=Buffer.from(JSON.stringify({alg:'RS256',typ:'JWT',kid:'siwc-test-key'})).toString('base64url');
   const payload=Buffer.from(JSON.stringify({iss:'https://auth.openai.com',aud:clientId,

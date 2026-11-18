@@ -16,6 +16,7 @@ import {
 import { SiwcResponsesClient } from './siwcResponsesClient';
 import {
   createSiwcAgentClientRunBindingResolver,
+  type SiwcAgentClientRunBindingResolver,
   type SiwcAgentClientRunContext,
 } from './siwcOpenAiFetch';
 import type { NativeInferenceRouteResult } from '../librechat/nativeInferenceRouteAdapter';
@@ -34,6 +35,27 @@ export type SiwcConnectionStart=
   |{status:'CONNECTED';value:SiwcConnectCompletion}
   |SiwcConnectAttempt;
 type LoopbackFactory=(input:Parameters<typeof openSiwcLoopback>[0])=>Promise<SiwcLoopbackAttempt>;
+
+export interface SiwcAgentClientHostApp {
+  locals: {
+    nostromoSiwc?: SiwcAgentClientRunBindingResolver;
+  };
+}
+
+/** Registers the consent-aware resolver consumed by the guarded native AgentClient callsite. */
+export function registerSiwcAgentClientResolver(
+  app:SiwcAgentClientHostApp,
+  resolver:SiwcAgentClientRunBindingResolver,
+):()=>void {
+  if(!app||typeof app.locals!=='object'||app.locals===null)
+    throw Error('SIWC_AGENTCLIENT_APP_LOCALS_REQUIRED');
+  if(Object.hasOwn(app.locals,'nostromoSiwc'))
+    throw Error('SIWC_AGENTCLIENT_RESOLVER_ALREADY_REGISTERED');
+  app.locals.nostromoSiwc=resolver;
+  return ()=>{
+    if(app.locals.nostromoSiwc===resolver)delete app.locals.nostromoSiwc;
+  };
+}
 
 async function readJson(response:Response,limit:number,errorCode:string):Promise<unknown>{
   if(!response.ok)throw Error(errorCode);
@@ -180,6 +202,13 @@ export class SiwcConnectionService {
       transport:this.transport,
       now:this.now,
     });
+  }
+
+  /** Installs this service's authenticated, per-user binding into LibreChat app.locals. */
+  registerAgentClient(app:SiwcAgentClientHostApp,resolveRoute:(
+    context:SiwcAgentClientRunContext,
+  )=>Promise<NativeInferenceRouteResult>):()=>void {
+    return registerSiwcAgentClientResolver(app,this.createAgentClientRunBindingResolver(resolveRoute));
   }
 
   async cancelForUser(userId:string):Promise<void>{
