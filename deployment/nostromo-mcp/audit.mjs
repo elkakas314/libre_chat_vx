@@ -6,6 +6,12 @@ import {readHostMetrics} from './inspect.mjs';
 
 const exec = promisify(execFile);
 
+export function userSystemdEnv(uid = typeof process.getuid === 'function' ? process.getuid() : null){
+  if(!Number.isSafeInteger(uid)||uid<0)return null;
+  const runtimeDir=`/run/user/${uid}`;
+  return {XDG_RUNTIME_DIR:runtimeDir,DBUS_SESSION_BUS_ADDRESS:`unix:path=${runtimeDir}/bus`};
+}
+
 function tcpProbe(port, host='127.0.0.1', timeoutMs=800){
   return new Promise(resolve => {
     const s = new net.Socket();
@@ -72,7 +78,11 @@ export async function auditoriaR0(settings){
 
   // systemd --user
   out.sections.systemdUser = await safe(async () => {
-    const {stdout} = await exec('systemctl',['--user','is-active','vx-backend','ollama','manojos3'],{timeout:3000});
+    const sessionEnv=userSystemdEnv();
+    if(!sessionEnv)return {status:'UNAVAILABLE',reason:'USER_RUNTIME_ID_UNAVAILABLE'};
+    const {stdout} = await exec('systemctl',['--user','is-active','vx-backend','ollama','manojos3'],{
+      timeout:3000,env:{...process.env,...sessionEnv}
+    });
     return {services: stdout.trim().split('\n')};
   });
 
