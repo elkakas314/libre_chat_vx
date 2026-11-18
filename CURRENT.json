@@ -998,5 +998,68 @@
     "interpretation": "The short SOURCE test left no sign of active memory pressure; MemAvailable changed by about 17 MiB from the prior sample and swap free increased about 96 kB. No inference was run. Swap remains near full; no leak is established.",
     "host_mutations": false,
     "product_status": "INCOMPLETE"
+  },
+  "e3_live_agent_builder_r0_20261118": {
+    "evidence_class": "AUTHENTICATED_LIBRECHAT_AGENT_BUILDER_UI_READBACK_PLUS_HOST_CONTROL_R0",
+    "verified_at_utc": "2026-11-18 14:26:41 UTC",
+    "agent": {
+      "id": "agent_9ex2a9buul2cwzyo",
+      "name": "NOSTROMO",
+      "description": "Agente R0 nostromo",
+      "provider": "Ollama",
+      "model": "qwen3:4b-instruct-2507-q4_K_M",
+      "configuration_loaded_in_builder": true
+    },
+    "tools": {
+      "selected_sources": [
+        "Artefactos",
+        "nostromo-local"
+      ],
+      "mcp_tool_count": 11,
+      "selected_mcp_tools": 11,
+      "direct_tools": [
+        "nostromo_estado",
+        "nostromo_directorio_listar"
+      ],
+      "deferred_tools": [
+        "nostromo_terminal_preparar",
+        "nostromo_archivo_leer",
+        "nostromo_git_inspeccionar",
+        "nostromo_metricas",
+        "nostromo_tarea_iniciar",
+        "nostromo_tarea_estado",
+        "nostromo_tarea_cancelar",
+        "nostromo_auditoria_r0",
+        "nostromo_herramientas"
+      ],
+      "skills": "OFF; 0 available"
+    },
+    "advanced": {
+      "subagents_enabled": false,
+      "handoffs": 0,
+      "chain_displayed": "NOSTROMO",
+      "context_window": "not exposed in the read-only Builder view"
+    },
+    "readback_limits": {
+      "direct_expanded_agent_api": "GET /api/agents/agent_9ex2a9buul2cwzyo/expanded returned HTTP 401-style JSON No auth token",
+      "mongo_direct_read": "not performed",
+      "credentials": "not read or copied"
+    },
+    "host_control": {
+      "kernel_authority": false,
+      "grant_directory_entries": [
+        "restart-canary.lock",
+        "test-grant-0001.lock"
+      ],
+      "persistent_r2_grant": "not present"
+    },
+    "mutations": {
+      "agent_saved": false,
+      "host_write": false,
+      "service_restart": false,
+      "conversation_or_mcp_test": false
+    },
+    "interpretation": "The Builder confirms full MCP catalog selection with 2 direct and 9 deferred; Tools 2 in the summary means two selected sources, not two MCP functions. This is authenticated UI state, not a direct Mongo read or proof of a tool call.",
+    "next_action": "Use a supported authenticated R0 agent/database readback channel or have the host owner expose one; then validate the already configured tool selection with a bounded conversation only after a low-cost provider route is verified."
   }
 }
