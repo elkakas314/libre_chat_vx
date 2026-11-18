@@ -401,3 +401,11 @@ PRECEDENCE: this update supersedes older `PR26 DRAFT` or ChatGPT usage assumptio
 - Resource sample around compile/tests: MemAvailable minimum `9,391,404 kB`, after `9,680,264 kB`, swap free steady at `2,096,380 kB`, memory PSI full `0`; measured build/test peak RSS `409,520 kB`. CPU PSI some avg10 rose from `6.41%` to `19.36%`; no inference or production service work ran. This is a short load sample, not leak evidence.
 - No backend deployment, account consent, service restart, or host mutation. SIWC AgentClient LIVE remains blocked on `nostromoReadNativeInferenceRouteInput` and fresh host/provider capability, context, quota, and privacy readbacks.
 - Durable receipt is in `CURRENT.json` as `e3_siwc_disconnect_source_20261118`.
+
+## 2026-11-18 — SIWC local tool-name streaming SOURCE receipt
+
+- Added a focused Responses SSE contract test: a local `nostromo_estado` definition is sent under the SIWC `nostromo` namespace, and streamed function-call names are restored to the LibreChat-local name while preserving `call_id` and the terminal `response.completed` event.
+- TypeScript 5.9.3 compile to a temporary output directory passed; the SIWC connection/fetch/provider-route suites passed **12/12**; `git diff --check` passed. No account consent or provider API was used.
+- Resource sample: MemAvailable `9,010,416 → 8,543,052 kB`, swap free steady at `2,096,380 kB`, memory PSI some/full `0.00%`; the short compile/test lowered available RAM by ~456 MiB without swap churn or PSI pressure. This is not leak evidence.
+- SOURCE only. The pinned live backend still lacks trusted `app.locals.nostromoReadNativeInferenceRouteInput`, so route selection fails closed; no real AgentClient conversation, MCP execution, Mongo persistence, or SIWC LIVE status is claimed. No production file/service/host state changed.
+- Durable receipt is `CURRENT.json:e3_siwc_sse_tool_namespace_source_20261118`.

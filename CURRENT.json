@@ -2244,5 +2244,30 @@
       "interpretation": "Available memory recovered after the brief build; swap remained unchanged and memory PSI full was zero. CPU PSI rose during/after the compile window; no inference or production service work ran."
     },
     "runtime_status": "SOURCE_ONLY; no OAuth consent, production write, service restart, or live account revocation was performed."
+  },
+  "e3_siwc_sse_tool_namespace_source_20261118": {
+    "observed_at_utc": "2026-11-18T22:56:43Z",
+    "branch": "integration/nostromo-canon-20261118-r1",
+    "source_head_before_change": "ae5ca93b6b695ace14116f4dce0774468958a1fd",
+    "change": "Added a focused SIWC Responses SSE test for a local nostromo_estado function schema: the outbound request uses the nostromo namespace and streamed call names are restored for LibreChat's local tool dispatcher.",
+    "verification": {
+      "typescript_5_9_3_compile_to_temporary_directory": "PASS",
+      "siwc_focused_tests": "12/12 PASS",
+      "git_diff_check": "PASS",
+      "account_or_live_provider_used": false
+    },
+    "resources": {
+      "mem_available_kb_before": 9010416,
+      "mem_available_kb_after": 8543052,
+      "swap_free_kb_before_after": 2096380,
+      "memory_psi_some_avg10_before_after": "0.00% / 0.00%",
+      "memory_psi_full_avg10_before_after": "0.00% / 0.00%",
+      "interpretation": "Available RAM fell about 456 MiB during the short compile/test, swap was unchanged, and memory PSI remained zero; this is not evidence of pressure or a leak."
+    },
+    "limits": [
+      "SOURCE-only fixture; it does not establish an authenticated SIWC account, provider capability/context/quota readback, real AgentClient conversation, local MCP execution, Mongo persistence, or LIVE status.",
+      "The backend still lacks app.locals.nostromoReadNativeInferenceRouteInput; route selection remains fail-closed until a trusted request-scoped host readback is wired."
+    ],
+    "runtime_status": "SOURCE_ONLY; no production files, services, account, or host state changed."
   }
 }

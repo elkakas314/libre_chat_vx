@@ -96,6 +96,35 @@ test('SIWC Responses fetch injects a user-consented bearer and preserves native 
   assert.deepEqual(JSON.parse(String(captured?.init?.body)),allowedBody);
 });
 
+test('SIWC streams local function calls through the namespace and restores the LibreChat tool name',async()=>{
+  let sent:Record<string,unknown>|undefined;
+  const sse=[
+    {type:'response.output_item.added',item:{type:'function_call',call_id:'call_local_1',name:'nostromo.nostromo_estado',arguments:''}},
+    {type:'response.function_call_arguments.delta',item_id:'item_local_1',delta:'{}'},
+    {type:'response.completed',response:{status:'completed',output:[
+      {type:'function_call',call_id:'call_local_1',name:'nostromo.nostromo_estado',arguments:'{}'},
+    ]}},
+  ].map(event=>`data: ${JSON.stringify(event)}\n\n`).join('');
+  const transport=(async(_url:unknown,init?:RequestInit)=>{
+    sent=JSON.parse(String(init?.body)) as Record<string,unknown>;
+    return new Response(sse,{headers:{'Content-Type':'text/event-stream'}});
+  }) as unknown as typeof fetch;
+  const fetchSiwc=createSiwcOpenAiFetch('librechat-user-fixture',async()=>account,transport,()=>now);
+  const response=await fetchSiwc('https://api.openai.com/v1/responses',{method:'POST',body:JSON.stringify({
+    ...allowedBody,
+    tools:[{type:'function',function:{name:'nostromo_estado',description:'Lee estado R0',parameters:{type:'object',properties:{},additionalProperties:false}}}],
+  })});
+  const emitted=await response.text();
+  const sentTools=sent?.tools as Array<{type:string;name:string;tools:Array<{name:string}>}>;
+  assert.equal(sentTools[0]?.type,'namespace');
+  assert.equal(sentTools[0]?.name,'nostromo');
+  assert.equal(sentTools[0]?.tools[0]?.name,'nostromo_estado');
+  assert.match(emitted,/"name":"nostromo_estado"/);
+  assert.doesNotMatch(emitted,/"name":"nostromo\.nostromo_estado"/);
+  assert.match(emitted,/"call_id":"call_local_1"/);
+  assert.match(emitted,/"status":"completed"/);
+});
+
 test('AgentClient binding is ephemeral, route-bound, and contains no OAuth credentials',()=>{
   const fetchSiwc=createSiwcOpenAiFetch('librechat-user-fixture',async()=>account);
   const binding=bindSiwcRouteToAgentClient(route,fetchSiwc);
