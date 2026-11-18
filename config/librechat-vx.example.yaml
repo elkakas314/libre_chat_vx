@@ -1,21 +1,31 @@
 version: 1.3.17
 
-# SOURCE EXAMPLE ONLY.
+# SOURCE EXAMPLE ONLY. Keep enabled=false until host admin readback. Reuse existing LIVE sourceId;
+# 10 selected canonical Skills only, no legacy/optional auto-import and no startup sync.
 # NOSTROMO is one visible conversational identity. Provider/model selection is
 # internal routing detail and should not become an operator selector.
 skillSync:
   github:
     enabled: false
     intervalMinutes: 60
-    runOnStartup: true
+    runOnStartup: false
     sources:
-      - id: librechat-vx-skills
+      - id: nostromo-vx-skills
         owner: elkakas314
         repo: libre_chat_vx
-        ref: handoff_current_bootstrps
+        ref: integration/nostromo-canon-20261118-r1
         paths:
-          - skills
-        skillDiscoveryDepth: 2
+          - skills/nostromo-core
+          - skills/nostromo-visualization
+          - skills/nostromo-research
+          - skills/nostromo-event-triage
+          - skills/nostromo-evidence-first
+          - skills/nostromo-resource-navigation
+          - skills/manojos3-nostromo
+          - skills/vx13-nostromo
+          - skills/cross-target-read
+          - skills/nostromo-extension-review
+        skillDiscoveryDepth: 0
         token: '${GITHUB_SKILLS_TOKEN}'
 
 interface:
