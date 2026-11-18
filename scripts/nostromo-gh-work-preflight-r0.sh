@@ -24,5 +24,12 @@ if git diff --check >/dev/null 2>&1; then DIFF_CHECK='PASS'; else DIFF_CHECK='FA
 printf 'REPOSITORY=%s\nBRANCH_TARGET=%s\nGH_LOGIN=%s\nPRIVATE=%s\nPUSH_PERMISSION=%s\nCHECKOUT=%s\nLOCAL_BRANCH=%s\nLOCAL_HEAD=%s\nREMOTE_HEAD=%s\nDIRTY_TRACKED_COUNT=%s\nUNTRACKED_COUNT=%s\nDIFF_CHECK=%s\n' \
   "$REPO" "$BR" "$LOGIN" "$IS_PRIVATE" "$CAN_PUSH" "$ROOT" "$CURRENT_BRANCH" "$LOCAL" "$REMOTE" "$DIRTY_COUNT" "$UNTRACKED_COUNT" "$DIFF_CHECK"
 if [[ "$LOCAL" != "$REMOTE" ]]; then echo 'SOURCE_ALIGNMENT=DIFFERENT_RECONCILE_BEFORE_PUSH'; else echo 'SOURCE_ALIGNMENT=SAME_HEAD'; fi
-if [[ "$CAN_PUSH" != true || "$IS_PRIVATE" != true ]]; then echo 'SECURITY_BOUNDARY=REPO_PERMISSIONS_OR_VISIBILITY'; exit 4; fi
+# Visibility is truth, not permission. A public repository remains a valid target;
+# report public-history secret risk instead of falsely rejecting authorized GitHub CLI.
+case "$IS_PRIVATE" in
+  true) echo 'REPO_VISIBILITY=PRIVATE' ;;
+  false) echo 'REPO_VISIBILITY=PUBLIC_SECRET_HISTORY_REVIEW_REQUIRED' ;;
+  *) echo 'READBACK_INVALID_VISIBILITY'; exit 3 ;;
+esac
+if [[ "$CAN_PUSH" != true ]]; then echo 'SECURITY_BOUNDARY=REPO_WRITE_PERMISSION'; exit 4; fi
 echo 'PREFLIGHT=READ_ONLY_COMPLETE_NOT_A_LIVE_DEPLOYMENT'
