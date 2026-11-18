@@ -10,6 +10,11 @@ export interface SiwcAccountCredentials {
   scopes:readonly string[];savedAtMs:number;tokenExpiresAtMs:number;
   earliestRefreshAtMs:number;accessToken:string|null;refreshToken:string|null;
   idToken:string;
+  /** Encrypted, consumed refresh rotation awaiting signed identity verification. Never used for inference. */
+  pendingRefresh?:{
+    accessToken:string;refreshToken:string;scopes:readonly string[];
+    tokenExpiresAtMs:number;earliestRefreshAtMs:number;idToken:string;receivedAtMs:number;
+  };
 }
 export interface SiwcCredentialVault {
   /** Atomic CAS by client ID; implementations encrypt / set owner-only storage. */
@@ -88,7 +93,7 @@ export function siwcRefreshRequest(record:SiwcAccountCredentials) {
 }
 export function rotateSiwcTokens(previous:SiwcAccountCredentials,
   raw:unknown,nowMs:number):SiwcAccountCredentials {
-  const d=credentials(raw),t=planTokens(d),scopes=parseScopes(d.scope);
+  const d=credentials(raw),t=planTokens(d),scopes=d.scope===undefined?previous.scopes:parseScopes(d.scope);
   if(!t.accessToken||!t.refreshToken||!Number.isSafeInteger(nowMs))
     throw new Error('SIWC_REFRESH_INVALID');
   if(d.id_token!==undefined&&d.id_token!==previous.idToken)
@@ -100,6 +105,33 @@ export function rotateSiwcTokens(previous:SiwcAccountCredentials,
       Number.isFinite(d.earliest_refresh_at)?d.earliest_refresh_at*1000:nowMs,
   };
 }
+
+/** Persist a consumed refresh rotation before any network-based identity verification. */
+export function stageSiwcTokenRefresh(previous:SiwcAccountCredentials,
+  raw:unknown,nowMs:number):SiwcAccountCredentials {
+  const d=credentials(raw),tokens=planTokens(d);
+  if(!tokens.accessToken||!tokens.refreshToken||!Number.isSafeInteger(nowMs))
+    throw new Error('SIWC_REFRESH_INVALID');
+  if(d.id_token!==undefined&&(typeof d.id_token!=='string'||!d.id_token))
+    throw new Error('SIWC_REFRESH_ID_TOKEN_INVALID');
+  const scopes=d.scope===undefined?previous.scopes:parseScopes(d.scope);
+  return {...previous,pendingRefresh:{accessToken:tokens.accessToken,refreshToken:tokens.refreshToken,
+    scopes,tokenExpiresAtMs:nowMs+tokens.expiresIn*1000,
+    earliestRefreshAtMs:typeof d.earliest_refresh_at==='number'&&Number.isFinite(d.earliest_refresh_at)
+      ?d.earliest_refresh_at*1000:nowMs,
+    idToken:typeof d.id_token==='string'?d.id_token:previous.idToken,receivedAtMs:nowMs}};
+}
+
+/** Promote only a rotation whose refreshed ID token has passed JWKS checks. */
+export function completeSiwcTokenRefresh(previous:SiwcAccountCredentials):SiwcAccountCredentials {
+  const rotation=previous.pendingRefresh;
+  if(!rotation)throw new Error('SIWC_REFRESH_ROTATION_MISSING');
+  const {pendingRefresh:_pending,...record}=previous;
+  return {...record,accessToken:rotation.accessToken,refreshToken:rotation.refreshToken,
+    scopes:rotation.scopes,tokenExpiresAtMs:rotation.tokenExpiresAtMs,
+    earliestRefreshAtMs:rotation.earliestRefreshAtMs,idToken:rotation.idToken,
+    savedAtMs:rotation.receivedAtMs};
+}
 export function siwcAccountPermission(record:SiwcAccountCredentials,nowMs:number):'AUTHORIZED'|'DISABLED'{
   const grant:SiwcGrantReadback={
     identity:record.identity,scopes:record.scopes,nowMs,
@@ -110,6 +142,7 @@ export function siwcAccountPermission(record:SiwcAccountCredentials,nowMs:number
 }
 /** Never leak tokens into a browser response or exception. */
 export function siwcPublicState(r:SiwcAccountCredentials,nowMs:number) {
-  return {clientId:r.clientId,connected:true,planUsage:siwcAccountPermission(r,nowMs),
+  return {clientId:r.clientId,connected:!r.pendingRefresh,
+    planUsage:r.pendingRefresh?'DISABLED':siwcAccountPermission(r,nowMs),
     hostId:r.hostId,subjectRef:'REDACTED',expiresAtMs:r.tokenExpiresAtMs};
 }

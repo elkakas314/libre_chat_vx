@@ -21,8 +21,8 @@ function same(a:string,b:string):boolean{
   return left.length===right.length&&timingSafeEqual(left,right);
 }
 export function verifySiwcIdToken(input:{
-  idToken:string;issuedClientId:string;nonce:string;jwks:SiwcJwks;
-  nowSec?:number;expectedSubject?:string;
+  idToken:string;issuedClientId:string;nonce?:string;jwks:SiwcJwks;
+  nowSec?:number;expectedSubject?:string;issuedAtNotBeforeSec?:number;
 }):SiwcVerifiedIdentity {
   const parts=input.idToken.split('.');
   if(parts.length!==3||input.idToken.length>65536||
@@ -59,13 +59,14 @@ export function verifySiwcIdToken(input:{
   if(!Number.isSafeInteger(now)||!Number.isFinite(p.iat)||!Number.isFinite(p.exp)||
     typeof p.iat!=='number'||typeof p.exp!=='number'||
     p.exp<=now-leeway||p.iat>now+leeway||
+    (input.issuedAtNotBeforeSec!==undefined&&p.iat<input.issuedAtNotBeforeSec-leeway)||
     (p.nbf!==undefined&&(typeof p.nbf!=='number'||p.nbf>now+leeway)))
     throw new Error('SIWC_JWT_TIME_INVALID');
   if(p.iss!==OPENAI_SIWC_ISSUER||p.aud!==input.issuedClientId||
-    typeof p.nonce!=='string'||!same(p.nonce,input.nonce)||
+    (input.nonce!==undefined&&(typeof p.nonce!=='string'||!same(p.nonce,input.nonce)))||
     typeof p.sub!=='string'||!p.sub||
     (input.expectedSubject!==undefined&&!same(p.sub,input.expectedSubject)))
     throw new Error('SIWC_JWT_CLAIMS_INVALID');
   return {verification:'OIDC_JWKS_NONCE_AUD_VERIFIED',
-    subject:p.sub,issuedClientId:input.issuedClientId,expectedNonce:input.nonce};
+    subject:p.sub,issuedClientId:input.issuedClientId,expectedNonce:input.nonce??''};
 }

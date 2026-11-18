@@ -3,13 +3,14 @@ import {
   siwcExchangeRequest,
   type SiwcPending,
 } from './chatgptAuthorized';
-import { OPENAI_SIWC_JWKS_URI, type SiwcJwks } from './siwcIdentity';
+import { OPENAI_SIWC_JWKS_URI, verifySiwcIdToken, type SiwcJwks } from './siwcIdentity';
 import {
   siwcRefreshRequest,
   authorizeSiwcTokens,
-  rotateSiwcTokens,
   siwcAccountPermission,
   siwcPublicState,
+  stageSiwcTokenRefresh,
+  completeSiwcTokenRefresh,
   type SiwcAccountCredentials,
   type SiwcCredentialVault,
 } from './siwcSession';
@@ -78,6 +79,8 @@ async function readJson(response:Response,limit:number,errorCode:string):Promise
 /** Server-side SIWC lifecycle. Tokens remain inside the encrypted user-bound vault. */
 export class SiwcConnectionService {
   private readonly pending=new Map<string,SiwcLoopbackAttempt>();
+  private readonly refreshInFlight=new Map<string,Promise<
+    {version:string;record:SiwcAccountCredentials}|null>>();
   private readonly responses:SiwcResponsesClient;
   private readonly transport:typeof fetch;
   private readonly now:()=>number;
@@ -112,9 +115,11 @@ export class SiwcConnectionService {
   async startForUser(userId:string):Promise<SiwcConnectionStart>{
     if(!userId||userId.length>256)throw Error('SIWC_AUTHENTICATED_USER_REQUIRED');
     const existing=await this.options.vault.readForUser!(userId);
-    if(existing&&siwcAccountPermission(existing.record,this.now())==='AUTHORIZED'){
-      const models=await this.responses.listModels(existing.record);
-      return {status:'CONNECTED',value:{state:siwcPublicState(existing.record,this.now()),models}};
+    if(existing){
+      const connected=await this.resolveAccount(userId);
+      if(connected)return {status:'CONNECTED',value:{
+        state:siwcPublicState(connected.record,this.now()),models:connected.visibleModels,
+      }};
     }
     if(this.pending.has(userId))throw Error('SIWC_CONNECTION_ALREADY_PENDING');
     if(this.pending.size>=16)throw Error('SIWC_CONNECTION_CAPACITY_REACHED');
@@ -176,31 +181,108 @@ export class SiwcConnectionService {
     if(!userId||userId.length>256)throw Error('SIWC_AUTHENTICATED_USER_REQUIRED');
     let current=await this.options.vault.readForUser!(userId);
     if(!current)return null;
+    if(current.record.libreChatUserId!==userId)return null;
+    if(current.record.pendingRefresh){
+      try{
+        current=await this.serialRefresh(userId,()=>this.finishPendingRefresh(userId,current!));
+      }catch(error){
+        if(error instanceof Error&&(error.message.startsWith('SIWC_JWT_')||
+          error.message==='SIWC_REFRESH_ACCOUNT_MISMATCH'))return null;
+        throw error;
+      }
+      if(!current)return null;
+    }
     let record=current.record;
-    if(record.libreChatUserId!==userId)return null;
     if(record.tokenExpiresAtMs<=this.now()+30_000){
       if(!record.refreshToken||!record.scopes.includes('offline_access')||
         record.earliestRefreshAtMs>this.now())return null;
-      const request=siwcRefreshRequest(record);
-      const response=await this.jsonRequest(request.url,{
-        method:request.method,headers:request.headers,body:request.body,
-      },131_072,'SIWC_TOKEN_REFRESH_FAILED');
-      const rotated=rotateSiwcTokens(record,response,this.now());
+      const base=current;
       try{
-        await this.options.vault.update(record.clientId,current.version,rotated);
+        current=await this.serialRefresh(userId,()=>this.rotateAndVerify(userId,base));
       }catch(error){
-        if(!(error instanceof Error)||!error.message.includes('VERSION_CONFLICT'))throw error;
-        const concurrent=await this.options.vault.readForUser!(userId);
-        if(!concurrent||concurrent.record.libreChatUserId!==userId||
-          siwcAccountPermission(concurrent.record,this.now())!=='AUTHORIZED')return null;
-        current=concurrent;
+        if(error instanceof Error&&(error.message.startsWith('SIWC_JWT_')||
+          error.message==='SIWC_REFRESH_ACCOUNT_MISMATCH'))return null;
+        throw error;
       }
-      if(current.record===record)record=rotated;
-      else record=current.record;
+      if(!current)return null;
+      record=current.record;
     }
+    if(record.pendingRefresh)return null;
     if(siwcAccountPermission(record,this.now())!=='AUTHORIZED')return null;
     const visibleModels=await this.responses.listModels(record);
     return {record,visibleModels};
+  }
+
+  private serialRefresh(userId:string,
+    action:()=>Promise<{version:string;record:SiwcAccountCredentials}|null>){
+    const existing=this.refreshInFlight.get(userId);
+    if(existing)return existing;
+    const current=action().finally(()=>{
+      if(this.refreshInFlight.get(userId)===current)this.refreshInFlight.delete(userId);
+    });
+    this.refreshInFlight.set(userId,current);
+    return current;
+  }
+
+  private async rotateAndVerify(userId:string,
+    current:{version:string;record:SiwcAccountCredentials}){
+    const record=current.record;
+    if(record.pendingRefresh)return this.finishPendingRefresh(userId,current);
+    const request=siwcRefreshRequest(record);
+    const response=await this.jsonRequest(request.url,{
+      method:request.method,headers:request.headers,body:request.body,
+    },131_072,'SIWC_TOKEN_REFRESH_FAILED');
+    const staged=stageSiwcTokenRefresh(record,response,this.now());
+    try{
+      await this.options.vault.update(record.clientId,current.version,staged);
+    }catch(error){
+      if(!(error instanceof Error)||!error.message.includes('VERSION_CONFLICT'))throw error;
+      const concurrent=await this.options.vault.readForUser!(userId);
+      if(!concurrent||concurrent.record.libreChatUserId!==userId)return null;
+      if(!concurrent.record.pendingRefresh&&concurrent.record.accessToken&&
+        siwcAccountPermission(concurrent.record,this.now())==='AUTHORIZED')return concurrent;
+      if(concurrent.record.pendingRefresh)return this.finishPendingRefresh(userId,concurrent);
+      return null;
+    }
+    const readback=await this.options.vault.readForUser!(userId);
+    if(!readback||readback.record.libreChatUserId!==userId||!readback.record.pendingRefresh||
+      readback.record.pendingRefresh.refreshToken!==staged.pendingRefresh?.refreshToken)
+      throw Error('SIWC_REFRESH_STAGE_READBACK_FAILED');
+    return this.finishPendingRefresh(userId,readback);
+  }
+
+  private async finishPendingRefresh(userId:string,
+    current:{version:string;record:SiwcAccountCredentials}):
+    Promise<{version:string;record:SiwcAccountCredentials}|null>{
+    const record=current.record,rotation=record.pendingRefresh;
+    if(!rotation||record.libreChatUserId!==userId)return null;
+    if(rotation.idToken!==record.idToken){
+      const jwks=await this.jsonRequest(OPENAI_SIWC_JWKS_URI,
+        {method:'GET',headers:{Accept:'application/json'}},131_072,'SIWC_JWKS_FETCH_FAILED') as SiwcJwks;
+      const identity=verifySiwcIdToken({idToken:rotation.idToken,jwks,
+        issuedClientId:record.clientId,nowSec:Math.floor(this.now()/1000),
+        expectedSubject:record.subject,issuedAtNotBeforeSec:Math.floor(rotation.receivedAtMs/1000)});
+      if(identity.subject!==record.subject)throw Error('SIWC_REFRESH_ACCOUNT_MISMATCH');
+    }
+    const promoted=completeSiwcTokenRefresh(record);
+    try{
+      await this.options.vault.update(record.clientId,current.version,promoted);
+    }catch(error){
+      if(!(error instanceof Error)||!error.message.includes('VERSION_CONFLICT'))throw error;
+      const concurrent=await this.options.vault.readForUser!(userId);
+      if(!concurrent||concurrent.record.libreChatUserId!==userId)return null;
+      if(!concurrent.record.pendingRefresh&&
+        concurrent.record.refreshToken===rotation.refreshToken)return concurrent;
+      if(concurrent.record.pendingRefresh)return this.finishPendingRefresh(userId,concurrent);
+      return null;
+    }
+    const readback=await this.options.vault.readForUser!(userId);
+    if(!readback||readback.record.libreChatUserId!==userId||readback.record.pendingRefresh||
+      readback.record.accessToken!==rotation.accessToken||
+      readback.record.refreshToken!==rotation.refreshToken||
+      siwcAccountPermission(readback.record,this.now())!=='AUTHORIZED')
+      throw Error('SIWC_REFRESH_PROMOTION_READBACK_FAILED');
+    return readback;
   }
 
   createAgentClientRunBindingResolver(resolveRoute:(

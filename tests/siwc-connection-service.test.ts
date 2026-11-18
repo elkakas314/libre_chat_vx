@@ -7,6 +7,7 @@ import { registerSiwcAgentClientResolver, SiwcConnectionService,
   type SiwcAgentClientHostApp } from '../src/llm/siwcConnectionService';
 import { SiwcProtectedFileVault } from '../src/llm/siwcProtectedVault';
 import { startSiwc } from '../src/llm/chatgptAuthorized';
+import { authorizeSiwcTokens } from '../src/llm/siwcSession';
 
 const now=1_900_000_000_000;
 const clientId='oaiapp_service_test';
@@ -70,10 +71,10 @@ test('service route resolver delegates readback inputs to the existing inference
   }
 });
 
-function signedIdToken(nonce:string){
+function signedIdToken(nonce:string,issuedAtSec=Math.floor(now/1000)-10){
   const header=Buffer.from(JSON.stringify({alg:'RS256',typ:'JWT',kid:'siwc-test-key'})).toString('base64url');
   const payload=Buffer.from(JSON.stringify({iss:'https://auth.openai.com',aud:clientId,
-    sub:'chatgpt-subject-test',nonce,iat:Math.floor(now/1000)-10,exp:Math.floor(now/1000)+3600})).toString('base64url');
+    sub:'chatgpt-subject-test',nonce,iat:issuedAtSec,exp:Math.floor(now/1000)+3600})).toString('base64url');
   const input=`${header}.${payload}`;
   return `${input}.${sign('RSA-SHA256',Buffer.from(input),privateKey).toString('base64url')}`;
 }
@@ -136,5 +137,59 @@ test('SIWC connect binds signed plan consent to the LibreChat user and reads it 
     assert.equal(tokenExchangeCount,1);
     assert.equal(modelReadCount,3);
     assert.ok(closed>=1);
+  }finally{await rm(directory,{recursive:true,force:true});}
+});
+
+test('refresh rotation is encrypted before JWKS verification and resumes without reusing the consumed refresh token',async()=>{
+  const directory=await mkdtemp(`${tmpdir()}/nostromo-siwc-refresh-`);
+  try{
+    const vault=new SiwcProtectedFileVault(directory,randomBytes(32));
+    const pending=startSiwc({hostId,callback:'http://127.0.0.1:1455/auth/callback',
+      actualAppName:'NOSTROMO',requestPlanUsage:true});
+    const original=authorizeSiwcTokens({pending,issuedClientId:clientId,
+      response:{id_token:signedIdToken(pending.nonce),access_token:'old-access',
+        refresh_token:'old-refresh',token_type:'Bearer',expires_in:60,
+        scope:'openid profile email offline_access resource.invoke chatgpt.tokens.use.direct'},
+      jwks,nowMs:now,authenticatedUserId:'librechat-user-A'});
+    await vault.update(clientId,null,original);
+    let currentNow=now+35_000,refreshCount=0,jwksAvailable=false,modelReadCount=0;
+    const transport=(async(input:RequestInfo|URL,init?:RequestInit)=>{
+      const url=String(input);
+      if(url==='https://auth.openai.com/api/accounts/oauth/token'){
+        refreshCount++;
+        assert.equal(new URLSearchParams(String(init?.body)).get('refresh_token'),'old-refresh');
+        return Response.json({id_token:signedIdToken('',Math.floor(currentNow/1000)),
+          access_token:'new-access',refresh_token:'new-refresh',token_type:'Bearer',expires_in:3600});
+      }
+      if(url==='https://auth.openai.com/.well-known/jwks.json')
+        return jwksAvailable?Response.json(jwks):Response.json({error:'temporary'}, {status:503});
+      if(url==='https://api.openai.com/v1/models'){
+        modelReadCount++;
+        assert.equal(new Headers(init?.headers).get('authorization'),'Bearer new-access');
+        return Response.json({models:[{slug:'visible-model',display_name:'Visible model',visibility:'list'}]});
+      }
+      throw Error('UNEXPECTED_TEST_ENDPOINT');
+    }) as unknown as typeof fetch;
+    const service=new SiwcConnectionService({hostId,actualAppName:'NOSTROMO',vault,transport,
+      now:()=>currentNow});
+    await assert.rejects(service.resolveAccount('librechat-user-A'),/SIWC_JWKS_FETCH_FAILED/);
+    const checkpoint=await vault.readForUser('librechat-user-A');
+    assert.equal(checkpoint?.record.accessToken,'old-access');
+    assert.equal(checkpoint?.record.pendingRefresh?.accessToken,'new-access');
+    assert.equal(checkpoint?.record.pendingRefresh?.refreshToken,'new-refresh');
+    assert.equal(refreshCount,1);
+    assert.equal(modelReadCount,0);
+
+    jwksAvailable=true;
+    const account=await service.resolveAccount('librechat-user-A');
+    assert.equal(account?.record.accessToken,'new-access');
+    assert.equal(account?.record.refreshToken,'new-refresh');
+    assert.equal(account?.record.pendingRefresh,undefined);
+    assert.deepEqual(account?.record.scopes,original.scopes);
+    assert.equal(refreshCount,1);
+    assert.equal(modelReadCount,1);
+    const promoted=await vault.readForUser('librechat-user-A');
+    assert.equal(promoted?.record.accessToken,'new-access');
+    assert.equal(promoted?.record.pendingRefresh,undefined);
   }finally{await rm(directory,{recursive:true,force:true});}
 });
