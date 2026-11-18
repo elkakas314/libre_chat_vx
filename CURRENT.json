@@ -1919,5 +1919,58 @@
     },
     "remaining_blocker": "The installed authenticated AgentClient host has no nostromoReadNativeInferenceRouteInput callback supplying fresh model capabilities, context, health, quota, and privacy readbacks. SIWC route selection cannot safely be live-enabled from SOURCE or a model catalog alone.",
     "next": "Wire the authenticated host readback into the guarded AgentClient binding, then use the existing consent UI; do not activate until real provider evidence and owner consent are available."
+  },
+  "e3_live_siwc_package_delta_20261118": {
+    "evidence_class": "BOUNDED_HOST_R0_READBACK",
+    "readback_date": "2026-11-18",
+    "branch_head_before_receipt": "2f85f35d727dde503cbaae7fc5e7beae4a393efe",
+    "backend": {
+      "unit": "vx-backend.service",
+      "state": "active/running",
+      "main_pid": 5074
+    },
+    "host_control": {
+      "host": "elkakas314-Lenovo-Z50-70",
+      "kernel_authority": false
+    },
+    "runtime_upstream": {
+      "path": "/home/elkakas314/librechat/upstream",
+      "agentclient_initialize_sha256": "104e4c945a5e008e5ca476c033ed3115260c3c1e15aafa86eb04a9bcc2387522",
+      "agentclient_patch_marker": "ABSENT",
+      "server_index_sha256": "7ace779867986d2c7313cca7930486d352093a8fd2537ef919f2996dca24da57",
+      "routes_index_sha256": "b003cefcb1c7f00b711e3febc45ce493f9282aa56c33dee3f43d9be1a1f6effa",
+      "server_index_siwc_bootstrap_markers": "ABSENT",
+      "working_tree": "DIRTY_WITH_EXISTING_VX_OVERLAY_AND_UNTRACKED_PACKAGE; PRESERVE"
+    },
+    "runtime_vx_package": {
+      "path": "/home/elkakas314/librechat/upstream/packages/librechat-vx",
+      "workspace_reconcile_preview": "BLOCKED_UI_OUT_OF_SYNC_VXCockpitBridge; broad workspace apply not safe",
+      "source_modules_absent": [
+        "siwcProviderRoutes.ts",
+        "siwcOpenAiFetch.ts",
+        "siwcConnectionService.ts",
+        "nativeInferenceRouteAdapter.ts"
+      ],
+      "dist_modules_absent": [
+        "siwcProviderRoutes.js",
+        "siwcOpenAiFetch.js",
+        "siwcConnectionService.js",
+        "nativeInferenceRouteAdapter.js"
+      ],
+      "source_files_matching_canonical": [
+        "chatgptAuthorized.ts",
+        "siwcLoopback.ts"
+      ],
+      "source_files_differing_from_canonical": [
+        "src/index.ts",
+        "siwcIdentity.ts",
+        "siwcSession.ts",
+        "siwcProtectedVault.ts",
+        "siwcResponsesClient.ts",
+        "inferenceGateway.ts"
+      ]
+    },
+    "change": "No host files/services changed. Exact host hashes show the deployed AgentClient base is eligible for the existing guarded patch, but the package it would require is stale/incomplete and its bootstrap has no route-readback source.",
+    "next": "Prepare a narrow SIWC package synchronization candidate with exact preimages, tests, and rollback; apply only through HOST_CONTROL exact grants. Preserve the dirty upstream overlay. The broad workspace reconciler cannot be used until its UI synchronization gate is resolved."
   }
 }
