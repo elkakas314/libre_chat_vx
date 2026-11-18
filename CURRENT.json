@@ -1660,5 +1660,38 @@
     },
     "result": "SIWC_SERVER_TRANSPORT_AND_EPHEMERAL_AGENTCLIENT_BINDING_SOURCE_TESTED; HOST_CALLSITE_AND_AUTHENTICATED_OAUTH_ACTIVATION_PENDING",
     "next": "Connect this adapter at the pinned upstream AgentClient run construction boundary and add the authenticated LibreChat SIWC consent/session route; then present Continue with ChatGPT and validate a real streamed, persisted conversation."
+  },
+  "e3_siwc_agentclient_callsite_source_20261118": {
+    "evidence_class": "PINNED_AGENTCLIENT_PATCH_SOURCE_AND_STUB_TESTS",
+    "branch": "integration/nostromo-canon-20261118-r1",
+    "source_sha": "5097a985fd678d309adffc672613b0101919cfbb",
+    "base_head": "7f212151363c68155f1664166575e1da114de44a",
+    "upstream": "LibreChat-AI/LibreChat@f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
+    "changes": [
+      "Added a version- and source-hash-guarded patch at the native AgentClient runAgents construction boundary. It resolves only through server app.locals.nostromoSiwc and passes the authenticated LibreChat user, agent, conversation, and messages to the resolver.",
+      "The resolver composes the existing route decision with a per-user authorized SIWC account and account-visible model, then binds the Responses fetch only to an ephemeral clone for that run. No resolver means no behavior change; saved agent configuration is not mutated.",
+      "Added exact-preimage backup, idempotent staging and verified rollback functions. The CI staging command is restricted to a disposable pinned-upstream checkout."
+    ],
+    "tests": {
+      "SIWC_resolver_transport_binding_tests": "4/4 PASS",
+      "installed_Agents_SDK_stream_stub": "1/1 PASS",
+      "pinned_AgentClient_patch_and_rollback_tests": "2/2 PASS",
+      "project_typescript_no_emit": "PASS",
+      "workflow_yaml_parse": "PASS",
+      "git_diff_check": "PASS"
+    },
+    "runtime": {
+      "Lenovo_runtime_changed": false,
+      "pinned_AgentClient_patch_mounted": false,
+      "app_locals_SIWC_resolver_registered": false,
+      "OAuth_consent": "NOT_VERIFIED",
+      "live_conversation": false
+    },
+    "ci": {
+      "source_sha": "5097a985fd678d309adffc672613b0101919cfbb",
+      "status": "PENDING_AFTER_PUSH"
+    },
+    "result": "AGENTCLIENT_RUN_BOUNDARY_PATCH_AND_USER_SCOPED_SIWC_RESOLVER_SOURCE_TESTED; RUNTIME_AND_OAUTH_ACTIVATION_PENDING",
+    "next": "Run the patch only in ephemeral CI and compile the pinned API; then wire the authenticated SIWC account lifecycle and register the per-user resolver in server app locals before offering official consent."
   }
 }
