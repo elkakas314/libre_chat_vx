@@ -599,7 +599,13 @@
       "manual_stop_is_not_generation_error": true,
       "exact_reported_failure_conversation_id_available": false,
       "status": "PENDING_AUTHENTIC_ERROR_PATH_TEST",
-      "recent_mongo_error_true_rows": 0
+      "recent_mongo_error_true_rows": 0,
+      "source_unit_tests": {
+        "controller_resumeMetadata": "3 passed; covers initialization error durability, persisted-error follow-up, and failures before assistant save",
+        "generation_job_manager_startup": "2 passed; terminal error publication waits for persistence and reconciliation on persistence failure",
+        "verified_at_utc": "2026-11-18T05:45:57Z",
+        "scope": "SOURCE_UNIT_ONLY_NOT_LIVE_PROVIDER_ERROR"
+      }
     }
   }
 }
