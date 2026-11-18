@@ -1740,5 +1740,49 @@
     "receipt_issue_37": "https://github.com/elkakas314/libre_chat_vx/issues/37#issuecomment-6990332390",
     "host_receipt_issue_37": "https://github.com/elkakas314/libre_chat_vx/issues/37#issuecomment-6990413061",
     "next": "Complete server bootstrap and authenticated SIWC account/consent routes with a locally provisioned protected vault and trusted provider context; only then run owner consent and a real streamed/persisted chat."
+  },
+  "e3_siwc_refresh_recovery_source_20261118": {
+    "evidence_class": "SOURCE_CHANGE_TARGETED_TESTS_AND_GITHUB_READBACK",
+    "verified_at_utc": "2026-11-18T21:31:49Z",
+    "branch": "integration/nostromo-canon-20261118-r1",
+    "source_sha": "79f86edcc6abb57547b4c338aaf3ab851e4d84b2",
+    "changes": [
+      "Refresh responses are staged encrypted in the per-user vault before network JWKS verification; pending credentials cannot authorize inference.",
+      "Rotated credentials promote only after ID-token signature, issuer, audience, subject and freshness checks; failed JWKS verification resumes from pending state without reusing a consumed refresh token.",
+      "Concurrent refresh calls are serialized in-process and scopes are preserved when omitted by the provider."
+    ],
+    "tests": {
+      "project_typescript_no_emit": "PASS",
+      "siwc_agentclient_router_targeted_tests": "18/18 PASS",
+      "pinned_agentclient_route_bootstrap_fixtures": "PASS",
+      "git_diff_check": "PASS"
+    },
+    "exact_head_ci": {
+      "run_id": 44402101356,
+      "head": "79f86edcc6abb57547b4c338aaf3ab851e4d84b2",
+      "status": "IN_PROGRESS"
+    },
+    "pull_request": {
+      "number": 54,
+      "state": "OPEN",
+      "draft": true,
+      "head": "79f86edcc6abb57547b4c338aaf3ab851e4d84b2"
+    },
+    "host_readback": {
+      "verified_at_utc": "2026-11-18T21:31:49Z",
+      "plane": "HOST_CONTROL",
+      "kernel_authority": false,
+      "backend": "vx-backend.service ACTIVE",
+      "reboot_required_marker": "NOT_RECHECKED_THIS_TURN"
+    },
+    "runtime": {
+      "agentclient_patch": "SOURCE_GUARDED_NOT_ACTIVE_IN_PRODUCTION",
+      "native_route_readback": "MISSING_AUTHENTICATED_HOST_CALLBACK",
+      "oauth_consent": "NOT_VERIFIED",
+      "live_chat": false,
+      "live_mcp": false
+    },
+    "result": "SIWC_REFRESH_ROTATION_SOURCE_RECOVERABLE; NATIVE_ROUTE_READBACK_AND_HOST_ACTIVATION_PENDING",
+    "next": "Implement the authenticated native route-readback callback using verified effective provider/model context and quota evidence; do not infer capabilities/context from model names or the /v1/models catalogue. Reboot remains blocked by absent HOST_CONTROL kernel authority."
   }
 }
