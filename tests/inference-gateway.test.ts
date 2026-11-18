@@ -139,6 +139,40 @@ test('Cloudflare client sends OpenAI-compatible chat request without persisting 
   assert.equal(JSON.stringify(binding).includes('runtime-token'),false);
 });
 
+test('Cloudflare client preserves tool schemas and multi-turn tool replies', async () => {
+  const binding=resolveCloudflareGatewayBinding({
+    CLOUDFLARE_ACCOUNT_ID:'account',
+    CLOUDFLARE_AI_GATEWAY_ID:'gateway',
+    CLOUDFLARE_API_TOKEN:'present-only-for-binding-check',
+    CLOUDFLARE_AIG_BYOK_ONLY_REQUIRED:'true',
+  });
+  let sentBody='';
+  const client=new CloudflareAiGatewayClient(
+    binding,
+    {get:()=> 'runtime-token'},
+    async (_url,request)=>{
+      sentBody=request.body;
+      return {ok:true,status:200,body:{choices:[]}};
+    },
+  );
+  const tools=[{
+    type:'function' as const,
+    function:{name:'nostromo_estado',description:'Lee el estado',parameters:{type:'object',properties:{},additionalProperties:false}},
+  }];
+  const messages=[
+    {role:'user' as const,content:'Consulta el estado.'},
+    {role:'assistant' as const,content:null,tool_calls:[{id:'call-1',type:'function' as const,function:{name:'nostromo_estado',arguments:'{}'}}]},
+    {role:'tool' as const,tool_call_id:'call-1',name:'nostromo_estado',content:'estado disponible'},
+  ];
+  const response=await client.createChatCompletion('INVESTIGAR',messages,true,{tools,toolChoice:'auto'});
+  const payload=JSON.parse(sentBody);
+  assert.equal(response.status,200);
+  assert.deepEqual(payload.tools,tools);
+  assert.equal(payload.tool_choice,'auto');
+  assert.deepEqual(payload.messages,messages);
+  assert.equal(payload.model,'dynamic/nostromo-investigar');
+});
+
 test('route admission fails closed for missing, future and stale LIVE timestamps', () => {
   const cases = [
     [undefined,'ROUTE_READBACK_TIMESTAMP_REQUIRED'],
