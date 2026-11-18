@@ -153,3 +153,12 @@ test('route admission fails closed for missing, future and stale LIVE timestamps
   }
   assert.equal(admitProviderRoute(route(),{profile:'NORMAL',nowMs:now}).admitted,true);
 });
+
+test('HUD freshness never claims a live readback from config, invalid or future timestamps', () => {
+  assert.equal(projectProviderStatus(route({evidence:'CONFIG_ONLY'}),now).freshness,'UNKNOWN');
+  assert.equal(projectProviderStatus(route({observedAtMs:undefined}),now).freshness,'UNKNOWN');
+  assert.equal(projectProviderStatus(route({observedAtMs:Number.NaN}),now).freshness,'UNKNOWN');
+  assert.equal(projectProviderStatus(route({observedAtMs:now+1}),now).freshness,'UNKNOWN');
+  assert.equal(projectProviderStatus(route({observedAtMs:now-300_001}),now).freshness,'STALE');
+  assert.equal(projectProviderStatus(route(),now).freshness,'FRESH');
+});

@@ -65,6 +65,7 @@ export * from './llm/structuredOutput';
 export * from './llm/providerStatus';
 
 export * from './intent/intentInterpreter';
+export * from './intent/nostromoDecisionBridge';
 export * from './presentation/presentationPlanner';
 export * from './research/researchPolicy';
 export * from './events/agentEvents';

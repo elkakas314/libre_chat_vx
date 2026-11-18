@@ -27,9 +27,15 @@ export function projectProviderStatus(
   nowMs=Date.now(),
   maxFreshnessMs=300_000,
 ):ProviderStatusView {
-  const freshness=route.observedAtMs===undefined
-    ? 'UNKNOWN'
-    : nowMs-route.observedAtMs<=maxFreshnessMs ? 'FRESH' : 'STALE';
+  // A timestamp alone does not establish live provider evidence. Fail closed
+  // for configuration-only observations, malformed clocks and future timestamps.
+  const observed=route.observedAtMs;
+  const freshness:ProviderStatusView['freshness'] =
+    route.evidence!=='LIVE_READBACK' || observed===undefined ||
+    !Number.isFinite(observed) || !Number.isFinite(nowMs) ||
+    !Number.isFinite(maxFreshnessMs) || maxFreshnessMs<0 || observed>nowMs
+      ? 'UNKNOWN'
+      : nowMs-observed<=maxFreshnessMs ? 'FRESH' : 'STALE';
   return {
     profile:route.profile,
     provider:route.provider,
