@@ -43,3 +43,6 @@ El modelo genera el borrador; el host verifica registro del acuerdo; el gobernan
 5. Herramienta/tarea final produce receipt+readback en propio flujo, VERIFICATION; reabrir conversación/móvil recupera el mismo estado sin replay.
 6. «Hola» y conversación con cabina cerrada/abierta no sufren context overflow, polling ni caída de rendimiento. Medir CPU/RAM/swap, TTFT, schemas bound y UX sin reducir «magia».
 **Estado de aceptación:** SOURCE_PATCH / HOST_NOT_VERIFIED; PR #54 DRAFT hasta E2E.
+
+## Corrección del informe Gemini 18/11/2026 (aprobada como diseño, no como ejecución)
+El estudio sugiere ocho estados, pero RESEARCH puede ser subfase iterativa y `DECISION_REQUIRED` es pausa durante ejecución. `PROPOSAL_VIEW` no es enum SOURCE demostrado: `presentationPlanner` ya dispone de `COMPARISON_TABLE`, `INTERACTIVE_ARTIFACT`, `MERMAID_DIAGRAM`. `PlanGraph` muestra futuro; `ActiveFlow` sólo aristas con evidencia real. No crear `NostromoStatusRail` ni otro `VXCockpitBridge` bajo rutas inexistentes. Prohibido `onGrantAgreement(planId || 'default-hash')` y filtros de herramienta con `parameters:{}`. Ver auditoría completa `docs/NOSTROMO_GEMINI_DIALOGUE_RESEARCH_AUDIT_20261118.md`.
