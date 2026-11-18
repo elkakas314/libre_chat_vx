@@ -538,7 +538,7 @@
       "SwapFree_kb": 6156,
       "llama_server_in_top5": false
     },
-    "overall": "PARTIAL_PASS_LIVE_MCP_AND_SAME_CHAT_RECOVERY; OLLAMA_ERROR_PATH_NOT_REPRODUCED; PRODUCT_INCOMPLETE",
+    "overall": "LIVE_MCP_AND_PRIOR_SAME_CHAT_RECOVERY_VERIFIED; PREFLIGHT_ERROR_RETRY_ACCEPTED_BUT_SLOW; AUTHENTIC_OLLAMA_ERROR_PATH_PENDING; PRODUCT_INCOMPLETE",
     "patch": {
       "package": "@librechat/agents",
       "version": "4.0.1",
@@ -587,11 +587,12 @@
       "user_text_not_recorded": true
     },
     "resource_readback_latest": {
-      "llama_server_cpu_percent": 47.3,
-      "llama_server_rss_kb": 1302184,
-      "MemAvailable_gib": 8.0,
-      "SwapFree_kib": 0,
-      "model_context_length": 6144
+      "llama_server_cpu_percent": 99.9,
+      "llama_server_rss_kb": 1297792,
+      "MemAvailable_gib": 8.1,
+      "SwapFree_kib": 17,
+      "model_context_length": 6144,
+      "test_duration_before_manual_stop_seconds": 120
     },
     "error_path": {
       "reported_ollama_exception_reproduced": false,
@@ -605,7 +606,22 @@
         "generation_job_manager_startup": "2 passed; terminal error publication waits for persistence and reconciliation on persistence failure",
         "verified_at_utc": "2026-11-18T05:45:57Z",
         "scope": "SOURCE_UNIT_ONLY_NOT_LIVE_PROVIDER_ERROR"
-      }
+      },
+      "live_preflight_retry": "FOLLOW_UP_ACCEPTED; NO_PARENT_NOT_READY; GENERATION_TOO_SLOW_AND_MANUALLY_STOPPED"
+    },
+    "conversation_test_preflight_retry": {
+      "conversation_id": "37c3579f-0371-5694-b713-bfe68830ae16",
+      "original_failure_type": "LibreChat_preflight_context_overflow",
+      "original_assistant_message_id": "d3b4e646-a39c-4c63-8897-2010a11097cd",
+      "original_error_segment_persisted": true,
+      "follow_up_message_id": "7182863d-f11d-497c-90e2-8f04f0a77fd8",
+      "follow_up_accepted_by_backend": true,
+      "assistant_retry_id": "6521d993-617b-43e2-9778-bce70f043f31",
+      "retry_result": "MANUALLY_STOPPED_AFTER_2_MINUTES_WITHOUT_VISIBLE_TEXT",
+      "retry_assistant_error": false,
+      "retry_assistant_unfinished": true,
+      "chat_reloaded_and_rows_restored": true,
+      "this_is_not_an_ollama_provider_error": true
     }
   }
 }
