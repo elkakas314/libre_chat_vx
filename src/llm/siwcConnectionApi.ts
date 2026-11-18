@@ -24,6 +24,9 @@ export interface SiwcConnectionApiService {
   publicStateForUser(userId:string):Promise<SiwcPublicConnectionState>;
   cancelForUser(userId:string):Promise<void>;
 }
+export type SiwcConnectionApiServiceResolver=(
+  request:SiwcAuthenticatedRequest,
+)=>SiwcConnectionApiService|null;
 
 function authenticatedUserId(request:SiwcAuthenticatedRequest):string|null {
   try {
@@ -60,17 +63,24 @@ function officialAuthorizationURL(value:string):string {
 /** Mounts session-authenticated routes; account IDs always come from LibreChat auth, never request data. */
 export function mountSiwcConnectionApi(input:{
   router:SiwcConnectionRouter;
-  service:SiwcConnectionApiService;
+  service:SiwcConnectionApiService|SiwcConnectionApiServiceResolver;
   requireAuthenticatedUser:SiwcHttpHandler;
   verifyCsrf:SiwcHttpHandler;
 }):void {
   if(typeof input.requireAuthenticatedUser!=='function'||typeof input.verifyCsrf!=='function')
     throw Error('SIWC_AUTH_AND_CSRF_MIDDLEWARE_REQUIRED');
 
+  const serviceFor=(request:SiwcAuthenticatedRequest)=>
+    typeof input.service==='function'?input.service(request):input.service;
+
   input.router.get('/state',input.requireAuthenticatedUser,async(request,response)=>{
     const userId=authenticatedUserId(request);
     if(!userId)return response.status(401).json({error:'SIWC_AUTHENTICATED_USER_REQUIRED'});
-    try{return response.status(200).json(await input.service.publicStateForUser(userId));}
+    try {
+      const service=serviceFor(request);
+      if(!service)return response.status(503).json({error:'SIWC_RUNTIME_UNAVAILABLE'});
+      return response.status(200).json(await service.publicStateForUser(userId));
+    }
     catch(error){return response.status(503).json({error:publicError(error)});}
   });
 
@@ -79,7 +89,9 @@ export function mountSiwcConnectionApi(input:{
       const userId=authenticatedUserId(request);
       if(!userId)return response.status(401).json({error:'SIWC_AUTHENTICATED_USER_REQUIRED'});
       try {
-        const result=await input.service.startForUser(userId);
+        const service=serviceFor(request);
+        if(!service)return response.status(503).json({error:'SIWC_RUNTIME_UNAVAILABLE'});
+        const result=await service.startForUser(userId);
         if(result.status==='CONNECTED')return response.status(200).json({
           status:'CONNECTED',state:result.value.state,models:result.value.models,
         });
@@ -99,8 +111,10 @@ export function mountSiwcConnectionApi(input:{
       const userId=authenticatedUserId(request);
       if(!userId)return response.status(401).json({error:'SIWC_AUTHENTICATED_USER_REQUIRED'});
       try {
-        await input.service.cancelForUser(userId);
-        return response.status(200).json(await input.service.publicStateForUser(userId));
+        const service=serviceFor(request);
+        if(!service)return response.status(503).json({error:'SIWC_RUNTIME_UNAVAILABLE'});
+        await service.cancelForUser(userId);
+        return response.status(200).json(await service.publicStateForUser(userId));
       } catch(error) {
         return response.status(503).json({error:publicError(error)});
       }

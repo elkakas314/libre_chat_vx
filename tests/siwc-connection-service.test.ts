@@ -27,6 +27,22 @@ test('AgentClient resolver registers once and only its owner can remove it',()=>
   assert.ok(app.locals.nostromoSiwc);
 });
 
+test('LibreChat registration publishes the same consent-aware service to routes and AgentClient',()=>{
+  const app:SiwcAgentClientHostApp={locals:{}};
+  const vault={readForUser:async()=>null} as unknown as import('../src/llm/siwcSession').SiwcCredentialVault;
+  const service=new SiwcConnectionService({hostId,actualAppName:'NOSTROMO',vault});
+  const unregister=service.registerLibreChat(app,async()=>({kind:'NO_ADMITTED_ROUTE',
+    lane:'REMOTE_INFERENCE',profile:'NORMAL',admissions:[],reason:'NO_FRESH_ZERO_COST_ROUTE',
+    requiresGoalAgreement:false,requiresReadbackBeforeResponse:false,authority:false}));
+  assert.equal(app.locals.nostromoSiwcConnectionService,service);
+  assert.equal(typeof app.locals.nostromoSiwc?.resolveAgentClientRunBinding,'function');
+  assert.throws(()=>service.registerLibreChat(app,async()=>{throw Error('must not run');}),
+    /SIWC_CONNECTION_SERVICE_ALREADY_REGISTERED/);
+  unregister();
+  assert.equal(app.locals.nostromoSiwcConnectionService,undefined);
+  assert.equal(app.locals.nostromoSiwc,undefined);
+});
+
 function signedIdToken(nonce:string){
   const header=Buffer.from(JSON.stringify({alg:'RS256',typ:'JWT',kid:'siwc-test-key'})).toString('base64url');
   const payload=Buffer.from(JSON.stringify({iss:'https://auth.openai.com',aud:clientId,

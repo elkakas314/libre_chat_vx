@@ -111,3 +111,16 @@ test('SIWC connect never returns a non-OpenAI authorization target',async()=>{
   assert.equal(result.statusCode,503);
   assert.deepEqual(result.body,{error:'SIWC_AUTHORIZATION_URL_REJECTED'});
 });
+
+test('SIWC routes resolve the service from the authenticated request and fail closed when unmounted',async()=>{
+  const h=harness();
+  const pass:SiwcHttpHandler=(_req,_res,next)=>next();
+  let resolvedRequest:unknown;
+  mountSiwcConnectionApi({router:h.router,
+    service:(request)=>{resolvedRequest=request;return null;},
+    requireAuthenticatedUser:pass,verifyCsrf:pass});
+  const result=await h.call('GET','/state','librechat-user-1');
+  assert.equal(result.statusCode,503);
+  assert.deepEqual(result.body,{error:'SIWC_RUNTIME_UNAVAILABLE'});
+  assert.ok(resolvedRequest);
+});

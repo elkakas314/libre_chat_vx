@@ -43,6 +43,7 @@ type LoopbackFactory=(input:Parameters<typeof openSiwcLoopback>[0])=>Promise<Siw
 export interface SiwcAgentClientHostApp {
   locals: {
     nostromoSiwc?: SiwcAgentClientRunBindingResolver;
+    nostromoSiwcConnectionService?: SiwcConnectionService;
   };
 }
 
@@ -213,6 +214,23 @@ export class SiwcConnectionService {
     context:SiwcAgentClientRunContext,
   )=>Promise<NativeInferenceRouteResult>):()=>void {
     return registerSiwcAgentClientResolver(app,this.createAgentClientRunBindingResolver(resolveRoute));
+  }
+
+  /** Publishes one service instance to both authenticated SIWC routes and AgentClient. */
+  registerLibreChat(app:SiwcAgentClientHostApp,resolveRoute:(
+    context:SiwcAgentClientRunContext,
+  )=>Promise<NativeInferenceRouteResult>):()=>void {
+    if(!app||typeof app.locals!=='object'||app.locals===null)
+      throw Error('SIWC_AGENTCLIENT_APP_LOCALS_REQUIRED');
+    if(Object.hasOwn(app.locals,'nostromoSiwcConnectionService'))
+      throw Error('SIWC_CONNECTION_SERVICE_ALREADY_REGISTERED');
+    const unregisterAgentClient=this.registerAgentClient(app,resolveRoute);
+    app.locals.nostromoSiwcConnectionService=this;
+    return ()=>{
+      if(app.locals.nostromoSiwcConnectionService===this)
+        delete app.locals.nostromoSiwcConnectionService;
+      unregisterAgentClient();
+    };
   }
 
   async cancelForUser(userId:string):Promise<void>{
