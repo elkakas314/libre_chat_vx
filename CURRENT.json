@@ -486,7 +486,12 @@
       "main_pid": 324302,
       "runtime_head": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
       "official_pr_14118_fix": "PRESENT_IN_ACTIVE_SOURCE",
-      "service_exec_start_pre": "DEFERRED_FILTER_APPLY_AND_READBACK"
+      "service_exec_start_pre": "DEFERRED_FILTER_APPLY_AND_READBACK",
+      "runtime_api_module": "/home/elkakas314/librechat/upstream/packages/api/dist/index.cjs",
+      "compiled_pr_14118_markers": [
+        "beforeErrorPublication",
+        "persistencePending"
+      ]
     },
     "ollama": {
       "context_length": 6144,
@@ -593,7 +598,8 @@
       "official_error_turn_persistence_fix_in_live_source": true,
       "manual_stop_is_not_generation_error": true,
       "exact_reported_failure_conversation_id_available": false,
-      "status": "PENDING_AUTHENTIC_ERROR_PATH_TEST"
+      "status": "PENDING_AUTHENTIC_ERROR_PATH_TEST",
+      "recent_mongo_error_true_rows": 0
     }
   }
 }
