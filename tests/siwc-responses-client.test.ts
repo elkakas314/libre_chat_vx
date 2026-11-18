@@ -20,7 +20,7 @@ test('OAuth model catalog and streaming complete in a local stub',async()=>{
     assert.equal(body.store,false);assert.equal(body.stream,true);
     return new Response('data: {"type":"response.output_text.delta","delta":"hola"}\n\n'+
       'data: {"type":"response.completed"}\n\ndata: [DONE]\n\n');
-  }) as typeof fetch;
+  }) as unknown as typeof fetch;
   const client=new SiwcResponsesClient(transport,()=>2000);
   assert.deepEqual(await client.listModels(account),models);
   const response=await client.textResponse(account,{model:'test-model',catalog:models,messages});
@@ -29,7 +29,7 @@ test('OAuth model catalog and streaming complete in a local stub',async()=>{
 });
 test('partial streams and denied permission fail closed',async()=>{
   let count=0;
-  const transport=(async()=>{count++;return new Response('data: {"type":"response.output_text.delta","delta":"partial"}\n\n');}) as typeof fetch;
+  const transport=(async()=>{count++;return new Response('data: {"type":"response.output_text.delta","delta":"partial"}\n\n');}) as unknown as typeof fetch;
   const client=new SiwcResponsesClient(transport,()=>2000);
   await assert.rejects(client.textResponse(account,{model:'test-model',catalog:models,messages}),/UNKNOWN_OUTCOME/);
   await assert.rejects(client.textResponse({...account,scopes:['openid']},
