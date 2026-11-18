@@ -864,7 +864,7 @@
   },
   "e3_siwc_fetch_test_compatibility_20261118": {
     "evidence_class": "SOURCE_LOCAL_TEST_AND_GITHUB_READBACK",
-    "verified_at_utc": "2026-11-18T14:00:00Z",
+    "verified_at_utc": "2026-11-18T14:02:49Z",
     "source_commit": "36c6986b0ae4fabcae821230689686e68fbbf054",
     "source_file": "tests/siwc-responses-client.test.ts",
     "change": "test fetch stubs use an unknown intermediary cast to accept the extended global fetch type without changing runtime behavior",
@@ -884,6 +884,7 @@
     },
     "pr_state": "OPEN_DRAFT",
     "live_router_status": "NOT_CONNECTED_OR_VERIFIED",
-    "product_status": "INCOMPLETE"
+    "product_status": "INCOMPLETE",
+    "readback_status": "CURRENT_ENTRY_READ_FROM_GITHUB_AFTER_TESTS"
   }
 }
