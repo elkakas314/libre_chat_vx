@@ -70,7 +70,7 @@ finish() {
       "$EXPECTED_SHA" "$STARTED_AT" "$RESULT" "$status"
     cat "$METRICS"
   } | sed -E \
-    -e 's/(Bearer[[:space:]]+)[^[:space:]"'"']+/\1[REDACTED]/g' \
+    -e 's/(Bearer[[:space:]]+)[A-Za-z0-9._~+\/-]+/\1[REDACTED]/g' \
     -e 's/(github_pat_|gho_|ghp_)[A-Za-z0-9_]{8,}/[REDACTED]/g' \
     -e 's/(sk-[A-Za-z0-9_-]{8,})/[REDACTED]/g' >> "$LOG"
   rm -f "$METRICS"
@@ -102,7 +102,7 @@ run_step() {
   local label="$1"; shift
   echo "STEP_BEGIN $label" | tee -a "$LOG"
   if "$@" 2>&1 | sed -E \
-      -e 's/(Bearer[[:space:]]+)[^[:space:]"'"']+/\1[REDACTED]/g' \
+      -e 's/(Bearer[[:space:]]+)[A-Za-z0-9._~+\/-]+/\1[REDACTED]/g' \
       -e 's/(github_pat_|gho_|ghp_)[A-Za-z0-9_]{8,}/[REDACTED]/g' \
       -e 's/(sk-[A-Za-z0-9_-]{8,})/[REDACTED]/g' | tee -a "$LOG"; then
     echo "STEP_PASS $label" | tee -a "$LOG"
