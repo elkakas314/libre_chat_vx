@@ -153,6 +153,16 @@ test('system metrics return observed load, memory, disk; no fake VRAM proof',asy
   assert.equal(info.status,'READ_OK');
   assert.ok(info.cpuThreads>0);
   assert.ok(info.memoryTotalBytes>0);
+  assert.ok(info.memoryAvailableBytes===null||info.memoryAvailableBytes>=0);
+  assert.ok(info.swapTotalBytes===null||info.swapTotalBytes>=0);
+  assert.ok(info.swapFreeBytes===null||info.swapFreeBytes>=0);
+  if(process.platform==='linux'){
+    assert.ok(Number.isFinite(info.memoryAvailableBytes));
+    assert.ok(Number.isFinite(info.swapTotalBytes));
+    assert.ok(Number.isFinite(info.swapFreeBytes));
+  }
+  if(info.swapTotalBytes!==null&&info.swapFreeBytes!==null)
+    assert.ok(info.swapFreeBytes<=info.swapTotalBytes);
   assert.ok(info.diskTotalBytes>0);
   assert.equal(info.gpuVramBytesVerified,null);
   assert.equal(info.gpuMockIsHardwareProof,false);
