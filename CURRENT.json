@@ -1224,4 +1224,48 @@
     },
     "next": "Reconcile the dirty runtime bridge by an explicit reviewed three-way merge; do not apply/restart without the exact local grant."
   }
+,
+  "e3_interim_r0_resource_and_route_readback_20261118":   {
+    "evidence_class": "HOST_R0_RESOURCE_AND_SERVICE_READBACK_PLUS_SOURCE_STATUS",
+    "verified_at_utc": "2026-11-18T15:10:54Z",
+    "related_issue_comment": 6979493485,
+    "host": {
+      "identity": "elkakas314-Lenovo-Z50-70",
+      "cpu_psi_some_avg10_percent": 0.79,
+      "cpu_psi_full_avg10_percent": 0.0,
+      "load_average_1_5_15_min": [
+        0.35,
+        0.29,
+        0.43
+      ],
+      "mem_total_kb": 16267088,
+      "mem_available_kb": 9677464,
+      "memory_psi_some_avg10_percent": 0.0,
+      "memory_psi_full_avg10_percent": 0.0,
+      "swap_total_kb": 2097148,
+      "swap_free_kb": 2820
+    },
+    "runtime": {
+      "backend_service": "vx-backend.service",
+      "backend_state": "active",
+      "backend_main_pid": 503674,
+      "ollama_loaded_models": [],
+      "gpu_model": "NVIDIA GeForce 840M",
+      "gpu_bus": "0000:03:00.0",
+      "gpu_utilization_and_vram": "NOT_MEASURED_IN_THIS_SAMPLE"
+    },
+    "architecture": {
+      "decision_and_inference_router": "SOURCE_ONLY_NOT_BOUND_TO_NATIVE_AGENT_REQUEST",
+      "effective_remote_zero_cost_provider": "NOT_CONFIGURED_OR_VERIFIED",
+      "siwc": "NO_AUTHORIZED_LIVE_SESSION_EVIDENCE",
+      "local_qwen_inference": "SUSPENDED; NO_MODEL_LOADED"
+    },
+    "actions": {
+      "host_files_or_service_changed": false,
+      "inference_or_context_compaction_run": false,
+      "conversation_or_mcp_pass_claimed": false
+    },
+    "result": "NO_CURRENT_MEMORY_PRESSURE; SWAP_REMAINS_NEARLY_FULL; ROUTER_AND_REMOTE_CONVERSATION_NOT_LIVE_VERIFIED",
+    "next": "Use only an already authorized and verified zero-cost route or wait for official user OAuth consent; then perform one resource-bounded native conversation canary and read back MongoDB/backend. Do not increase local context or run long Qwen3 turns."
+  }
 }
