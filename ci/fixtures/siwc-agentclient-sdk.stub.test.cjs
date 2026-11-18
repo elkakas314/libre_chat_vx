@@ -1,6 +1,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const { ChatOpenAI } = require('@librechat/agents/llm/openai');
+const { HumanMessage, ToolMessage } = require('@langchain/core/messages');
 
 const siwcModule = process.env.NOSTROMO_SIWC_MODULE;
 if (!siwcModule) throw new Error('NOSTROMO_SIWC_MODULE_REQUIRED');
@@ -76,4 +77,76 @@ test('installed LibreChat Agents SDK streams through the SIWC user-bound Respons
   assert.equal(persistedAgent.model_parameters.temperature, 0.1);
   unregister();
   assert.equal(app.locals.nostromoSiwc, undefined);
+});
+
+test('native function tools are namespaced for SIWC, executed locally, and can return a final answer', async () => {
+  const route = {
+    kind: 'INFERENCE_ROUTE', lane: 'REMOTE_INFERENCE', profile: 'INVESTIGAR',
+    routeId: 'siwc:fixture-tools', provider: 'CHATGPT_OAUTH_PLAN', model: 'visible-model',
+    endpoint: 'openAI', nativeModel: 'visible-model', requiresGoalAgreement: false,
+    requiresReadbackBeforeResponse: false, authority: false,
+  };
+  const responses = [
+    'event: response.output_item.added\n' +
+      'data: {"type":"response.output_item.added","output_index":0,"item":{"id":"fc_1","type":"function_call","call_id":"call_1","name":"nostromo.nostromo_estado","arguments":"","status":"in_progress"}}\n\n' +
+      'event: response.function_call_arguments.delta\n' +
+      'data: {"type":"response.function_call_arguments.delta","item_id":"fc_1","output_index":0,"call_id":"call_1","delta":"{}"}\n\n' +
+      'event: response.output_item.done\n' +
+      'data: {"type":"response.output_item.done","output_index":0,"item":{"id":"fc_1","type":"function_call","call_id":"call_1","name":"nostromo.nostromo_estado","arguments":"{}","status":"completed"}}\n\n' +
+      'data: {"type":"response.completed","response":{"id":"resp_tool","status":"completed","output":[{"id":"fc_1","type":"function_call","call_id":"call_1","name":"nostromo.nostromo_estado","arguments":"{}","status":"completed"}]}}\n\n',
+    'data: {"type":"response.output_text.delta","delta":"NOSTROMO está operativo."}\n\n' +
+      'data: {"type":"response.completed","response":{"id":"resp_final","status":"completed","output":[]}}\n\n',
+  ];
+  const requests = [];
+  const transport = async (url, init) => {
+    requests.push({ url, init });
+    return new Response(responses.shift(), { headers: { 'content-type': 'text/event-stream' } });
+  };
+  const resolver = createSiwcAgentClientRunBindingResolver({
+    resolveRoute: async () => route,
+    resolveAccount: async (userId) => userId === 'librechat-user-fixture'
+      ? { record, visibleModels: [{ slug: 'visible-model', label: 'Visible model' }] }
+      : null,
+    transport, now: () => now,
+  });
+  const binding = await resolver.resolveAgentClientRunBinding({
+    authenticatedUserId: 'librechat-user-fixture', agent: { id: 'nostromo-fixture' },
+    conversationId: 'conversation-fixture', messages: ['Lee estado'],
+  });
+  assert.ok(binding);
+  const runAgent = createSiwcAgentClientRunAgent({
+    provider: 'ollama', model: 'qwen2.5:3b', model_parameters: {},
+  }, binding.route, binding.fetch);
+  const llm = new ChatOpenAI({ ...runAgent.model_parameters, model: runAgent.model });
+  const withTools = llm.bindTools([{
+    type: 'function', function: {
+      name: 'nostromo_estado', description: 'Read NOSTROMO state',
+      parameters: { type: 'object', properties: {}, additionalProperties: false },
+    },
+  }]);
+
+  const first = await withTools.invoke('Lee el estado de NOSTROMO.');
+  assert.equal(first.tool_calls.length, 1);
+  assert.equal(first.tool_calls[0].name, 'nostromo_estado');
+  assert.deepEqual(first.tool_calls[0].args, {});
+  const firstRequest = JSON.parse(requests[0].init.body);
+  assert.equal(firstRequest.tools.length, 1);
+  assert.equal(firstRequest.tools[0].type, 'namespace');
+  assert.equal(firstRequest.tools[0].name, 'nostromo');
+  assert.equal(firstRequest.tools[0].tools[0].name, 'nostromo_estado');
+  assert.equal(firstRequest.store, false);
+
+  // The native host executes the admitted R0 tool; this stub never touches the host.
+  const localResult = 'Estado sintético de prueba: servicios disponibles.';
+  const final = await withTools.invoke([
+    new HumanMessage('Lee el estado de NOSTROMO.'), first,
+    new ToolMessage({ content: localResult, tool_call_id: first.tool_calls[0].id }),
+  ]);
+  assert.equal(final.content[0]?.text ?? final.content, 'NOSTROMO está operativo.');
+  const secondRequest = JSON.parse(requests[1].init.body);
+  assert.ok(secondRequest.input.some((item) => item.type === 'function_call_output' &&
+    item.call_id === first.tool_calls[0].id && item.output === localResult));
+  assert.equal(secondRequest.store, false);
+  assert.equal(secondRequest.stream, true);
+  assert.equal(requests.length, 2);
 });

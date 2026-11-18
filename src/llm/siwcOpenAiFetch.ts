@@ -72,6 +72,112 @@ function assertAllowedBody(body:Record<string,unknown>,visibleModels:readonly {s
   }
 }
 
+/** The native Agents SDK emits ordinary function tools; SIWC accepts them in a namespace. */
+function toSiwcNamespace(body:Record<string,unknown>):{body:Record<string,unknown>;namespace?:string} {
+  if(!Array.isArray(body.tools)||body.tools.length===0)return {body};
+  const tools=body.tools as unknown[];
+  if(tools.some(tool=>tool&&typeof tool==='object'&&!Array.isArray(tool)&&
+    (tool as Record<string,unknown>).type==='function')){
+    if(tools.some(tool=>!tool||typeof tool!=='object'||Array.isArray(tool)||
+      (tool as Record<string,unknown>).type!=='function'))
+      throw Error('SIWC_TOOL_MIXED_FORMAT_REJECTED');
+    const functions=tools.map(tool=>{
+      const outer=tool as Record<string,unknown>;
+      const definition=outer.function;
+      const fn=definition&&typeof definition==='object'&&!Array.isArray(definition)
+        ?definition as Record<string,unknown>:outer;
+      if(typeof fn.name!=='string'||!/^[a-zA-Z0-9_-]{1,128}$/.test(fn.name)||
+        !fn.parameters||typeof fn.parameters!=='object'||Array.isArray(fn.parameters))
+        throw Error('SIWC_TOOL_DEFINITION_REJECTED');
+      return {type:'function',name:fn.name,
+        ...(typeof fn.description==='string'?{description:fn.description}:{}),
+        parameters:fn.parameters,
+        ...(typeof fn.strict==='boolean'?{strict:fn.strict}:{})};
+    });
+    const toolChoice=body.tool_choice;
+    const normalizedToolChoice=toolChoice&&typeof toolChoice==='object'&&!Array.isArray(toolChoice)
+      ?(()=>{
+        const choice=toolChoice as Record<string,unknown>;
+        if(choice.type!=='function'||typeof choice.name!=='string')
+          throw Error('SIWC_TOOL_CHOICE_REJECTED');
+        return {...choice,name:choice.name.startsWith('nostromo.')
+          ?choice.name:`nostromo.${choice.name}`};
+      })():toolChoice;
+    if(typeof toolChoice==='string'&&!['auto','none','required'].includes(toolChoice))
+      throw Error('SIWC_TOOL_CHOICE_REJECTED');
+    return {body:{...body,...(toolChoice===undefined?{}:{tool_choice:normalizedToolChoice}),tools:[{
+      type:'namespace',name:'nostromo',
+      description:'Functions provided by the local NOSTROMO agent. LibreChat executes calls under its configured permissions.',
+      tools:functions,
+    }]},namespace:'nostromo'};
+  }
+  return {body};
+}
+
+/** Restores the local tool name on streamed Responses events before LangChain sees them. */
+function localToolNames(response:Response,namespace:string):Response {
+  if(!response.body)return response;
+  const reader=response.body.getReader();
+  const decoder=new TextDecoder();
+  const encoder=new TextEncoder();
+  const headers=new Headers(response.headers);
+  headers.delete('content-length');
+  headers.delete('content-encoding');
+  headers.delete('etag');
+  let buffered='';
+  const rewrite=(line:string)=>{
+    if(!line.startsWith('data:'))return line;
+    const raw=line.slice(5).trimStart();
+    if(!raw||raw==='[DONE]')return line;
+    let event:unknown;
+    try{event=JSON.parse(raw);}catch{return line;}
+    if(!event||typeof event!=='object'||Array.isArray(event))return line;
+    const value=event as Record<string,unknown>;
+    const item=value.item;
+    if(item&&typeof item==='object'&&!Array.isArray(item)){
+      const record=item as Record<string,unknown>;
+      if(record.type==='function_call'&&typeof record.name==='string'&&
+        record.name.startsWith(namespace+'.'))record.name=record.name.slice(namespace.length+1);
+    }
+    if(value.response&&typeof value.response==='object'&&!Array.isArray(value.response)){
+      const result=value.response as Record<string,unknown>;
+      if(Array.isArray(result.output))for(const output of result.output){
+        if(!output||typeof output!=='object'||Array.isArray(output))continue;
+        const record=output as Record<string,unknown>;
+        if(record.type==='function_call'&&typeof record.name==='string'&&
+          record.name.startsWith(namespace+'.'))record.name=record.name.slice(namespace.length+1);
+      }
+    }
+    return `data: ${JSON.stringify(value)}`;
+  };
+  const stream=new ReadableStream<Uint8Array>({
+    async pull(controller){
+      try{
+        while(true){
+          const {done,value}=await reader.read();
+          if(done){
+            buffered+=decoder.decode();
+            if(buffered){
+              const lines=buffered.split('\n');
+              const tail=lines.pop()??'';
+              const output=lines.map(line=>rewrite(line)+'\n').join('')+(tail?rewrite(tail):'');
+              if(output)controller.enqueue(encoder.encode(output));
+              buffered='';
+            }
+            controller.close();return;
+          }
+          buffered+=decoder.decode(value,{stream:true});
+          if(buffered.length>8_000_000)throw Error('SIWC_STREAM_BUFFER_LIMIT');
+          const lines=buffered.split('\n');buffered=lines.pop()??'';
+          if(lines.length){controller.enqueue(encoder.encode(lines.map(line=>rewrite(line)+'\n').join('')));return;}
+        }
+      }catch(error){controller.error(error);}
+    },
+    async cancel(reason){await reader.cancel(reason).catch(()=>{});},
+  });
+  return new Response(stream,{status:response.status,statusText:response.statusText,headers});
+}
+
 /**
  * Fetch compatible with LangChain's OpenAI Responses transport. The access
  * token is resolved per request and injected only into the outbound header;
@@ -93,7 +199,8 @@ export function createSiwcOpenAiFetch(
     if(!account||siwcAccountPermission(account.record,now())!=='AUTHORIZED'||!account.record.accessToken)
       throw Error('SIWC_USER_CONSENT_REQUIRED');
     const body=await requestBody(input,init);
-    assertAllowedBody(body,account.visibleModels);
+    const normalized=toSiwcNamespace(body);
+    assertAllowedBody(normalized.body,account.visibleModels);
     const headers=new Headers(input instanceof Request?input.headers:undefined);
     new Headers(init.headers).forEach((value,key)=>headers.set(key,value));
     headers.delete('Authorization');
@@ -101,12 +208,13 @@ export function createSiwcOpenAiFetch(
     headers.set('Accept','text/event-stream');
     headers.set('Content-Type','application/json');
     const safeInit:RequestInit={...init,method:'POST',headers,redirect:'error',cache:'no-store',
-      body:JSON.stringify(body)};
+      body:JSON.stringify(normalized.body)};
     const grant={identity:account.record.identity,scopes:account.record.scopes,
       tokenExpiresAtMs:account.record.tokenExpiresAtMs,expectedClientId:account.record.clientId,
       pendingNonce:account.record.identity.expectedNonce,nowMs:now()};
     if(siwcGrantState(grant)!=='AUTHORIZED')throw Error('SIWC_GRANT_INVALID');
-    return transport(CHATGPT_RESPONSES,safeInit);
+    const response=await transport(CHATGPT_RESPONSES,safeInit);
+    return normalized.namespace?localToolNames(response,normalized.namespace):response;
   };
   return wrapped as typeof fetch;
 }
