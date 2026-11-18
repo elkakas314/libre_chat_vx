@@ -353,3 +353,14 @@ PRECEDENCE: this update supersedes older `PR26 DRAFT` or ChatGPT usage assumptio
 - **NEXT:** inspeccionar exclusivamente el delta del MCP activo frente a integración, preservar preimágenes y actualizar branch; canario conversación con dos llamadas MCP y Mongo/reconexión; nueva CI exact HEAD; readback y prueba de restore; revisión final antes de PR hacia main. Sin segundo Kernel/Router/Worker ni forced updates.
 
 **Estado:** `REMOTE_BRANCH_INTEGRATED=VERIFIED`; `HOST_CANONICAL_INSTALLATION=IN_PROGRESS_IN_OTHER_WORK`; `NOSTROMO_FULLY_FUNCTIONAL=NOT_VERIFIED`.
+
+
+## 2026-11-18 — E3 SIWC AgentClient registration source receipt
+
+- Branch `integration/nostromo-canon-20261118-r1`, current source candidate `05bc44b5544de5257323a590484577b21289e0c7` (read back locally/remotely; working tree was clean before this handoff update).
+- Added a typed registration contract for the existing per-user SIWC resolver at LibreChat `app.locals.nostromoSiwc`; duplicate registration fails closed and cleanup removes only its own resolver. SDK canary now tests registered resolver → authenticated user account lookup → synthetic Responses stream.
+- Local verification: TypeScript build PASS; SIWC connection/fetch tests 6/6 PASS; installed `@librechat/agents` SDK canary 1/1 PASS with synthetic transport; `git diff --check` PASS.
+- Exact-head CI `44388806391`: build-test, canary-self-test, Chromium source visual passed; native switchboard and pinned-upstream mount running; iOS queued at last readback. Native mock E2E `44388806438` pending. Do not report CI complete until exact final HEAD is read back.
+- This remains SOURCE only. The productive backend does not instantiate the SIWC service or register app.locals; no vault key, account consent or trusted live model/context readback is provisioned. No OAuth/live claim. Next source block: authenticated consent/session routes and safe server bootstrap; then owner consent and real conversation.
+- Fresh host R0 receipt in issue #37 comment [6990413061](https://github.com/elkakas314/libre_chat_vx/issues/37#issuecomment-6990413061): backend active, RAM pressure clear, swap nearly idle, HOST_CONTROL kernel authority false, no reboot performed. Existing Docker data, including `/home/elkakas314/LibreChat` mounts, remain preserve-only.
+- Durable GitHub receipts: SIWC [6990332390](https://github.com/elkakas314/libre_chat_vx/issues/37#issuecomment-6990332390); host/R0 [6990413061](https://github.com/elkakas314/libre_chat_vx/issues/37#issuecomment-6990413061).

@@ -1693,5 +1693,52 @@
     },
     "result": "AGENTCLIENT_RUN_BOUNDARY_PATCH_AND_USER_SCOPED_SIWC_RESOLVER_SOURCE_TESTED; RUNTIME_AND_OAUTH_ACTIVATION_PENDING",
     "next": "Run the patch only in ephemeral CI and compile the pinned API; then wire the authenticated SIWC account lifecycle and register the per-user resolver in server app locals before offering official consent."
+  },
+  "e3_siwc_agentclient_registration_source_20261118": {
+    "branch": "integration/nostromo-canon-20261118-r1",
+    "head": "05bc44b5544de5257323a590484577b21289e0c7",
+    "changes": [
+      "Export SiwcConnectionService and add registerAgentClient/registerSiwcAgentClientResolver for explicit, per-user resolver registration in LibreChat app.locals.",
+      "Reject a duplicate app.locals.nostromoSiwc registration; the disposer removes only the resolver it installed.",
+      "Extend the exact pinned-upstream SDK canary through app.locals registration, authenticated-user account resolution, Responses streaming, and owned unregister."
+    ],
+    "tests": {
+      "typescript_build": "PASS",
+      "siwc_connection_and_fetch_tests": "6/6 PASS",
+      "installed_agents_sdk_registered_resolver_canary": "1/1 PASS with synthetic transport; not LIVE",
+      "git_diff_check": "PASS"
+    },
+    "exact_head_ci": {
+      "run_id": 44388806391,
+      "head": "05bc44b5544de5257323a590484577b21289e0c7",
+      "build_test": "SUCCESS",
+      "canary_self_test": "SUCCESS",
+      "chromium_source_visual": "SUCCESS",
+      "native_switchboard": "IN_PROGRESS",
+      "pinned_upstream_native_mount": "IN_PROGRESS",
+      "ios_switchboard": "QUEUED"
+    },
+    "runtime": {
+      "backend": "ACTIVE; production upstream f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
+      "app_locals_resolver_registered": false,
+      "oauth_consent": "NOT_VERIFIED",
+      "live_siwc_chat": false,
+      "host_runtime_changed": false
+    },
+    "host_r0": {
+      "verified_at_utc": "2026-11-18T20:14:00Z",
+      "boot_id": "20599a28-a113-48cb-b174-b93dc1d1be43",
+      "kernel_authority": false,
+      "memory_available_kb": 9930720,
+      "swap_used_kb": 768,
+      "cpu_loadavg_1_5_15m": "0.70 0.67 1.01",
+      "cpu_psi_some_avg10_pct": 2.73,
+      "memory_psi_avg10_pct": 0,
+      "reboot_required_marker": "ABSENT_OR_UNREADABLE",
+      "reboot_performed": false
+    },
+    "receipt_issue_37": "https://github.com/elkakas314/libre_chat_vx/issues/37#issuecomment-6990332390",
+    "host_receipt_issue_37": "https://github.com/elkakas314/libre_chat_vx/issues/37#issuecomment-6990413061",
+    "next": "Complete server bootstrap and authenticated SIWC account/consent routes with a locally provisioned protected vault and trusted provider context; only then run owner consent and a real streamed/persisted chat."
   }
 }
