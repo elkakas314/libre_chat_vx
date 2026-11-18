@@ -946,5 +946,57 @@
     "interpretation": "No current evidence of active memory pressure or a sustained leak; one prior/current pair shows about 96 MiB lower MemAvailable, with high file cache. Swap remains almost full, but no interval delta for swap-in/out was measured. This is a snapshot comparison, not a leak test.",
     "host_change": "none; no install, restart, Mongo mutation, or model inference",
     "source_product_status": "hybrid router and native persistent memory remain unbound/unverified; product incomplete"
+  },
+  "e3_cloudflare_gateway_tool_contract_20261118": {
+    "evidence_class": "SOURCE_FOCUSED_TEST_AND_GITHUB_READBACK",
+    "verified_at_utc": "2026-11-18 14:20:30 UTC",
+    "source_head": "931020fe5d0fcbce3518805e825b7b2a1ec1843c",
+    "source_commit": "f4334d1c574dc5417f893e1ece7b5eec817b0e76",
+    "test_commit": "931020fe5d0fcbce3518805e825b7b2a1ec1843c",
+    "changed_files": [
+      "src/llm/cloudflareAiGateway.ts",
+      "tests/inference-gateway.test.ts"
+    ],
+    "change": "Cloudflare gateway client now preserves optional OpenAI-compatible function schemas, tool_choice, assistant tool_calls, and tool-result messages across a request.",
+    "test": {
+      "typescript": "5.9.3 focused compile PASS",
+      "node": "24.21.0",
+      "suite": "tests/inference-gateway.test.ts",
+      "passed": 12,
+      "failed": 0,
+      "scope": "SOURCE transport contract with stub HTTP; no provider/network inference"
+    },
+    "readback": {
+      "exact_pr_head": "931020fe5d0fcbce3518805e825b7b2a1ec1843c",
+      "draft": true,
+      "merged": false,
+      "source_blob": "0c01f984a33fcd5819519a703196eeb03bd22d4a",
+      "test_blob": "c3ea89b8c16a1f64badff5baf631a9dd93f43c28",
+      "ci_workflow_runs": []
+    },
+    "live": {
+      "cloudflare_gateway": "not configured or live-verified",
+      "native_agent_binding": "not implemented/verified",
+      "mcp_tool_call": "not exercised"
+    },
+    "post_test_resources": {
+      "mem_available_kb": 9555448,
+      "mem_total_kb": 16267088,
+      "swap_free_kb": 6932,
+      "swap_total_kb": 2097148,
+      "memory_psi_some_avg10_percent": 0,
+      "cpu_psi_some_avg10_percent": 0.89,
+      "loadavg_1m": 0.22,
+      "process_pss_kb": {
+        "backend_node": 27885,
+        "nostromo_mcp": 31287,
+        "ollama_daemon": 21914
+      },
+      "ollama_api_ps": "models=[]",
+      "gpu": "not measured"
+    },
+    "interpretation": "The short SOURCE test left no sign of active memory pressure; MemAvailable changed by about 17 MiB from the prior sample and swap free increased about 96 kB. No inference was run. Swap remains near full; no leak is established.",
+    "host_mutations": false,
+    "product_status": "INCOMPLETE"
   }
 }
