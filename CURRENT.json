@@ -2122,5 +2122,42 @@
       "Current exact-head GitHub Actions could not start job steps, so the new test has not run in CI."
     ],
     "next": "Run exact-head source and native visual CI when GitHub starts jobs; keep HUD LIVE and mobile gates open until real runtime/mobile evidence is available."
+  },
+  "e3_hud_test_resource_sample_20261118": {
+    "host": "elkakas314-Lenovo-Z50-70",
+    "service_readback": {
+      "unit": "vx-backend.service",
+      "state": "active/running",
+      "main_pid": 5074
+    },
+    "test": {
+      "name": "tentaculo-hud.test.js",
+      "pid": 168442,
+      "result": "12/12 PASS",
+      "elapsed_seconds": 0.165,
+      "runner_rss_peak_kb_observed": 48164,
+      "model_inference": false
+    },
+    "resource_samples": {
+      "before_utc": "2026-11-18T22:29:55Z",
+      "during_utc": "2026-11-18T22:29:56Z",
+      "after_utc": "2026-11-18T22:29:56Z",
+      "memory_total_kb": 16267092,
+      "mem_available_kb": {
+        "before": 9830908,
+        "during_min": 9807520,
+        "after": 9793532
+      },
+      "swap_total_kb": 2097148,
+      "swap_free_kb": 2096380,
+      "cpu_loadavg_1_5_15m": [1.1, 1.15, 1.02],
+      "cpu_psi_some_avg10_pct": 2.55,
+      "cpu_psi_full_avg10_pct": 0,
+      "memory_psi_some_avg10_pct": 0,
+      "memory_psi_full_avg10_pct": 0,
+      "gpu": "NVIDIA GeForce 840M, 4096 MiB total, 5 MiB used, 0% utilization",
+      "ollama_ps": "no model loaded"
+    },
+    "interpretation": "No memory pressure, swap churn, or GPU activity observed during this sub-second source test. MemAvailable moved about 36 MiB across the brief sample; one measurement cannot establish a leak or trend. No backend files or service state changed."
   }
 }
