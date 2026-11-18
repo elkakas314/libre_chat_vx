@@ -506,8 +506,24 @@
       "load_average_1m": 6.76
     },
     "cleanup": {
-      "bytes_reclaimed": 0,
-      "deletions": 0
+      "target": "/home/elkakas314/.npm/_cacache",
+      "classification": "REGENERABLE_NPM_CACHE_NO_ACTIVE_NPM_MUTATION",
+      "allocated_before": 2893242368,
+      "allocated_after": 0,
+      "filesystem": "/dev/sda2",
+      "used_before": 184000573440,
+      "used_after": 181107552256,
+      "available_before": 748820238336,
+      "available_after": 751713259520,
+      "bytes_reclaimed": 2893021184,
+      "deletions": 1,
+      "backend_http": 200,
+      "ollama_http": 200
+    },
+    "post_inference_resources": {
+      "MemAvailable_kb": 9603588,
+      "SwapFree_kb": 6156,
+      "llama_server_in_top5": false
     },
     "overall": "INCOMPLETE_NO_LIVE_MCP_PASS"
   }
