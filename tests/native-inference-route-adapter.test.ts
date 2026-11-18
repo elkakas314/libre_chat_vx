@@ -93,9 +93,9 @@ test('ChatGPT plan routes require explicit consent and remain distinct from zero
   }
 });
 
-test('tool turns require provider tool capability and reserve completion tokens in context admission', () => {
+test('explicit tool turns require provider tool capability and reserve completion tokens in context admission', () => {
   const noTools = makeRoute({ profile: 'INVESTIGAR', capabilities: ['TEXT'] });
-  const noToolResult = resolveNativeInferenceRoute(input([noTools], { toolCallingRequired: true }));
+  const noToolResult = resolveNativeInferenceRoute(input([noTools], { turnNeedsToolExecution: true }));
   assert.equal(noToolResult.kind, 'NO_ADMITTED_ROUTE');
   if (noToolResult.kind === 'NO_ADMITTED_ROUTE') {
     assert.ok(noToolResult.admissions[0]?.reasons.includes('CAPABILITY_TOOLS_MISSING'));
@@ -103,7 +103,7 @@ test('tool turns require provider tool capability and reserve completion tokens 
 
   const tools = makeRoute({ profile: 'INVESTIGAR', capabilities: ['TEXT', 'STRUCTURED_OUTPUT', 'TOOLS'] });
   const tooSmall = resolveNativeInferenceRoute(input([tools], {
-    toolCallingRequired: true,
+    turnNeedsToolExecution: true,
     estimatedInputTokens: 7500,
     reservedOutputTokens: 1000,
   }));
@@ -111,6 +111,16 @@ test('tool turns require provider tool capability and reserve completion tokens 
   if (tooSmall.kind === 'NO_ADMITTED_ROUTE') {
     assert.ok(tooSmall.admissions[0]?.reasons.includes('CONTEXT_FIT_FAILED'));
   }
+});
+
+test('an ordinary turn without tool execution intent remains on the fast text route', () => {
+  const textOnly = makeRoute({ profile: 'RAPIDO', capabilities: ['TEXT'] });
+  const greeting = resolveNativeInferenceRoute(input([textOnly], {
+    intentSignals: {},
+    turnNeedsToolExecution: false,
+  }));
+  assert.equal(greeting.kind, 'INFERENCE_ROUTE');
+  if (greeting.kind === 'INFERENCE_ROUTE') assert.equal(greeting.profile, 'RAPIDO');
 });
 
 test('local model is selected only by explicit simple-chat preference and never for tool turns', () => {
@@ -123,7 +133,7 @@ test('local model is selected only by explicit simple-chat preference and never 
 
   const toolTurn = resolveNativeInferenceRoute(input([local], {
     decisionHints: { preferLocalVoice: true },
-    toolCallingRequired: true,
+    turnNeedsToolExecution: true,
   }));
   assert.equal(toolTurn.kind, 'NO_ADMITTED_ROUTE');
 });

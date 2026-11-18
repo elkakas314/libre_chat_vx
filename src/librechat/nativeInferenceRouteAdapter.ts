@@ -29,8 +29,8 @@ export interface NativeInferenceRouteInput {
   /** Measured input budget plus an explicit completion reserve. */
   estimatedInputTokens: number;
   reservedOutputTokens: number;
-  /** True when the current native agent turn has selected tools. */
-  toolCallingRequired?: boolean;
+  /** True only when this user turn requires tool execution; catalog availability is not intent. */
+  turnNeedsToolExecution?: boolean;
   nowMs?: number;
 }
 
@@ -96,16 +96,16 @@ export function resolveNativeInferenceRoute(
     };
   }
 
-  const toolCallingRequired = input.toolCallingRequired === true;
+  const turnNeedsToolExecution = input.turnNeedsToolExecution === true;
   const inferenceSignals: InferenceIntentSignals = {
     ...decision.inferenceSignals,
-    needsResearch: decision.inferenceSignals.needsResearch || toolCallingRequired,
-    preferFast: decision.inferenceSignals.preferFast && !toolCallingRequired,
+    needsResearch: decision.inferenceSignals.needsResearch || turnNeedsToolExecution,
+    preferFast: decision.inferenceSignals.preferFast && !turnNeedsToolExecution,
   };
   const turnSignals = {
     ...decision.hybridTurn,
-    needsResearch: decision.hybridTurn.needsResearch || toolCallingRequired,
-    preferLocalVoice: decision.hybridTurn.preferLocalVoice && !toolCallingRequired,
+    needsResearch: decision.hybridTurn.needsResearch || turnNeedsToolExecution,
+    preferLocalVoice: decision.hybridTurn.preferLocalVoice && !turnNeedsToolExecution,
   };
   const profile = gateway.selectProfile(inferenceSignals);
   const selectedLane = chooseHybridLane(turnSignals);
