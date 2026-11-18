@@ -19,6 +19,23 @@ test('M4 native bridge mounts the existing Hub/HUD only as SOURCE context',()=>{
  assert.doesNotMatch(bridge,/\b(?:fetch|WebSocket|EventSource|execFile|spawn)\s*\(/);
 });
 
+test('M4 phone module remains connected as an honest SOURCE-only view',()=>{
+ const bridge=read('overlay/upstream/VXCockpitBridge.tsx');
+ const phone=read('src/mobile/phoneModule.ts');
+ assert.match(bridge,/PhoneModuleView/);
+ assert.match(bridge,/phone\s*\?\?\s*createPhoneModuleSnapshot\(\)/);
+ assert.match(phone,/if\(!observation\)return[\s\S]*sourceOnly:true/);
+ assert.match(phone,/iosRemoteControlAvailable:false/);
+});
+
+test('M4 merged cabin styling keeps activity, hub keyboard focus, and mobile rules',()=>{
+ const css=read('overlay/upstream/VXCockpit.css');
+ assert.match(css,/\.vx-live-activity-grid>div/);
+ assert.match(css,/\.vx-hub-branch>summary:focus-visible/);
+ assert.match(css,/\.vx-hub-branch>\.vx-hub-children/);
+ assert.match(css,/@media\(max-width:390px\)/);
+});
+
 test('M4 neutral labels and offline text do not assert an installed agent/MCP',()=>{
  const bridge=read('overlay/upstream/VXCockpitBridge.tsx');
  assert.match(bridge,/El contexto de conversación aparece arriba/);

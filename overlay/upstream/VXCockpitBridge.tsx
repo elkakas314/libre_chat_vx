@@ -57,10 +57,10 @@ export default function VXCockpitBridge({ onClose, activity: activityInput, phon
       <div className="vx-context-body">
         <div className="vx-context-intro-block">
           <span className="vx-context-mark" aria-hidden="true">◇</span>
-          <p className="vx-context-overline">CONEXIONES BAJO CONTROL</p>
-          <h3>Todo conectado, cuando esté listo.</h3>
+          <p className="vx-context-overline">ACTIVIDAD DE LA CONVERSACIÓN</p>
+          <h3>El contexto de conversación aparece arriba</h3>
           <p className="vx-context-intro">
-            Consulta el inventario desde tu conversación. El estado LIVE requiere una lectura autenticada.
+            La cabina resume los mensajes cargados y si el resultado de sus herramientas quedó guardado. La ejecución chat→MCP sigue sin verificarse.
           </p>
         </div>
 
@@ -110,7 +110,7 @@ export default function VXCockpitBridge({ onClose, activity: activityInput, phon
           <div className="vx-autonomy-topline">
             <span className="vx-autonomy-label"><span className="vx-autonomy-beacon" aria-hidden="true"/> NOSTROMO · AUTÓNOMO</span>
             <span className="vx-autonomy-stage">
-              {activity.toolCallCount > 0 ? 'LLAMADAS REGISTRADAS EN EL CHAT' : 'SIN LLAMADAS REGISTRADAS EN ESTE CHAT'}
+              {activity.toolCallCount > 0 ? 'LLAMADAS REGISTRADAS · CHAT→MCP NO VERIFICADO' : 'CHAT→MCP NO VERIFICADO'}
             </span>
           </div>
           <div className="vx-autonomy-main">
