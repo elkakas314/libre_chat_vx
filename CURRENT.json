@@ -1931,7 +1931,8 @@
     },
     "host_control": {
       "host": "elkakas314-Lenovo-Z50-70",
-      "kernel_authority": false
+      "kernel_authority": false,
+      "material_grant_status": "NOT_READABLE_IN_AVAILABLE_R0_SURFACE; no exact grant_id was supplied to any mutation tool. kernel_authority=false is a separate fact and does not prove absence of a path-specific R2 grant."
     },
     "runtime_upstream": {
       "path": "/home/elkakas314/librechat/upstream",
@@ -1971,7 +1972,7 @@
       ]
     },
     "change": "No host files/services changed. Exact host hashes show the deployed AgentClient base is eligible for the existing guarded patch, but the package it would require is stale/incomplete and its bootstrap has no route-readback source.",
-    "next": "Package sync needs a narrow backup+CAS stage; broad reconcile remains blocked by VXCockpitBridge out-of-sync. AgentClient and route bootstrap patches also remain unapplied, route-input readback callback/UI consent unavailable. Request exact HOST_CONTROL write+service-restart grant only after candidate and preimages are ready.",
+    "next": "Prepare exact per-file backup/CAS package sync and route-readback source. Query/obtain a target-specific HOST_CONTROL R2 grant through its legitimate local mechanism before any host writes or service restart; do not infer that grant state from kernel_authority.",
     "targeted_build_candidate": {
       "path": "/tmp/nostromo-siwc-candidate-bbf55b5",
       "built_from": "current canonical branch SIWC/router source",
