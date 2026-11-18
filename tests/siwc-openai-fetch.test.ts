@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {bindSiwcRouteToAgentClient,createSiwcAgentClientRunAgent,createSiwcOpenAiFetch} from '../src/llm/siwcOpenAiFetch';
+import {bindSiwcRouteToAgentClient,createSiwcAgentClientRunAgent,createSiwcAgentClientRunBindingResolver,createSiwcOpenAiFetch} from '../src/llm/siwcOpenAiFetch';
 import type {SiwcAccountCredentials} from '../src/llm/siwcSession';
 
 const now=1_800_000_000_000;
@@ -17,6 +17,33 @@ const allowedBody={model:'visible-model',store:false,stream:true,input:[
   {type:'message',role:'developer',content:'Responde en español.'},
   {type:'message',role:'user',content:'Hola'},
 ]};
+const route={kind:'INFERENCE_ROUTE' as const,lane:'REMOTE_INFERENCE' as const,
+  profile:'NORMAL' as const,routeId:'siwc:fixture',provider:'CHATGPT_OAUTH_PLAN',
+  model:'visible-model',endpoint:'openAI',nativeModel:'visible-model',
+  requiresGoalAgreement:false,requiresReadbackBeforeResponse:false,authority:false as const};
+
+test('native AgentClient resolver binds only a fresh account-visible SIWC route for the authenticated user',async()=>{
+  let accountReads=0,routeReads=0,readUser='';
+  const resolver=createSiwcAgentClientRunBindingResolver({
+    resolveRoute:async()=>{routeReads++;return route;},
+    resolveAccount:async(userId)=>{accountReads++;readUser=userId;return account;},
+    now:()=>now,
+  });
+  const context={authenticatedUserId:'librechat-user-fixture',agentId:'nostromo-agent',
+    agent:{id:'nostromo-agent'},conversationId:'conversation-fixture',messages:[]};
+  const binding=await resolver.resolveAgentClientRunBinding(context);
+  assert.equal(binding?.route,route);
+  assert.equal(typeof binding?.fetch,'function');
+  assert.equal(readUser,context.authenticatedUserId);
+  assert.equal(accountReads,1);
+  assert.equal(routeReads,1);
+  const denied=createSiwcAgentClientRunBindingResolver({
+    resolveRoute:async()=>route,
+    resolveAccount:async()=>({...account,visibleModels:[{slug:'different-model',label:'Different'}]}),
+    now:()=>now,
+  });
+  assert.equal(await denied.resolveAgentClientRunBinding(context),null);
+});
 
 test('SIWC Responses fetch injects a user-consented bearer and preserves native SSE transport',async()=>{
   let captured:{url:unknown;init?:RequestInit}|undefined;
@@ -48,11 +75,7 @@ test('SIWC Responses fetch injects a user-consented bearer and preserves native 
 
 test('AgentClient binding is ephemeral, route-bound, and contains no OAuth credentials',()=>{
   const fetchSiwc=createSiwcOpenAiFetch('librechat-user-fixture',async()=>account);
-  const binding=bindSiwcRouteToAgentClient({
-    kind:'INFERENCE_ROUTE',lane:'REMOTE_INFERENCE',profile:'NORMAL',routeId:'siwc:fixture',
-    provider:'CHATGPT_OAUTH_PLAN',model:'visible-model',endpoint:'openAI',nativeModel:'visible-model',
-    requiresGoalAgreement:false,requiresReadbackBeforeResponse:false,authority:false,
-  },fetchSiwc);
+  const binding=bindSiwcRouteToAgentClient(route,fetchSiwc);
   assert.equal(binding.provider,'openAI');
   assert.equal(binding.model,'visible-model');
   assert.equal(binding.model_parameters.useResponsesApi,true);
@@ -63,11 +86,7 @@ test('AgentClient binding is ephemeral, route-bound, and contains no OAuth crede
   const persistedAgent={id:'nostromo-agent',provider:'ollama',model:'qwen3:4b',
     instructions:'Identidad persistente NOSTROMO',toolDefinitions:[{name:'nostromo_estado'}],
     model_parameters:{model:'qwen3:4b',temperature:0.2}};
-  const runAgent=createSiwcAgentClientRunAgent(persistedAgent,{
-    kind:'INFERENCE_ROUTE',lane:'REMOTE_INFERENCE',profile:'NORMAL',routeId:'siwc:fixture',
-    provider:'CHATGPT_OAUTH_PLAN',model:'visible-model',endpoint:'openAI',nativeModel:'visible-model',
-    requiresGoalAgreement:false,requiresReadbackBeforeResponse:false,authority:false,
-  },fetchSiwc);
+  const runAgent=createSiwcAgentClientRunAgent(persistedAgent,route,fetchSiwc);
   assert.equal(runAgent.id,persistedAgent.id);
   assert.equal(runAgent.instructions,persistedAgent.instructions);
   assert.deepEqual(runAgent.toolDefinitions,persistedAgent.toolDefinitions);

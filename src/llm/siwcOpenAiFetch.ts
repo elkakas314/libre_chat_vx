@@ -8,6 +8,20 @@ export interface SiwcFetchAccount {
   visibleModels:readonly {slug:string;label:string}[];
 }
 
+export interface SiwcAgentClientRunContext {
+  authenticatedUserId:string;
+  agentId?:string;
+  agent:unknown;
+  conversationId?:string;
+  messages:unknown;
+}
+
+export interface SiwcAgentClientRunBindingResolver {
+  resolveAgentClientRunBinding(
+    context:SiwcAgentClientRunContext,
+  ):Promise<{route:NativeInferenceRouteResult;fetch:typeof fetch}|null>;
+}
+
 const rejectedFields=new Set([
   'background','conversation','max_output_tokens','max_tool_calls','metadata','moderation',
   'multi_agent','prompt','prompt_cache_retention','safety_identifier','temperature',
@@ -95,6 +109,32 @@ export function createSiwcOpenAiFetch(
     return transport(CHATGPT_RESPONSES,safeInit);
   };
   return wrapped as typeof fetch;
+}
+
+/** Builds the resolver consumed by the guarded pinned AgentClient callsite. */
+export function createSiwcAgentClientRunBindingResolver(dependencies:{
+  resolveRoute:(context:SiwcAgentClientRunContext)=>Promise<NativeInferenceRouteResult>;
+  resolveAccount:(userId:string)=>Promise<SiwcFetchAccount|null>;
+  transport?:typeof fetch;
+  now?:()=>number;
+}):SiwcAgentClientRunBindingResolver {
+  return {
+    async resolveAgentClientRunBinding(context) {
+      if(!context.authenticatedUserId)throw Error('SIWC_AUTHENTICATED_USER_REQUIRED');
+      const route=await dependencies.resolveRoute(context);
+      if(route.kind!=='INFERENCE_ROUTE'||route.provider!=='CHATGPT_OAUTH_PLAN'||
+        route.endpoint!=='openAI'||!route.nativeModel)return null;
+      const account=await dependencies.resolveAccount(context.authenticatedUserId);
+      const now=(dependencies.now??(()=>Date.now()))();
+      if(!account||siwcAccountPermission(account.record,now)!=='AUTHORIZED'||
+        !account.visibleModels.some(model=>model.slug===route.nativeModel))return null;
+      return {
+        route,
+        fetch:createSiwcOpenAiFetch(context.authenticatedUserId,
+          dependencies.resolveAccount,dependencies.transport??fetch,dependencies.now),
+      };
+    },
+  };
 }
 
 /** Minimal ephemeral model binding consumed by LibreChat's existing AgentClient/Agents SDK. */

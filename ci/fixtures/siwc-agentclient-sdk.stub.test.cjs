@@ -4,7 +4,7 @@ const { ChatOpenAI } = require('@librechat/agents/llm/openai');
 
 const siwcModule = process.env.NOSTROMO_SIWC_MODULE;
 if (!siwcModule) throw new Error('NOSTROMO_SIWC_MODULE_REQUIRED');
-const { createSiwcAgentClientRunAgent, createSiwcOpenAiFetch } = require(siwcModule);
+const { createSiwcAgentClientRunAgent, createSiwcAgentClientRunBindingResolver } = require(siwcModule);
 const now = 1_800_000_000_000;
 const record = {
   clientId: 'oaiapp_fixture', hostId: 'urn:uuid:11111111-2222-4333-8444-555555555555',
@@ -27,25 +27,33 @@ test('installed LibreChat Agents SDK streams through the SIWC user-bound Respons
     );
   };
   let resolvedUserId;
-  const fetchSiwc = createSiwcOpenAiFetch('librechat-user-fixture', async (userId) => {
-    resolvedUserId = userId;
-    return userId === 'librechat-user-fixture'
-      ? { record, visibleModels: [{ slug: 'visible-model', label: 'Visible model' }] }
-      : null;
-  }, transport, () => now);
-  const persistedAgent = {
-    id: 'nostromo-fixture', provider: 'ollama', model: 'qwen2.5:3b',
-    instructions: 'Identidad persistente NOSTROMO',
-    toolDefinitions: [{ name: 'nostromo_estado' }],
-    model_parameters: { model: 'qwen2.5:3b', temperature: 0.1 },
-  };
   const route = {
     kind: 'INFERENCE_ROUTE', lane: 'REMOTE_INFERENCE', profile: 'NORMAL',
     routeId: 'siwc:fixture', provider: 'CHATGPT_OAUTH_PLAN', model: 'visible-model',
     endpoint: 'openAI', nativeModel: 'visible-model', requiresGoalAgreement: false,
     requiresReadbackBeforeResponse: false, authority: false,
   };
-  const runAgent = createSiwcAgentClientRunAgent(persistedAgent, route, fetchSiwc);
+  const resolver = createSiwcAgentClientRunBindingResolver({
+    resolveRoute: async () => route,
+    resolveAccount: async (userId) => {
+    resolvedUserId = userId;
+    return userId === 'librechat-user-fixture'
+      ? { record, visibleModels: [{ slug: 'visible-model', label: 'Visible model' }] }
+      : null;
+    }, transport, now: () => now,
+  });
+  const persistedAgent = {
+    id: 'nostromo-fixture', provider: 'ollama', model: 'qwen2.5:3b',
+    instructions: 'Identidad persistente NOSTROMO',
+    toolDefinitions: [{ name: 'nostromo_estado' }],
+    model_parameters: { model: 'qwen2.5:3b', temperature: 0.1 },
+  };
+  const binding = await resolver.resolveAgentClientRunBinding({
+    authenticatedUserId: 'librechat-user-fixture', agentId: persistedAgent.id,
+    agent: persistedAgent, conversationId: 'conversation-fixture', messages: ['Hola'],
+  });
+  assert.ok(binding);
+  const runAgent = createSiwcAgentClientRunAgent(persistedAgent, binding.route, binding.fetch);
   const llm = new ChatOpenAI({ ...runAgent.model_parameters, model: runAgent.model });
   const chunks = [];
   for await (const chunk of await llm.stream('Hola')) chunks.push(chunk.content);
