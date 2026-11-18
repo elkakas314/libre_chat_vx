@@ -1173,7 +1173,7 @@
       "cpu_psi_full_avg10_percent": 0,
       "loadavg": [
         0.96,
-        1.0,
+        1,
         0.82
       ],
       "vmstat_sample_swap_in_pages": 0,
@@ -1241,7 +1241,7 @@
     "host": {
       "identity": "elkakas314-Lenovo-Z50-70",
       "cpu_psi_some_avg10_percent": 0.79,
-      "cpu_psi_full_avg10_percent": 0.0,
+      "cpu_psi_full_avg10_percent": 0,
       "load_average_1_5_15_min": [
         0.35,
         0.29,
@@ -1249,8 +1249,8 @@
       ],
       "mem_total_kb": 16267088,
       "mem_available_kb": 9677464,
-      "memory_psi_some_avg10_percent": 0.0,
-      "memory_psi_full_avg10_percent": 0.0,
+      "memory_psi_some_avg10_percent": 0,
+      "memory_psi_full_avg10_percent": 0,
       "swap_total_kb": 2097148,
       "swap_free_kb": 2820
     },
@@ -1421,8 +1421,8 @@
       "mem_available_kb": 9534204,
       "swap_free_kb": 436,
       "cpu_psi_some_avg10_percent": 3.88,
-      "memory_psi_some_avg10_percent": 0.0,
-      "memory_psi_full_avg10_percent": 0.0,
+      "memory_psi_some_avg10_percent": 0,
+      "memory_psi_full_avg10_percent": 0,
       "vmstat_one_second_sample": {
         "swap_in_pages": 0,
         "swap_out_pages": 0,
@@ -1758,15 +1758,21 @@
       "git_diff_check": "PASS"
     },
     "exact_head_ci": {
-      "run_id": 44402101356,
-      "head": "79f86edcc6abb57547b4c338aaf3ab851e4d84b2",
-      "status": "IN_PROGRESS"
+      "run_id": 44402560742,
+      "head": "7a9b1d52b0f6a595659be11d1105f95850b1dea3",
+      "conclusion": "FAILURE_BLOCKED_BEFORE_JOB_START",
+      "affected_runs": [
+        44402560742,
+        44402560884
+      ],
+      "reason": "GitHub Actions annotation: recent account payments failed or spending limit needs increase; no jobs/steps started.",
+      "source_commit_under_test": "79f86edcc6abb57547b4c338aaf3ab851e4d84b2"
     },
     "pull_request": {
       "number": 54,
       "state": "OPEN",
       "draft": true,
-      "head": "79f86edcc6abb57547b4c338aaf3ab851e4d84b2"
+      "head": "7a9b1d52b0f6a595659be11d1105f95850b1dea3"
     },
     "host_readback": {
       "verified_at_utc": "2026-11-18T21:31:49Z",
@@ -1782,7 +1788,7 @@
       "live_chat": false,
       "live_mcp": false
     },
-    "result": "SIWC_REFRESH_ROTATION_SOURCE_RECOVERABLE; NATIVE_ROUTE_READBACK_AND_HOST_ACTIVATION_PENDING",
+    "result": "SIWC_REFRESH_ROTATION_SOURCE_TESTED; EXACT_HEAD_CI_BLOCKED_BY_GITHUB_ACCOUNT_BILLING; HOST_ACTIVATION_PENDING",
     "next": "Implement the authenticated native route-readback callback using verified effective provider/model context and quota evidence; do not infer capabilities/context from model names or the /v1/models catalogue. Reboot remains blocked by absent HOST_CONTROL kernel authority."
   }
 }
