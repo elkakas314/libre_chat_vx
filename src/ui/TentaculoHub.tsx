@@ -4,6 +4,7 @@ import {
   type HubItem,
 } from '../hud/tentaculoHud';
 import type {NostromoHubSnapshot} from '../hud/nostromoHub';
+import {SiwcConnectionControl} from './SiwcConnectionControl';
 
 function HubNode({item,children,depth=0}:{
   item:HubItem;
@@ -76,6 +77,7 @@ export function TentaculoHub({snapshot}:{
           </ul>
         </section>
       </div>
+      <SiwcConnectionControl />
       <footer className="vx-hub-footer" role="note">
         <span className="vx-hub-state-dot" aria-hidden="true" />
         MCP sin vínculo LIVE verificado · ChatGPT sin sesión OAuth verificada · sin permisos desde este panel

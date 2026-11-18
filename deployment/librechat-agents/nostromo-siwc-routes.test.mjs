@@ -12,6 +12,7 @@ assert.equal(execFileSync('git',['-C',root,'rev-parse','HEAD'],{encoding:'utf8'}
 const routesIndex=readFileSync(resolve(root,TARGETS.routesIndex),'utf8');
 const serverIndex=readFileSync(resolve(root,TARGETS.serverIndex),'utf8');
 const routeModule=readFileSync(new URL('./nostromo-siwc-route.cjs',import.meta.url),'utf8');
+const bootstrapModule=readFileSync(new URL('./nostromo-siwc-bootstrap.cjs',import.meta.url),'utf8');
 
 test('pinned upstream mounts the authenticated SIWC router once and is rollback-verifiable',()=>{
   const patchedRoutes=patchRoutesIndex(routesIndex);
@@ -19,11 +20,12 @@ test('pinned upstream mounts the authenticated SIWC router once and is rollback-
   assert.match(patchedRoutes,/nostromo-siwc/);
   assert.match(patchedRoutes,/SIWC_ROUTE_MOUNT_V1/);
   assert.match(patchedServer,/app\.use\('\/api\/nostromo\/siwc', routes\.siwc\)/);
+  assert.match(patchedServer,/initializeNostromoSiwc\(app\)/);
   assert.equal(patchRoutesIndex(patchedRoutes),patchedRoutes);
   assert.equal(patchServerIndex(patchedServer),patchedServer);
   const restored=rollbackSiwcRoutes({routesIndex:patchedRoutes,serverIndex:patchedServer},
-    {routesIndex,serverIndex},routeModule);
-  assert.deepEqual(restored,{routesIndex,serverIndex,routeModule:null});
+    {routesIndex,serverIndex},routeModule,bootstrapModule);
+  assert.deepEqual(restored,{routesIndex,serverIndex,routeModule:null,bootstrapModule:null});
 });
 
 test('upstream route patch fails closed on drift and cannot stage outside disposable CI',()=>{

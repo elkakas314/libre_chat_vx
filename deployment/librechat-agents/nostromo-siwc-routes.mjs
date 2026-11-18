@@ -10,6 +10,7 @@ export const TARGETS={
   routesIndex:'api/server/routes/index.js',
   serverIndex:'api/server/index.js',
   routeModule:'api/server/routes/nostromo-siwc.js',
+  bootstrapModule:'api/server/nostromo-siwc-bootstrap.cjs',
 };
 export const BASE_SHA256={
   routesIndex:'b003cefcb1c7f00b711e3febc45ce493f9282aa56c33dee3f43d9be1a1f6effa',
@@ -34,19 +35,25 @@ export function patchRoutesIndex(source){
 export function patchServerIndex(source){
   if(source.includes(marker))return source;
   if(sha(source)!==BASE_SHA256.serverIndex)throw Error('SIWC_SERVER_INDEX_SOURCE_MISMATCH');
-  const anchor="  app.use('/api/mcp', routes.mcp);";
-  if(source.split(anchor).length!==2)throw Error('SIWC_SERVER_INDEX_CONTEXT_MISMATCH');
-  return source.replace(anchor,`${anchor}\n  // ${marker}\n  app.use('/api/nostromo/siwc', routes.siwc);`);
+  const importAnchor='const app = express();';
+  const registerAnchor='app.locals.codeApiUploadRegistry = createCodeApiUploadRegistry();';
+  if(source.split(importAnchor).length!==2||source.split(registerAnchor).length!==2)
+    throw Error('SIWC_SERVER_INDEX_CONTEXT_MISMATCH');
+  return source.replace(importAnchor,`${importAnchor}\n// ${marker}\nconst { initializeNostromoSiwc } = require('./nostromo-siwc-bootstrap.cjs');`)
+    .replace(registerAnchor,`${registerAnchor}\n// ${marker}\ninitializeNostromoSiwc(app);`)
+    .replace("  app.use('/api/mcp', routes.mcp);",
+      "  app.use('/api/mcp', routes.mcp);\n  // ${marker}\n  app.use('/api/nostromo/siwc', routes.siwc);");
 }
 
-export function rollbackSiwcRoutes(current,preimages,routeModule){
+export function rollbackSiwcRoutes(current,preimages,routeModule,bootstrapModule){
   if(!preimages||sha(preimages.routesIndex)!==BASE_SHA256.routesIndex||
     sha(preimages.serverIndex)!==BASE_SHA256.serverIndex||
     current.routesIndex!==patchRoutesIndex(preimages.routesIndex)||
     current.serverIndex!==patchServerIndex(preimages.serverIndex)||
-    routeModule!==readFileSync(resolve(here,'nostromo-siwc-route.cjs'),'utf8'))
+    routeModule!==readFileSync(resolve(here,'nostromo-siwc-route.cjs'),'utf8')||
+    bootstrapModule!==readFileSync(resolve(here,'nostromo-siwc-bootstrap.cjs'),'utf8'))
     throw Error('SIWC_ROUTES_ROLLBACK_READBACK_MISMATCH');
-  return {...preimages,routeModule:null};
+  return {...preimages,routeModule:null,bootstrapModule:null};
 }
 
 function stage(upstreamRoot){
@@ -55,10 +62,12 @@ function stage(upstreamRoot){
   const head=execFileSync('git',['-C',root,'rev-parse','HEAD'],{encoding:'utf8'}).trim();
   if(head!==PINNED_UPSTREAM)throw Error('SIWC_ROUTES_UPSTREAM_MISMATCH');
   const files=Object.fromEntries(Object.entries(TARGETS).map(([key,rel])=>[key,resolve(root,rel)]));
-  if(existsSync(files.routeModule))throw Error('SIWC_ROUTES_TARGET_ALREADY_EXISTS');
+  if(existsSync(files.routeModule)||existsSync(files.bootstrapModule))
+    throw Error('SIWC_ROUTES_TARGET_ALREADY_EXISTS');
   const before={routesIndex:readFileSync(files.routesIndex,'utf8'),serverIndex:readFileSync(files.serverIndex,'utf8')};
   const after={routesIndex:patchRoutesIndex(before.routesIndex),serverIndex:patchServerIndex(before.serverIndex)};
   const routeModule=readFileSync(resolve(here,'nostromo-siwc-route.cjs'),'utf8');
+  const bootstrapModule=readFileSync(resolve(here,'nostromo-siwc-bootstrap.cjs'),'utf8');
   const backupSuffix='.nostromo-siwc-routes-preimage';
   const staged=[];
   try{
@@ -72,16 +81,20 @@ function stage(upstreamRoot){
       staged.push(key);
     }
     writeFileSync(files.routeModule,routeModule,{mode:0o644,flag:'wx'});
+    writeFileSync(files.bootstrapModule,bootstrapModule,{mode:0o644,flag:'wx'});
     for(const key of ['routesIndex','serverIndex'])
       if(sha(readFileSync(`${files[key]}${backupSuffix}`,'utf8'))!==BASE_SHA256[key]||
         readFileSync(files[key],'utf8')!==after[key])throw Error('SIWC_ROUTES_READBACK_FAILED');
     if(readFileSync(files.routeModule,'utf8')!==routeModule)throw Error('SIWC_ROUTE_MODULE_READBACK_FAILED');
+    if(readFileSync(files.bootstrapModule,'utf8')!==bootstrapModule)
+      throw Error('SIWC_BOOTSTRAP_MODULE_READBACK_FAILED');
   }catch(error){
     for(const key of staged.reverse()){
       const backup=`${files[key]}${backupSuffix}`;
       if(existsSync(backup))renameSync(backup,files[key]);
     }
     if(existsSync(files.routeModule))unlinkSync(files.routeModule);
+    if(existsSync(files.bootstrapModule))unlinkSync(files.bootstrapModule);
     throw error;
   }
   process.stdout.write('SIWC_AUTHENTICATED_ROUTES_CI_STAGE_PASS\n');

@@ -10,6 +10,7 @@ export * from './TargetNavigator';
 export * from './TentacleHud';
 export * from './TentaculoHud';
 export * from './TentaculoHub';
+export * from './SiwcConnectionControl';
 export * from './MinimalTruthView';
 export * from './ContextInspectorView';
 export * from './ControlDeckView';
