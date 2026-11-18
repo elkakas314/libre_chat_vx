@@ -1633,5 +1633,29 @@
     },
     "result": "SIWC_PLAN_ROUTE_ADMISSION_SOURCE_READY; AGENTCLIENT_PROVIDER_BINDING_AND_LIVE_ACTIVATION_PENDING",
     "next": "Bind the server-side SIWC transport and route readbacks into the pinned AgentClient turn, then offer official consent; rerun exact-SHA CI and host E2E before runtime deployment."
+  },
+  "e3_siwc_agentclient_binding_source_20261118": {
+    "evidence_class": "SOURCE_CHANGE_TARGETED_TESTS",
+    "branch": "integration/nostromo-canon-20261118-r1",
+    "base_head": "753aa5167117be2579d23be9013c83c6a49d73a8",
+    "changes": [
+      "Added a server-only SIWC fetch wrapper that resolves the authenticated account per request, enforces explicit plan consent and account-visible model selection, forces the official Responses endpoint, store:false and streaming, and injects bearer authorization only at transport time.",
+      "Added an ephemeral AgentClient run-agent clone adapter that preserves NOSTROMO identity, instructions, tools and permissions while leaving the saved agent untouched.",
+      "Exported the binding adapter from the VX package."
+    ],
+    "tests": {
+      "SIWC_transport_and_binding_stub_tests": "3/3 PASS",
+      "project_typescript_no_emit": "PASS",
+      "git_diff_check": "PASS"
+    },
+    "runtime": {
+      "AgentClient_native_callsite": "NOT_YET_CONNECTED",
+      "OAuth_consent": "NOT_VERIFIED",
+      "credential_readback": false,
+      "runtime_changed": false,
+      "live_chat": false
+    },
+    "result": "SIWC_SERVER_TRANSPORT_AND_EPHEMERAL_AGENTCLIENT_BINDING_SOURCE_TESTED; HOST_CALLSITE_AND_AUTHENTICATED_OAUTH_ACTIVATION_PENDING",
+    "next": "Connect this adapter at the pinned upstream AgentClient run construction boundary and add the authenticated LibreChat SIWC consent/session route; then present Continue with ChatGPT and validate a real streamed, persisted conversation."
   }
 }
