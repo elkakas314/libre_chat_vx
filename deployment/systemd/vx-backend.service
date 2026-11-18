@@ -1,0 +1,19 @@
+[Unit]
+Description=LibreChat VX backend
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/librechat/upstream
+Environment=PATH=%h/.nvm/versions/node/v24.21.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+EnvironmentFile=%h/librechat/upstream/.env
+ExecStartPre=%h/.nvm/versions/node/v24.21.0/bin/node %h/librechat/nostromo/tools/deferred-instance-filter.mjs --apply --package-root %h/librechat/upstream/node_modules/@librechat/agents
+ExecStart=/usr/bin/npm run backend
+Restart=on-failure
+RestartSec=5
+StandardOutput=append:/tmp/vx-backend.log
+StandardError=append:/tmp/vx-backend.log
+
+[Install]
+WantedBy=default.target

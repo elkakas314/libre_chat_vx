@@ -65,6 +65,8 @@ jobs:
         run: node --test canaries/agent-events-live/01-local-delivery.test.cjs
       - name: Validate deferred AgentContext filtering patch
         run: node --test deployment/librechat-agents/deferred-instance-filter.test.mjs
+      - name: Validate Lenovo backend selects supported Node runtime
+        run: node --test deployment/systemd/vx-backend.runtime.test.mjs
 
   pinned-upstream-ci-native-mount:
     needs: build-test
