@@ -2034,5 +2034,27 @@
       "reboot_performed": false,
       "decision": "No reboot-required marker at readback; do not reboot merely to apply unspecified updates. HOST_CONTROL target-specific restart/reboot authority remains separate and was not exercised."
     }
+  },
+  "e3_siwc_hub_consent_mount_test_20261118": {
+    "change": "Added a regression test that renders the native Tentaculo Hub and checks the official SIWC consent control is present while OAuth remains explicitly unverified.",
+    "test": {
+      "typescript_compile": "PASS",
+      "focused_siwc_test_files": 7,
+      "tests_passed": 28,
+      "tests_failed": 0,
+      "result": "PASS",
+      "output": "/tmp/nostromo-siwc-tests.log"
+    },
+    "readback": {
+      "worktree": "/tmp/nostromo-e3-si-681cb6af",
+      "candidate": "/tmp/nostromo-siwc-candidate-bbf55b5",
+      "host_files_or_services_changed": false
+    },
+    "verification_limits": [
+      "This validates source rendering and focused SIWC tests only.",
+      "The active Lenovo Hub/package remains stale; live OAuth consent and SIWC route are not deployed.",
+      "No target-specific HOST_CONTROL R2 grant was supplied or used."
+    ],
+    "next": "Obtain the exact HOST_CONTROL R2 grants for the scoped package/backend files and one vx-backend.service restart, then deploy with per-file preimages/CAS and execute LIVE consent, OAuth, route readback, and chat verification."
   }
 }
