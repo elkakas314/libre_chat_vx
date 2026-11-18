@@ -2211,5 +2211,38 @@
     "decision": "DO_NOT_REBOOT",
     "reason": "R0 did not establish pending-update state or exact reboot authorization; arbitrary host command requires a real local grant.",
     "change": "Read-only host status and bounded /run directory listing. No reboot, package operation, host write, or service change."
+  },
+  "e3_siwc_disconnect_source_20261118": {
+    "source_commit": "88fad10d4cb00a142fcc33ecbe1b969ec771ab29",
+    "branch": "integration/nostromo-canon-20261118-r1",
+    "remote_head_matches": true,
+    "change": [
+      "Added authenticated + CSRF-protected POST /api/nostromo/siwc/disconnect.",
+      "Disconnect cancels pending consent, CAS-removes only the authenticated user's encrypted vault record, and reads back absence.",
+      "Added a connected-session UI control; it explicitly states local credentials are deleted while OpenAI-side authorization revocation is handled in the account."
+    ],
+    "verification": {
+      "typescript_5_9_3_build": "PASS",
+      "focused_siwc_tests": "14/14 PASS",
+      "git_diff_check": "PASS",
+      "coverage": [
+        "authenticated identity comes from the LibreChat session, not request body",
+        "CSRF middleware is required for disconnect",
+        "vault deletion rejects stale CAS versions",
+        "service readback confirms the owner record is absent",
+        "disconnecting another user leaves the bound account intact"
+      ]
+    },
+    "resources": {
+      "sample_window_utc": "2026-11-18T22:46:42Z/2026-11-18T22:47:42Z",
+      "mem_available_kb_min": 9391404,
+      "mem_available_kb_after": 9680264,
+      "swap_free_kb": 2096380,
+      "memory_psi_full_avg10": 0,
+      "build_test_peak_rss_kb": 409520,
+      "cpu_psi_some_avg10_before_after": "6.41% / 19.36%",
+      "interpretation": "Available memory recovered after the brief build; swap remained unchanged and memory PSI full was zero. CPU PSI rose during/after the compile window; no inference or production service work ran."
+    },
+    "runtime_status": "SOURCE_ONLY; no OAuth consent, production write, service restart, or live account revocation was performed."
   }
 }

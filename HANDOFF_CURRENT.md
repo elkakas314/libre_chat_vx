@@ -392,3 +392,12 @@ PRECEDENCE: this update supersedes older `PR26 DRAFT` or ChatGPT usage assumptio
 - HOST_CONTROL still identifies `elkakas314-Lenovo-Z50-70`. A bounded `/run` listing did not contain `reboot-required`; installed-update state was not checked because no R0 tool exposes that query and arbitrary host execution requires a real local grant.
 - No reboot or package operation was attempted. R0 status does not expose an exact reboot grant, and `kernel_authority=false` is not a grant inventory. Decision: do not reboot until update state, recovery path, and exact host authorization are verified.
 - Receipt is recorded in `CURRENT.json` as `e3_reboot_preflight_r0_20261118`; this is not `HOST_REBOOT_VERIFIED`.
+
+## 2026-11-18 — SIWC local disconnect SOURCE receipt
+
+- Commit `88fad10d4cb00a142fcc33ecbe1b969ec771ab29` adds an authenticated, CSRF-protected disconnect route and a connected-session control. The vault removes only the authenticated user's exact encrypted-record version via CAS, then confirms the user lookup is empty. Stale-version deletion is rejected; a different user cannot remove the bound record.
+- The UI states that disconnect deletes local credentials; OpenAI-side authorization revocation is managed in the OpenAI account. No remote revocation or LIVE OAuth claim is made.
+- Using the already-installed upstream TypeScript 5.9.3 compiler through a temporary symlink (removed after each run; no package installation), build passed and focused SIWC suites passed **14/14**. `git diff --check` passed. The source commit was pushed; local and remote HEAD matched before receipt updates.
+- Resource sample around compile/tests: MemAvailable minimum `9,391,404 kB`, after `9,680,264 kB`, swap free steady at `2,096,380 kB`, memory PSI full `0`; measured build/test peak RSS `409,520 kB`. CPU PSI some avg10 rose from `6.41%` to `19.36%`; no inference or production service work ran. This is a short load sample, not leak evidence.
+- No backend deployment, account consent, service restart, or host mutation. SIWC AgentClient LIVE remains blocked on `nostromoReadNativeInferenceRouteInput` and fresh host/provider capability, context, quota, and privacy readbacks.
+- Durable receipt is in `CURRENT.json` as `e3_siwc_disconnect_source_20261118`.
