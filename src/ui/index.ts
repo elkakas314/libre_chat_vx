@@ -26,5 +26,6 @@ export * from './BrowserPanelView';
 export * from './BuildPanelView';
 export * from './BackgroundTasksView';
 export * from './NostromoCockpit';
+export * from './PhoneModuleView';
 export * from './CockpitShell';
 export * from './SourceOnlyCockpit';

@@ -15,7 +15,8 @@ export type FocusDomain =
   | 'THREADS'
   | 'HOST'
   | 'TOOLBUS'
-  | 'LIBRECHAT';
+  | 'LIBRECHAT'
+  | 'PHONE';
 
 export type CockpitWindow =
   | 'STATUS_RAIL'
@@ -37,10 +38,12 @@ export type CockpitWindow =
   | 'BROWSER'
   | 'BUILD'
   | 'BACKGROUND_TASKS'
+  | 'PHONE'
   | 'TARGET_RUN';
 
 const TOKENS: ReadonlyArray<[FocusDomain, readonly string[]]> = [
   ['EVIDENCE', ['evidencia', 'evidence', 'receipt', 'recibo', 'readback', 'verificación', 'verification']],
+  ['PHONE', ['iphone', 'ios', 'teléfono', 'telefono', 'móvil', 'movil', 'atajos', 'shortcuts', 'tailscale', 'switchboard']],
   ['AUDIO', ['audio', 'reaper', 'mezcla', 'mastering', 'plugin', 'pedal', 'shub', 'pista']],
   ['BROWSER', ['browser', 'navegador', 'playwright', 'cdp', 'pestaña', 'tab']],
   ['REPO', ['repo', 'git', 'commit', 'branch', 'rama']],
@@ -93,6 +96,7 @@ export function windowsForDomain(domain: FocusDomain): CockpitWindow[] {
     THREADS: ['INTERFLOW_MAP', 'CAPABILITY_LENSES', 'ACTIVE_FLOW'],
     HOST: ['INTERFLOW_MAP', 'CAPABILITY_LENSES', 'TARGET_RUN'],
     TOOLBUS: ['INTERFLOW_MAP', 'CAPABILITY_LENSES', 'ACTIVE_FLOW'],
+    PHONE: ['PHONE', 'BACKGROUND_TASKS', 'CONVERSATION_CORE', 'NATIVE_SURFACES'],
     LIBRECHAT: ['MODULE_INDEX', 'RESOURCE_TREE', 'NATIVE_SURFACES', 'CONVERSATION_CORE', 'ARTIFACT_DOCK', 'BACKGROUND_TASKS'],
   };
   return [...new Set([...BASE, ...extra[domain]])];

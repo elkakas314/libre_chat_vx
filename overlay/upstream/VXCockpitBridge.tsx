@@ -7,6 +7,8 @@ import {
   projectTentaculoHud,
   nostromoHubSourceSnapshot,
   summarizeVxConversation,
+  PhoneModuleView,
+  createPhoneModuleSnapshot,
 } from '@librechat/vx';
 import type { HudSystem, VxConversationActivityInput } from '@librechat/vx';
 import './VXCockpit.css';
@@ -21,6 +23,7 @@ export default function VXCockpitBridge({ onClose, activity: activityInput }: VX
   const [showTechnical, setShowTechnical] = useState(false);
   const [showAutonomous, setShowAutonomous] = useState(false);
   const [showHub, setShowHub] = useState(false);
+  const [showPhone, setShowPhone] = useState(false);
   const [activeMode, setActiveMode] = useState<'AUTONOMO'|HudSystem>('AUTONOMO');
   const activeSystem:HudSystem|null = activeMode==='AUTONOMO'?null:activeMode;
   const returnButtonRef = useRef<HTMLButtonElement>(null);
@@ -152,6 +155,17 @@ export default function VXCockpitBridge({ onClose, activity: activityInput }: VX
                 {showHub ? 'Ocultar Tentáculo Hub' : 'Explorar Tentáculo Hub'}
                 <span aria-hidden="true">{showHub ? '−' : '↗'}</span>
               </button>
+              <button type="button" className="vx-autonomy-hub-toggle"
+                aria-expanded={showPhone} aria-controls="vx-nostromo-phone"
+                onClick={() => setShowPhone(value => !value)}>
+                {showPhone ? 'Ocultar módulo de teléfono' : 'Explorar teléfono / iPhone'}
+                <span aria-hidden="true">{showPhone ? '−' : '↗'}</span>
+              </button>
+              {showPhone ? (
+                <div id="vx-nostromo-phone">
+                  <PhoneModuleView snapshot={createPhoneModuleSnapshot()} />
+                </div>
+              ) : null}
               {showHub ? (
                 <div id="vx-nostromo-hub">
                   <TentaculoHub snapshot={nostromoHubSourceSnapshot()} />

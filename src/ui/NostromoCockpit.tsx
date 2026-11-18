@@ -39,6 +39,8 @@ import { AudioPanelView } from './AudioPanelView';
 import { BrowserPanelView } from './BrowserPanelView';
 import { BuildPanelView } from './BuildPanelView';
 import { BackgroundTasksView } from './BackgroundTasksView';
+import { PhoneModuleView } from './PhoneModuleView';
+import type { PhoneModuleSnapshot } from '../mobile/phoneModule';
 import { ControlDeckView } from './ControlDeckView';
 import { PlanGraphView } from './PlanGraphView';
 import { ActiveFlowView } from './ActiveFlowView';
@@ -68,6 +70,7 @@ export interface NostromoCockpitProps {
   browser?: BrowserView;
   builds?: BuildPanelItem[];
   backgroundTasks?: BackgroundTaskProjection[];
+  phone?: PhoneModuleSnapshot;
   status?: StatusRailState;
   planNodes?: PlanNode[];
   flowEdges?: FlowEdge[];
@@ -109,6 +112,7 @@ export function NostromoCockpit(props: NostromoCockpitProps) {
       {has('BROWSER') ? <BrowserPanelView view={props.browser} /> : null}
       {has('BUILD') ? <BuildPanelView items={props.builds ?? []} /> : null}
       {has('BACKGROUND_TASKS') ? <BackgroundTasksView tasks={props.backgroundTasks ?? []} /> : null}
+      {has('PHONE') && props.phone ? <PhoneModuleView snapshot={props.phone} /> : null}
       <ControlDeckView
         scope={props.scope}
         target={props.activeTruth}

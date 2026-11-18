@@ -83,6 +83,7 @@ export * from './mobile/offlineDraft';
 export * from './mobile/pushRefresh';
 export * from './mobile/resumeSource';
 export * from './mobile/remoteAccess';
+export * from './mobile/phoneModule';
 
 export { emptyCockpitState } from './runtime/cockpitState';
 export type { CockpitState, TargetRuntimeState } from './runtime/cockpitState';

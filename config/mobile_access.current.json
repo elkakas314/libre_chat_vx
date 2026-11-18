@@ -8,7 +8,8 @@
       "mode": "LOCAL",
       "priority": 1,
       "requires": "LOCAL_BACKEND_REACHABLE",
-      "endpoint": "http://127.0.0.1:3080"
+      "endpoint": "DISCOVER_AUTHENTICATED_LAN_HOST_ORIGIN",
+      "note": "127.0.0.1 en un iPhone es el propio telefono, NO el backend Lenovo. La URL local requiere origen LAN y autenticacion verificados."
     },
     {
       "mode": "TAILSCALE_PRIVATE",
