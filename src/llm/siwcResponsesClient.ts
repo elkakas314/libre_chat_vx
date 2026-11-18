@@ -40,6 +40,9 @@ export class SiwcResponsesClient {
   async textResponse(record:SiwcAccountCredentials,args:{
     model:string;catalog:readonly {slug:string;label:string}[];
     messages:readonly SiwcMessage[];
+    signal?:AbortSignal;
+    /** Forward each provider delta to the native AgentClient stream adapter. */
+    onTextDelta?:(delta:string)=>void;
   }):Promise<SiwcTextReply>{
     const bearer=this.assert(record);
     const body=siwcResponseBody({model:args.model,liveCatalog:args.catalog,messages:args.messages,grant:permission(record,this.now())});
@@ -47,7 +50,8 @@ export class SiwcResponsesClient {
       method:'POST',headers:{
         Authorization:'Bearer '+bearer,
         'Content-Type':'application/json','Accept':'text/event-stream',
-      },body:JSON.stringify(body),redirect:'error',cache:'no-store'});
+      },body:JSON.stringify(body),redirect:'error',cache:'no-store',
+      ...(args.signal===undefined?{}:{signal:args.signal})});
     if(!reply.ok)throw Error('SIWC_RESPONSES_HTTP_'+reply.status);
     if(!reply.body)throw Error('SIWC_STREAM_REQUIRED');
     const reader=reply.body.getReader();
@@ -70,6 +74,7 @@ export class SiwcResponsesClient {
         if(typeof event.delta!=='string')throw Error('SIWC_STREAM_DELTA_INVALID');
         message+=event.delta;
         if(message.length>1_000_000)throw Error('SIWC_STREAM_OUTPUT_LIMIT');
+        args.onTextDelta?.(event.delta);
       }
       if(event.type==='response.completed')completed=true;
     };

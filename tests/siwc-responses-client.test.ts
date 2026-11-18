@@ -13,17 +13,33 @@ const account:SiwcAccountCredentials={
 const models=[{slug:'test-model',label:'Testing'}];
 const messages=[{role:'user' as const,content:'Hola'}];
 test('OAuth model catalog and streaming complete in a local stub',async()=>{
+  let release!:()=>void;
+  let markDeltaReady!:()=>void;
+  const deltaReady=new Promise<void>(resolve=>{markDeltaReady=resolve;});
+  const allowCompletion=new Promise<void>(resolve=>{release=resolve;});
   const transport=(async(input:unknown,options?:RequestInit)=>{
     if(String(input).endsWith('/models'))
       return new Response(JSON.stringify({models:[{slug:'test-model',display_name:'Testing',visibility:'list'}]}));
     const body=JSON.parse(String(options?.body));
     assert.equal(body.store,false);assert.equal(body.stream,true);
-    return new Response('data: {"type":"response.output_text.delta","delta":"hola"}\n\n'+
-      'data: {"type":"response.completed"}\n\ndata: [DONE]\n\n');
+    return new Response(new ReadableStream({
+      async start(controller){
+        controller.enqueue(new TextEncoder().encode('data: {"type":"response.output_text.delta","delta":"hola"}\n\n'));
+        await allowCompletion;
+        controller.enqueue(new TextEncoder().encode('data: {"type":"response.completed"}\n\ndata: [DONE]\n\n'));
+        controller.close();
+      },
+    }));
   }) as unknown as typeof fetch;
   const client=new SiwcResponsesClient(transport,()=>2000);
   assert.deepEqual(await client.listModels(account),models);
-  const response=await client.textResponse(account,{model:'test-model',catalog:models,messages});
+  let streamed='';
+  const responsePromise=client.textResponse(account,{model:'test-model',catalog:models,messages,
+    onTextDelta:delta=>{streamed+=delta;markDeltaReady();}});
+  await deltaReady;
+  assert.equal(streamed,'hola','text delta must reach the native stream before terminal completion');
+  release();
+  const response=await responsePromise;
   assert.equal(response.text,'hola');assert.equal(response.completed,true);
   assert.equal(response.materialAuthority,false);
 });
