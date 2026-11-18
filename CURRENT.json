@@ -1570,7 +1570,7 @@
   },
   "e3_siwc_streaming_source_20261118": {
     "evidence_class": "SOURCE_CHANGE_AND_TARGETED_STUB_TESTS",
-    "verified_at_utc": "2026-11-18T17:05:00Z",
+    "verified_at_utc": "2026-11-18T16:52:45Z",
     "branch": "integration/nostromo-canon-20261118-r1",
     "head": "75777387b00b7cc17d56bbd92bf2ed7264efe7e5",
     "pr": {
@@ -1602,5 +1602,36 @@
     },
     "result": "SOURCE_STREAMING_PRIMITIVE_VERIFIED; SIWC_PROVIDER_TO_AGENTCLIENT_BINDING_AND_OFFICIAL_USER_CONSENT_PENDING",
     "activation_path": "Finish the server-side AgentClient/provider binding and authenticated host-user SIWC connection; then present the official Continue with ChatGPT consent flow in LibreChat."
+  },
+  "e3_siwc_route_admission_and_ci_fix_20261118": {
+    "evidence_class": "SOURCE_CHANGE_TARGETED_TESTS_AND_EXACT_SHA_CI_READBACK",
+    "verified_at_utc": "2026-11-18T17:03:25Z",
+    "branch": "integration/nostromo-canon-20261118-r1",
+    "base_head": "ce8b0e678a5711cbb6bc41c3c5b4ec40700ca745",
+    "changes": [
+      "Existing inference gateway now distinguishes ZERO_COST from SUBSCRIPTION_SHARED plan usage; the latter requires explicit planUsageConsent and never claims zero cost.",
+      "Added SIWC model-route projection from authorized account, visible account catalog, and explicit live model/context/capability readbacks; no capability or context is inferred from a model slug.",
+      "Updated the mock-only CI visual fixture to current honest context-panel labels after the exact-SHA canary failed on obsolete headings and MCP claims."
+    ],
+    "tests": {
+      "siwc_provider_route_and_native_router_tests": "12/12 PASS; TypeScript compiled with the installed upstream compiler",
+      "native_visual_source_contract": "8/8 PASS",
+      "git_diff_check": "PASS"
+    },
+    "ci_readback": {
+      "source_sha": "ce8b0e678a5711cbb6bc41c3c5b4ec40700ca745",
+      "source_check": "IN_PROGRESS_AT_LAST_READBACK",
+      "native_runtime_canary": "FAIL",
+      "failure": "Mock visual fixture expected obsolete heading/text that no longer exist in the current source bridge.",
+      "correction": "ci/fixtures/native-overlay-prereq.spec.ts now asserts current heading, loaded-chat copy, and absence of the obsolete MCP claim."
+    },
+    "runtime": {
+      "agentclient_binding": "NOT_CONNECTED",
+      "chatgpt_consent": "NOT_VERIFIED",
+      "live_conversation": false,
+      "runtime_changed": false
+    },
+    "result": "SIWC_PLAN_ROUTE_ADMISSION_SOURCE_READY; AGENTCLIENT_PROVIDER_BINDING_AND_LIVE_ACTIVATION_PENDING",
+    "next": "Bind the server-side SIWC transport and route readbacks into the pinned AgentClient turn, then offer official consent; rerun exact-SHA CI and host E2E before runtime deployment."
   }
 }

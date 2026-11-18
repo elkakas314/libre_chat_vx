@@ -60,6 +60,39 @@ test('native turn fails closed when the remote route is absent, stale, or not ve
   assert.equal(resolveNativeInferenceRoute(input([])).kind, 'NO_ADMITTED_ROUTE');
 });
 
+test('ChatGPT plan routes require explicit consent and remain distinct from zero-cost routes', () => {
+  const planRoute = makeRoute({
+    id: 'chatgpt-plan-live',
+    provider: 'CHATGPT_OAUTH_PLAN',
+    model: 'account-visible-model',
+    routeModel: 'account-visible-model',
+    zeroCost: 'UNKNOWN',
+    billingClass: 'SUBSCRIPTION_SHARED',
+    planUsageConsent: 'AUTHORIZED',
+  });
+  const admitted = resolveNativeInferenceRoute(input([planRoute]));
+  assert.equal(admitted.kind, 'INFERENCE_ROUTE');
+  if (admitted.kind === 'INFERENCE_ROUTE') assert.equal(admitted.provider, 'CHATGPT_OAUTH_PLAN');
+
+  const denied = resolveNativeInferenceRoute(input([{
+    ...planRoute,
+    planUsageConsent: 'MISSING',
+  }]));
+  assert.equal(denied.kind, 'NO_ADMITTED_ROUTE');
+  if (denied.kind === 'NO_ADMITTED_ROUTE') {
+    assert.ok(denied.admissions[0]?.reasons.includes('PLAN_USAGE_CONSENT_REQUIRED'));
+  }
+
+  const metered = resolveNativeInferenceRoute(input([{
+    ...planRoute,
+    zeroCost: 'BILLABLE',
+  }]));
+  assert.equal(metered.kind, 'NO_ADMITTED_ROUTE');
+  if (metered.kind === 'NO_ADMITTED_ROUTE') {
+    assert.ok(metered.admissions[0]?.reasons.includes('METERED_BILLING_REJECTED'));
+  }
+});
+
 test('tool turns require provider tool capability and reserve completion tokens in context admission', () => {
   const noTools = makeRoute({ profile: 'INVESTIGAR', capabilities: ['TEXT'] });
   const noToolResult = resolveNativeInferenceRoute(input([noTools], { toolCallingRequired: true }));

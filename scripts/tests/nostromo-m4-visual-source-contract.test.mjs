@@ -50,6 +50,14 @@ test('M4 neutral labels and offline text do not assert an installed agent/MCP',(
  assert.doesNotMatch(bridge,/Tu agente de terminal en el Lenovo/);
 });
 
+test('CI visual fixture checks the current context panel instead of obsolete claims',()=>{
+ const fixture=read('ci/fixtures/native-overlay-prereq.spec.ts');
+ assert.match(fixture,/name:'Estado de la conversación'/);
+ assert.match(fixture,/Resumen del chat cargado/);
+ assert.doesNotMatch(fixture,/getByRole\('heading'.*Habla\. Encarga\. Comprueba.*toBeVisible/);
+ assert.ok(fixture.includes("await expect(context.getByText('CHAT→MCP NO VERIFICADO')).toHaveCount(0);"));
+});
+
 test('M4 source inventory explicitly refuses to infer installed/live/authority',()=>{
  const hub=read('src/hud/nostromoHub.ts');
  assert.match(hub,/status:'SOURCE_INVENTORY_NO_RUNTIME_READBACK'/);

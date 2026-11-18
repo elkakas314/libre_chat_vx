@@ -52,3 +52,16 @@ test('partial streams and denied permission fail closed',async()=>{
     {model:'test-model',catalog:models,messages}),/CONSENT_REQUIRED/);
   assert.equal(count,1);
 });
+test('native cancellation signal is forwarded to the OAuth transport',async()=>{
+  const controller=new AbortController();
+  let observedSignal:AbortSignal|undefined;
+  const transport=(async(_input:unknown,options?:RequestInit)=>{
+    observedSignal=options?.signal ?? undefined;
+    return new Response('data: {"type":"response.completed"}\n\n');
+  }) as unknown as typeof fetch;
+  const client=new SiwcResponsesClient(transport,()=>2000);
+  const response=await client.textResponse(account,{model:'test-model',catalog:models,messages,
+    signal:controller.signal});
+  assert.equal(response.completed,true);
+  assert.equal(observedSignal,controller.signal);
+});

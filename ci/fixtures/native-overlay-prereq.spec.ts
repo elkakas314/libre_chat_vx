@@ -70,8 +70,9 @@ for (const viewport of [
       if (flag) {
         await launcher.click();
         await expect(context).toBeVisible();
-        await expect(context.getByRole('heading',{name:'Habla. Encarga. Comprueba.'})).toBeVisible();
-        await expect(context.getByText('CHAT→MCP NO VERIFICADO')).toBeVisible();
+        await expect(context.getByRole('heading',{name:'Estado de la conversación'})).toBeVisible();
+        await expect(context.getByText(/Resumen del chat cargado/)).toBeVisible();
+        await expect(context.getByText('CHAT→MCP NO VERIFICADO')).toHaveCount(0);
         await expect(context.getByTestId('nostromo-autonomo-details')).toHaveCount(0);
         await context.getByRole('button',{name:'Ver modo autónomo NOSTROMO'}).click();
         await expect(context.getByTestId('nostromo-autonomo-details')).toBeVisible();
@@ -100,7 +101,7 @@ for (const viewport of [
         await expect(context.getByTestId('tentaculo-focus')).toHaveCount(0);
         await modes.getByRole('button',{name:'VX13'}).click();
         await expect(modes.getByRole('button',{name:'VX13'})).toHaveAttribute('aria-pressed','true');
-        await expect(context.getByRole('heading',{name:'Habla. Encarga. Comprueba.'})).toHaveCount(0);
+        await expect(context.getByRole('heading',{name:'Estado de la conversación'})).toHaveCount(0);
         await expect(context.getByTestId('nostromo-tentaculo-hub')).toHaveCount(0);
         await expect(context.getByTestId('tentaculo-focus').getByText('Enlace sin verificar')).toBeVisible();
         await modes.getByRole('button',{name:'ORÁCULO'}).click();
@@ -110,7 +111,7 @@ for (const viewport of [
         await context.getByRole('button',{name:'Volver a NOSTROMO'}).click();
         await expect(context.getByTestId('tentaculo-focus')).toHaveCount(0);
         await expect(modes.getByRole('button',{name:'NOSTROMO Autónomo'})).toHaveAttribute('aria-pressed','true');
-        await expect(context.getByRole('heading',{name:'Habla. Encarga. Comprueba.'})).toBeVisible();
+        await expect(context.getByRole('heading',{name:'Estado de la conversación'})).toBeVisible();
         await snap('context-open');
         await context.getByRole('button', { name:'Ver detalles técnicos' }).click();
         await expect(context.getByText('Observaciones LIVE: no verificadas.')).toBeVisible();
