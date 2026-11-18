@@ -1511,5 +1511,55 @@
     },
     "result": "PHONE_UI_SOURCE_CONNECTED_TO_LOADED_CHAT; DEVICE_AND_RUNTIME_CONNECTIONS_UNVERIFIED",
     "next": "Keep PR DRAFT; resolve native agent router/provider binding separately. Deploy the visual candidate only through its exact-baseline governed path; authenticate a real phone before claiming mobile connection."
+  },
+  "e3_hybrid_host_readback_20261118": {
+    "evidence_class": "HOST_CONTROL_R0_READBACK_NO_RUNTIME_CHANGE",
+    "verified_at_utc": "2026-11-18T16:32:41Z",
+    "host": "elkakas314-Lenovo-Z50-70",
+    "backend": {
+      "service": "vx-backend.service",
+      "state": "active/running",
+      "working_directory": "/home/elkakas314/librechat/upstream",
+      "exec_start_pre": "/home/elkakas314/librechat/nostromo/tools/deferred-instance-filter.mjs --apply",
+      "config_file_candidate": {
+        "path": "/home/elkakas314/librechat/upstream/librechat.yaml",
+        "sha256": "8ff54c6e4ea8fb1efae786ee8e90c140fb9a65b7ba14fc747585ddcede4be0b9",
+        "contents_read_without_secrets": true,
+        "contains_only_local_ollama_endpoint": true,
+        "memory_block_present": false,
+        "summarization_block_present": false
+      },
+      "effective_yaml_resolution": "UNVERIFIED; service also loads .env and its config-path override presence was not inspected to avoid exposing secrets"
+    },
+    "ollama": {
+      "service": "active/running",
+      "api_ps_status": 200,
+      "loaded_models": 0
+    },
+    "resources": {
+      "MemAvailable_kb": 9275724,
+      "Cached_kb": 7674172,
+      "SwapFree_kb": 6020,
+      "SwapTotal_kb": 2097148,
+      "cpu_psi_some_avg10_percent": 6.20,
+      "cpu_psi_some_avg60_percent": 6.24,
+      "memory_psi_some_avg10_percent": 0,
+      "memory_psi_full_avg10_percent": 0
+    },
+    "route_and_memory": {
+      "router_source_exists": true,
+      "native_agent_callsite": "NOT_BOUND",
+      "verified_zero_cost_remote_route": "NONE_IN_READ_BACK_YAML",
+      "siwc": "CONSENT_AND_LIVE_SESSION_NOT_VERIFIED",
+      "persisted_agent_document_readback": "NOT_AVAILABLE_THROUGH_R0_READ_TOOLS"
+    },
+    "actions": {
+      "runtime_changed": false,
+      "service_restarted": false,
+      "inference_run": false,
+      "secrets_read": false
+    },
+    "result": "NO_CURRENT_OLLAMA_MODEL_LOAD_OR_MEMORY_PRESSURE_OBSERVED; SWAP_NEARLY_FULL; REMOTE_ROUTING_AND_PERSISTENT_MEMORY_NOT_LIVE_VERIFIED",
+    "next": "Obtain a secret-safe presence-only readback of the effective config override and persisted agent route, then bind the existing semantic and inference routers to the native turn using a genuinely live zero-cost route or consented SIWC session."
   }
 }
