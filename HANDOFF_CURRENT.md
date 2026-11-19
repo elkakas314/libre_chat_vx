@@ -1,3 +1,11 @@
+## 2026-11-19 — HOST_CONTROL R0: backend y MCP NOSTROMO
+
+- `vx-backend.service` está active/running, PID 5074; `http://127.0.0.1:3080/health` devuelve 200 `OK`. El YAML efectivo configura `nostromo-local` por `/home/elkakas314/bin/nostromo-mcp-wrapper.sh`; el wrapper lanza `/home/elkakas314/libre_chat_vx-clean/deployment/nostromo-mcp/server.mjs`. Readback R0 encontró un proceso MCP coincidente, PID 5197, Node 24.21.0, RSS 55,772 kB, CWD `/home/elkakas314/librechat/upstream`.
+- La copia activa no es worktree Git. `async-jobs.mjs`, `audit.mjs`, `policy.mjs` y `package-lock.json` coinciden con SOURCE; `server.mjs`, `inspect.mjs` y `tools.mjs` difieren. En SOURCE el listado se separa en `directory.mjs` y tiene pruebas focalizadas más recientes. La copia activa contiene la implementación equivalente dentro de `inspect.mjs`; no se sobrescribió ni archivó nada.
+- Pruebas aisladas sobre el árbol activo: listado R0 1/1; stdio R0 con fichero/listado/métricas 1/1; handshake y default fail-closed 1/1. Esto prueba el paquete/stdio local, no una llamada desde la conversación real.
+- Recursos durante pruebas breves: MemAvailable 9,291,016→9,208,052→9,241,828 kB; SwapFree estable 1,992,700 kB; PSI de memoria some/full 0%; CPU PSI some avg10 máximo 6.33%; RSS del MCP activo 55,772 kB estable. No evidencia de presión de memoria; muestra corta, sin conclusión de fuga prolongada.
+- Receipt: `operating/sync-receipts/host-mcp-r0-20261119.json`. No se leyó el `.env` ni el entorno del proceso; no hubo escritura/reinicio. El navegador autenticado no estuvo disponible en esta sesión, por lo que el canario conversacional+Mongo y la recuperación siguen sin probar.
+
 # NOSTROMO HANDOFF CURRENT — 2026-11-19
 
 ## SOURCE baseline freeze

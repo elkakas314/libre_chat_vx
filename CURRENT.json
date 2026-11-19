@@ -2960,6 +2960,102 @@
           "material_state": "SOURCE_VERIFIED; does not certify host deployment"
         }
       ]
-    }
+    },
+    "branch_head_at_source_receipt_sync": "2642bd4a268ad0890e411e1d891ca3600940bb89"
+  },
+  "e3_host_mcp_r0_readback_20261119": {
+    "observed_at_utc": "2026-11-19T00:45:13Z",
+    "evidence_class": "HOST_CONTROL_R0_SERVICE_AND_PROCESS_READBACK_PLUS_LOCAL_STDIO_TESTS",
+    "source_branch_head": "2642bd4a268ad0890e411e1d891ca3600940bb89",
+    "source_code_head_tested": "7acbfb14375af1ac87e0fcf72bdfaa75c52a7541",
+    "backend": {
+      "unit": "vx-backend.service",
+      "scope": "user",
+      "state": "active/running",
+      "main_pid": 5074,
+      "exec_main_status": 0,
+      "health_http": 200,
+      "health_body": "OK"
+    },
+    "mcp": {
+      "configured_name": "nostromo-local",
+      "type": "stdio",
+      "effective_yaml": "/home/elkakas314/librechat/upstream/librechat.yaml",
+      "effective_yaml_sha256": "8ff54c6e4ea8fb1efae786ee8e90c140fb9a65b7ba14fc747585ddcede4be0b9",
+      "wrapper": "/home/elkakas314/bin/nostromo-mcp-wrapper.sh",
+      "wrapper_sha256": "0577117efcf22a042c40f4f1a9c6184dcd5cbb13c7e9278b8d13ab4c4f9298c4",
+      "wrapper_behavior": "sources protected config without reading it in this audit; loads toolset file; execs exact server path below",
+      "active_process_matches": 1,
+      "process_list_returned": 333,
+      "pid": 5197,
+      "cmdline": "node /home/elkakas314/libre_chat_vx-clean/deployment/nostromo-mcp/server.mjs",
+      "cwd": "/home/elkakas314/librechat/upstream",
+      "node": "v24.21.0",
+      "rss_kb": 55772,
+      "runtime_source_git_worktree": false,
+      "runtime_files": {
+        "server.mjs": {
+          "runtime_sha256": "1a2521893fb8760207ff54eb4e01906e49532d21df24be7a360f0c9454b6d697",
+          "source_sha256": "da875e260948cbb916ab1a447298281877e3865303fae05b052dc18d434025d3"
+        },
+        "inspect.mjs": {
+          "runtime_sha256": "81f4622ef074d3b7da78defd12eaf77997d4353311613cc5f57e32df87f76a8a",
+          "source_sha256": "b7f1ee4348bc801d93fd82ed5f80d42b58a38584bc11e4a594e3788d36b3446a"
+        },
+        "tools.mjs": {
+          "runtime_sha256": "993aeca549c6aafa221b5ba1815062cd69f1027033df29cf4180863a77adb957",
+          "source_sha256": "c78bf9060a70492544c74b22a05c1d22404b2471dde34d950b99a114ace57e07"
+        },
+        "async-jobs.mjs": "IDENTICAL_TO_SOURCE",
+        "audit.mjs": "IDENTICAL_TO_SOURCE",
+        "policy.mjs": "IDENTICAL_TO_SOURCE",
+        "package-lock.json": "IDENTICAL_TO_SOURCE"
+      },
+      "source_only_paths": [
+        "directory.mjs",
+        "tests/audit.test.mjs",
+        "tests/directory.test.mjs",
+        "tests/e2-stdio-config-contract.test.mjs",
+        "tests/e2-stdio-handshake-canary.test.mjs"
+      ],
+      "interpretation": "The active tree has a listing implementation inside inspect.mjs; tested SOURCE moved that implementation into directory.mjs and adds stronger focused tests. No runtime overwrite or cleanup was performed."
+    },
+    "focused_active_tree_source_tests": {
+      "directory_listing": "1/1 PASS",
+      "stdio_R0_allowlisted_file_directory_metrics": "1/1 PASS",
+      "MCP_handshake_and_fail_closed_default": "1/1 PASS",
+      "scope": "isolated stdio child using same runtime-tree source; not a browser/agent conversation"
+    },
+    "resources": {
+      "active_mcp_rss_before_during_after_kb": [
+        55772,
+        55772,
+        55772
+      ],
+      "mem_available_kb_samples": [
+        9291016,
+        9208052,
+        9241828
+      ],
+      "swap_free_kb_samples": [
+        1992700,
+        1992700,
+        1992700
+      ],
+      "memory_psi_some_full_avg10_pct": [
+        0.0,
+        0.0
+      ],
+      "cpu_psi_some_avg10_pct_before_peak": [
+        5.07,
+        6.33
+      ],
+      "interpretation": "Short focused tests showed no memory PSI or swap churn; not a long-duration leak assessment."
+    },
+    "privacy": "Protected .env and process environment were not read; no token values recorded.",
+    "product_status": "SERVICE_AND_MCP_PROCESS_VERIFIED; AUTHENTICATED_CHAT_MCP_E2E_NOT_VERIFIED",
+    "ui_blocker": "CUA reported no authenticated LibreChat tab/app; Playwright browser backend reports Chrome missing. No installation or browser login attempted.",
+    "actions_taken": "Read-only host/config/source inspection and isolated temporary-directory tests only; no host file/service changes or restarts.",
+    "next": "Use an authenticated LibreChat browser session to call nostromo_estado and nostromo_directorio_listar in one saved conversation; then verify MongoDB readback/reconnect. Preserve the runtime/source divergence until authorized reversible sync."
   }
 }
