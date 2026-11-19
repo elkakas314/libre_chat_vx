@@ -5,7 +5,7 @@
 - Pruebas aisladas sobre el árbol activo: listado R0 1/1; stdio R0 con fichero/listado/métricas 1/1; handshake y default fail-closed 1/1. Esto prueba el paquete/stdio local, no una llamada desde la conversación real.
 - Recursos durante pruebas breves: MemAvailable 9,291,016→9,208,052→9,241,828 kB; SwapFree estable 1,992,700 kB; PSI de memoria some/full 0%; CPU PSI some avg10 máximo 6.33%; RSS del MCP activo 55,772 kB estable. No evidencia de presión de memoria; muestra corta, sin conclusión de fuga prolongada.
 - Receipt: `operating/sync-receipts/host-mcp-r0-20261119.json`. No se leyó el `.env` ni el entorno del proceso; no hubo escritura/reinicio. El navegador autenticado no estuvo disponible en esta sesión, por lo que el canario conversacional+Mongo y la recuperación siguen sin probar.
-- Readback móvil adicional: Tailscale está Running pero Serve no está configurado; el backend permanece en `127.0.0.1:3080`. Hay listeners tailnet IPv4/IPv6 en 443, sin atribución de proceso ni ruta NOSTROMO comprobada. Sin cambios de red. Receipt: `operating/sync-receipts/mobile-listener-r0-20261119.json`; issue #37 comment `6996380851`. Acceso móvil sigue `NOT_VERIFIED`.
+- Readback móvil adicional: Tailscale está Running pero Serve no está configurado; el backend permanece en `127.0.0.1:3080`. Hay listeners tailnet IPv4/IPv6 en 443, sin atribución de proceso ni ruta NOSTROMO comprobada. `cloudflared.service` está activo, `caddy.service` fallido y `nginx.service` no existe; el journal de Caddy no estuvo disponible por HOST_CONTROL. Sin cambios de red/servicios. Receipt: `operating/sync-receipts/mobile-listener-r0-20261119.json`; issue #37 comment `6996380851`. Acceso móvil sigue `NOT_VERIFIED`.
 
 # NOSTROMO HANDOFF CURRENT — 2026-11-19
 

@@ -8,6 +8,14 @@
     "serve_config_present": false,
     "serve_ports": []
   },
+  "service_readback_at_utc": "2026-11-19T01:04:28Z",
+  "source_branch_head_at_service_readback": "0e4e486",
+  "related_services": {
+    "tailscaled.service": "active/running, PID 1080",
+    "cloudflared.service": "active/running, PID 1908",
+    "caddy.service": "failed, ExecMainStatus 1",
+    "nginx.service": "not-found"
+  },
   "listeners": [
     {
       "address": "127.0.0.1:3080",
@@ -31,6 +39,6 @@
     }
   ],
   "interpretation": "Tailscale Serve is not configured. A TCP listener exists on tailnet IPv4/IPv6 port 443, but its owner and NOSTROMO routing were not verified. No claim of mobile access is made.",
-  "actions_taken": "Filtered HOST_CONTROL R0 listener/process readbacks only; no network, service, or file changes.",
+  "actions_taken": "Filtered HOST_CONTROL R0 listener/process/service readbacks only; caddy journal readback was unavailable; no network, service, or file changes.",
   "next": "Identify the owner and route for tailnet port 443 using an authorized bounded readback; then test the NOSTROMO mobile endpoint from a real tailnet client."
 }

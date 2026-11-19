@@ -3081,6 +3081,9 @@
     "branch_head_with_receipt": "a4e5cf5",
     "tailscale_serve": "NOT_CONFIGURED",
     "backend_listener": "127.0.0.1:3080",
+    "cloudflared_service": "ACTIVE",
+    "caddy_service": "FAILED",
+    "nginx_service": "NOT_FOUND",
     "tailnet_443_listener": "PRESENT_OWNER_AND_NOSTROMO_ROUTE_UNVERIFIED",
     "mobile_access": "NOT_VERIFIED",
     "issue_37_comment": "6996380851"
