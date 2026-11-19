@@ -3061,6 +3061,20 @@
       "document_id": "1lrhx64J3hW7iW_qeGOw_fJw67rp_M-2EY_65Go2tMPY",
       "revision_id": "AHj4eMR7oqsJAP6ghvssjnHIjXPHvN876sxLmb8y0XbSjTQFrT15phNfTEbOc1n6WJJEgUq6MeYMj89TmQgxo0VXbiLtoRDMaHIYm_qgM4M",
       "readback": "host MCP R0 receipt inserted and read back"
+    },
+    "siwc_package_candidate_revalidation": {
+      "artifact": "/tmp/nostromo-librechat-vx-0.1.0-7ed1863.tgz",
+      "sha256": "1b3302444159a1ef87a429831c74435e8658d8e8b8936b1cc82e2c3d3464a52d",
+      "source_code_head": "7ed1863246f6942c570eca68e5569740b8c2250c",
+      "compatibility_readback": "git diff 7ed1863..7acbfb1 contains only CURRENT/HANDOFF, local CI/visual harness, prior receipts and visual smoke; no package runtime source files changed",
+      "contents": [
+        "siwcConnectionApi.js",
+        "siwcConnectionService.js",
+        "siwcOpenAiFetch.js",
+        "siwcProviderRoutes.js"
+      ],
+      "installed": false,
+      "permission_gate": "HOST_CONTROL R2 still required"
     }
   }
 }
