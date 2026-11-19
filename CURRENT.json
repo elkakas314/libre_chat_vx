@@ -1,6 +1,6 @@
 {
   "schema": "libre-chat-vx.current.v2",
-  "status": "E3_LOCAL_TOOL_DEFERRAL_PUBLISHED_PENDING_HOST_R2",
+  "status": "E3_PUBLISHED_SOURCE_HOST_R2_PENDING_WORK_ACTIVE_CPU_SAMPLE_RECORDED_REAL_IDLE_UNVERIFIED",
   "latest_native_tool_deferral_candidate": {
     "receipt": "operating/sync-receipts/e3-local-tool-contextual-deferral-candidate-20261119.json",
     "captured_at_utc": "2026-11-19T06:40:58Z",
@@ -24,6 +24,25 @@
     "pr54_head_readback": "MATCH_DRAFT_OPEN",
     "host_deployment": "WAITING_FOR_EXACT_HOST_CONTROL_R2",
     "status": "SOURCE_PUBLISHED_RUNTIME_UNCHANGED"
+  },
+  "latest_kubuntu_resource_sample": {
+    "receipt": "operating/sync-receipts/e3-kubuntu-work-active-quiet-resource-diagnostic-20261119.json",
+    "captured_at_utc": "2026-11-19T20:33:19Z",
+    "state": "WORK_ACTIVE_QUIET; NOT_REAL_IDLE",
+    "cpu_busy_system_pct": "20.1-27.8 across initial 8s windows",
+    "cpu_psi_some_avg10_pct": "7.52-24.31; full=0",
+    "memory_psi_some_avg10_pct": "0.00-0.29; full=0",
+    "memory_available_kib": "8797056-9994428",
+    "swap_free_kib": "0-584; last measured swap-in/out=0 pages in 8s",
+    "gpu": "GeForce 840M; 0% utilization; 5 MiB VRAM",
+    "main_attributed_processes": [
+      "snap Chromium renderer PID 14915",
+      "ChatGPT PID 6506",
+      "Codex PID 6403"
+    ],
+    "nostromo_runtime": "backend MainThread 0.1% one-core CPU; MongoDB 1.0%; PSS stable in timed 15s sample",
+    "memory_leak": "NOT_ESTABLISHED",
+    "status": "PARTIAL_WORK_ACTIVE_ONLY"
   },
   "latest_context_snapshot": {
     "receipt": "operating/sync-receipts/e3-live-context-snapshot-tool-schema-breakdown-20261119.json",

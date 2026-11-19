@@ -1,0 +1,91 @@
+{
+  "schema": "nostromo.e3.kubuntu-work-active-quiet-resource-diagnostic.v1",
+  "captured_at_utc": "2026-11-19T20:33:19Z",
+  "scope": "Low-impact CPU, memory, swap, GPU and process-attribution sampling while Work remained active but no build, inference or browser automation was running",
+  "state_classification": {
+    "work": "ACTIVE_QUIET",
+    "nostromo_inference": "NOT_RUNNING",
+    "real_idle": "NOT_VERIFIED",
+    "reason": "ChatGPT/Codex processes and Chromium remained active; this does not represent the no-Work REAL_IDLE state."
+  },
+  "host": "elkakas314-Lenovo-Z50-70",
+  "sampling": {
+    "initial_three_windows_utc": "2026-11-19T20:27:27Z to 2026-11-19T20:27:51Z",
+    "window_seconds": 8,
+    "system_cpu_busy_pct": [26.0, 27.8, 20.1],
+    "cpu_psi_some_avg10_pct": [9.28, 10.87, 7.52],
+    "memory_psi_some_avg10_pct": [0, 0, 0],
+    "memory_available_kib": [9948980, 9937644, 9994428],
+    "swap_free_kib": [584, 584, 584],
+    "swap_page_in_out": "0 pages in each initial window",
+    "gpu": [
+      {"model": "NVIDIA GeForce 840M", "temperature_c": 59, "utilization_pct": 0, "vram_used_mib": 5},
+      {"model": "NVIDIA GeForce 840M", "temperature_c": 58, "utilization_pct": 0, "vram_used_mib": 5},
+      {"model": "NVIDIA GeForce 840M", "temperature_c": 58, "utilization_pct": 0, "vram_used_mib": 5}
+    ]
+  },
+  "process_attribution": {
+    "cpu_pct_one_core": true,
+    "initial_window_peak_processes": [
+      {"name": "ChatGPT", "pid": 6506, "cpu_pct_one_core": 29.9, "rss_mib": 758},
+      {"name": "codex", "pid": 6403, "cpu_pct_one_core": 25.2, "rss_mib": 322},
+      {"name": "chrome", "pid": 761810, "cpu_pct_one_core": 19.4, "rss_mib": 539},
+      {"name": "ChatGPT", "pid": 5810, "cpu_pct_one_core": 18.6, "rss_mib": 137}
+    ],
+    "timed_15_second_window_utc": "2026-11-19T20:32:35Z to 2026-11-19T20:32:50Z",
+    "timed_window_state_before": {
+      "memory_available_kib": 8796680,
+      "swap_free_kib": 4,
+      "cpu_psi_some_avg10_pct": 22.98,
+      "memory_psi_some_avg10_pct": 0,
+      "gpu_temperature_c": 65,
+      "gpu_utilization_pct": 0,
+      "vram_used_mib": 5
+    },
+    "timed_window_state_after": {
+      "memory_available_kib": 8846144,
+      "swap_free_kib": 8,
+      "cpu_psi_some_avg10_pct": 20.69,
+      "memory_psi_some_avg10_pct": 0.29,
+      "gpu_temperature_c": 66,
+      "gpu_utilization_pct": 0,
+      "vram_used_mib": 5
+    },
+    "timed_processes": [
+      {"name": "chrome", "pid": 14915, "cgroup": "snap.chromium.chromium", "cpu_pct_one_core": 109.5, "pss_kib_before_after": [1386525, 1243754], "rss_kib_before_after": [1489252, 1345536]},
+      {"name": "chrome", "pid": 761810, "cpu_pct_one_core": 6.5, "pss_kib_before_after": [584570, 586666], "rss_kib_before_after": [699340, 700980]},
+      {"name": "ChatGPT", "pid": 6506, "cpu_pct_one_core": 27.3, "pss_kib_before_after": [667186, 667528], "rss_kib_before_after": [783020, 782920]},
+      {"name": "codex", "pid": 6403, "cpu_pct_one_core": 26.1, "pss_kib_before_after": [305363, 300947], "rss_kib_before_after": [331052, 326932]},
+      {"name": "MainThread", "pid": 5098, "cgroup": "vx-backend.service", "cpu_pct_one_core": 0.1, "pss_kib_before_after": [375199, 373964], "rss_kib_before_after": [388704, 387040]},
+      {"name": "mongod", "pid": 2424, "cpu_pct_one_core": 1.0, "pss_kib_before_after": [62676, 61916], "rss_kib_before_after": [63108, 62340]}
+    ],
+    "interpretation": "The transient high CPU and PSS variation came from interactive Chromium/Codex/ChatGPT processes while Work was active. Backend and MongoDB were low and stable in the timed sample. This is not evidence of a NOSTROMO service leak or a true idle baseline. No process was stopped."
+  },
+  "swap_pressure_check": {
+    "window_utc": "2026-11-19T20:33:11Z to 2026-11-19T20:33:19Z",
+    "memory_available_kib": [8851060, 8797056],
+    "swap_free_kib": [8, 8],
+    "pswpin_pages_delta": 0,
+    "pswpout_pages_delta": 0,
+    "cpu_psi_some_avg10_pct": [18.97, 19.43],
+    "memory_psi_some_avg10_pct": [0.03, 0.01],
+    "memory_psi_full_avg10_pct": 0,
+    "conclusion": "Swap was nearly full but no swap-in/out occurred in this window; memory PSI remained low. Occupancy alone does not prove active paging or a leak."
+  },
+  "runtime_readback": {
+    "backend_service": "vx-backend.service active/running, user scope, main PID 5074",
+    "backend_node_process": "MainThread PID 5098, in vx-backend.service cgroup",
+    "mcp_or_inference_call": false,
+    "agent_or_configuration_changed": false,
+    "service_restarted": false
+  },
+  "verification": {
+    "real_idle": "PENDING",
+    "sustained_memory_leak": "NOT_ESTABLISHED",
+    "nostromo_cpu_cause": "NOT_INDICATED_BY_THIS_SAMPLE",
+    "host_idle_cpu_cause": "NOT_VERIFIED; current sample includes active Chromium, ChatGPT, and Codex work",
+    "product_pass": false
+  },
+  "next_action": "Keep browser and Work processes untouched. Obtain an authentic REAL_IDLE interval with no Work activity before attributing the owner's no-use CPU concern. Continue the HOST_CONTROL R2 boundary independently; do not infer that this sample grants or removes authority.",
+  "status": "PARTIAL_WORK_ACTIVE_QUIET_NOT_REAL_IDLE"
+}
