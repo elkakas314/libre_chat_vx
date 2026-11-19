@@ -3120,6 +3120,20 @@
     "receipt": "operating/sync-receipts/e3-resource-siwc-gpu-r0-20261119.json",
     "tested_source_head": "31eb56360e8b86951d9de5b336871a7237d41146",
     "publication_at_receipt_time": "NOT_YET_PUBLISHED",
+    "origin_readback": {
+      "verified_at_utc": "2026-11-19T02:33:23Z",
+      "branch_head": "1200a61219dc894f69dada6c7c10b03622a6637d",
+      "pr54_state": "OPEN_DRAFT_UNMERGED",
+      "pr54_comment_id": 6997877162,
+      "pr59_state": "CLOSED_UNMERGED_SUPERSEDED",
+      "pr59_comment_id": 6997877485,
+      "issue37_comment_id": 6997890938
+    },
+    "drive_readback": {
+      "document_id": "1lrhx64J3hW7iW_qeGOw_fJw67rp_M-2EY_65Go2tMPY",
+      "revision_id": "AHj4eMSHIkGlO9NOCeQRvynbfsKg9wivPeAJqcn59kD9zTmpy7Ng5LWOcSRT7qNPXAsqLUMAWdumN5-dt8Q7XJInpeUT3Zy_hEH8jNMPon8",
+      "status": "APPENDED_AND_READ_BACK"
+    },
     "source_ci": {
       "result": "PASS",
       "main_tests": "274/274",
