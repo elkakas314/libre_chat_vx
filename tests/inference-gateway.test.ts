@@ -64,6 +64,29 @@ test('resolver performs cognitive failover without admitting unhealthy primary',
   assert.equal(result.selected?.id,'secondary');
 });
 
+test('duplicate route identifiers cannot transfer admission to a billable candidate', () => {
+  const resolver=new StrictZeroCostRouteResolver();
+  const result=resolver.resolve({profile:'NORMAL',nowMs:now},[
+    route({id:'duplicate',latencyMs:50}),
+    route({id:'duplicate',zeroCost:'BILLABLE',latencyMs:1}),
+    route({id:'safe',latencyMs:100}),
+  ]);
+  assert.equal(result.selected?.id,'safe');
+  assert.ok(result.admissions.filter(item=>item.routeId==='duplicate')
+    .every(item=>!item.admitted && item.reasons.includes('DUPLICATE_ROUTE_ID')));
+  const reversed=resolver.resolve({profile:'NORMAL',nowMs:now},[
+    route({id:'duplicate',zeroCost:'BILLABLE',latencyMs:1}),
+    route({id:'duplicate',latencyMs:50}),
+  ]);
+  assert.equal(reversed.selected,undefined);
+  const crossProfile=resolver.resolve({profile:'NORMAL',nowMs:now},[
+    route({id:'shared'}),
+    route({id:'shared',profile:'RAPIDO'}),
+  ]);
+  assert.equal(crossProfile.selected,undefined);
+  assert.ok(crossProfile.admissions[0].reasons.includes('DUPLICATE_ROUTE_ID'));
+});
+
 test('context policy prefers targeted reads then RAG then compact then long context', () => {
   assert.equal(chooseContextStrategy({
     targetedReadsSufficient:false,

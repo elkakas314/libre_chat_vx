@@ -1,3 +1,9 @@
+## 2026-11-19 — SOURCE: admisión de rutas con identificadores duplicados
+
+- Se reprodujo un fallo en `StrictZeroCostRouteResolver`: dos rutas con el mismo ID podían compartir la admisión de la primera, permitiendo seleccionar una ruta facturable más rápida. El selector ahora rechaza todos los candidatos con ID duplicado, incluso si el duplicado pertenece a otro perfil, y conserva la admisión asociada a cada candidato.
+- Validación local: compilación TypeScript y 23 pruebas focalizadas de gateway, adaptador nativo y rutas SIWC PASS. El caso de regresión falló antes de la corrección. SOURCE únicamente; no se ha instalado ni se acredita protección LIVE.
+- Base remota previa: `271562256be6b76e85166cc7ce7917db04713981`; consultar GitHub para HEAD y CI del cambio. El grant HOST_CONTROL, la prueba real de herramientas y SIWC siguen pendientes.
+
 ## 2026-11-19 — NOSTROMO agent real: context preflight sin MCP
 
 - MongoDB readback del agente `agent_9ex2a9buul2cwzyo`: NOSTROMO usa `qwen3:4b-instruct-2507-q4_K_M`, `maxContextTokens=6144`, 11 tools guardadas como nombres. El modelo y el catálogo guardados no se modificaron.

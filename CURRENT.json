@@ -3365,6 +3365,14 @@
     "post_stop_gpu_utilization_pct": 0,
     "material_status": "PARTIAL_NOT_PASS"
   },
+  "codex_duplicate_route_admission_20261119": {
+    "scope": "SOURCE_ONLY_NOT_INSTALLED",
+    "base_remote_head": "271562256be6b76e85166cc7ce7917db04713981",
+    "finding": "Duplicate route IDs could transfer an admitted decision to a faster billable candidate.",
+    "change": "Reject duplicate route IDs across profiles and associate each route with its own admission.",
+    "validation": "Regression reproduced before fix; TypeScript build and 23 focused gateway, native adapter and SIWC provider route tests passed locally.",
+    "live_verified": false
+  },
   "e3_publication_readback_20261119": {
     "receipt": "operating/sync-receipts/e3-publication-readback-20261119.json",
     "captured_at_utc": "2026-11-19T05:58:26Z",

@@ -171,11 +171,18 @@ export interface ProviderRouteResolver {
 export class StrictZeroCostRouteResolver implements ProviderRouteResolver {
   resolve(request: ProviderAdmissionRequest, routes: readonly ProviderRoute[]): ProviderResolution {
     const candidates=routes.filter((route)=>route.profile===request.profile);
-    const admissions=candidates.map((route)=>admitProviderRoute(route,request));
-    const allowed=candidates
-      .filter((route)=>admissions.find((a)=>a.routeId===route.id)?.admitted)
-      .sort((a,b)=>(a.latencyMs ?? Number.MAX_SAFE_INTEGER)-(b.latencyMs ?? Number.MAX_SAFE_INTEGER));
-    return { profile:request.profile, selected:allowed[0], admissions };
+    const counts=new Map<string,number>();
+    for (const route of routes) counts.set(route.id,(counts.get(route.id) ?? 0)+1);
+    const evaluated=candidates.map((route)=>{
+      const admission=admitProviderRoute(route,request);
+      return {route,admission:counts.get(route.id)! > 1
+        ? {...admission,admitted:false,reasons:[...admission.reasons,'DUPLICATE_ROUTE_ID']}
+        : admission};
+    });
+    const allowed=evaluated.filter(({admission})=>admission.admitted)
+      .sort((a,b)=>(a.route.latencyMs ?? Number.MAX_SAFE_INTEGER)-(b.route.latencyMs ?? Number.MAX_SAFE_INTEGER));
+    return { profile:request.profile, selected:allowed[0]?.route,
+      admissions:evaluated.map(({admission})=>admission) };
   }
 }
 
