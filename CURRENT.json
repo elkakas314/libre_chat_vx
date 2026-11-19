@@ -2533,5 +2533,70 @@
       "continue physical inventory and cleanup independently after evidence and grants"
     ],
     "live_status": "NOT_VERIFIED; no host mutation, OAuth consent, backend restart, MCP conversation, Mongo recovery, HUD event or mobile test was performed in this batch"
+  },
+  "e3_public_preflight_secret_gate_20261119": {
+    "readback_at_utc": "2026-11-19T00:00:21Z",
+    "branch_head": "fd1e413d2c95c75d4a6ad68d0a5d9b124d143e1a",
+    "branch_state": "clean; local equals origin",
+    "preflight": {
+      "repository": "elkakas314/libre_chat_vx",
+      "visibility": "PUBLIC",
+      "push_permission": true,
+      "diff_check": "PASS",
+      "source_alignment": "SAME_HEAD",
+      "deployment_claim": "NONE"
+    },
+    "pr54": {
+      "state": "OPEN_DRAFT_NOT_MERGED",
+      "head": "fd1e413d2c95c75d4a6ad68d0a5d9b124d143e1a"
+    },
+    "pr58": {
+      "state": "OPEN_DRAFT_NOT_MERGED",
+      "head": "74f3da64095ec39b5b820bceeb0e5901943f6c33",
+      "mergeable": false,
+      "integrated_delta": "public repository preflight fix and four offline cases already present once"
+    },
+    "inventory_validation": {
+      "mode": "READ_ONLY_NO_REGENERATION",
+      "schemas": "PASS",
+      "drive_capabilities": 119,
+      "github_requirements": 120,
+      "source_features": 39,
+      "idea_lc_crosswalk": 112,
+      "duplicate_identifiers": 0,
+      "dangling_cross_references": 0
+    },
+    "secret_review": {
+      "github_alerts": 0,
+      "detect_secrets_current_tracked_findings": 282,
+      "finding_classes": {
+        "hex_entropy": 247,
+        "base64_entropy": 27,
+        "keyword": 8
+      },
+      "findings_verified": false,
+      "checkout_shallow": true,
+      "available_commits": 37,
+      "full_history_review": "NOT_CLEARED",
+      "secret_values_emitted": false
+    },
+    "host_control_r0": {
+      "host": "elkakas314-Lenovo-Z50-70",
+      "kernel_authority": false,
+      "grants_directory": "only lock files; no R2 deploy/restart grant"
+    },
+    "siwc": {
+      "state": "SOURCE_ONLY_NOT_LIVE",
+      "candidate_sha256": "1b3302444159a1ef87a429831c74435e8658d8e8b8936b1cc82e2c3d3464a52d",
+      "installed": false,
+      "request_scoped_route_evidence": "MISSING",
+      "owner_oauth_consent": "MISSING"
+    },
+    "receipts": {
+      "issue37_comment": 6995135133,
+      "pr54_comment": 6995274163,
+      "drive_handoff_revision": "AHj4eMR2_qj1FziBtptQoi5GT6KhS3h-0M97CKFEBxVhu7PIDN2zKfw-FobB0ou7ncxcMLaZnhbpKoiWfzwkPytLN9w9V9mn4M3wLN4V3Qk"
+    },
+    "live_status": "NO_DEPLOYMENT_NO_RESTART_NO_LIVE_SIWC_OR_MCP_CLAIM"
   }
 }
