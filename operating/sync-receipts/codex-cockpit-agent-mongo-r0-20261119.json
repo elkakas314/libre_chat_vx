@@ -1,0 +1,44 @@
+{
+  "schema": "nostromo.cockpit-agent-mongo-r0.v1",
+  "observed_at_utc": "2026-11-19T22:09:58Z",
+  "base_remote_head": "e92ddbb340e0972cfd8f9402adc22f5eff36b993",
+  "agent_readback": {
+    "source": "local MongoDB LibreChat.agents, projected metadata only",
+    "agent_id": "agent_9ex2a9buul2cwzyo",
+    "name": "NOSTROMO",
+    "provider": "Ollama",
+    "model": "qwen3:4b-instruct-2507-q4_K_M",
+    "max_context_tokens": 6144,
+    "selected_tools": 11,
+    "deferred_tools": 9,
+    "direct_tools": 2,
+    "updated_at_utc": "2026-11-18T04:58:28.531Z",
+    "interpretation": "Persisted configuration, not proof that a given request used the model or executed a tool."
+  },
+  "frontend_readback": {
+    "source_bridge_sha256": "5dddf978e4474ea75eb691ebc1540389a20b68986afd2be8b28074c2fa05b377",
+    "installed_bridge_sha256": "cd4e6bc2016af8aced547a800805712fe00558259ce960221a8b441242ddfb2b",
+    "source_css_sha256": "bc549f2da39e80a98df97edafc7401fa77d253fb273d6f29cb1def398d199f2a",
+    "installed_css_sha256": "9a647efc4238e51221fe1681cd6351f3d0c7ca1e3e87b112adaac0b941028ea2",
+    "built_bridge_asset_sha256": "979607bbc2c878a1ed4105e544869aec3e96b8fd2bbe93c675113b9deee4c45f",
+    "mount": "LibreChat Presentation lazily loads the VX bridge and passes loaded messages; backend serves client/dist. The existing built bridge contains the old Qwen2.5 copy.",
+    "mutation": "No installed overlay, build artifact or service changed."
+  },
+  "historical_mcp_reconciliation": {
+    "source": "MongoDB projected message structure plus e3-live-chat-reconnect-mcp-r0-20261119.json",
+    "endpoint": "ollama, not the persisted agents endpoint",
+    "messages": 6,
+    "stored_tool_calls": 3,
+    "stored_outputs": 3,
+    "receipt_result": "Two status calls succeeded; metrics had schema validation failure. Stored output is not equivalent to successful execution.",
+    "structure": "Native tool_call has name and output directly on the tool_call object; previous SOURCE projector expected nested function fields.",
+    "verification": "Updated SOURCE projector counted three calls and three stored outputs from a sanitized projection of these six MongoDB records."
+  },
+  "source_changes": "Support native and nested tool call records; count outputs across all loaded messages; use LibreChat VIEW-scoped agent metadata query with ID and loading/error checks; identify the mode buttons as views, not agent selection; display unverified external states without inferring LIVE.",
+  "boundaries": [
+    "The agent selector still belongs to native LibreChat; the view-mode buttons do not switch agents.",
+    "The external HUD has no authenticated host observation wired and remains unverified; the Hub is a SOURCE inventory.",
+    "Production overlay, route binding, context patch, restart and end-to-end MCP test remain pending governed installation and verification."
+  ],
+  "material_verified": false
+}

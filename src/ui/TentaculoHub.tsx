@@ -70,8 +70,8 @@ export function TentaculoHub({snapshot}:{
             {local.map(item=><HubNode key={item.id} item={item} children={children}/>)}
           </ul>
         </section>
-        <section aria-label="Conexiones futuras no activadas">
-          <h5>Conexiones futuras</h5>
+        <section aria-label="Destinos externos sin lectura autenticada">
+          <h5>Destinos externos · estado no verificado</h5>
           <ul className="vx-hub-roots">
             {future.map(item=><HubNode key={item.id} item={item} children={children}/>)}
           </ul>
@@ -80,7 +80,7 @@ export function TentaculoHub({snapshot}:{
       <SiwcConnectionControl />
       <footer className="vx-hub-footer" role="note">
         <span className="vx-hub-state-dot" aria-hidden="true" />
-        MCP sin vínculo LIVE verificado · ChatGPT sin sesión OAuth verificada · sin permisos desde este panel
+        MCP sin vínculo LIVE verificado · ChatGPT: consulta el estado anterior · sin permisos desde este panel
       </footer>
     </section>
   );

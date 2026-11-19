@@ -71,7 +71,7 @@ for (const viewport of [
         await launcher.click();
         await expect(context).toBeVisible();
         await expect(context.getByRole('heading',{name:'Estado de la conversación'})).toBeVisible();
-        await expect(context.getByText(/Resumen del chat cargado/)).toBeVisible();
+        await expect(context.getByText(/Esta es una vista; no cambia el agente/)).toBeVisible();
         await expect(context.getByText('CHAT→MCP NO VERIFICADO')).toHaveCount(0);
         await expect(context.getByTestId('nostromo-autonomo-details')).toHaveCount(0);
         await context.getByRole('button',{name:'Ver modo autónomo NOSTROMO'}).click();

@@ -28,7 +28,7 @@ const sourceNodes: readonly HubItem[] = [
     parentId:'nostromo',sourceRef:'config/nostromo-voice.fragment.yaml',status:'SOURCE'},
   {id:'nostromo-tasks',system:'NOSTROMO',kind:'CAPABILITY',label:'Tareas · enlazar LibreChat',
     parentId:'nostromo',sourceRef:'agents/nostromo-autonomo/agent.candidate.json',status:'SOURCE'},
-  {id:'nostromo-chatgpt',system:'NOSTROMO',kind:'CAPABILITY',label:'ChatGPT · OAuth pendiente',
+  {id:'nostromo-chatgpt',system:'NOSTROMO',kind:'CAPABILITY',label:'ChatGPT · conexión no verificada',
     parentId:'nostromo',sourceRef:'config/chatgpt_authorized.current.json',status:'SOURCE'},
   {id:'nostromo-router',system:'NOSTROMO',kind:'CAPABILITY',label:'Router LLM / modelo local · pendientes de canario',
     parentId:'nostromo',sourceRef:'config/model_registry.current.json',status:'SOURCE'},
@@ -38,11 +38,11 @@ const sourceNodes: readonly HubItem[] = [
     parentId:'nostromo',sourceRef:'docs/NOSTROMO_AUTONOMO_INTEGRACION_OPERATIVA_20261110.md',status:'SOURCE'},
   {id:'nostromo-gpu-mock',system:'NOSTROMO',kind:'CAPABILITY',label:'Mock 4 GB · simulación informada como verificada; no VRAM física',
     parentId:'nostromo',sourceRef:'config/nostromo_autonomo.current.json',status:'SOURCE'},
-  {id:'manojos',system:'MANOJOS',kind:'SYSTEM',label:'MANOJOS · futuro',
+  {id:'manojos',system:'MANOJOS',kind:'SYSTEM',label:'MANOJOS · estado no verificado',
     sourceRef:'src/adapters/manojos3McpAdapter.ts',status:'SOURCE'},
-  {id:'vx13',system:'VX13',kind:'SYSTEM',label:'VX13 · futuro',
+  {id:'vx13',system:'VX13',kind:'SYSTEM',label:'VX13 · estado no verificado',
     sourceRef:'src/adapters/vx13LinkReadOnlyAdapter.ts',status:'SOURCE'},
-  {id:'oraculo',system:'ORACULO',kind:'SYSTEM',label:'ORÁCULO · futuro',
+  {id:'oraculo',system:'ORACULO',kind:'SYSTEM',label:'ORÁCULO · estado no verificado',
     sourceRef:'src/adapters/oraculoAdvisoryBridge.ts',status:'SOURCE'},
 ];
 

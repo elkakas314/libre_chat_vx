@@ -9,8 +9,17 @@ import {readFileSync} from 'node:fs';
 import {resolve} from 'node:path';
 import {projectTentaculoHud, createTentaculoHubTree, hubAgentCandidate}
   from '../src/hud/tentaculoHud';
-import {summarizeVxConversation} from '../src/cockpit/conversationActivity';
+import {summarizeVxConversation,selectedAgentReadback} from '../src/cockpit/conversationActivity';
 const t=Date.parse('2026-11-09T20:00:00.000Z');
+test('selected agent metadata is displayed only after matching authenticated readback',()=>{
+  const input={endpoint:'agents',agentId:'agent-one',fetching:false,error:false,
+    data:{id:'agent-one',name:'NOSTROMO',model:'qwen3:4b',instructions:'private'}};
+  assert.deepEqual(selectedAgentReadback(input),{name:'NOSTROMO',model:'qwen3:4b'});
+  assert.equal(selectedAgentReadback({...input,agentId:'agent-two'}),null);
+  assert.equal(selectedAgentReadback({...input,endpoint:'ollama'}),null);
+  assert.equal(selectedAgentReadback({...input,fetching:true}),null);
+  assert.equal(selectedAgentReadback({...input,error:true}),null);
+});
 test('conversation activity is content-free and distinguishes calls from stored outputs',()=>{
   const summary=summarizeVxConversation({
     conversationId:'conversation-1',endpoint:'agents',agentId:'agent-1',model:'qwen2.5:3b',
@@ -27,6 +36,35 @@ test('conversation activity is content-free and distinguishes calls from stored 
   assert.equal(JSON.stringify(summary).includes('private text'),false);
   assert.equal(JSON.stringify(summary).includes('private args'),false);
   assert.equal(JSON.stringify(summary).includes('{"ready":true}'),false);
+});
+test('conversation activity counts native persisted MCP records without exposing their data',()=>{
+  const summary=summarizeVxConversation({isSubmitting:false,messages:[
+    {content:[
+      {type:'tool_call',tool_call:{type:'tool_call',name:'nostromo_estado_mcp_nostromo-local',
+        args:{private:'input'},output:'private output',runStepStatus:'completed'}},
+      {type:'tool_call',tool_call:{type:'tool_call',name:'nostromo_metricas_mcp_nostromo-local',
+        output:'schema validation failed'}},
+      {type:'tool_call',tool_call:{type:'tool_call',name:'nostromo_estado_mcp_nostromo-local',
+        output:'private output'}},
+    ]},
+  ]});
+  assert.equal(summary.toolCallCount,3);
+  assert.equal(summary.storedOutputCount,3);
+  assert.deepEqual(summary.toolCalls.map(call=>call.name),[
+    'nostromo_estado_mcp_nostromo-local','nostromo_metricas_mcp_nostromo-local',
+    'nostromo_estado_mcp_nostromo-local',
+  ]);
+  assert.ok(summary.toolCalls.every(call=>call.hasStoredOutput));
+  assert.doesNotMatch(JSON.stringify(summary),/private|schema validation/);
+});
+test('stored output count covers all loaded calls, not just the six shown',()=>{
+  const summary=summarizeVxConversation({isSubmitting:false,messages:[{content:
+    Array.from({length:8},(_,i)=>({type:'tool_call',tool_call:{type:'tool_call',
+      name:'tool_'+i,output:'stored'}})),
+  }]});
+  assert.equal(summary.toolCallCount,8);
+  assert.equal(summary.storedOutputCount,8);
+  assert.equal(summary.toolCalls.length,6);
 });
 test('three target HUD surfaces are stable even without services configured',()=>{
   const result=projectTentaculoHud([],t);
@@ -129,8 +167,8 @@ test('Tentáculo Hub displays truthful SOURCE inventory without execution action
   assert.match(html,/TENTÁCULO HUB/);
   assert.match(html,/NOSTROMO · Autónomo/);
   assert.match(html,/Único MCP local/);
-  assert.match(html,/ChatGPT · OAuth pendiente/);
-  assert.match(html,/Conexiones futuras/);
+  assert.match(html,/ChatGPT · conexión no verificada/);
+  assert.match(html,/Destinos externos · estado no verificado/);
   assert.match(html,/MCP sin vínculo LIVE verificado/);
   assert.doesNotMatch(html,/MCP no instalado/);
   assert.match(html,/Git · inspección R0 opcional/);

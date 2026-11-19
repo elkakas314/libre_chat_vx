@@ -3365,6 +3365,16 @@
     "post_stop_gpu_utilization_pct": 0,
     "material_status": "PARTIAL_NOT_PASS"
   },
+  "codex_cockpit_agent_mongo_20261119": {
+    "receipt": "operating/sync-receipts/codex-cockpit-agent-mongo-r0-20261119.json",
+    "scope": "MONGO_AND_HOST_R0_PLUS_SOURCE_CHANGE_NOT_INSTALLED",
+    "agent_model": "qwen3:4b-instruct-2507-q4_K_M",
+    "selected_tools": 11,
+    "historical_ollama_mcp_calls": 3,
+    "historical_stored_outputs": 3,
+    "selector": "VIEW_ONLY_NOT_AGENT_SELECTION",
+    "live_verified": false
+  },
   "codex_duplicate_route_admission_20261119": {
     "scope": "SOURCE_ONLY_NOT_INSTALLED",
     "base_remote_head": "271562256be6b76e85166cc7ce7917db04713981",

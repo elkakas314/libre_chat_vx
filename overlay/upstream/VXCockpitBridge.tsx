@@ -9,8 +9,10 @@ import {
   PhoneModuleView,
   createPhoneModuleSnapshot,
   summarizeVxConversation,
+  selectedAgentReadback,
 } from '@librechat/vx';
 import type { HudSystem, PhoneModuleSnapshot, VxConversationActivityInput } from '@librechat/vx';
+import { useGetAgentByIdQuery } from '~/data-provider';
 import './VXCockpit.css';
 
 export interface VXCockpitBridgeProps {
@@ -30,7 +32,14 @@ export default function VXCockpitBridge({ onClose, activity: activityInput, phon
   const activeSystem:HudSystem|null = activeMode==='AUTONOMO'?null:activeMode;
   const returnButtonRef = useRef<HTMLButtonElement>(null);
   const activity = summarizeVxConversation(activityInput);
-  const storedToolOutputs = activity.toolCalls.filter((call) => call.hasStoredOutput).length;
+  // LibreChat's VIEW-scoped query returns safe agent metadata for the
+  // authenticated user. A configured model is not proof of an inference run.
+  const agentQuery = useGetAgentByIdQuery(
+    activity.endpoint === 'agents' ? activity.agentId : null,
+  );
+  const selectedAgent = selectedAgentReadback({endpoint:activity.endpoint,agentId:activity.agentId,
+    fetching:agentQuery.isFetching,error:agentQuery.isError,data:agentQuery.data});
+  const storedToolOutputs = activity.storedOutputCount;
 
   useEffect(() => { returnButtonRef.current?.focus(); }, []);
 
@@ -69,10 +78,12 @@ export default function VXCockpitBridge({ onClose, activity: activityInput, phon
           <div className="vx-live-activity-grid">
             <div><span>Conversación</span><strong>{activity.conversationId ? 'Cargada' : 'Chat nuevo'}</strong></div>
             <div><span>Agente</span><strong>{activity.endpoint === 'agents' && activity.agentId ? activity.agentId : 'No seleccionado'}</strong></div>
+            <div><span>Nombre del agente</span><strong>{selectedAgent?.name ?? 'NO VERIFICADO'}</strong></div>
             <div><span>Generación</span><strong>{activity.isSubmitting ? 'En ejecución' : 'En espera'}</strong></div>
             <div><span>Mensajes cargados</span><strong>{activity.messageCount}</strong></div>
             <div><span>Llamadas de herramienta</span><strong>{activity.toolCallCount}</strong></div>
             <div><span>Modelo de conversación</span><strong>{activity.model ?? 'No disponible en esta vista'}</strong></div>
+            <div><span>Modelo configurado del agente</span><strong>{selectedAgent?.model ?? 'NO VERIFICADO'}</strong></div>
           </div>
           {activity.toolCalls.length > 0 ? (
             <ul className="vx-live-tool-list" aria-label="Últimas llamadas registradas">
@@ -88,7 +99,7 @@ export default function VXCockpitBridge({ onClose, activity: activityInput, phon
           )}
         </section>
 
-        <nav aria-label="Modos de NOSTROMO" className="vx-mode-switcher" data-testid="nostromo-mode-switcher">
+        <nav aria-label="Vistas de NOSTROMO" className="vx-mode-switcher" data-testid="nostromo-mode-switcher">
           {([
             ['AUTONOMO','NOSTROMO Autónomo'],
             ['MANOJOS','MANOJOS'],
@@ -100,8 +111,8 @@ export default function VXCockpitBridge({ onClose, activity: activityInput, phon
         </nav>
         <p className="vx-mode-boundary" role="note">
           {activeMode==='AUTONOMO'
-            ? 'Resumen del chat cargado. El MCP y sus efectos se verifican en sus recibos de origen.'
-            : 'Sistema externo: conserva su propio MCP y permisos. No recibe la terminal local automáticamente.'}
+            ? 'Esta es una vista; no cambia el agente. Usa el selector nativo de LibreChat para elegirlo. El MCP y sus efectos se verifican en sus recibos de origen.'
+            : 'Esta es una vista; no cambia el agente. El sistema externo conserva su propio MCP y permisos.'}
         </p>
         {activeMode==='AUTONOMO' ? (
         <section className="vx-autonomy-card" aria-labelledby="vx-autonomy-heading">
@@ -141,7 +152,7 @@ export default function VXCockpitBridge({ onClose, activity: activityInput, phon
                 <span>Terminal</span><span aria-hidden="true">→</span>
                 <span>Evidencia</span>
               </div>
-              <p><strong>ChatGPT:</strong> OAuth pendiente; las rutas se confirmarán tras una lectura del host.</p>
+              <p><strong>ChatGPT:</strong> estado de conexión NO VERIFICADO; requiere lectura autenticada.</p>
               <p><strong>Terminal:</strong> la vista no consulta el servicio MCP. Una llamada y su salida se verifican en la conversación y en el receipt del MCP. Las decisiones R2 requieren autorización local exacta.</p>
               <div className="vx-mode-tools" data-testid="nostromo-tools-source">
                 <strong>Único MCP · catálogo SOURCE</strong>

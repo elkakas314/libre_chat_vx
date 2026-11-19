@@ -21,5 +21,6 @@ test('the native Tentaculo Hub includes the official consent control without cla
   }));
   assert.match(html,/data-testid="nostromo-tentaculo-hub"/);
   assert.match(html,/Continuar con ChatGPT/);
-  assert.match(html,/ChatGPT sin sesión OAuth verificada/);
+  assert.match(html,/ChatGPT: consulta el estado anterior/);
+  assert.match(html,/Estado: UNKNOWN/);
 });

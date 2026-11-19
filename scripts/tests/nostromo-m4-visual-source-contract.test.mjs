@@ -44,7 +44,9 @@ test('M4 neutral labels and offline text do not assert an installed agent/MCP',(
  assert.match(bridge,/La cabina muestra el contexto de chat cargado/);
  assert.match(bridge,/Terminal:<\/strong> la vista no consulta el servicio MCP/);
  assert.match(bridge,/Una llamada y su salida se verifican en la conversación/);
- assert.match(bridge,/ChatGPT:<\/strong> OAuth pendiente/);
+ assert.match(bridge,/ChatGPT:<\/strong> estado de conexión NO VERIFICADO/);
+ assert.match(bridge,/useGetAgentByIdQuery/);
+ assert.match(bridge,/Esta es una vista; no cambia el agente/);
  assert.doesNotMatch(bridge,/MCP local LIVE/);
  assert.match(bridge,/Esta cabina no inicia procesos ni concede permisos/);
  assert.doesNotMatch(bridge,/Tu agente de terminal en el Lenovo/);
@@ -53,7 +55,7 @@ test('M4 neutral labels and offline text do not assert an installed agent/MCP',(
 test('CI visual fixture checks the current context panel instead of obsolete claims',()=>{
  const fixture=read('ci/fixtures/native-overlay-prereq.spec.ts');
  assert.match(fixture,/name:'Estado de la conversación'/);
- assert.match(fixture,/Resumen del chat cargado/);
+ assert.match(fixture,/Esta es una vista; no cambia el agente/);
  assert.doesNotMatch(fixture,/getByRole\('heading'.*Habla\. Encarga\. Comprueba.*toBeVisible/);
  assert.ok(fixture.includes("await expect(context.getByText('CHAT→MCP NO VERIFICADO')).toHaveCount(0);"));
 });
