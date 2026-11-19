@@ -32,6 +32,7 @@ RESULT='FAIL'
 STARTED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 MONITOR_PID=''
 NODE_MODULES_LINKED='false'
+VISUAL_RESULT='NOT_RUN'
 
 if [[ ! -e "$ROOT/node_modules" && -n "${NOSTROMO_CI_NODE_MODULES:-}" ]]; then
   if [[ ! -d "$NOSTROMO_CI_NODE_MODULES" ]]; then
@@ -97,7 +98,9 @@ finish() {
   "result": "$RESULT",
   "exitCode": $status,
   "log": "operating/sync-receipts/local-ci-$SHORT_SHA.log",
-  "scope": ["npm test", "MCP stdio/package suite"],
+  "scope": ["npm test", "MCP stdio/package suite", "visual reconciliation and Playwright desktop/mobile SOURCE fixture"],
+  "visualSmoke": "$VISUAL_RESULT",
+  "visualProofRoot": "visual-evidence/",
   "hostRuntimeModified": false,
   "githubActions": false
 }
@@ -134,6 +137,27 @@ run_step() {
 }
 
 run_step source-suite npm test
+run_step visual-reconciliation npm run nostromo:visual:test
+VISUAL_BROWSER="${PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH:-}"
+if [[ -z "$VISUAL_BROWSER" ]]; then
+  for candidate in /usr/bin/chromium /usr/bin/chromium-browser /snap/bin/chromium; do
+    if [[ -x "$candidate" ]]; then VISUAL_BROWSER="$candidate"; break; fi
+  done
+fi
+if [[ -z "$VISUAL_BROWSER" ]]; then
+  if ! VISUAL_BROWSER="$(node -e 'process.stdout.write(require("playwright").chromium.executablePath())')"; then
+    echo 'LOCAL_CI_PRECONDITION=playwright_chromium_unavailable' | tee -a "$LOG"
+    exit 6
+  fi
+fi
+if [[ ! -x "$VISUAL_BROWSER" ]]; then
+  echo 'LOCAL_CI_PRECONDITION=playwright_chromium_not_executable' | tee -a "$LOG"
+  exit 6
+fi
+echo "VISUAL_BROWSER_SELECTED" | tee -a "$LOG"
+NOSTROMO_CI_SHA="$EXPECTED_SHA" PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH="$VISUAL_BROWSER" \
+  run_step source-visual-smoke node tests/visual/visual-smoke.cjs
+VISUAL_RESULT='PASS'
 run_step mcp-suite npm --prefix deployment/nostromo-mcp test
 if [[ "$(git rev-parse HEAD)" != "$EXPECTED_SHA" ]]; then
   echo 'EXACT_SHA_CHANGED_DURING_TEST' | tee -a "$LOG"

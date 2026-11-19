@@ -1,20 +1,30 @@
 /* Browser-smoke SOURCE only. A screenshot never closes a LIVE gate. */
 'use strict';
 const assert = require('node:assert/strict');
-const { build } = require('esbuild');
+const { build } = require('vite');
 const { chromium } = require('playwright');
-const { mkdirSync, writeFileSync, copyFileSync } = require('node:fs');
-const { resolve } = require('node:path');
-const { pathToFileURL } = require('node:url');
+const { mkdirSync, mkdtempSync, writeFileSync, copyFileSync, readFileSync } = require('node:fs');
+const { createServer } = require('node:http');
+const { relative, resolve } = require('node:path');
 const root = resolve(__dirname, '../..');
-const out = resolve(root, 'visual-evidence');
-mkdirSync(out, { recursive: true });
+const evidenceRoot = resolve(root, 'visual-evidence');
+mkdirSync(evidenceRoot, { recursive: true });
+const out = mkdtempSync(resolve(evidenceRoot, 'run-'));
 
 async function run() {
   await build({
-    entryPoints: [resolve(__dirname, 'fixture-entry.tsx')],
-    outfile: resolve(out, 'fixture.js'), bundle: true, platform: 'browser',
-    format: 'iife', jsx: 'automatic', logLevel: 'warning',
+    configFile: false,
+    root,
+    logLevel: 'warn',
+    esbuild: { jsx: 'automatic' },
+    build: {
+      outDir: out,
+      emptyOutDir: true,
+      rollupOptions: {
+        input: resolve(__dirname, 'fixture-entry.tsx'),
+        output: { format: 'iife', entryFileNames: 'fixture.js' },
+      },
+    },
   });
   copyFileSync(resolve(root, 'overlay/upstream/VXCockpit.css'), resolve(out, 'VXCockpit.css'));
   writeFileSync(resolve(out, 'index.html'), [
@@ -30,9 +40,37 @@ async function run() {
     'fieldset{min-width:0}li{overflow-wrap:anywhere}</style>',
     '</head><body><div id="root"></div><script src="./fixture.js"></script></body></html>',
   ].join(''));
-  const browser = await chromium.launch({ headless: true });
+  let browser;
+  let server;
   const results = [];
   try {
+    browser = await chromium.launch({
+      headless: true,
+      ...(process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH
+        ? { executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH }
+        : {}),
+    });
+    server = createServer((request, response) => {
+      let pathname;
+      try { pathname = new URL(request.url, 'http://127.0.0.1').pathname; }
+      catch { response.writeHead(400).end(); return; }
+      const assets = {
+        '/index.html': ['index.html', 'text/html; charset=utf-8'],
+        '/fixture.js': ['fixture.js', 'text/javascript; charset=utf-8'],
+        '/VXCockpit.css': ['VXCockpit.css', 'text/css; charset=utf-8'],
+      };
+      const asset = assets[pathname];
+      if (!asset || request.method !== 'GET') { response.writeHead(404).end(); return; }
+      response.writeHead(200, { 'Content-Type': asset[1], 'Cache-Control': 'no-store' });
+      response.end(readFileSync(resolve(out, asset[0])));
+    });
+    await new Promise((resolveListen, rejectListen) => {
+      server.once('error', rejectListen);
+      server.listen(0, '127.0.0.1', resolveListen);
+    });
+    const address = server.address();
+    assert.ok(address && typeof address === 'object');
+    const baseURL = `http://127.0.0.1:${address.port}`;
     for (const config of [
       { name:'desktop', width:1280, height:900 },
       { name:'mobile', width:390, height:844 },
@@ -43,7 +81,7 @@ async function run() {
       });
       const errors = [];
       page.on('pageerror', error => errors.push(String(error)));
-      await page.goto(pathToFileURL(resolve(out,'index.html')).href);
+      await page.goto(`${baseURL}/index.html`);
       await page.locator('[data-testid="vx-nostromo-cockpit"]').waitFor();
       assert.equal(
         await page.locator('[data-testid="vx-target-navigator"] button[aria-pressed="true"]').innerText(),
@@ -74,12 +112,14 @@ async function run() {
       await page.close();
     }
   } finally {
-    await browser.close();
+    if (browser) await browser.close();
+    if (server?.listening) await new Promise(resolveClose => server.close(resolveClose));
   }
   const evidence = {
     schema:'libre-chat-vx.source-browser-visual.v1',
     scope:'SOURCE_FIXTURE_ONLY', live_verified:false, live_gate_closed:false,
-    github_sha:process.env.GITHUB_SHA || null,
+    source_sha:process.env.NOSTROMO_CI_SHA || process.env.GITHUB_SHA || null,
+    artifact_dir:relative(root,out),
     observed_at_utc:new Date().toISOString(), results,
   };
   writeFileSync(resolve(out,'visual-proof.json'),JSON.stringify(evidence,null,2)+'\n');
