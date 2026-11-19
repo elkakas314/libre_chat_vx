@@ -13,6 +13,7 @@ async function fixture(run){
 test('R0 directory listing is bounded and filters sensitive leaves',async()=>{
  await fixture(async root=>{
    await writeFile(path.join(root,'public.md'),'PUBLIC');
+   await writeFile(path.join(root,'another.md'),'PUBLIC');
    await writeFile(path.join(root,'.env'),'SECRET');
    await writeFile(path.join(root,'token.txt'),'SECRET');
    await mkdir(path.join(root,'secrets'));
@@ -23,11 +24,11 @@ test('R0 directory listing is bounded and filters sensitive leaves',async()=>{
    assert.ok(x.entries.includes('public.md'));
    assert.equal(x.entries.includes('external-link'),false);
    assert.ok(x.entries.every(name=>typeof name==='string'));
-   assert.ok(!x.entries.some(y=>['.env','token.txt','secrets'].includes(y.name)));
+   assert.ok(!x.entries.some(name=>['.env','token.txt','secrets'].includes(name)));
    assert.equal(x.filteredSensitiveCount>=3,true);
    const small=await listScopedDirectory({directory:root,maxEntries:1},settings(root));
    assert.equal(small.entries.length<=1,true);
-   assert.ok(small.truncated||small.entries.length<=1);
+   assert.equal(small.truncated,true);
  });
 });
 test('R0 listing fails closed for outside, sensitive aliases and invalid limits',async()=>{
