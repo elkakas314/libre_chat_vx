@@ -2,7 +2,7 @@
  * No owner action, service discovery, network request or execution is performed here.
  */
 export type HudSystem='MANOJOS'|'VX13'|'ORACULO';
-export type HudState='VERIFIED_READ'|'DESIGN_ONLY'|'UNCONFIGURED'|'DEGRADED'|'STALE'|'NO_VERIFICADO';
+export type HudState='VERIFIED_READ'|'DESIGN_ONLY'|'UNCONFIGURED'|'DEGRADED'|'UNAVAILABLE'|'STALE'|'NO_VERIFICADO';
 export interface HudObservation {
   system:HudSystem;
   /** MANOJOS3 is accepted solely as a *runtime identity* in the MANOJOS transition. */
@@ -58,7 +58,8 @@ export function projectTentaculoHud(observations:readonly HudObservation[],
       !row?(rows.some(x=>x.status==='DESIGN')?'DESIGN_ONLY':'NO_VERIFICADO'):
       row.status==='READY'?'VERIFIED_READ':
       row.status==='DEGRADED'?'DEGRADED':
-      row.status==='DESIGN'?'DESIGN_ONLY':'STALE';
+      row.status==='DOWN'?'UNAVAILABLE':
+      row.status==='DESIGN'?'DESIGN_ONLY':'NO_VERIFICADO';
     return {system,label:label[system],subtitle:subtitle[system],state,
       ...(row?.observedAt&&{observedAt:row.observedAt}),
       evidenceRefs:row?.evidenceRefs??[],...(row?.receiptRef&&{receiptRef:row.receiptRef}),

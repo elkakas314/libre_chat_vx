@@ -123,6 +123,16 @@ test('stale timestamps or missing evidence cannot claim runtime health',()=>{
     observedAt:'2026-11-09T19:00:00.000Z',peerVerified:true,evidenceRefs:['receipt:foo-12345678']}],t);
   assert.equal(r[0].state,'NO_VERIFICADO');
 });
+test('fresh verified DOWN and UNKNOWN reports are not mislabeled as stale',()=>{
+  const observation={system:'MANOJOS' as const,reportedProject:'MANOJOS3',
+    observedAt:'2026-11-09T19:59:00.000Z',peerVerified:true,evidenceRefs:['receipt:manojos-ready-001']};
+  assert.equal(projectTentaculoHud([{...observation,status:'DOWN'}],t)[0].state,'UNAVAILABLE');
+  assert.equal(projectTentaculoHud([{...observation,status:'UNKNOWN'}],t)[0].state,'NO_VERIFICADO');
+  const cards=projectTentaculoHud([{...observation,status:'DOWN'}],t);
+  const html=renderToStaticMarkup(React.createElement(TentaculoHud,{cards,activeSystem:'MANOJOS'}));
+  assert.match(html,/Servicio no disponible/);
+  assert.doesNotMatch(html,/Lectura caducada/);
+});
 test('Hub remains a typed hierarchy, with no new executor',()=>{
   const items=[
     {id:'vx13',system:'VX13' as const,kind:'SYSTEM' as const,label:'VX13',sourceRef:'drive:A91',status:'SOURCE' as const},

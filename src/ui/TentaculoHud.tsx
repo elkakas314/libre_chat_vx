@@ -3,7 +3,7 @@ import * as React from 'react';
 
 const states:Record<HudProjection['state'],string>={
   VERIFIED_READ:'Lectura verificada',DESIGN_ONLY:'En diseño',
-  UNCONFIGURED:'Enlace sin verificar',DEGRADED:'Servicio degradado',
+  UNCONFIGURED:'Enlace sin verificar',DEGRADED:'Servicio degradado',UNAVAILABLE:'Servicio no disponible',
   STALE:'Lectura caducada',NO_VERIFICADO:'No verificado',
 };
 
