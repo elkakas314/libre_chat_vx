@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-# Manual, serialized local SOURCE CI. No service, host, OAuth, or GitHub Actions writes.
+# Manual, serialized local SOURCE CI. Steps yield with nice/idle-I/O and one allowed CPU by default.
+# Set NOSTROMO_CI_SINGLE_CPU=0 to opt out, or NOSTROMO_CI_CPU=<id> to choose the allowed CPU.
+# No service, host, OAuth, or GitHub Actions writes.
 set -euo pipefail
 set +x
 
@@ -33,6 +35,43 @@ STARTED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 MONITOR_PID=''
 NODE_MODULES_LINKED='false'
 VISUAL_RESULT='NOT_RUN'
+SINGLE_CPU="${NOSTROMO_CI_SINGLE_CPU:-1}"
+[[ "$SINGLE_CPU" == 0 || "$SINGLE_CPU" == 1 ]] || {
+  echo 'NOSTROMO_CI_SINGLE_CPU must be 0 or 1' >&2
+  exit 2
+}
+BUILD_CPU=''
+if [[ -n "${NOSTROMO_CI_CPU:-}" ]]; then
+  [[ "$NOSTROMO_CI_CPU" =~ ^[0-9]+$ ]] || {
+    echo 'NOSTROMO_CI_CPU must be one numeric CPU id' >&2
+    exit 2
+  }
+  if [[ "$SINGLE_CPU" == 1 ]]; then
+    command -v taskset >/dev/null 2>&1 || {
+      echo 'NOSTROMO_CI_CPU requires taskset' >&2
+      exit 6
+    }
+    taskset -c "$NOSTROMO_CI_CPU" true 2>/dev/null || {
+      echo 'NOSTROMO_CI_CPU is outside the allowed CPU set' >&2
+      exit 6
+    }
+    BUILD_CPU="$NOSTROMO_CI_CPU"
+  fi
+elif [[ "$SINGLE_CPU" == 1 ]] && command -v taskset >/dev/null 2>&1 && [[ -r /proc/self/status ]]; then
+  allowed_cpus="$(awk '/^Cpus_allowed_list:/ {print $2}' /proc/self/status)"
+  candidate_cpu="${allowed_cpus##*[-,]}"
+  if [[ "$candidate_cpu" =~ ^[0-9]+$ ]] && taskset -c "$candidate_cpu" true 2>/dev/null; then
+    BUILD_CPU="$candidate_cpu"
+  fi
+fi
+BUILD_POLICY='nice=15;ionice=idle'
+if [[ -n "$BUILD_CPU" ]]; then
+  BUILD_POLICY+=";cpu_affinity=$BUILD_CPU"
+elif [[ "$SINGLE_CPU" == 0 ]]; then
+  BUILD_POLICY+=';cpu_affinity=disabled'
+else
+  BUILD_POLICY+=';cpu_affinity=unavailable'
+fi
 
 if [[ ! -e "$ROOT/node_modules" && -n "${NOSTROMO_CI_NODE_MODULES:-}" ]]; then
   if [[ ! -d "$NOSTROMO_CI_NODE_MODULES" ]]; then
@@ -101,6 +140,7 @@ finish() {
   "scope": ["npm test", "MCP stdio/package suite", "visual reconciliation and Playwright desktop/mobile SOURCE fixture"],
   "visualSmoke": "$VISUAL_RESULT",
   "visualProofRoot": "visual-evidence/",
+  "resourcePolicy": "$BUILD_POLICY",
   "hostRuntimeModified": false,
   "githubActions": false
 }
@@ -124,7 +164,7 @@ MONITOR_PID=$!
 run_step() {
   local label="$1"; shift
   echo "STEP_BEGIN $label" | tee -a "$LOG"
-  if "$@" 2>&1 | sed -E \
+  if run_low_priority "$@" 2>&1 | sed -E \
       -e 's/(Bearer[[:space:]]+)[A-Za-z0-9._~+\/-]+/\1[REDACTED]/g' \
       -e 's/(github_pat_|gho_|ghp_)[A-Za-z0-9_]{8,}/[REDACTED]/g' \
       -e 's/(sk-[A-Za-z0-9_-]{8,})/[REDACTED]/g' | tee -a "$LOG"; then
@@ -135,6 +175,16 @@ run_step() {
     exit "$status"
   fi
 }
+
+run_low_priority() {
+  local -a prefix=()
+  if [[ -n "$BUILD_CPU" ]]; then prefix+=(taskset -c "$BUILD_CPU"); fi
+  if command -v ionice >/dev/null 2>&1; then prefix+=(ionice -c 3); fi
+  if command -v nice >/dev/null 2>&1; then prefix+=(nice -n 15); fi
+  "${prefix[@]}" "$@"
+}
+
+echo "BUILD_RESOURCE_POLICY $BUILD_POLICY" | tee -a "$LOG"
 
 run_step source-suite npm test
 run_step visual-reconciliation npm run nostromo:visual:test
