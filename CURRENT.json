@@ -3090,6 +3090,15 @@
     "nostromo_process_load": "LOW_AT_READBACK",
     "mobile_access": "NOT_VERIFIED",
     "issue_37_comment": "6996380851"
+  },
+  "e3_siwc_agentclient_wiring_r0_20261119": {
+    "receipt": "operating/sync-receipts/siwc-agentclient-wiring-r0-20261119.json",
+    "source_change_base_head": "9c59d36e146f7b3a26c6f131d42d73e855fb4b54",
+    "change": "AgentClient binding now looks up app.locals.nostromoSiwcConnectionService, matching the key registered by SiwcConnectionService.registerLibreChat",
+    "focused_tests": "3/3 PASS",
+    "runtime_installed": false,
+    "live_siwc": "NOT_VERIFIED",
+    "next": "Run exact-candidate local CI when host CPU contention subsides; complete authenticated route-input readback and obtain OAuth consent plus HOST_CONTROL R2 before deploy/restart"
   }
   }
 }

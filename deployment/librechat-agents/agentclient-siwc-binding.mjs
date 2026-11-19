@@ -37,7 +37,7 @@ export function patchAgentClientSource(source) {
   ]);
   // ${MARKER}: choose a consented per-user SIWC provider before initializeAgent fixes the LLM.
   let siwcRunBinding;
-  const siwcResolver = req.app?.locals?.nostromoSiwc?.resolveAgentClientRunBinding;
+  const siwcResolver = req.app?.locals?.nostromoSiwcConnectionService?.resolveAgentClientRunBinding;
   if (typeof siwcResolver === 'function') {
     const authenticatedUserId = req.user?.id?.toString?.();
     if (!authenticatedUserId) throw new Error('SIWC_AUTHENTICATED_USER_REQUIRED');

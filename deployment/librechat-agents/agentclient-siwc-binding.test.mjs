@@ -16,6 +16,8 @@ test('SIWC patch binds the authenticated route before the primary agent LLM is i
   const updated = patchAgentClientSource(source);
   assert.ok(updated.includes("require('@librechat/vx/dist/src/llm/siwcOpenAiFetch.js')"));
   assert.ok(updated.includes('resolveAgentClientRunBinding'));
+  assert.ok(updated.includes('req.app?.locals?.nostromoSiwcConnectionService?.resolveAgentClientRunBinding'));
+  assert.ok(!updated.includes('req.app?.locals?.nostromoSiwc?.resolveAgentClientRunBinding'));
   assert.ok(updated.includes('authenticatedUserId'));
   assert.ok(updated.includes('agentId: primaryAgent?.id?.toString?.()'));
   assert.ok(updated.includes('Object.assign(primaryAgent, createSiwcAgentClientRunAgent(primaryAgent, resolved.route, resolved.fetch))'));

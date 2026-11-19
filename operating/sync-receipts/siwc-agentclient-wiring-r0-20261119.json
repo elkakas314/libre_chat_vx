@@ -1,0 +1,38 @@
+{
+  "observed_at_utc": "2026-11-19T01:14:13Z",
+  "evidence_class": "SOURCE_CHANGE_FOCUSED_TEST_AND_HOST_POST_TEST_RESOURCE_READBACK",
+  "source_branch_base_head": "9c59d36e146f7b3a26c6f131d42d73e855fb4b54",
+  "upstream_pin": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
+  "change": {
+    "file": "deployment/librechat-agents/agentclient-siwc-binding.mjs",
+    "sha256": "b3d88a376402bdb89d48286c13ef77d33e01f94dc951acda0bf63704a72463cd",
+    "description": "AgentClient resolves app.locals.nostromoSiwcConnectionService, matching the service property registered by SiwcConnectionService.registerLibreChat. Previously it looked up app.locals.nostromoSiwc and silently bypassed the authenticated SIWC resolver."
+  },
+  "regression_test": {
+    "file": "deployment/librechat-agents/agentclient-siwc-binding.test.mjs",
+    "sha256": "af2f0b43c490bb223a889fddc11e6c726598728c09b554f14bf287fa7a36d6f7",
+    "asserts_registered_service_property_is_used": true
+  },
+  "test": {
+    "command": "node --test deployment/librechat-agents/agentclient-siwc-binding.test.mjs deployment/librechat-agents/nostromo-siwc-bootstrap.test.cjs",
+    "exit_code": 0,
+    "passed": 3,
+    "failed": 0,
+    "scope": "focused SOURCE patch generation, fail-closed and bootstrap tests; not live AgentClient or OAuth"
+  },
+  "host_after_test": {
+    "sampled_around_utc": "2026-11-19T01:14Z",
+    "cpu_psi_some_avg10_pct": 40.27,
+    "cpu_psi_some_avg60_pct": 31.48,
+    "cpu_idle_pct_vmstat": [74, 11],
+    "memory_psi_some_full_pct": [0, 0],
+    "nostromo_processes": {
+      "backend_pid_5098": {"rss_kb": 309064, "ps_cpu_pct": 0.2},
+      "mcp_pid_5197": {"rss_kb": 55772, "ps_cpu_pct": 0.0},
+      "ollama_pid_1320": {"rss_kb": 36236, "ps_cpu_pct": 0.0}
+    },
+    "interpretation": "CPU pressure was elevated in a short post-test sample. NOSTROMO processes showed low CPU; the sample does not establish causality. No memory pressure observed. No additional build/full-suite run started."
+  },
+  "deployment": "NOT_APPLIED; productive upstream and backend untouched",
+  "next": "Revalidate full local CI against the committed candidate when CPU contention subsides; keep LIVE SIWC blocked until authenticated route-input readback, owner OAuth consent, and exact HOST_CONTROL deployment/restart authorization are available."
+}
