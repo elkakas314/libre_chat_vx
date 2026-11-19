@@ -1,6 +1,6 @@
 {
   "schema": "libre-chat-vx.current.v2",
-  "status": "E3_LOCAL_TOOL_DEFERRAL_SOURCE_CANDIDATE_TESTED_NOT_DEPLOYED",
+  "status": "E3_LOCAL_TOOL_DEFERRAL_PUBLISHED_PENDING_HOST_R2",
   "latest_native_tool_deferral_candidate": {
     "receipt": "operating/sync-receipts/e3-local-tool-contextual-deferral-candidate-20261119.json",
     "captured_at_utc": "2026-11-19T06:40:58Z",
@@ -16,6 +16,14 @@
     "backend_restarted": false,
     "live_mcp_acceptance": false,
     "status": "SOURCE_CANDIDATE_TESTED_NOT_DEPLOYED"
+  },
+  "latest_native_tool_deferral_publication": {
+    "receipt": "operating/sync-receipts/e3-local-tool-deferral-publication-readback-20261119.json",
+    "source_commit": "6f726257ea743d5d3b114a598021641332e98816",
+    "branch_remote_readback": "MATCH",
+    "pr54_head_readback": "MATCH_DRAFT_OPEN",
+    "host_deployment": "WAITING_FOR_EXACT_HOST_CONTROL_R2",
+    "status": "SOURCE_PUBLISHED_RUNTIME_UNCHANGED"
   },
   "latest_context_snapshot": {
     "receipt": "operating/sync-receipts/e3-live-context-snapshot-tool-schema-breakdown-20261119.json",

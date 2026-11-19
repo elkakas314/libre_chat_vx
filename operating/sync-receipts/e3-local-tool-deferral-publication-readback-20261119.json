@@ -1,0 +1,94 @@
+{
+  "schema": "nostromo.e3.local-tool-deferral-publication-readback.v1",
+  "captured_at_utc": "2026-11-19T19:30:35Z",
+  "scope": "Publish the tested source candidate and read back repository/PR state; inspect the governed runtime hook and HOST_CONTROL authority without changing the host",
+  "publication": {
+    "repository": "elkakas314/libre_chat_vx",
+    "branch": "integration/nostromo-canon-20261118-r1",
+    "source_commit": "6f726257ea743d5d3b114a598021641332e98816",
+    "remote_ref_sha": "6f726257ea743d5d3b114a598021641332e98816",
+    "pr": 54,
+    "pr_head_sha": "6f726257ea743d5d3b114a598021641332e98816",
+    "pr_state": "OPEN_DRAFT",
+    "base": "main",
+    "merge_performed": false,
+    "ci_polled_or_started": false
+  },
+  "test": {
+    "command": "node --test deployment/librechat-agents/deferred-instance-filter.test.mjs",
+    "result": "PASS",
+    "passed": 3,
+    "failed": 0,
+    "all_2026_11_19_receipts_parse": true,
+    "git_diff_check": "PASS",
+    "changed_file_credential_pattern_scan": "NO_MATCH"
+  },
+  "host_readback": {
+    "host": "elkakas314-Lenovo-Z50-70",
+    "host_control_kernel_authority": false,
+    "host_control_grants_directory_entries": [
+      "restart-canary.lock",
+      "test-grant-0001.lock"
+    ],
+    "active_grant_for_deployment": false,
+    "backend_unit": "vx-backend.service",
+    "unit_scope": "user",
+    "unit_state": "active/running",
+    "exec_start_pre": "/home/elkakas314/librechat/nostromo/tools/deferred-instance-filter.mjs --apply --package-root /home/elkakas314/librechat/upstream/node_modules/@librechat/agents",
+    "active_hook_sha256_preimage": "df61585464616452899fe3f41601334f69a5b8e07d29b4bdafd1bad7dbae6f5c",
+    "active_hook_targets": "AgentContext source/CJS/ESM only; LocalCodingTools deferral absent",
+    "agents_package": "@librechat/agents@4.0.1",
+    "runtime_hook_changed": false,
+    "package_files_changed": false,
+    "backend_restarted": false
+  },
+  "requested_host_control_r2_scope": {
+    "hook_write": "/home/elkakas314/librechat/nostromo/tools/deferred-instance-filter.mjs",
+    "package_root": "/home/elkakas314/librechat/upstream/node_modules/@librechat/agents",
+    "package_files_only": [
+      "src/tools/local/LocalCodingTools.ts",
+      "dist/cjs/tools/local/LocalCodingTools.cjs",
+      "dist/esm/tools/local/LocalCodingTools.mjs"
+    ],
+    "restart_unit_once": "user:vx-backend.service",
+    "preimage_required": true
+  },
+  "resource_samples": {
+    "before_test": {
+      "at_utc": "2026-11-19T19:26:40Z",
+      "memory_available_bytes": 10994921472,
+      "swap_free_bytes": 57344,
+      "cpu_psi_some_avg10": 15.56,
+      "cpu_psi_full_avg10": 0,
+      "memory_psi_some_avg10": 0,
+      "memory_psi_full_avg10": 0
+    },
+    "during_test": {
+      "node_rss_kib_sample": 28484,
+      "node_cpu_pct_sample": 0,
+      "cpu_psi_some_avg10": 15.56,
+      "memory_psi_some_avg10": 0
+    },
+    "after_test": {
+      "at_utc": "2026-11-19T19:30:35Z",
+      "memory_available_bytes": 9797726208,
+      "swap_free_bytes": 983040,
+      "cpu_psi_some_avg10": 24.31,
+      "cpu_psi_full_avg10": 0,
+      "memory_psi_some_avg10": 0,
+      "memory_psi_full_avg10": 0
+    },
+    "interpretation": "Host-wide CPU PSI increased after the 156 ms focused test; the test itself sampled at 0% CPU. MemAvailable changed but memory PSI remained zero. This short observation does not attribute the host pressure change to the test or prove a leak. GPU was not sampled because no inference ran."
+  },
+  "product_acceptance": {
+    "context_reduction_live": false,
+    "nostromo_estado_live": false,
+    "nostromo_metricas_live": false,
+    "final_response_live": false,
+    "mongo_readback_after_candidate": false,
+    "reconnect_after_candidate": false,
+    "final_verified": false
+  },
+  "next_action": "Wait for the exact local HOST_CONTROL R2 grant. If issued, preserve the hook preimage, copy the published candidate to the hook path, run its version/context-guarded apply against only the specified package root, verify file hashes, restart the user service once, then capture context and run one bounded real LibreChat canary. Otherwise leave runtime unchanged.",
+  "status": "SOURCE_PUBLISHED_RUNTIME_BLOCKED_HOST_CONTROL_R2"
+}
