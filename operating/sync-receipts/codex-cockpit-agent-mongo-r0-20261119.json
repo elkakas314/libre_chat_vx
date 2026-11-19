@@ -31,8 +31,8 @@
     "stored_tool_calls": 3,
     "stored_outputs": 3,
     "receipt_result": "Two status calls succeeded; metrics had schema validation failure. Stored output is not equivalent to successful execution.",
-    "structure": "Native tool_call has name and output directly on the tool_call object; previous SOURCE projector expected nested function fields.",
-    "verification": "Updated SOURCE projector counted three calls and three stored outputs from a sanitized projection of these six MongoDB records."
+    "structure": "Native tool_call has name and output directly on the tool_call object; previous projector expected nested function fields for those attributes.",
+    "verification": "Against a sanitized projection of the six MongoDB records, the installed projector counted three calls but displayed three generic names and zero stored outputs. The updated SOURCE projector counted three calls and three stored outputs with their names."
   },
   "source_changes": "Support native and nested tool call records; count outputs across all loaded messages; use LibreChat VIEW-scoped agent metadata query with ID and loading/error checks; identify the mode buttons as views, not agent selection; display unverified external states without inferring LIVE.",
   "boundaries": [

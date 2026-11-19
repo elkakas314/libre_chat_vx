@@ -2,7 +2,7 @@
 
 - MongoDB confirma NOSTROMO en Ollama/Qwen3 4B, contexto 6144, 11 herramientas seleccionadas, nueve diferidas y dos directas. Es configuración persistida, no prueba de ejecución de un turno.
 - La cabina instalada y su CSS difieren del SOURCE y el asset servido contiene el texto antiguo Qwen2.5. No se han sobrescrito. El selector de modos de la cabina solo cambia la vista, no el agente nativo.
-- En seis mensajes históricos del endpoint Ollama, MongoDB conserva tres llamadas y tres salidas; el receipt indica dos estados correctos y una validación fallida. La estructura nativa coloca nombre y salida directamente en `tool_call`; el proyector anterior esperaba `function`. SOURCE ahora cubre ambas formas y cuenta todas las salidas, sin inferir éxito.
+- En seis mensajes históricos del endpoint Ollama, MongoDB conserva tres llamadas y tres salidas; el receipt indica dos estados correctos y una validación fallida. El proyector instalado cuenta las tres llamadas, pero muestra nombres genéricos y cero salidas porque espera `function`. SOURCE reconoce los atributos directos y cuenta todas las salidas, sin inferir éxito.
 - La cabina SOURCE consulta metadatos básicos del agente seleccionado con el hook autenticado VIEW de LibreChat y muestra NO VERIFICADO si faltan o no coinciden. El texto aclara que los botones solo cambian la vista; HUD/Hub sin readback de destino siguen no verificados. No se acredita instalación ni LIVE.
 - Receipt: `operating/sync-receipts/codex-cockpit-agent-mongo-r0-20261119.json`. Falta integrar la selección efectiva de agente con el selector nativo sin hardcodear identidad, cablear observaciones autenticadas de destinos y desplegar con preimagen/grant y readback.
 
