@@ -1,0 +1,36 @@
+{
+  "observed_at_utc": "2026-11-19T01:00:22Z",
+  "evidence_class": "HOST_CONTROL_R0_MOBILE_LISTENER_READBACK",
+  "source_branch_head": "71c6c5ace5f1598d1cc970930a3b7a056cb78279",
+  "tailscale": {
+    "backend_state": "Running",
+    "self_online": true,
+    "serve_config_present": false,
+    "serve_ports": []
+  },
+  "listeners": [
+    {
+      "address": "127.0.0.1:3080",
+      "protocol": "tcp",
+      "state": "LISTEN",
+      "process": "node api/server/index.js",
+      "pid": 5098,
+      "cwd": "/home/elkakas314/librechat/upstream"
+    },
+    {
+      "address": "100.74.177.84%tailscale0:443",
+      "protocol": "tcp",
+      "state": "LISTEN",
+      "process_attribution": "UNAVAILABLE_IN_R0_READBACK"
+    },
+    {
+      "address": "[fd7a:115c:a1e0::2c01:b1f2]%tailscale0:443",
+      "protocol": "tcp",
+      "state": "LISTEN",
+      "process_attribution": "UNAVAILABLE_IN_R0_READBACK"
+    }
+  ],
+  "interpretation": "Tailscale Serve is not configured. A TCP listener exists on tailnet IPv4/IPv6 port 443, but its owner and NOSTROMO routing were not verified. No claim of mobile access is made.",
+  "actions_taken": "Filtered HOST_CONTROL R0 listener/process readbacks only; no network, service, or file changes.",
+  "next": "Identify the owner and route for tailnet port 443 using an authorized bounded readback; then test the NOSTROMO mobile endpoint from a real tailnet client."
+}
