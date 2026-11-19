@@ -141,7 +141,7 @@ jobs:
       - name: Install visual source tooling in disposable runner
         run: |
           npm install --no-audit --no-fund
-          npm install --no-save --no-package-lock esbuild@0.25.9 playwright@1.55.0
+          npm install --no-save --no-package-lock esbuild@0.25.9 playwright@1.55.0 vite@6.3.5
       - name: Install Chromium in runner
         run: npx playwright install --with-deps chromium
       - name: Exercise NOSTROMO React source in browser (not host LIVE)
