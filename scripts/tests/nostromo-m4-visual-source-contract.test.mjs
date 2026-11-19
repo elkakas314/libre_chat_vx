@@ -48,6 +48,9 @@ test('M4 neutral labels and offline text do not assert an installed agent/MCP',(
  assert.match(bridge,/useGetAgentByIdQuery/);
  assert.match(bridge,/useMCPConnectionStatusQuery\(\{enabled:showHub\}\)/);
  assert.match(bridge,/Esta es una vista; no cambia el agente/);
+ assert.match(bridge,/Elegir agente en LibreChat/);
+ assert.match(bridge,/selectors\.length===1/);
+ assert.match(bridge,/Selector nativo no disponible/);
  assert.doesNotMatch(bridge,/MCP local LIVE/);
  assert.match(bridge,/Esta cabina no inicia procesos ni concede permisos/);
  assert.doesNotMatch(bridge,/Tu agente de terminal en el Lenovo/);

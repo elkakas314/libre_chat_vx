@@ -11,7 +11,20 @@ import {projectTentaculoHud, createTentaculoHubTree, hubAgentCandidate}
   from '../src/hud/tentaculoHud';
 import {summarizeVxConversation,selectedAgentReadback} from '../src/cockpit/conversationActivity';
 import {projectMcpConnectionReadback} from '../src/cockpit/mcpConnectionReadback';
+import {openNativeAgentSelector} from '../src/cockpit/nativeAgentSelector';
 const t=Date.parse('2026-11-09T20:00:00.000Z');
+test('agent selection delegates to the visible native selector without selecting an identity',()=>{
+  let focused=0,clicked=0;
+  const button={disabled:false,getClientRects:()=>({length:1}),getAttribute:()=> 'false',
+    focus:()=>{focused++;},click:()=>{clicked++;}};
+  assert.equal(openNativeAgentSelector(button),true);
+  assert.equal(focused,1);assert.equal(clicked,1);
+  assert.equal(openNativeAgentSelector({...button,getAttribute:()=> 'true'}),true);
+  assert.equal(clicked,1);
+  assert.equal(openNativeAgentSelector({...button,disabled:true}),false);
+  assert.equal(openNativeAgentSelector({...button,getClientRects:()=>({length:0})}),false);
+  assert.equal(openNativeAgentSelector(null),false);
+});
 test('MCP status readback exposes only valid recent native connection states',()=>{
   const input={fetching:false,error:false,receivedAtMs:t-1000,nowMs:t,
     data:{success:true,connectionStatus:{'nostromo-local':{connectionState:'connected',

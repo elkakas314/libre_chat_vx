@@ -72,6 +72,13 @@ for (const viewport of [
         await expect(context).toBeVisible();
         await expect(context.getByRole('heading',{name:'Estado de la conversación'})).toBeVisible();
         await expect(context.getByText(/Esta es una vista; no cambia el agente/)).toBeVisible();
+        if (viewport.label === 'desktop') {
+          const nativeSelector=page.getByTestId('model-selector-button');
+          await context.getByRole('button',{name:'Elegir agente en LibreChat'}).click();
+          await expect(nativeSelector).toHaveAttribute('aria-expanded','true');
+          await nativeSelector.click();
+          await expect(nativeSelector).toHaveAttribute('aria-expanded','false');
+        }
         await expect(context.getByText('CHAT→MCP NO VERIFICADO')).toHaveCount(0);
         await expect(context.getByTestId('nostromo-autonomo-details')).toHaveCount(0);
         await context.getByRole('button',{name:'Ver modo autónomo NOSTROMO'}).click();

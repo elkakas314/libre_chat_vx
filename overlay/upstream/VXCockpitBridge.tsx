@@ -11,6 +11,7 @@ import {
   summarizeVxConversation,
   selectedAgentReadback,
   projectMcpConnectionReadback,
+  openNativeAgentSelector,
 } from '@librechat/vx';
 import type { HudSystem, PhoneModuleSnapshot, VxConversationActivityInput } from '@librechat/vx';
 import { useGetAgentByIdQuery, useMCPConnectionStatusQuery } from '~/data-provider';
@@ -29,6 +30,7 @@ export default function VXCockpitBridge({ onClose, activity: activityInput, phon
   const [showAutonomous, setShowAutonomous] = useState(false);
   const [showHub, setShowHub] = useState(false);
   const [showPhone, setShowPhone] = useState(false);
+  const [selectorUnavailable, setSelectorUnavailable] = useState(false);
   const [activeMode, setActiveMode] = useState<'AUTONOMO'|HudSystem>('AUTONOMO');
   const activeSystem:HudSystem|null = activeMode==='AUTONOMO'?null:activeMode;
   const returnButtonRef = useRef<HTMLButtonElement>(null);
@@ -49,7 +51,11 @@ export default function VXCockpitBridge({ onClose, activity: activityInput, phon
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose?.();
+      if (event.key !== 'Escape' || event.defaultPrevented) return;
+      const target=event.target;
+      if (target instanceof Element && target.closest('[role="menu"], [role="dialog"]')) return;
+      if (document.querySelector('[data-testid="model-selector-button"][aria-expanded="true"]')) return;
+      onClose?.();
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
@@ -118,6 +124,13 @@ export default function VXCockpitBridge({ onClose, activity: activityInput, phon
             ? 'Esta es una vista; no cambia el agente. Usa el selector nativo de LibreChat para elegirlo. El MCP y sus efectos se verifican en sus recibos de origen.'
             : 'Esta es una vista; no cambia el agente. El sistema externo conserva su propio MCP y permisos.'}
         </p>
+        {activeMode==='AUTONOMO' ? <div>
+          <button type="button" onClick={() => {
+            const selectors=document.querySelectorAll<HTMLButtonElement>('[data-testid="model-selector-button"]');
+            setSelectorUnavailable(!openNativeAgentSelector(selectors.length===1 ? selectors[0] : null));
+          }}>Elegir agente en LibreChat</button>
+          {selectorUnavailable ? <p role="status">Selector nativo no disponible en esta vista.</p> : null}
+        </div> : null}
         {activeMode==='AUTONOMO' ? (
         <section className="vx-autonomy-card" aria-labelledby="vx-autonomy-heading">
           <div className="vx-autonomy-topline">

@@ -3373,7 +3373,7 @@
     "historical_ollama_mcp_calls": 3,
     "historical_stored_outputs": 3,
     "mcp_connection_source": "AUTHENTICATED_NATIVE_STATUS_QUERY_SOURCE_ONLY_NOT_INSTALLED",
-    "selector": "VIEW_ONLY_NOT_AGENT_SELECTION",
+    "selector": "VIEW_ONLY_WITH_NATIVE_SELECTOR_LAUNCHER_SOURCE_NOT_INSTALLED",
     "live_verified": false
   },
   "codex_duplicate_route_admission_20261119": {

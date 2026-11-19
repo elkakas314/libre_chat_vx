@@ -113,6 +113,7 @@ export * from './operating/bootstrap';
 export { resolveFocus, participantsForFocus } from './cockpit/currentFocus';
 export * from './cockpit/conversationActivity';
 export * from './cockpit/mcpConnectionReadback';
+export * from './cockpit/nativeAgentSelector';
 export type {
   CurrentFocus as CockpitCurrentFocus,
   FocusResolution,
