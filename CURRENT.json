@@ -3059,8 +3059,8 @@
     "next": "Use an authenticated LibreChat browser session to call nostromo_estado and nostromo_directorio_listar in one saved conversation; then verify MongoDB readback/reconnect. Preserve the runtime/source divergence until authorized reversible sync.",
     "drive_handoff": {
       "document_id": "1lrhx64J3hW7iW_qeGOw_fJw67rp_M-2EY_65Go2tMPY",
-      "revision_id": "AHj4eMQVqqmmFUqWJb_ZQS5se45wV4V0OcWg1F6e91dznz-2JwqPBEsk-WU-n0op2bdILKcae6Lec2d_e3WJ71YvVgEQdqONGxg2X5K06jk",
-      "readback": "host MCP R0, mobile listener/service and resource receipts inserted and read back; mobile access remains unverified"
+      "revision_id": "AHj4eMRtTx6762WX3uw8PknJe9zSuU3JVGriHXXG0i4zUvRuZyabNNUF9uo6ZU7tZ_EoVPEukzTKrIV7dohw3EyiTHyVqxYGoRs6UoEZ1xs",
+      "readback": "host MCP R0, mobile listener/service/resource and SIWC binding receipts inserted and read back; mobile access remains unverified"
     },
     "siwc_package_candidate_revalidation": {
       "artifact": "/tmp/nostromo-librechat-vx-0.1.0-7ed1863.tgz",
@@ -3094,11 +3094,13 @@
   "e3_siwc_agentclient_wiring_r0_20261119": {
     "receipt": "operating/sync-receipts/siwc-agentclient-wiring-r0-20261119.json",
     "source_change_base_head": "9c59d36e146f7b3a26c6f131d42d73e855fb4b54",
+    "source_change_commit": "1d9491a",
     "change": "AgentClient binding now looks up app.locals.nostromoSiwcConnectionService, matching the key registered by SiwcConnectionService.registerLibreChat",
     "focused_tests": "3/3 PASS",
     "runtime_installed": false,
     "live_siwc": "NOT_VERIFIED",
-    "next": "Run exact-candidate local CI when host CPU contention subsides; complete authenticated route-input readback and obtain OAuth consent plus HOST_CONTROL R2 before deploy/restart"
+    "issue_37_comment": "6996655134",
+    "next": "Implement/verify authenticated route-input readback; then run exact-candidate local CI when host CPU contention subsides. Runtime deployment still needs owner OAuth consent and exact HOST_CONTROL R2."
   }
   }
 }
