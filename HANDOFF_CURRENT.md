@@ -459,3 +459,10 @@ PRECEDENCE: this update supersedes older `PR26 DRAFT` or ChatGPT usage assumptio
 - Read-only GitHub API confirms the public repository has Secret Scanning and Push Protection enabled; current alert lists contain 0 open and 0 resolved alerts. Official GitHub documentation states Secret Scanning covers the entire Git history on all branches for known patterns.
 - The scan-history API itself returned 404 `Advanced Security is disabled`; this does not mean public-repository Secret Scanning is off, but it prevents reading scan backfill metadata. Local `detect-secrets` scanned only the current tracked tree in a shallow 37-commit checkout and marked 282 unverified candidates (247 hex entropy, 27 base64 entropy, 8 keyword). No values were emitted and no claim of absolute absence is made.
 - See `CURRENT.json:e3_github_secret_scan_scope_readback_20261119`. No source, credential, repository setting or visibility was changed.
+
+
+## 2026-11-19 00:13 UTC — 20-second Lenovo resource stability sample
+
+- Three read-only samples 10 seconds apart: `MemAvailable` 9,531,684 → 9,559,036 → 9,553,104 kB; `SwapFree` steady 1,992,700 kB. Memory PSI some/full avg10 stayed 0.00. CPU PSI some avg10 was 9.40%, 5.94%, 6.14%; CPU full stayed 0.00.
+- Backend Node PID 5098 RSS was 308,744/308,744/308,748 kB; Mongo PID 2424 191,812 kB; LiteLLM PID 1309 255,560 kB. `nvidia-smi`: GeForce 840M, 5/4096 MiB, 0% utilization. No model inference, build or service operation ran.
+- This short sample shows no current memory pressure or sustained process growth; it does not prove long-term leak absence. Full detail: `CURRENT.json:e3_resource_stability_20s_r0_20261119_0013`.

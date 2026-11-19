@@ -2662,5 +2662,98 @@
     },
     "conclusion": "ZERO_GITHUB_ALERTS_FOR_ENABLED_SECRET_SCANNING; LOCAL_ENTROPY_CANDIDATES_UNVERIFIED; not a proof that no unrecognized secret exists",
     "no_secret_values_read_into_receipts": true
+  },
+  "e3_resource_stability_20s_r0_20261119_0013": {
+    "window_utc": [
+      "2026-11-19T00:13:13Z",
+      "2026-11-19T00:13:23Z",
+      "2026-11-19T00:13:33Z"
+    ],
+    "host": "elkakas314-Lenovo-Z50-70",
+    "method": "local read-only /proc, ps RSS, nvidia-smi; no prompts, builds, inference or service changes",
+    "memory_kb": {
+      "MemAvailable": [
+        9531684,
+        9559036,
+        9553104
+      ],
+      "SwapFree": [
+        1992700,
+        1992700,
+        1992700
+      ]
+    },
+    "memory_psi_avg10": {
+      "some": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "full": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "cpu_psi_avg10": {
+      "some": [
+        9.4,
+        5.94,
+        6.14
+      ],
+      "full": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "rss_kb_by_pid": {
+      "5098_backend_node": [
+        308744,
+        308744,
+        308748
+      ],
+      "2424_mongod": [
+        191812,
+        191812,
+        191812
+      ],
+      "1309_litellm": [
+        255560,
+        255560,
+        255560
+      ],
+      "6403_codex": [
+        362024,
+        361492,
+        361848
+      ],
+      "6506_chatgpt": [
+        750580,
+        751148,
+        750940
+      ],
+      "14915_chrome": [
+        842416,
+        842480,
+        843636
+      ]
+    },
+    "gpu": {
+      "name": "NVIDIA GeForce 840M",
+      "vram_total_mib": 4096,
+      "vram_used_mib": [
+        5,
+        5,
+        5
+      ],
+      "utilization_percent": [
+        0,
+        0,
+        0
+      ]
+    },
+    "conclusion": "Stable RSS for backend/Mongo/LiteLLM over 20 seconds; available RAM rose slightly then remained near baseline; swap unchanged; memory PSI zero; CPU PSI some stayed below 10% and decreased; no saturation or leak demonstrated.",
+    "source_head_before_receipt": "66aa3cf3032d9d953c6e2e9ac59f8ca4759d1b77"
   }
 }
