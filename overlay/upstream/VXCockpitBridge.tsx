@@ -127,7 +127,8 @@ export default function VXCockpitBridge({ onClose, activity: activityInput, phon
         {activeMode==='AUTONOMO' ? <div>
           <button type="button" onClick={() => {
             const selectors=document.querySelectorAll<HTMLButtonElement>('[data-testid="model-selector-button"]');
-            setSelectorUnavailable(!openNativeAgentSelector(selectors.length===1 ? selectors[0] : null));
+            const selector=selectors.length===1 && selectors[0] instanceof HTMLButtonElement ? selectors[0] : null;
+            setSelectorUnavailable(!openNativeAgentSelector(selector));
           }}>Elegir agente en LibreChat</button>
           {selectorUnavailable ? <p role="status">Selector nativo no disponible en esta vista.</p> : null}
         </div> : null}
