@@ -2806,6 +2806,160 @@
       "document_id": "1lrhx64J3hW7iW_qeGOw_fJw67rp_M-2EY_65Go2tMPY",
       "revision_id": "AHj4eMR5PbJeYxCGu9Pp_O0pgZpcaG9WEKgTh6Oo3uZTmc0LTHeuq-ZA7CWB7c93_H3-UlL4zEK-MubUNYfmKveVRh9v1hn1OkXQvU9qRuI",
       "readback": "receipt appended and SHA/content read back"
+    },
+    "source_baseline_freeze": {
+      "source_head": "7acbfb14375af1ac87e0fcf72bdfaa75c52a7541",
+      "baseline": "SOURCE_ONLY; no LIVE certification",
+      "components": [
+        {
+          "component": "NOSTROMO cockpit, HUD, Hub and system selector",
+          "files": [
+            {
+              "path": "src/ui/NostromoCockpit.tsx",
+              "git_blob_sha": "51e4654d8ff5ebae2042a208477045a9d278d2b3"
+            },
+            {
+              "path": "src/ui/TentaculoHud.tsx",
+              "git_blob_sha": "22e991eee0aa6942133c865194f7f8ba27bd4955"
+            },
+            {
+              "path": "src/ui/TentaculoHub.tsx",
+              "git_blob_sha": "c648e9e3f29867f12178f225aa63c6f65a02274f"
+            },
+            {
+              "path": "src/ui/ControlDeckView.tsx",
+              "git_blob_sha": "8173369fc4c4e60285b9b72fb956e2a361836391"
+            }
+          ],
+          "contract": "native embedded UI; no second executor",
+          "tests_and_receipt": "npm test: 268 PASS; source browser desktop/mobile 2/2",
+          "material_state": "SOURCE_TESTED; LIVE event wiring not verified"
+        },
+        {
+          "component": "Native AgentClient + SIWC lifecycle",
+          "files": [
+            {
+              "path": "deployment/librechat-agents/agentclient-siwc-binding.mjs",
+              "git_blob_sha": "5e01ab02af632846c965015277dccb73b21ac7fb"
+            },
+            {
+              "path": "deployment/librechat-agents/nostromo-siwc-bootstrap.cjs",
+              "git_blob_sha": "75b12004aaf24cc6ed354d16c8a54711835253bd"
+            },
+            {
+              "path": "src/llm/siwcOpenAiFetch.ts",
+              "git_blob_sha": "95b3f15686fb8904a2c4acd29569faf75bdd701e"
+            },
+            {
+              "path": "src/llm/siwcResponsesClient.ts",
+              "git_blob_sha": "15f520aca85fe33fa4723223d4eced204e5b39f4"
+            },
+            {
+              "path": "src/llm/siwcSession.ts",
+              "git_blob_sha": "c761edebc39df596803a1063bf272049923b8e1b"
+            },
+            {
+              "path": "src/llm/siwcIdentity.ts",
+              "git_blob_sha": "b2033964d3107fc2c9c8bbd5a6a711694ebe96d6"
+            },
+            {
+              "path": "src/llm/siwcConnectionService.ts",
+              "git_blob_sha": "6ffc3e256078250e0280f752532d1f269362ef1e"
+            },
+            {
+              "path": "src/llm/siwcConnectionApi.ts",
+              "git_blob_sha": "c0ae151513e79b129e50bd2c8c7d69d4dc0e5dba"
+            },
+            {
+              "path": "src/llm/siwcProviderRoutes.ts",
+              "git_blob_sha": "fea307e35e25d251a2454e8e31e3efc2d3d172cc"
+            },
+            {
+              "path": "src/llm/siwcProtectedVault.ts",
+              "git_blob_sha": "5c5837686820ff1e55ce60498e151f761a8e225e"
+            }
+          ],
+          "contract": "per-user OAuth-bound ephemeral Responses binding; secrets stay in protected vault",
+          "tests_and_receipt": "npm test: 268 PASS; SIWC artifact inclusion 1/1; prior focused SDK canaries documented in CURRENT",
+          "material_state": "SOURCE_TESTED; missing trusted native route-input provider, consent and productive install"
+        },
+        {
+          "component": "Intent and inference router",
+          "files": [
+            {
+              "path": "src/librechat/nativeInferenceRouteAdapter.ts",
+              "git_blob_sha": "aa5950284ef56248c07c9a4f28d7d676a341b4b5"
+            },
+            {
+              "path": "src/llm/inferenceGateway.ts",
+              "git_blob_sha": "2043c285ab2a01f0795c3bf473bf1ff333bb0843"
+            },
+            {
+              "path": "src/intent/intentInterpreter.ts",
+              "git_blob_sha": "6f6d1db6124bdedf0b3a4f46dd495b69f0e31b20"
+            },
+            {
+              "path": "src/intent/nostromoDecisionBridge.ts",
+              "git_blob_sha": "5880c6fa2048d7db1b07ea1993b67923b414d01d"
+            }
+          ],
+          "contract": "single semantic and provider router; route admission requires fresh evidence",
+          "tests_and_receipt": "npm test: 268 PASS; existing focused adapter cases documented in CURRENT",
+          "material_state": "SOURCE_TESTED; not called LIVE from productive AgentClient"
+        },
+        {
+          "component": "NOSTROMO MCP",
+          "files": [
+            {
+              "path": "deployment/nostromo-mcp/server.mjs",
+              "git_blob_sha": "bc571a1a15afba193b689db394effd61fb9816fb"
+            },
+            {
+              "path": "deployment/nostromo-mcp/tools.mjs",
+              "git_blob_sha": "21ac03a3a686127104e67559d6f98f4d0d02b600"
+            }
+          ],
+          "contract": "existing scoped typed MCP tool catalog",
+          "tests_and_receipt": "local MCP package/stdio suite 48/48 PASS",
+          "material_state": "SOURCE_TESTED; active Lenovo consumer not reverified in this batch"
+        },
+        {
+          "component": "Phone and reconnect UI state",
+          "files": [
+            {
+              "path": "src/mobile/phoneModule.ts",
+              "git_blob_sha": "15d8a9338415109cf2b11cc350cee00fa8065833"
+            },
+            {
+              "path": "src/mobile/mobileRecovery.ts",
+              "git_blob_sha": "ea1db96e70da509706eb5f2d07a5544be7e9b545"
+            },
+            {
+              "path": "src/mobile/offlineDraft.ts",
+              "git_blob_sha": "f360aa120f4743493c4eda1cddfdc748dc15c160"
+            }
+          ],
+          "contract": "phone state/recovery shares native LibreChat conversation; no separate store",
+          "tests_and_receipt": "npm test: 268 PASS; browser proof is visual fixture only",
+          "material_state": "SOURCE_TESTED; real-device/mobile LIVE not verified"
+        },
+        {
+          "component": "Manual CI + source visual harness",
+          "files": [
+            {
+              "path": "ci/nostromo-local-ci.sh",
+              "git_blob_sha": "d4bb91730aa60b564c1f79835b6d1fddae03e3f6"
+            },
+            {
+              "path": "tests/visual/visual-smoke.cjs",
+              "git_blob_sha": "978091c5e6ba7e1ff48aaf86a6d526b21d56144d"
+            }
+          ],
+          "contract": "manual exact-SHA locked runner; uses installed dependencies; no daemon/Actions",
+          "tests_and_receipt": "runner exact code SHA 7acbfb1 PASS; Playwright SOURCE desktop/mobile 2/2",
+          "material_state": "SOURCE_VERIFIED; does not certify host deployment"
+        }
+      ]
     }
   }
 }

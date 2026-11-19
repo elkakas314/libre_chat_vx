@@ -1,5 +1,10 @@
 # NOSTROMO HANDOFF CURRENT — 2026-11-19
 
+## SOURCE baseline freeze
+
+- Reused current SOURCE modules and test receipts; no component was rewritten for uniformity. Exact file Git blob SHAs, contracts, tests, and material states are frozen under `CURRENT.json:e3_local_ci_visual_source_20261119:source_baseline_freeze` at tested code SHA `7acbfb14375af1ac87e0fcf72bdfaa75c52a7541`. This covers cockpit/HUD/Hub/selector, AgentClient+SIWC, intent/router, MCP, phone/recovery and the manual CI/visual harness.
+- Baseline is SOURCE only. The productive runtime still lacks trusted `nostromoReadNativeInferenceRouteInput`; authenticated provider context/quota/health/privacy/context readbacks, user OAuth consent and HOST_CONTROL R2 deployment/restart permission are not supplied. No LIVE SIWC/MCP/Mongo canary is claimed.
+
 ## Local CI + browser SOURCE receipt
 
 - Tested exact source commit `7acbfb14375af1ac87e0fcf72bdfaa75c52a7541` on `integration/nostromo-canon-20261118-r1`: local CI **PASS / exit 0**, no GitHub Actions and no host runtime changes. TypeScript/tests 268 PASS; SIWC package 1/1; preflight mock 4/4; NOSTROMO checks 3/3; workspace 7/7; local audit 1/1; visual reconciliation 4/4; Playwright SOURCE desktop/mobile 2/2; MCP stdio/package 48/48. Receipt: `operating/sync-receipts/local-ci-7acbfb14375a.json`; sanitized log SHA-256 `336c0a9db67ceef2968e5c7cf34c4c43fa19ae621e6855f161c8bec8d4d05315`.
