@@ -1,0 +1,30 @@
+{
+  "schema": "nostromo.e3.publication-readback.v1",
+  "captured_at_utc": "2026-11-19T05:58:26Z",
+  "github": {
+    "repository": "elkakas314/libre_chat_vx",
+    "issue_37": {
+      "comment_submitted": true,
+      "comment_readback_contains_receipt_and_partial_status": true
+    },
+    "pull_request_54": {
+      "comment_submitted": true,
+      "readback": "NOT_FETCHED"
+    }
+  },
+  "google_drive": {
+    "current_document_id": "1cX4ld93Db6dPFv-F5iAiyXu2QhR5U8vuWZJPMSCQhE0",
+    "current_revision_id": "AHj4eMQy6BZAXYXVAxeYDcLaw4ps5MrpBXDcqgnliqrigyhZZ4QgqikFocMXSB0okev0cRIxEH3-YQir3Rz64RaVGveLf0llqL7FUzLTDRY",
+    "handoff_document_id": "1lrhx64J3hW7iW_qeGOw_fJw67rp_M-2EY_65Go2tMPY",
+    "handoff_revision_id": "AHj4eMQsmPELlHklqbnYlPrfMELXHnhDx90gMqeAq5BsVPGm1KCMDnehw4lPJRY9YuR76cHZrs_gjSjc26CGY_6t3DNam7l3H7NSUdzhuXs",
+    "post_update_readback": "Both documents contain the NOSTROMO E3 LIVE CANARY marker."
+  },
+  "local_worktree": {
+    "source_code_changed": false,
+    "receipts_current_handoff_changed": true,
+    "commit_or_push": false,
+    "service_restart": false,
+    "agent_config_mutation": false
+  },
+  "status": "PARTIAL_NOT_PASS"
+}

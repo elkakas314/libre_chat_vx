@@ -1,0 +1,82 @@
+{
+  "schema": "nostromo.e3.live-agent-context-preflight.v1",
+  "captured_at_utc": "2026-11-19T05:25:03Z",
+  "source": {
+    "repository": "elkakas314/libre_chat_vx",
+    "branch": "integration/nostromo-canon-20261118-r1",
+    "head": "5c64f87d6e4dbdaa2ebdc5c0ef4b37ca6b548e43",
+    "code_changed": false,
+    "runtime_changed": false
+  },
+  "persisted_agent_readback": {
+    "agent_id": "agent_9ex2a9buul2cwzyo",
+    "name": "NOSTROMO",
+    "provider": "Ollama",
+    "model": "qwen3:4b-instruct-2507-q4_K_M",
+    "max_context_tokens": 6144,
+    "instruction_chars": 894,
+    "tools": 11,
+    "tool_catalog_stored_as": "tool-name strings",
+    "deferred_flags_in_agent_document": false
+  },
+  "real_agent_chat": {
+    "endpoint": "agents",
+    "conversation_id": "a6e3c7a3-fd26-5887-91a1-7918815df90d",
+    "agent_id_in_url": "agent_9ex2a9buul2cwzyo",
+    "model_context_seen_in_ui": "5406 of 5800 tokens (93%)",
+    "elapsed_before_manual_stop_seconds": 52,
+    "mcp_dispatch_observed": false,
+    "assistant_reply": "empty; unfinished=true; error=false",
+    "mongo_readback": "one user message and one empty assistant message persisted"
+  },
+  "resource_readback": {
+    "idle_before": {
+      "at_local": "2026-11-19T06:18:13+01:00",
+      "mem_available_kb": 10844144,
+      "swap_free_kb": 137980,
+      "cpu_psi_some_avg10": 6.07,
+      "memory_psi_some_avg10": 0,
+      "gpu_temp_c": 61,
+      "vram_used_mib": 5,
+      "gpu_utilization_pct": 0,
+      "ollama_model_loaded": false
+    },
+    "during": {
+      "at_local": "2026-11-19T06:23:48+01:00",
+      "mem_available_kb": 10159964,
+      "swap_free_kb": 62116,
+      "cpu_psi_some_avg10": 47.58,
+      "cpu_psi_full_avg10": 0,
+      "memory_psi_some_avg10": 0.76,
+      "memory_psi_full_avg10": 0.27,
+      "gpu_temp_c": 81,
+      "vram_used_mib": 3050,
+      "gpu_utilization_pct": 100,
+      "ollama_model": "qwen3:4b-instruct-2507-q4_K_M",
+      "ollama_processor": "14% CPU / 86% GPU",
+      "ollama_context": 6144
+    },
+    "after_stop": {
+      "at_local": "2026-11-19T06:25:03+01:00",
+      "mem_available_kb": 10254348,
+      "swap_free_kb": 34740,
+      "cpu_psi_some_avg10": 8.12,
+      "memory_psi_some_avg10": 0.01,
+      "memory_psi_full_avg10": 0,
+      "gpu_temp_c": 71,
+      "vram_used_mib": 3050,
+      "gpu_utilization_pct": 0,
+      "ollama_model_still_resident": true,
+      "backend_active": true,
+      "backend_restarts": 0
+    }
+  },
+  "interpretation": {
+    "status": "PARTIAL_NOT_PASS",
+    "observed": "The actual saved agent filled 93% of its context before any MCP dispatch and did not produce a tool call within 52 seconds.",
+    "likely_contributor": "All 11 tool schemas are currently stored by name on the saved agent and contribute to the preflight; dynamic contextual tool selection has not been verified.",
+    "not_proven": "The 93% context reading and delay do not by themselves prove the exact preflight rejection cause or a memory leak.",
+    "intervention": "Stopped only the test; no persisted agent or MongoDB mutation and no service restart."
+  },
+  "next_action": "Verify how the installed Agents SDK defers registered NOSTROMO MCP schemas and how LibreChat supplies defer_loading; implement the minimum runtime-only contextual selection on the existing AgentClient path, preserve all 11 tools, then retest one R0 tool before attempting two."
+}

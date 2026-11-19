@@ -8,10 +8,14 @@ import { patchDeferredInstanceFilter } from './deferred-instance-filter.mjs';
 const original = {
   source: `    const isEventDriven = (this.toolDefinitions?.length ?? 0) > 0;\n    if (isEventDriven || !this.toolRegistry) {\n      return this.tools;\n    }\n    return this.filterToolsForBinding(this.tools);`,
   compiled: `\t\tif ((this.toolDefinitions?.length ?? 0) > 0 || !this.toolRegistry) return this.tools;\n\t\treturn this.filterToolsForBinding(this.tools);`,
+  codingSource: `    allowed_callers: ['direct', 'code_execution'],\n    responseFormat: Constants.CONTENT_AND_ARTIFACT,`,
+  codingCompiled: `\t\tallowed_callers: ["direct", "code_execution"],\n\t\tresponseFormat: "content_and_artifact",`,
 };
 const patched = {
   source: `    if (!this.toolRegistry) {\n      return this.tools;\n    }\n    return this.filterToolsForBinding(this.tools);`,
   compiled: `\t\tif (!this.toolRegistry) return this.tools;\n\t\treturn this.filterToolsForBinding(this.tools);`,
+  codingSource: `    allowed_callers: ['direct', 'code_execution'],\n    defer_loading: true,\n    responseFormat: Constants.CONTENT_AND_ARTIFACT,`,
+  codingCompiled: `\t\tallowed_callers: ["direct", "code_execution"],\n\t\tdefer_loading: true,\n\t\tresponseFormat: "content_and_artifact",`,
 };
 
 async function fixture(t, version = '4.0.1') {
@@ -22,6 +26,9 @@ async function fixture(t, version = '4.0.1') {
     ['src/agents/AgentContext.ts', original.source],
     ['dist/cjs/agents/AgentContext.cjs', original.compiled],
     ['dist/esm/agents/AgentContext.mjs', original.compiled],
+    ['src/tools/local/LocalCodingTools.ts', original.codingSource],
+    ['dist/cjs/tools/local/LocalCodingTools.cjs', original.codingCompiled],
+    ['dist/esm/tools/local/LocalCodingTools.mjs', original.codingCompiled],
   ];
   for (const [relative, contents] of files) {
     const target = path.join(root, relative);
@@ -38,7 +45,14 @@ test('patch filters deferred instances in CJS, ESM and source, idempotently', as
   const applied = await patchDeferredInstanceFilter(root, { apply: true });
   assert.ok(applied.results.every((item) => item.state === 'PATCHED'));
   for (const [relative] of files) {
-    assert.equal(await readFile(path.join(root, relative), 'utf8'), relative.startsWith('src/') ? patched.source : patched.compiled);
+    const expected = relative.endsWith('LocalCodingTools.ts')
+      ? patched.codingSource
+      : relative.endsWith('LocalCodingTools.cjs') || relative.endsWith('LocalCodingTools.mjs')
+        ? patched.codingCompiled
+        : relative.startsWith('src/')
+          ? patched.source
+          : patched.compiled;
+    assert.equal(await readFile(path.join(root, relative), 'utf8'), expected);
   }
   const secondApply = await patchDeferredInstanceFilter(root, { apply: true });
   assert.ok(secondApply.results.every((item) => item.state === 'ALREADY_PATCHED'));

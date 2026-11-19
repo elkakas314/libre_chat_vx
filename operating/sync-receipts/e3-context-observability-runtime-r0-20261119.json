@@ -1,0 +1,123 @@
+{
+  "schema": "nostromo.e3.context-observability-runtime-r0.v1",
+  "captured_at_utc": "2026-11-19T06:17:17Z",
+  "scope": "One short same-chat, no-tools recovery control; structural context path; host load before/during/after",
+  "source": {
+    "vx_repository": "elkakas314/libre_chat_vx",
+    "vx_branch": "integration/nostromo-canon-20261118-r1",
+    "vx_head": "5c64f87d6e4dbdaa2ebdc5c0ef4b37ca6b548e43",
+    "production_working_directory": "/home/elkakas314/librechat/upstream",
+    "production_upstream_head": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
+    "source_or_service_changed": false
+  },
+  "runtime_readback": {
+    "system_manager_query": "unit not loaded in system systemd plane",
+    "user_manager_unit": "/home/elkakas314/.config/systemd/user/vx-backend.service",
+    "user_manager_state": "active",
+    "main_pid": 5074,
+    "exec_start": "/usr/bin/npm run backend",
+    "exec_main_start_local": "2026-11-18 19:34:24 CET",
+    "working_directory": "/home/elkakas314/librechat/upstream",
+    "backend_listener_pid": 5098,
+    "node_executable": "/home/elkakas314/.nvm/versions/node/v24.21.0/bin/node",
+    "agents_package_version": "4.0.1",
+    "agents_resolved_entry": "/home/elkakas314/librechat/upstream/node_modules/@librechat/agents/dist/cjs/main.cjs",
+    "compiled_agent_context_contains_budget_and_active_tool_filters": true,
+    "compiled_graph_calls_context_budget_breakdown": true,
+    "runtime_scope_limit": "Process CWD, startup time, installed package and compiled paths agree; in-memory loaded-module identity was not introspected."
+  },
+  "context_path_readback": {
+    "agent_context": "getTokenBudgetBreakdown computes max context, instruction, schema, summary, and message counts; active-tool accounting excludes deferred-undiscovered/non-direct definitions.",
+    "graph": "Emits ON_CONTEXT_USAGE snapshots around model invocation.",
+    "librechat_handler": "Captures latest visible snapshot in contextUsageSink.",
+    "mongo_persistence_gate": "buildResponseMetadata attaches contextUsage only when primary model usage follows that snapshot.",
+    "stopped_run_observation": "The stopped assistant rows have no metadata or usage; exact token split is therefore absent from Mongo.",
+    "causal_limit": "This explains why aborted-turn token breakdown is not persisted; it does not establish why the model failed to dispatch MCP or complete text."
+  },
+  "same_chat_control": {
+    "conversation_id": "28750dc9-f94d-5fc6-8ca3-07f305808e5d",
+    "agent_id": "agent_9ex2a9buul2cwzyo",
+    "endpoint": "agents",
+    "model_persisted": "qwen3:4b-instruct-2507-q4_K_M",
+    "control_kind": "negative control; explicitly requested no tools",
+    "reconnect_readback": "The same saved conversation reopened; its earlier user turn was visible and assistant response was blank.",
+    "context_before_submit": "54/6100 (1%), estimated from message history",
+    "context_during_generation": "5399/5800 (92%)",
+    "elapsed_at_manual_stop_seconds": 20,
+    "tool_dispatch": "NONE",
+    "visible_final_text": "NONE",
+    "mongo_readback": {
+      "collection": "LibreChat.messages",
+      "conversation_documents": 4,
+      "new_user_message": {
+        "token_count": 35,
+        "unfinished": false,
+        "error": false
+      },
+      "new_assistant_message": {
+        "text_length": 0,
+        "unfinished": true,
+        "error": false,
+        "tool_call_count": 0,
+        "metadata_keys": []
+      },
+      "private_message_text_emitted": false
+    },
+    "interpretation": "LibreChat accepts and persists a follow-up in the recovered chat, but this bounded control did not complete a response. A 92% live context reading appears even with a 35-token no-tools prompt; the static instruction/schema split remains unmeasured."
+  },
+  "resource_samples": {
+    "before": {
+      "at_utc": "2026-11-19T06:13:37Z",
+      "memory_available_kb": 10697528,
+      "swap_free_kb": 688,
+      "cpu_psi_some_avg10": 10.53,
+      "cpu_psi_full_avg10": 0,
+      "memory_psi_some_avg10": 0,
+      "memory_psi_full_avg10": 0,
+      "ollama_ps": "empty",
+      "gpu_temperature_c": 60,
+      "gpu_utilization_pct": 0,
+      "vram_used_mib": 5
+    },
+    "during": {
+      "at_utc": "2026-11-19T06:14:04Z",
+      "memory_available_kb": 10188324,
+      "swap_free_kb": 0,
+      "cpu_psi_some_avg10": 32.63,
+      "cpu_psi_full_avg10": 0,
+      "memory_psi_some_avg10": 0.29,
+      "memory_psi_full_avg10": 0.14,
+      "ollama_model": "qwen3:4b-instruct-2507-q4_K_M",
+      "ollama_context": 6144,
+      "ollama_processor": "14% CPU / 86% GPU",
+      "llama_server_cpu_sample_pct": 98.5,
+      "llama_server_rss_kb": 3009492,
+      "gpu_temperature_c": 66,
+      "gpu_utilization_pct": 100,
+      "vram_used_mib": 3050
+    },
+    "after_stop": {
+      "at_utc": "2026-11-19T06:14:29Z",
+      "memory_available_kb": 10273040,
+      "swap_free_kb": 0,
+      "cpu_psi_some_avg10": 15.21,
+      "cpu_psi_full_avg10": 0,
+      "memory_psi_some_avg10": 0.02,
+      "memory_psi_full_avg10": 0.01,
+      "ollama_model_resident_idle": "qwen3:4b-instruct-2507-q4_K_M, context 6144",
+      "gpu_temperature_c": 68,
+      "gpu_utilization_pct": 0,
+      "vram_used_mib": 3050,
+      "llama_server_instantaneous_cpu_pct": 0,
+      "system_idle_pct": "81.7-85.1"
+    }
+  },
+  "result": "PARTIAL_RECOVERY_ACCEPTED_BUT_RESPONSE_EMPTY_CONTEXT_92PCT_NO_TOOLS",
+  "changes": {
+    "agent_or_runtime_configuration": false,
+    "service_restarts": false,
+    "process_signals": false,
+    "files_changed": "receipt and tracking only"
+  },
+  "next_action": "Before another inference, expose or capture the existing live ON_CONTEXT_USAGE structural fields (instruction tokens, effective tool count/schema tokens, message tokens and available budget), then change only the demonstrated context contributor. Preserve the full 11-tool catalog and do not claim MCP or conversation acceptance from this no-tools control."
+}

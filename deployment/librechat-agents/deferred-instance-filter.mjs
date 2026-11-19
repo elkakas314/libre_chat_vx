@@ -20,6 +20,21 @@ const TARGETS = [
     before: `\t\tif ((this.toolDefinitions?.length ?? 0) > 0 || !this.toolRegistry) return this.tools;\n\t\treturn this.filterToolsForBinding(this.tools);`,
     after: `\t\tif (!this.toolRegistry) return this.tools;\n\t\treturn this.filterToolsForBinding(this.tools);`,
   },
+  {
+    file: 'src/tools/local/LocalCodingTools.ts',
+    before: `    allowed_callers: ['direct', 'code_execution'],\n    responseFormat: Constants.CONTENT_AND_ARTIFACT,`,
+    after: `    allowed_callers: ['direct', 'code_execution'],\n    defer_loading: true,\n    responseFormat: Constants.CONTENT_AND_ARTIFACT,`,
+  },
+  {
+    file: 'dist/cjs/tools/local/LocalCodingTools.cjs',
+    before: `\t\tallowed_callers: ["direct", "code_execution"],\n\t\tresponseFormat: "content_and_artifact",`,
+    after: `\t\tallowed_callers: ["direct", "code_execution"],\n\t\tdefer_loading: true,\n\t\tresponseFormat: "content_and_artifact",`,
+  },
+  {
+    file: 'dist/esm/tools/local/LocalCodingTools.mjs',
+    before: `\t\tallowed_callers: ["direct", "code_execution"],\n\t\tresponseFormat: "content_and_artifact",`,
+    after: `\t\tallowed_callers: ["direct", "code_execution"],\n\t\tdefer_loading: true,\n\t\tresponseFormat: "content_and_artifact",`,
+  },
 ];
 
 function sha256(value) {

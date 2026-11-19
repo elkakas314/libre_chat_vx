@@ -1,6 +1,6 @@
 # LibreChat AgentContext compatibility patch
 
-The installed `@librechat/agents@4.0.1` event-driven binding path appends instance tools even when the registry marks them deferred. This overcounts their schemas in context preflight and can bind deferred instances directly. The patch routes registered instances through the existing caller/defer/discovery filter; unregistered native tools remain intact, and the full registry remains available for discovery.
+The installed `@librechat/agents@4.0.1` event-driven binding path appends instance tools even when the registry marks them deferred. This overcounts their schemas in context preflight and can bind deferred instances directly. The patch routes registered instances through the existing caller/defer/discovery filter; unregistered native tools remain intact, and the full registry remains available for discovery. It also marks the local coding tool definitions as deferred, keeping their full schemas discoverable through `tool_search` while omitting them from the initial model request.
 
 `deferred-instance-filter.mjs` is dependency-free, version-guarded, exact-context, idempotent, and supports read-only preflight by omitting `--apply`. It patches the installed CJS and ESM runtime files and their TypeScript source. It fails closed if package identity or source context changes. Before applying to a live package, preserve exact preimages and verify rollback.
 

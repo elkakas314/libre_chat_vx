@@ -1,6 +1,51 @@
 {
   "schema": "libre-chat-vx.current.v2",
-  "status": "P0_LIVE_TWO_TOOL_CHAIN_AND_RECONNECT_VERIFIED_PROVIDER_ERROR_RETRY_AND_LATENCY_PENDING",
+  "status": "E3_LOCAL_TOOL_DEFERRAL_SOURCE_CANDIDATE_TESTED_NOT_DEPLOYED",
+  "latest_native_tool_deferral_candidate": {
+    "receipt": "operating/sync-receipts/e3-local-tool-contextual-deferral-candidate-20261119.json",
+    "captured_at_utc": "2026-11-19T06:40:58Z",
+    "source_base_head": "5c64f87d6e4dbdaa2ebdc5c0ef4b37ca6b548e43",
+    "candidate_files": [
+      "deployment/librechat-agents/deferred-instance-filter.mjs",
+      "deployment/librechat-agents/deferred-instance-filter.test.mjs",
+      "deployment/librechat-agents/README.md"
+    ],
+    "focused_test": "3/3 PASS",
+    "installed_package_dry_run": "@librechat/agents@4.0.1; AgentContext already patched; local coding tool source/CJS/ESM exact patches available",
+    "runtime_changed": false,
+    "backend_restarted": false,
+    "live_mcp_acceptance": false,
+    "status": "SOURCE_CANDIDATE_TESTED_NOT_DEPLOYED"
+  },
+  "latest_context_snapshot": {
+    "receipt": "operating/sync-receipts/e3-live-context-snapshot-tool-schema-breakdown-20261119.json",
+    "captured_at_utc": "2026-11-19T06:28:24Z",
+    "context_budget": 5837,
+    "max_context_tokens": 6144,
+    "system_message_tokens": 2749,
+    "effective_tool_schemas": 7,
+    "tool_schema_tokens": 2558,
+    "direct_mcp_tokens": 234,
+    "system_file_search_and_skill_schemas_tokens": 2324,
+    "message_tokens": 135,
+    "remaining_context_tokens": 395,
+    "mcp_dispatch": "none",
+    "assistant_response": "empty; unfinished=true; error=false",
+    "status": "PARTIAL_NOT_PASS"
+  },
+  "latest_live_agent_readback": {
+    "receipt": "operating/sync-receipts/e3-context-observability-runtime-r0-20261119.json",
+    "captured_at_utc": "2026-11-19T06:17:17Z",
+    "conversation_id": "28750dc9-f94d-5fc6-8ca3-07f305808e5d",
+    "context_before": "54/6100 estimated from message history",
+    "context_during_no_tools_control": "5399/5800 (92%)",
+    "followup_user_message_persisted": true,
+    "assistant_response": "empty; unfinished=true; error=false",
+    "tool_dispatch": "none",
+    "backend_user_service": "active; /home/elkakas314/librechat/upstream; @librechat/agents 4.0.1",
+    "context_breakdown": "available in live ON_CONTEXT_USAGE event path; not persisted for this stopped run",
+    "status": "PARTIAL_NOT_PASS"
+  },
   "p0_live_readback": {
     "verified_at_utc": "2026-11-18T07:02:56Z",
     "exact_head_ci": {
@@ -3228,5 +3273,78 @@
     "service_readback": "Backend, Ollama, cloudflared and Tailscale active without restarts. Caddy failed once with NRestarts=0; left untouched. Baloo inactive; no project timer or zombie observed.",
     "pr59": "Closed unmerged; its head regresses the streaming response-size bound. No PR code applied.",
     "live_status": "SOURCE_TESTS_PASS; no LIVE OAuth/MCP/Mongo/reconnect claim."
+  },
+  "e3_live_chat_reconnect_mcp_r0_20261119": {
+    "receipt": "operating/sync-receipts/e3-live-chat-reconnect-mcp-r0-20261119.json",
+    "captured_at_utc": "2026-11-19T05:07:45Z",
+    "active_source_head": "5c64f87d6e4dbdaa2ebdc5c0ef4b37ca6b548e43",
+    "conversation_id": "a50df11a-67fd-5250-af96-4ff4bba9afe3",
+    "model": "qwen2.5:3b",
+    "local_inference": "PASS_VISIBLE",
+    "mcp": "PARTIAL_estado_success_metricas_schema_failure",
+    "mongo_messages": 6,
+    "reconnect": "PASS_same_chat_loaded_after_new_tab",
+    "latest_manual_stop": "assistant_unfinished_true",
+    "resources": "during_gpu_100pct_73C_cpu_psi_some_50.66_mem_available_8.4GiB; after_gpu_idle_81C_mem_available_8.75GiB",
+    "agentclient_siwc_binding": "NOT_VERIFIED",
+    "material_verified": false,
+    "next": "Resolve MCP schema/latency using effective live tool contract; do not change agent config or claim completion."
+  },
+  "e3_live_agent_context_preflight_20261119": {
+    "receipt": "operating/sync-receipts/e3-live-agent-context-preflight-20261119.json",
+    "captured_at_utc": "2026-11-19T05:25:03Z",
+    "agent_id": "agent_9ex2a9buul2cwzyo",
+    "model": "qwen3:4b-instruct-2507-q4_K_M",
+    "max_context_tokens": 6144,
+    "tools_in_persisted_agent": 11,
+    "tool_defer_metadata_in_agent_document": "PRIOR_READBACK_WAS_INCOMPLETE; DIRECT_MONGO_READ_CONFIRMS_9_DEFERRED_AND_2_DIRECT",
+    "conversation_id": "a6e3c7a3-fd26-5887-91a1-7918815df90d",
+    "ui_context_at_start": "5406_of_5800_tokens_93pct",
+    "mcp_dispatch": "NONE_OBSERVED_WITHIN_52_SECONDS",
+    "mongo_assistant_state": "unfinished_true_error_false_empty_text",
+    "stop_reason": "manual_stop_after_context_near_limit_and_high_gpu_load",
+    "memory_available_kb_after_stop": 10254348,
+    "swap_free_kb_after_stop": 34740,
+    "gpu_temperature_c_during": 81,
+    "gpu_vram_mib_during": 3050,
+    "dynamic_tool_selection": "CONFIGURED_9_DEFERRED_2_DIRECT; EFFECTIVE_DISCOVERY_OPEN",
+    "superseded_by": "operating/sync-receipts/e3-live-agent-deferred-selection-reconcile-20261119.json"
+  },
+  "e3_live_agent_deferred_selection_reconcile_20261119": {
+    "receipt": "operating/sync-receipts/e3-live-agent-deferred-selection-reconcile-20261119.json",
+    "captured_at_utc": "2026-11-19T05:39:28Z",
+    "agent_id": "agent_9ex2a9buul2cwzyo",
+    "selected_tools": 11,
+    "deferred_tools": 9,
+    "direct_tools": [
+      "nostromo_estado_mcp_nostromo-local",
+      "nostromo_directorio_listar_mcp_nostromo-local"
+    ],
+    "catalog_preserved": true,
+    "prior_no_defer_metadata_claim": "CORRECTED; direct MongoDB read includes tool_options",
+    "effective_discovery_and_dispatch": "UNVERIFIED",
+    "status": "PARTIAL_NOT_PASS"
+  },
+  "e3_live_agent_single_r0_canary_20261119": {
+    "receipt": "operating/sync-receipts/e3-live-agent-single-r0-canary-20261119.json",
+    "captured_at_utc": "2026-11-19T05:47:16Z",
+    "agent_id": "agent_9ex2a9buul2cwzyo",
+    "conversation_id": "28750dc9-f94d-5fc6-8ca3-07f305808e5d",
+    "agent_model_persisted": "qwen3:4b-instruct-2507-q4_K_M",
+    "context_peak": "5400_of_5800_tokens_92pct",
+    "mcp_dispatch": "NONE_OBSERVED",
+    "assistant_mongo_state": "unfinished_true_error_false_empty_toolcalls",
+    "stopped_for_pressure": true,
+    "post_stop_gpu_utilization_pct": 0,
+    "material_status": "PARTIAL_NOT_PASS"
+  },
+  "e3_publication_readback_20261119": {
+    "receipt": "operating/sync-receipts/e3-publication-readback-20261119.json",
+    "captured_at_utc": "2026-11-19T05:58:26Z",
+    "github_issue37_comment": "POSTED_AND_READ_BACK",
+    "github_pr54_comment": "POSTED_READBACK_NOT_FETCHED",
+    "drive_current_revision": "AHj4eMQy6BZAXYXVAxeYDcLaw4ps5MrpBXDcqgnliqrigyhZZ4QgqikFocMXSB0okev0cRIxEH3-YQir3Rz64RaVGveLf0llqL7FUzLTDRY",
+    "drive_handoff_revision": "AHj4eMQsmPELlHklqbnYlPrfMELXHnhDx90gMqeAq5BsVPGm1KCMDnehw4lPJRY9YuR76cHZrs_gjSjc26CGY_6t3DNam7l3H7NSUdzhuXs",
+    "drive_readback": "BOTH_MARKERS_PRESENT"
   }
 }
