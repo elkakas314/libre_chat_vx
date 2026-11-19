@@ -2598,5 +2598,40 @@
       "drive_handoff_revision": "AHj4eMR2_qj1FziBtptQoi5GT6KhS3h-0M97CKFEBxVhu7PIDN2zKfw-FobB0ou7ncxcMLaZnhbpKoiWfzwkPytLN9w9V9mn4M3wLN4V3Qk"
     },
     "live_status": "NO_DEPLOYMENT_NO_RESTART_NO_LIVE_SIWC_OR_MCP_CLAIM"
+  },
+  "e3_post_scan_host_resource_r0_20261119_0006": {
+    "observed_at_utc": "2026-11-19T00:06:08Z",
+    "host": "elkakas314-Lenovo-Z50-70",
+    "source": "HOST_CONTROL R0 bounded reads of /proc/meminfo, /proc/pressure/{memory,cpu}, /proc/loadavg",
+    "memory_kb": {
+      "MemTotal": 16267092,
+      "MemAvailable": 9513344,
+      "SwapTotal": 2097148,
+      "SwapFree": 1992700
+    },
+    "pressure": {
+      "memory_some_avg10": 0.0,
+      "memory_full_avg10": 0.0,
+      "cpu_some_avg10": 5.73,
+      "cpu_some_avg60": 5.32,
+      "cpu_some_avg300": 7.23,
+      "cpu_full_avg10": 0.0
+    },
+    "load_average_1_5_15m": [
+      1.13,
+      1.9,
+      2.41
+    ],
+    "process_level_readback": "UNAVAILABLE_IN_THIS_SAMPLE: host_process_list limit 1500 returned tool error; earlier bounded result contained no matching application processes in returned page",
+    "gpu_vram": "NOT_READ_IN_THIS_SAMPLE",
+    "interpretation": "No memory PSI pressure; MemAvailable about 9.07 GiB and swap free about 1.90 GiB. CPU PSI indicates some contention but cannot attribute it to a process. Single sample does not establish a leak.",
+    "sha256": {
+      "meminfo": "75b87f9a67ee1787af05cd7f78707cba90b9f32fca7467b845017812af54587b",
+      "memory_psi": "ba5f4b5b6e63d390d33fca711cca1d345712d6c921b444cd8b104cf2adb1eeea",
+      "cpu_psi": "04f20e519f9e08d611f39ef0fe2e27b4a9e9753da1c778fa0d71468f3983e524",
+      "loadavg": "313acc3a6174f0c1a005921b3160de459f33ea2da49f463aef5b418f56521c73"
+    },
+    "source_head_before_receipt": "a800b15a1d1ef2ab72d2d6bc438fad381d91c4f5",
+    "no_inference_or_host_mutation": true
   }
 }

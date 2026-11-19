@@ -445,3 +445,10 @@ PRECEDENCE: this update supersedes older `PR26 DRAFT` or ChatGPT usage assumptio
 - Preflight confirms repository visibility PUBLIC and push permission true. GitHub secret-scanning reports 0 alerts. `detect-secrets` found 282 unverified candidates in the current tracked tree (247 hex-entropy, 27 base64-entropy, 8 keyword); values were not emitted. The checkout is shallow (37 commits), so public-history secret review is NOT CLEARED.
 - HOST_CONTROL R0 readback: `kernel_authority=false`; grants directory has only lock files, with no R2 deploy/restart grant. SIWC remains SOURCE-only; trusted request-scoped provider evidence and owner OAuth consent are missing. Candidate package SHA-256 `1b3302444159a1ef87a429831c74435e8658d8e8b8936b1cc82e2c3d3464a52d` remains uninstalled. No host write, restart or LIVE canary.
 - Detailed receipt: `CURRENT.json:e3_public_preflight_secret_gate_20261119`, issue #37 comment `6995135133`, PR #54 comment `6995274163`, Drive HANDOFF revision recorded in CURRENT.
+
+
+## 2026-11-19 00:06 UTC — bounded host resource R0 readback
+
+- HOST_CONTROL R0 on `elkakas314-Lenovo-Z50-70`: `MemAvailable=9,513,344 kB` (~9.07 GiB); `SwapFree=1,992,700 kB` (~1.90 GiB). Memory PSI some/full avg10 are both 0.00. CPU PSI some avg10/60/300: 5.73/5.32/7.23; CPU PSI full avg10 0.00. Load average 1.13/1.90/2.41.
+- `host_process_list` failed at limit 1500; bounded earlier page did not contain matching app processes. No per-process attribution or GPU/VRAM sample. This snapshot shows no memory pressure and does not establish a leak. No inference or host write occurred.
+- Checksummed readings and limitations are in `CURRENT.json:e3_post_scan_host_resource_r0_20261119_0006`.
