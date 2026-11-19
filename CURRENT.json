@@ -3059,8 +3059,8 @@
     "next": "Use an authenticated LibreChat browser session to call nostromo_estado and nostromo_directorio_listar in one saved conversation; then verify MongoDB readback/reconnect. Preserve the runtime/source divergence until authorized reversible sync.",
     "drive_handoff": {
       "document_id": "1lrhx64J3hW7iW_qeGOw_fJw67rp_M-2EY_65Go2tMPY",
-      "revision_id": "AHj4eMR6tn4NQLruqj9cAd4NDrJvoxDjASDqDbMbvrJKH9a-JRcgJnaV_fEUv1OYyu3nOK2GBBD3EcV6hPweAkeN-PFV177if0493W_LZTA",
-      "readback": "host MCP R0, mobile listener/service/resource and SIWC binding receipts inserted and read back; mobile access remains unverified"
+      "revision_id": "AHj4eMQdzOj5-5-M-PmhJOb4wj-gzLwEE68iUmjVNisklc4O9JiO-qUKhelWY2uA1ddZxFc2Qm2OZHBE4iCiNCYVwb-_WWw8FyX3SBPgb40",
+      "readback": "host, mobile, resource and SIWC resolver-correction receipts inserted and read back; prior incorrect note corrected"
     },
     "siwc_package_candidate_revalidation": {
       "artifact": "/tmp/nostromo-librechat-vx-0.1.0-7ed1863.tgz",
@@ -3094,13 +3094,14 @@
   "e3_siwc_agentclient_wiring_r0_20261119": {
     "receipt": "operating/sync-receipts/siwc-agentclient-wiring-r0-20261119.json",
     "superseded_by": "operating/sync-receipts/siwc-resolver-contract-r0-20261119.json",
+    "source_correction_commit": "4a35c05",
     "source_change_base_head": "9c59d36e146f7b3a26c6f131d42d73e855fb4b54",
     "source_change_commit": "1d9491a",
     "change": "Historical incorrect change; superseded by resolver-contract correction. Actual contract: nostromoSiwc is resolver, nostromoSiwcConnectionService is the lifecycle service.",
     "focused_tests": "13/13 PASS; see superseding receipt",
     "runtime_installed": false,
     "live_siwc": "NOT_VERIFIED",
-    "issue_37_comment": "6996655134; correction receipt follows",
+    "issue_37_comment": "6996655134; corrected and read back",
     "next": "See the superseding resolver-contract receipt; continue authenticated route-input implementation and exact-candidate local CI after low-power verification."
   },
   "e3_host_cpu_interval_readback_r0_20261119": {
