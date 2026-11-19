@@ -3093,14 +3093,26 @@
   },
   "e3_siwc_agentclient_wiring_r0_20261119": {
     "receipt": "operating/sync-receipts/siwc-agentclient-wiring-r0-20261119.json",
+    "superseded_by": "operating/sync-receipts/siwc-resolver-contract-r0-20261119.json",
     "source_change_base_head": "9c59d36e146f7b3a26c6f131d42d73e855fb4b54",
     "source_change_commit": "1d9491a",
-    "change": "AgentClient binding now looks up app.locals.nostromoSiwcConnectionService, matching the key registered by SiwcConnectionService.registerLibreChat",
-    "focused_tests": "3/3 PASS",
+    "change": "Historical incorrect change; superseded by resolver-contract correction. Actual contract: nostromoSiwc is resolver, nostromoSiwcConnectionService is the lifecycle service.",
+    "focused_tests": "13/13 PASS; see superseding receipt",
     "runtime_installed": false,
     "live_siwc": "NOT_VERIFIED",
-    "issue_37_comment": "6996655134",
-    "next": "Implement/verify authenticated route-input readback; then run exact-candidate local CI when host CPU contention subsides. Runtime deployment still needs owner OAuth consent and exact HOST_CONTROL R2."
+    "issue_37_comment": "6996655134; correction receipt follows",
+    "next": "See the superseding resolver-contract receipt; continue authenticated route-input implementation and exact-candidate local CI after low-power verification."
+  },
+  "e3_host_cpu_interval_readback_r0_20261119": {
+    "receipt": "operating/sync-receipts/siwc-resolver-contract-r0-20261119.json",
+    "peak_interval": "2026-11-19T01:37:42Z/01:37:52Z",
+    "peak_process": "Snap Chromium PID 14915; 98% of one CPU over 10s, main thread 90% in 5s followup",
+    "classification": "DESCONOCIDO_PRESERVAR_INTERACTIVE_BROWSER; specific tab unknown",
+    "followup_interval": "2026-11-19T01:43:51Z/01:43:56Z",
+    "cpu_busy_pct": 19.9,
+    "memory_available_kb": "8326520-9342220",
+    "memory_psi": "NONE",
+    "intervention": "NONE"
   }
   }
 }
