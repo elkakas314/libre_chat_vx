@@ -72,6 +72,21 @@ test('SIWC oversized HTTP error body is canceled at the read limit',async()=>{
   });
   assert.equal(canceled,true);
 });
+test('SIWC oversized declared HTTP body is canceled before reading',async()=>{
+  let canceled=false;
+  let pulled=0;
+  const body=new ReadableStream<Uint8Array>({
+    pull(controller){pulled++;controller.enqueue(new Uint8Array(1));},
+    cancel(){canceled=true;},
+  },{highWaterMark:0});
+  await inspect(new Response(body,{status:502,headers:{
+    'content-length':'32769','x-request-id':'req_local_123',
+  }}),{
+    message:'SIWC_RESPONSES_HTTP_502',http:502,shape:'unknown',
+  });
+  assert.equal(pulled,0);
+  assert.equal(canceled,true);
+});
 test('SIWC untrusted codes are never echoed as diagnostic text',async()=>{
   await inspect(event({type:'response.failed',response:{
     error:{code:'sensitive model=foo; bearer=token'},

@@ -58,6 +58,11 @@ function permission(record:SiwcAccountCredentials,nowMs:number):SiwcGrantReadbac
     expectedClientId:record.clientId};
 }
 async function bodyLimited(response:Response,max:number):Promise<string> {
+  const declaredLength=response.headers.get('content-length');
+  if(declaredLength&&/^\d+$/.test(declaredLength)&&Number(declaredLength)>max) {
+    await response.body?.cancel().catch(()=>undefined);
+    throw Error('SIWC_RESPONSE_TOO_LARGE');
+  }
   const reader=response.body?.getReader();
   if(!reader)return '';
   const chunks:Uint8Array[]=[];

@@ -3210,6 +3210,23 @@
     },
     "gpu": "Prior physical GeForce 840M/Ollama receipt reused; no repeated benchmark.",
     "host_authority": "Current HOST_CONTROL R0 has kernel_authority=false and only lock files; no R2/R3 grant.",
-    "live_status": "NO_SIWC_INSTALL_OR_CONSENTED_CHAT; no LIVE MCP/Mongo/reconnect claim."
+    "live_status": "NO_SIWC_INSTALL_OR_CONSENTED_CHAT; no LIVE MCP/Mongo/reconnect claim.",
+    "publication": {
+      "remote_head_verified_at_publication": "6ce19a2471c203a9418042dcbc021eca94bd49c4",
+      "pr54_comment_id": 6999444830,
+      "issue37_comment_id": 6999456649,
+      "drive_handoff_revision": "AHj4eMR1ZRSxi9-mt58SVNXB9UVIrSWA1W2deITCDbHej7QfAZ0cX9IPeW7K8iox-hEaT9oCgf7Jplpsyq8mxM05VElGJR6L5lWr8Omvtzo",
+      "drive_current_revision": "AHj4eMQLUQZzc7pE5c5CuIy1rbmMnhhrLNqukGRzS4-GGy0vaIbUBSg_5NSLB5-F3KMHeAksj_dzyfHQIhHg4OzBrYiI13vWo5Fgn9-j6sA"
+    }
+  },
+  "e3_work_e3_cpu_siwc_preflight_20261119": {
+    "receipt": "operating/sync-receipts/e3-work-e3-cpu-siwc-preflight-20261119.json",
+    "base_head": "6ce19a2471c203a9418042dcbc021eca94bd49c4",
+    "change": "SIWC bounded HTTP response reader now rejects oversized Content-Length and cancels before reading; 10 focused provider/stream tests pass.",
+    "cpu": "Chrome renderer 14915 reached 24% of one core during an active Work sample and returned to 0% in the post-test window; Codex/ChatGPT processes account for other active CPU. No CDP/tab attribution and no authentic idle sample.",
+    "memory": "Build peak Node RSS 409840 kB; MemAvailable recovered above 10 GB; post-test swap counters and memory PSI were zero. gnome-keyring-daemon remains UNKNOWN_PRESERVE at PSS 545144 kB; no sustained leak established.",
+    "service_readback": "Backend, Ollama, cloudflared and Tailscale active without restarts. Caddy failed once with NRestarts=0; left untouched. Baloo inactive; no project timer or zombie observed.",
+    "pr59": "Closed unmerged; its head regresses the streaming response-size bound. No PR code applied.",
+    "live_status": "SOURCE_TESTS_PASS; no LIVE OAuth/MCP/Mongo/reconnect claim."
   }
 }
