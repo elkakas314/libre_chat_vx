@@ -41,12 +41,15 @@ test('MCP status readback exposes only valid recent native connection states',()
 });
 test('selected agent metadata is displayed only after matching authenticated readback',()=>{
   const input={endpoint:'agents',agentId:'agent-one',fetching:false,error:false,
+    receivedAtMs:t-1000,nowMs:t,
     data:{id:'agent-one',name:'NOSTROMO',model:'qwen3:4b',instructions:'private'}};
-  assert.deepEqual(selectedAgentReadback(input),{name:'NOSTROMO',model:'qwen3:4b'});
+  assert.deepEqual(selectedAgentReadback(input),{name:'NOSTROMO',model:'qwen3:4b',receivedAtMs:t-1000});
   assert.equal(selectedAgentReadback({...input,agentId:'agent-two'}),null);
   assert.equal(selectedAgentReadback({...input,endpoint:'ollama'}),null);
   assert.equal(selectedAgentReadback({...input,fetching:true}),null);
   assert.equal(selectedAgentReadback({...input,error:true}),null);
+  assert.equal(selectedAgentReadback({...input,receivedAtMs:t-300_001}),null);
+  assert.equal(selectedAgentReadback({...input,receivedAtMs:t+1}),null);
 });
 test('conversation activity is content-free and distinguishes calls from stored outputs',()=>{
   const summary=summarizeVxConversation({

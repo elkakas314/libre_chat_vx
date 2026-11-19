@@ -37,13 +37,18 @@ function asObject(value: unknown): Record<string, unknown> | undefined {
 /** Project only VIEW-scoped agent metadata matching the selected native chat. */
 export function selectedAgentReadback(input: {
   endpoint:string|null; agentId:string|null; fetching:boolean; error:boolean; data:unknown;
-}): {name:string|null;model:string|null}|null {
+  receivedAtMs:number; nowMs:number;
+}): {name:string|null;model:string|null;receivedAtMs:number}|null {
   if(input.endpoint!=='agents'||!input.agentId||input.fetching||input.error)return null;
+  if(!Number.isSafeInteger(input.receivedAtMs)||input.receivedAtMs<=0||
+    !Number.isSafeInteger(input.nowMs)||input.receivedAtMs>input.nowMs||
+    input.nowMs-input.receivedAtMs>300_000)return null;
   const data=asObject(input.data);
   if(data?.id!==input.agentId)return null;
   return {
     name:typeof data.name==='string'&&data.name ? data.name : null,
     model:typeof data.model==='string'&&data.model ? data.model : null,
+    receivedAtMs:input.receivedAtMs,
   };
 }
 

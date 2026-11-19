@@ -31,6 +31,7 @@ export default function VXCockpitBridge({ onClose, activity: activityInput, phon
   const [showHub, setShowHub] = useState(false);
   const [showPhone, setShowPhone] = useState(false);
   const [selectorUnavailable, setSelectorUnavailable] = useState(false);
+  const [readbackNow, setReadbackNow] = useState(() => Date.now());
   const [activeMode, setActiveMode] = useState<'AUTONOMO'|HudSystem>('AUTONOMO');
   const activeSystem:HudSystem|null = activeMode==='AUTONOMO'?null:activeMode;
   const returnButtonRef = useRef<HTMLButtonElement>(null);
@@ -40,11 +41,20 @@ export default function VXCockpitBridge({ onClose, activity: activityInput, phon
   const agentQuery = useGetAgentByIdQuery(
     activity.endpoint === 'agents' ? activity.agentId : null,
   );
-  const selectedAgent = selectedAgentReadback({endpoint:activity.endpoint,agentId:activity.agentId,
-    fetching:agentQuery.isFetching,error:agentQuery.isError,data:agentQuery.data});
   const mcpQuery = useMCPConnectionStatusQuery({enabled:showHub});
+  useEffect(() => {
+    const now=Date.now();
+    setReadbackNow(now);
+    const timers=[agentQuery.dataUpdatedAt,mcpQuery.dataUpdatedAt]
+      .filter(value=>value>0 && value<=now && now-value<=300_000)
+      .map(value=>window.setTimeout(()=>setReadbackNow(Date.now()),value+300_001-now));
+    return () => timers.forEach(timer=>window.clearTimeout(timer));
+  }, [agentQuery.dataUpdatedAt,mcpQuery.dataUpdatedAt]);
+  const selectedAgent = selectedAgentReadback({endpoint:activity.endpoint,agentId:activity.agentId,
+    fetching:agentQuery.isFetching,error:agentQuery.isError,data:agentQuery.data,
+    receivedAtMs:agentQuery.dataUpdatedAt,nowMs:readbackNow});
   const mcpConnections = projectMcpConnectionReadback({data:mcpQuery.data,
-    fetching:mcpQuery.isFetching,error:mcpQuery.isError,receivedAtMs:mcpQuery.dataUpdatedAt,nowMs:Date.now()});
+    fetching:mcpQuery.isFetching,error:mcpQuery.isError,receivedAtMs:mcpQuery.dataUpdatedAt,nowMs:readbackNow});
   const storedToolOutputs = activity.storedOutputCount;
 
   useEffect(() => { returnButtonRef.current?.focus(); }, []);
@@ -94,6 +104,9 @@ export default function VXCockpitBridge({ onClose, activity: activityInput, phon
             <div><span>Llamadas de herramienta</span><strong>{activity.toolCallCount}</strong></div>
             <div><span>Modelo de conversación</span><strong>{activity.model ?? 'No disponible en esta vista'}</strong></div>
             <div><span>Modelo configurado del agente</span><strong>{selectedAgent?.model ?? 'NO VERIFICADO'}</strong></div>
+            <div><span>Lectura del agente</span><strong>{selectedAgent ?
+              <time dateTime={new Date(selectedAgent.receivedAtMs).toISOString()}>{new Date(selectedAgent.receivedAtMs).toLocaleString()}</time>
+              : 'NO VERIFICADO'}</strong></div>
           </div>
           {activity.toolCalls.length > 0 ? (
             <ul className="vx-live-tool-list" aria-label="Últimas llamadas registradas">
