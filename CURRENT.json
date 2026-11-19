@@ -2755,5 +2755,52 @@
     },
     "conclusion": "Stable RSS for backend/Mongo/LiteLLM over 20 seconds; available RAM rose slightly then remained near baseline; swap unchanged; memory PSI zero; CPU PSI some stayed below 10% and decreased; no saturation or leak demonstrated.",
     "source_head_before_receipt": "66aa3cf3032d9d953c6e2e9ac59f8ca4759d1b77"
+  },
+  "e3_local_ci_visual_source_20261119": {
+    "observed_at_utc": "2026-11-19T00:29:12Z",
+    "branch": "integration/nostromo-canon-20261118-r1",
+    "source_head_tested": "7acbfb14375af1ac87e0fcf72bdfaa75c52a7541",
+    "pr54": "DRAFT_OPEN_NOT_MERGED",
+    "pr58": {
+      "head": "74f3da64095ec39b5b820bceeb0e5901943f6c33",
+      "state": "OPEN_DRAFT_NOT_MERGED",
+      "r0_preflight_fix": "already present in tested branch; four offline scenarios pass; no patch duplicated"
+    },
+    "local_ci": {
+      "result": "PASS",
+      "exit_code": 0,
+      "github_actions": false,
+      "host_runtime_modified": false,
+      "scope": "exact-SHA TypeScript/tests + package/preflight/workspace/audit/visual reconciliation + Playwright SOURCE desktop/mobile + MCP stdio/package",
+      "receipt": "operating/sync-receipts/local-ci-7acbfb14375a.json",
+      "sanitized_log_sha256": "336c0a9db67ceef2968e5c7cf34c4c43fa19ae621e6855f161c8bec8d4d05315"
+    },
+    "visual_source": {
+      "receipt": "operating/sync-receipts/visual-source-7acbfb14375a.json",
+      "sha256": "480e76b0df14536606ab48330a1186cd920349fe74f8bdc00c102549022be737",
+      "desktop": "PASS 1280x900",
+      "mobile": "PASS 390x844",
+      "page_errors": 0,
+      "live_claim": false
+    },
+    "resource_samples": {
+      "count": 18,
+      "mem_available_kb_min_max": [
+        9111800,
+        9497208
+      ],
+      "swap_free_kb_min_max": [
+        1992700,
+        1992700
+      ],
+      "cpu_psi_some_avg10_peak_pct": 26.46,
+      "memory_psi_some_full_avg10_pct": [
+        0.0,
+        0.0
+      ],
+      "interpretation": "No memory pressure observed in short CI sample; CPU pressure rose during test load; not leak evidence."
+    },
+    "pr58_review": "The public repository preflight permission/visibility correction is already represented in branch source and exercised; separate PR report is not copied, PR remains draft.",
+    "next": "Continue SIWC route-input provider analysis and independent source gates; deployment remains blocked by HOST_CONTROL grant and authenticated provider readbacks/owner consent."
   }
 }

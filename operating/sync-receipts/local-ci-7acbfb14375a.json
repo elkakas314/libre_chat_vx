@@ -1,0 +1,54 @@
+{
+  "head": "7acbfb14375af1ac87e0fcf72bdfaa75c52a7541",
+  "startedAt": "2026-11-19T00:25:17Z",
+  "result": "PASS",
+  "exitCode": 0,
+  "log": "operating/sync-receipts/local-ci-7acbfb14375a.log",
+  "scope": [
+    "npm test",
+    "MCP stdio/package suite",
+    "visual reconciliation and Playwright desktop/mobile SOURCE fixture"
+  ],
+  "visualSmoke": "PASS",
+  "visualProofRoot": "visual-evidence/",
+  "hostRuntimeModified": false,
+  "githubActions": false,
+  "logSha256": "336c0a9db67ceef2968e5c7cf34c4c43fa19ae621e6855f161c8bec8d4d05315",
+  "exactHeadConfirmedAfterTests": "7acbfb14375af1ac87e0fcf72bdfaa75c52a7541",
+  "suiteResults": {
+    "typescriptAndTests": "PASS; 268 tests",
+    "siwcPackageArtifact": "1/1 PASS",
+    "preflightMock": "4/4 PASS",
+    "nostromoCheck": "3/3 PASS",
+    "workspace": "7/7 PASS",
+    "localAudit": "1/1 PASS",
+    "visualReconciliation": "4/4 PASS",
+    "sourceBrowserDesktopMobile": "2/2 PASS",
+    "mcpStdioAndPackage": "48/48 PASS"
+  },
+  "resourceSamples": {
+    "count": 18,
+    "memAvailableMinKb": 9111800,
+    "memAvailableMaxKb": 9497208,
+    "swapFreeMinKb": 1992700,
+    "swapFreeMaxKb": 1992700,
+    "cpuPsiSomeAvg10MaxPct": 26.46,
+    "memoryPsiSomeAvg10MaxPct": 0.0,
+    "memoryPsiFullAvg10MaxPct": 0.0
+  },
+  "visualProof": {
+    "path": "operating/sync-receipts/visual-source-7acbfb14375a.json",
+    "sha256": "480e76b0df14536606ab48330a1186cd920349fe74f8bdc00c102549022be737",
+    "scope": "SOURCE_FIXTURE_ONLY",
+    "sourceSha": "7acbfb14375af1ac87e0fcf72bdfaa75c52a7541",
+    "desktop": "PASS",
+    "mobile": "PASS",
+    "dimensions": {
+      "desktop": "1280x900",
+      "mobile": "390x844"
+    },
+    "artifactDir": "visual-evidence/run-WDXnoE"
+  },
+  "classification": "SOURCE_ONLY_NOT_LIVE",
+  "receiptRecordedAt": "2026-11-19T00:29:12Z"
+}

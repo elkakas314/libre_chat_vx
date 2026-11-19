@@ -1,3 +1,13 @@
+# NOSTROMO HANDOFF CURRENT — 2026-11-19
+
+## Local CI + browser SOURCE receipt
+
+- Tested exact source commit `7acbfb14375af1ac87e0fcf72bdfaa75c52a7541` on `integration/nostromo-canon-20261118-r1`: local CI **PASS / exit 0**, no GitHub Actions and no host runtime changes. TypeScript/tests 268 PASS; SIWC package 1/1; preflight mock 4/4; NOSTROMO checks 3/3; workspace 7/7; local audit 1/1; visual reconciliation 4/4; Playwright SOURCE desktop/mobile 2/2; MCP stdio/package 48/48. Receipt: `operating/sync-receipts/local-ci-7acbfb14375a.json`; sanitized log SHA-256 `336c0a9db67ceef2968e5c7cf34c4c43fa19ae621e6855f161c8bec8d4d05315`.
+- Browser proof is SOURCE fixture only: desktop 1280×900 and mobile 390×844 PASS, zero page errors. Frozen proof SHA-256 `480e76b0df14536606ab48330a1186cd920349fe74f8bdc00c102549022be737` at `operating/sync-receipts/visual-source-7acbfb14375a.json`; no LIVE UI claim.
+- During 18 short CI samples, MemAvailable was 9,111,800–9,497,208 kB; swap free stayed 1,992,700 kB; memory PSI some/full remained 0.00%; CPU PSI some avg10 peaked at 26.46% under test load. This does not indicate memory pressure or prove long-term leak absence.
+- PR #58 remains DRAFT/unmerged. Its GitHub PUBLIC preflight fix and four offline cases are already present in tested source; avoid duplicate application. The local read-only preflight confirms public visibility and `permissions.push=true`, but the branch is locally one source commit ahead of remote and needs receipt sync.
+- SIWC remains SOURCE-only. No route-input provider, OAuth consent, or HOST_CONTROL R2 deployment/restart grant is available in this receipt. No product PASS is claimed.
+
 # LIBRECHAT HANDOFF CURRENT
 
 ## 2026-11-12 — E2 verified readback + HOST_CONTROL operator minimum handoff
