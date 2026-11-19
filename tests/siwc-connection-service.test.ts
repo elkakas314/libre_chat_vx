@@ -8,6 +8,7 @@ import { registerSiwcAgentClientResolver, SiwcConnectionService,
 import { SiwcProtectedFileVault } from '../src/llm/siwcProtectedVault';
 import { startSiwc } from '../src/llm/chatgptAuthorized';
 import { authorizeSiwcTokens } from '../src/llm/siwcSession';
+import type { SiwcCredentialVault } from '../src/llm/siwcSession';
 
 const now=1_900_000_000_000;
 const clientId='oaiapp_service_test';
@@ -144,6 +145,30 @@ test('SIWC connect binds signed plan consent to the LibreChat user and reads it 
     assert.equal(await service.resolveAccount('librechat-user-A'),null);
     assert.deepEqual(await service.publicStateForUser('librechat-user-A'),{status:'DISCONNECTED'});
   }finally{await rm(directory,{recursive:true,force:true});}
+});
+
+test('declared oversized SIWC OAuth JSON body is canceled without reading',async()=>{
+  let canceled=false,pulls=0;
+  const body=new ReadableStream<Uint8Array>({
+    pull(controller){pulls++;controller.enqueue(new Uint8Array(pulls===1?1:131_073));},
+    cancel(){canceled=true;},
+  });
+  const pending=startSiwc({hostId,callback:'http://127.0.0.1:1455/auth/callback',
+    actualAppName:'NOSTROMO',requestPlanUsage:true});
+  const vault={readForUser:async()=>null,update:async()=>{throw Error('UNEXPECTED_VAULT_WRITE');}} as unknown as SiwcCredentialVault;
+  const service=new SiwcConnectionService({hostId,actualAppName:'NOSTROMO',vault,
+    transport:(async()=>new Response(body,{status:200,
+      headers:{'content-length':'131073'}})) as unknown as typeof fetch,
+    openLoopback:async()=>({pending,authorizationURL:pending.url,
+      completed:Promise.resolve({code:'synthetic-code',issuedClientId:clientId}),
+      callbackURL:pending.callback,close:async()=>{}}),
+  });
+  const attempt=await service.startForUser('librechat-user-A');
+  assert.equal(attempt.status,'CONSENT_REQUIRED');
+  if(attempt.status!=='CONSENT_REQUIRED')return;
+  await assert.rejects(attempt.completion,/SIWC_TOKEN_EXCHANGE_FAILED/);
+  assert.equal(canceled,true);
+  assert.equal(pulls,1);
 });
 
 test('refresh rotation is encrypted before JWKS verification and resumes without reusing the consumed refresh token',async()=>{
