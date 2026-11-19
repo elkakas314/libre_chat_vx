@@ -3074,7 +3074,16 @@
         "siwcProviderRoutes.js"
       ],
       "installed": false,
-      "permission_gate": "HOST_CONTROL R2 still required"
-    }
+    "permission_gate": "HOST_CONTROL R2 still required"
+  },
+  "e3_mobile_listener_r0_readback_20261119": {
+    "receipt": "operating/sync-receipts/mobile-listener-r0-20261119.json",
+    "branch_head_with_receipt": "a4e5cf5",
+    "tailscale_serve": "NOT_CONFIGURED",
+    "backend_listener": "127.0.0.1:3080",
+    "tailnet_443_listener": "PRESENT_OWNER_AND_NOSTROMO_ROUTE_UNVERIFIED",
+    "mobile_access": "NOT_VERIFIED",
+    "issue_37_comment": "6996380851"
+  }
   }
 }
