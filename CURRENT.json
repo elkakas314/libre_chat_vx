@@ -2633,5 +2633,34 @@
     },
     "source_head_before_receipt": "a800b15a1d1ef2ab72d2d6bc438fad381d91c4f5",
     "no_inference_or_host_mutation": true
+  },
+  "e3_github_secret_scan_scope_readback_20261119": {
+    "observed_at_utc": "2026-11-19T00:09:54Z",
+    "repository": "elkakas314/libre_chat_vx",
+    "preflight_head": "9536e7b469cdc6e36cc1ad77c3d7d6a33fb4ee3e",
+    "repo_visibility": "PUBLIC",
+    "secret_scanning": "ENABLED",
+    "push_protection": "ENABLED",
+    "github_alerts": {
+      "open": 0,
+      "resolved": 0
+    },
+    "official_scope": "GitHub Secret Scanning scans entire Git history on all branches for known credential patterns",
+    "official_source": "https://docs.github.com/en/code-security/concepts/secret-security/secret-scanning",
+    "scan_history_api": "UNAVAILABLE: HTTP 404 says Advanced Security disabled; did not imply scan disabled because repo-level status is enabled",
+    "local_scanner": {
+      "tool": "detect-secrets 1.5.0",
+      "scope": "current tracked tree only; checkout shallow at 37 commits",
+      "findings": 282,
+      "unverified": true,
+      "types": {
+        "hex_entropy": 247,
+        "base64_entropy": 27,
+        "keyword": 8
+      },
+      "values_emitted": false
+    },
+    "conclusion": "ZERO_GITHUB_ALERTS_FOR_ENABLED_SECRET_SCANNING; LOCAL_ENTROPY_CANDIDATES_UNVERIFIED; not a proof that no unrecognized secret exists",
+    "no_secret_values_read_into_receipts": true
   }
 }

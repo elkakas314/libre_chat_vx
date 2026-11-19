@@ -452,3 +452,10 @@ PRECEDENCE: this update supersedes older `PR26 DRAFT` or ChatGPT usage assumptio
 - HOST_CONTROL R0 on `elkakas314-Lenovo-Z50-70`: `MemAvailable=9,513,344 kB` (~9.07 GiB); `SwapFree=1,992,700 kB` (~1.90 GiB). Memory PSI some/full avg10 are both 0.00. CPU PSI some avg10/60/300: 5.73/5.32/7.23; CPU PSI full avg10 0.00. Load average 1.13/1.90/2.41.
 - `host_process_list` failed at limit 1500; bounded earlier page did not contain matching app processes. No per-process attribution or GPU/VRAM sample. This snapshot shows no memory pressure and does not establish a leak. No inference or host write occurred.
 - Checksummed readings and limitations are in `CURRENT.json:e3_post_scan_host_resource_r0_20261119_0006`.
+
+
+## 2026-11-19 00:09 UTC — GitHub secret-scan scope readback
+
+- Read-only GitHub API confirms the public repository has Secret Scanning and Push Protection enabled; current alert lists contain 0 open and 0 resolved alerts. Official GitHub documentation states Secret Scanning covers the entire Git history on all branches for known patterns.
+- The scan-history API itself returned 404 `Advanced Security is disabled`; this does not mean public-repository Secret Scanning is off, but it prevents reading scan backfill metadata. Local `detect-secrets` scanned only the current tracked tree in a shallow 37-commit checkout and marked 282 unverified candidates (247 hex entropy, 27 base64 entropy, 8 keyword). No values were emitted and no claim of absolute absence is made.
+- See `CURRENT.json:e3_github_secret_scan_scope_readback_20261119`. No source, credential, repository setting or visibility was changed.
