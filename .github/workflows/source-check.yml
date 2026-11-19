@@ -205,7 +205,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
       - name: Compile the native Android app and run unit tests
         working-directory: switchboard
-        run: ./gradlew --init-script ../vx-ci/ci/switchboard-kotlin-repositories.init.gradle :app:assembleDebug test
+        run: ./gradlew --refresh-dependencies --init-script ../vx-ci/ci/switchboard-kotlin-repositories.init.gradle :app:assembleDebug test
 
   switchboard-ios:
     name: Switchboard native iOS NOSTROMO
