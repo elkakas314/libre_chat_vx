@@ -3059,7 +3059,7 @@
     "next": "Use an authenticated LibreChat browser session to call nostromo_estado and nostromo_directorio_listar in one saved conversation; then verify MongoDB readback/reconnect. Preserve the runtime/source divergence until authorized reversible sync.",
     "drive_handoff": {
       "document_id": "1lrhx64J3hW7iW_qeGOw_fJw67rp_M-2EY_65Go2tMPY",
-      "revision_id": "AHj4eMRtTx6762WX3uw8PknJe9zSuU3JVGriHXXG0i4zUvRuZyabNNUF9uo6ZU7tZ_EoVPEukzTKrIV7dohw3EyiTHyVqxYGoRs6UoEZ1xs",
+      "revision_id": "AHj4eMR6tn4NQLruqj9cAd4NDrJvoxDjASDqDbMbvrJKH9a-JRcgJnaV_fEUv1OYyu3nOK2GBBD3EcV6hPweAkeN-PFV177if0493W_LZTA",
       "readback": "host MCP R0, mobile listener/service/resource and SIWC binding receipts inserted and read back; mobile access remains unverified"
     },
     "siwc_package_candidate_revalidation": {
