@@ -3182,5 +3182,34 @@
       "hostcontrol_material_write": "NONE"
     },
     "remaining_blocker": "Authenticated SIWC native-route input has no production source setter; R2 grant absent; no LIVE SIWC or conversational MCP validation."
+  },
+  "e3_work_e3_resource_siwc_update_20261119": {
+    "receipt": "operating/sync-receipts/e3-work-e3-resource-siwc-r0-20261119.json",
+    "source_code_head": "6e7c9aadf20201736ed121c1a5b8c0a3247aa0ef",
+    "tested_code_head": "6e7c9aadf20201736ed121c1a5b8c0a3247aa0ef",
+    "siwc_change": "OAuth token/refresh/JWKS response bodies are bounded by bytes and canceled before overflow; 12 focused SIWC tests pass.",
+    "local_ci": "PASS exact SHA; 275 main tests, package artifact 1/1, preflight 4/4, workspace 7/7, local audit 1/1, visual source smoke PASS, MCP 48/48.",
+    "resource_policy": "Local CI serializes with flock and yields using nice 15, ionice idle, CPU affinity 3; no persistent service limits.",
+    "cpu": {
+      "state": "WORK_ACTIVE; no authentic IDLE sample",
+      "chrome_renderer_pids_14915_5572": "alive; 0% one-core CPU across the 8-second follow-up",
+      "codex_executor_pid_6403": "31.2% one-core CPU in the active window",
+      "chatgpt_renderer_pid_6506": "16.5% one-core CPU in the active window",
+      "chatgpt_gpu_pid_5810": "15.2% one-core CPU in the active window",
+      "backend_mcp_mongo_ollama": "near idle",
+      "gnome_keyring_pid_3079": "12.3% then 4.0% one-core in adjacent windows; UNKNOWN_PRESERVE; no sustained growth established"
+    },
+    "memory": {
+      "CI_mem_available_min_kb": 9389872,
+      "CI_swap_free_stable_kb": 604668,
+      "CI_memory_psi_avg10_peak": 0.0,
+      "after_CI_mem_available_kb": 9819572,
+      "after_CI_swap_free_kb": 604668,
+      "after_CI_memory_psi_avg10": 0.0,
+      "conclusion": "No current memory pressure or swap churn; this is not a long-term leak verdict."
+    },
+    "gpu": "Prior physical GeForce 840M/Ollama receipt reused; no repeated benchmark.",
+    "host_authority": "Current HOST_CONTROL R0 has kernel_authority=false and only lock files; no R2/R3 grant.",
+    "live_status": "NO_SIWC_INSTALL_OR_CONSENTED_CHAT; no LIVE MCP/Mongo/reconnect claim."
   }
 }
