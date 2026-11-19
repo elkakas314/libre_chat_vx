@@ -16,6 +16,23 @@
     "caddy.service": "failed, ExecMainStatus 1",
     "nginx.service": "not-found"
   },
+  "resource_readback_around_2026-11-19T01:08Z": {
+    "total_memory_kb": 16267092,
+    "available_memory_kb": 8727100,
+    "swap_used_kb": 104448,
+    "swap_free_kb": 1992700,
+    "cpu_psi_some_avg10_pct": 24.81,
+    "cpu_psi_some_avg60_pct": 21.17,
+    "cpu_idle_pct_vmstat_samples": [75, 31, 29],
+    "cpu_run_queue_samples": [8, 15, 1],
+    "memory_psi_some_full_pct": [0, 0],
+    "service_processes": {
+      "librechat_backend_pid_5098": {"rss_kb": 309064, "ps_cpu_pct": 0.2},
+      "nostromo_mcp_pid_5197": {"rss_kb": 55772, "ps_cpu_pct": 0.0},
+      "ollama_pid_1320": {"rss_kb": 36236, "ps_cpu_pct": 0.0}
+    },
+    "interpretation": "Short readback shows CPU contention and no memory pressure. No test was running; measured service-process usage was low. This does not establish the cause of system CPU pressure or a memory leak."
+  },
   "listeners": [
     {
       "address": "127.0.0.1:3080",
@@ -39,6 +56,6 @@
     }
   ],
   "interpretation": "Tailscale Serve is not configured. A TCP listener exists on tailnet IPv4/IPv6 port 443, but its owner and NOSTROMO routing were not verified. No claim of mobile access is made.",
-  "actions_taken": "Filtered HOST_CONTROL R0 listener/process/service readbacks only; caddy journal readback was unavailable; no network, service, or file changes.",
+  "actions_taken": "Filtered HOST_CONTROL R0 listener/process/service readbacks and a short local resource sample; caddy journal readback was unavailable; no network, service, or file changes or process signals.",
   "next": "Identify the owner and route for tailnet port 443 using an authorized bounded readback; then test the NOSTROMO mobile endpoint from a real tailnet client."
 }

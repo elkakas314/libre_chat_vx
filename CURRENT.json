@@ -3085,6 +3085,9 @@
     "caddy_service": "FAILED",
     "nginx_service": "NOT_FOUND",
     "tailnet_443_listener": "PRESENT_OWNER_AND_NOSTROMO_ROUTE_UNVERIFIED",
+    "cpu_pressure": "ELEVATED_SHORT_SAMPLE_PSI_SOME_AVG10_24_81_PCT",
+    "memory_pressure": "NONE_SHORT_SAMPLE_8_7_GB_AVAILABLE_SWAP_102_MB_USED",
+    "nostromo_process_load": "LOW_AT_READBACK",
     "mobile_access": "NOT_VERIFIED",
     "issue_37_comment": "6996380851"
   }
