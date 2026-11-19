@@ -3115,5 +3115,58 @@
     "memory_psi": "NONE",
     "intervention": "NONE"
   }
+  },
+  "e3_resource_siwc_gpu_r0_20261119": {
+    "receipt": "operating/sync-receipts/e3-resource-siwc-gpu-r0-20261119.json",
+    "tested_source_head": "31eb56360e8b86951d9de5b336871a7237d41146",
+    "publication_at_receipt_time": "NOT_YET_PUBLISHED",
+    "source_ci": {
+      "result": "PASS",
+      "main_tests": "274/274",
+      "mcp_tests": "48/48",
+      "siwc_focused": "21/21",
+      "artifact": "1/1",
+      "preflight_mocks": "4/4",
+      "visual_smoke": "PASS",
+      "duration_seconds": 47
+    },
+    "siwc": {
+      "pr59_change_integrated_in_source": true,
+      "body_read_limit_bytes": 32768,
+      "live_route_input": "NO_PRODUCTION_SETTER_FOUND_FAIL_CLOSED",
+      "runtime_install": "NOT_DONE",
+      "hostcontrol_r2_grant": "ABSENT"
+    },
+    "cpu_memory": {
+      "sample_state": "WORK_ACTIVE",
+      "available_ram_min_kb": 8706268,
+      "swap_free_kb_stable": 1870076,
+      "memory_psi": "NONE",
+      "current_chrome_renderer_cpu_one_core_pct": [
+        3.6,
+        0.0
+      ],
+      "chatgpt_renderer_cpu_one_core_pct": 11.11,
+      "codex_executor_cpu_one_core_pct": 6.54,
+      "backend_mcp_ollama_near_idle_during_process_window": true,
+      "long_term_leak_verdict": "NOT_ESTABLISHED"
+    },
+    "gpu": {
+      "physical_device": "NVIDIA GeForce 840M",
+      "driver": "580.178.04",
+      "compute_capability": "5.0",
+      "vram_total_mib": 4096,
+      "ollama_model": "qwen2.5:3b",
+      "ollama_processor": "100% GPU",
+      "peak_vram_mib": 2128,
+      "bounded_probe": "OK",
+      "model_unloaded_after_probe": true
+    },
+    "host_changes": {
+      "ollama_service_configuration": "NONE",
+      "service_restarts": 0,
+      "hostcontrol_material_write": "NONE"
+    },
+    "remaining_blocker": "Authenticated SIWC native-route input has no production source setter; R2 grant absent; no LIVE SIWC or conversational MCP validation."
   }
 }
