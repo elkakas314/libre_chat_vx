@@ -4,6 +4,7 @@ import {
   type HubItem,
 } from '../hud/tentaculoHud';
 import type {NostromoHubSnapshot} from '../hud/nostromoHub';
+import type {McpConnectionReadback} from '../cockpit/mcpConnectionReadback';
 import {SiwcConnectionControl} from './SiwcConnectionControl';
 
 function HubNode({item,children,depth=0}:{
@@ -46,8 +47,9 @@ function HubNode({item,children,depth=0}:{
 }
 
 /** Focusable, read-only Hub. Does not call MCP, install agents or infer LIVE. */
-export function TentaculoHub({snapshot}:{
+export function TentaculoHub({snapshot,mcpConnections}:{
   snapshot:NostromoHubSnapshot;
+  mcpConnections?:McpConnectionReadback|null;
 }) {
   const {roots,children}=createTentaculoHubTree(snapshot.items);
   const local=roots.filter(x=>x.system==='NOSTROMO');
@@ -77,6 +79,14 @@ export function TentaculoHub({snapshot}:{
           </ul>
         </section>
       </div>
+      <section aria-label="Conexiones MCP de LibreChat" data-testid="nostromo-mcp-connections">
+        <h5>Conexiones MCP de LibreChat</h5>
+        {mcpConnections ? <>
+          <p>Lectura recibida: <time dateTime={new Date(mcpConnections.receivedAtMs).toISOString()}>{new Date(mcpConnections.receivedAtMs).toLocaleString()}</time>. No prueba llamadas ni permisos del agente.</p>
+          {mcpConnections.servers.length ? <ul>{mcpConnections.servers.map(server=>
+            <li key={server.name}>{server.name}: {server.state}</li>)}</ul> : <p>No hay servidores en esta lectura.</p>}
+        </> : <p>NO VERIFICADO</p>}
+      </section>
       <SiwcConnectionControl />
       <footer className="vx-hub-footer" role="note">
         <span className="vx-hub-state-dot" aria-hidden="true" />

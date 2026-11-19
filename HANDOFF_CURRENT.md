@@ -1,5 +1,6 @@
 ## 2026-11-19 — Agente, cabina y llamadas MCP: lectura R0 y corrección SOURCE
 
+- El constructor autenticado de LibreChat volvió a mostrar Ollama/Qwen3 4B y `nostromo-local · 11`, con dos directas y nueve diferidas; el diálogo muestra conexión, no prueba despacho. La cabina SOURCE incorpora además la consulta nativa autenticada de estado MCP, con hora de recepción y sin inferir permisos ni ejecución. Si falta lectura válida, muestra NO VERIFICADO; los destinos externos aún no tienen readback de identidad enlazado.
 - MongoDB confirma NOSTROMO en Ollama/Qwen3 4B, contexto 6144, 11 herramientas seleccionadas, nueve diferidas y dos directas. Es configuración persistida, no prueba de ejecución de un turno.
 - La cabina instalada y su CSS difieren del SOURCE y el asset servido contiene el texto antiguo Qwen2.5. No se han sobrescrito. El selector de modos de la cabina solo cambia la vista, no el agente nativo.
 - En seis mensajes históricos del endpoint Ollama, MongoDB conserva tres llamadas y tres salidas; el receipt indica dos estados correctos y una validación fallida. El proyector instalado cuenta las tres llamadas, pero muestra nombres genéricos y cero salidas porque espera `function`. SOURCE reconoce los atributos directos y cuenta todas las salidas, sin inferir éxito.

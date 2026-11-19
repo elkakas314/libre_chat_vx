@@ -10,9 +10,10 @@ import {
   createPhoneModuleSnapshot,
   summarizeVxConversation,
   selectedAgentReadback,
+  projectMcpConnectionReadback,
 } from '@librechat/vx';
 import type { HudSystem, PhoneModuleSnapshot, VxConversationActivityInput } from '@librechat/vx';
-import { useGetAgentByIdQuery } from '~/data-provider';
+import { useGetAgentByIdQuery, useMCPConnectionStatusQuery } from '~/data-provider';
 import './VXCockpit.css';
 
 export interface VXCockpitBridgeProps {
@@ -39,6 +40,9 @@ export default function VXCockpitBridge({ onClose, activity: activityInput, phon
   );
   const selectedAgent = selectedAgentReadback({endpoint:activity.endpoint,agentId:activity.agentId,
     fetching:agentQuery.isFetching,error:agentQuery.isError,data:agentQuery.data});
+  const mcpQuery = useMCPConnectionStatusQuery({enabled:showHub});
+  const mcpConnections = projectMcpConnectionReadback({data:mcpQuery.data,
+    fetching:mcpQuery.isFetching,error:mcpQuery.isError,receivedAtMs:mcpQuery.dataUpdatedAt,nowMs:Date.now()});
   const storedToolOutputs = activity.storedOutputCount;
 
   useEffect(() => { returnButtonRef.current?.focus(); }, []);
@@ -183,7 +187,7 @@ export default function VXCockpitBridge({ onClose, activity: activityInput, phon
               ) : null}
               {showHub ? (
                 <div id="vx-nostromo-hub">
-                  <TentaculoHub snapshot={nostromoHubSourceSnapshot()} />
+                  <TentaculoHub snapshot={nostromoHubSourceSnapshot()} mcpConnections={mcpConnections} />
                 </div>
               ) : null}
             </div>

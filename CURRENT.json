@@ -3372,6 +3372,7 @@
     "selected_tools": 11,
     "historical_ollama_mcp_calls": 3,
     "historical_stored_outputs": 3,
+    "mcp_connection_source": "AUTHENTICATED_NATIVE_STATUS_QUERY_SOURCE_ONLY_NOT_INSTALLED",
     "selector": "VIEW_ONLY_NOT_AGENT_SELECTION",
     "live_verified": false
   },

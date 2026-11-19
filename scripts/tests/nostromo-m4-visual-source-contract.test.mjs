@@ -11,7 +11,7 @@ const read=rel=>readFileSync(fileURLToPath(new URL('../../'+rel,import.meta.url)
 test('M4 native bridge mounts the existing Hub/HUD only as SOURCE context',()=>{
  const bridge=read('overlay/upstream/VXCockpitBridge.tsx');
  assert.match(bridge,/from '@librechat\/vx'/);
- assert.match(bridge,/<TentaculoHub snapshot=\{nostromoHubSourceSnapshot\(\)\} \/>/);
+ assert.match(bridge,/<TentaculoHub snapshot=\{nostromoHubSourceSnapshot\(\)\} mcpConnections=\{mcpConnections\} \/>/);
  assert.match(bridge,/<TentaculoHud cards=\{projectTentaculoHud\(\[\]\)\}/);
  assert.match(bridge,/const \[showHub, setShowHub\] = useState\(false\)/);
  assert.match(bridge,/const \[showAutonomous, setShowAutonomous\] = useState\(false\)/);
@@ -46,6 +46,7 @@ test('M4 neutral labels and offline text do not assert an installed agent/MCP',(
  assert.match(bridge,/Una llamada y su salida se verifican en la conversación/);
  assert.match(bridge,/ChatGPT:<\/strong> estado de conexión NO VERIFICADO/);
  assert.match(bridge,/useGetAgentByIdQuery/);
+ assert.match(bridge,/useMCPConnectionStatusQuery\(\{enabled:showHub\}\)/);
  assert.match(bridge,/Esta es una vista; no cambia el agente/);
  assert.doesNotMatch(bridge,/MCP local LIVE/);
  assert.match(bridge,/Esta cabina no inicia procesos ni concede permisos/);

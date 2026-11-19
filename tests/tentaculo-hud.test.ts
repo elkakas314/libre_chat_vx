@@ -10,7 +10,22 @@ import {resolve} from 'node:path';
 import {projectTentaculoHud, createTentaculoHubTree, hubAgentCandidate}
   from '../src/hud/tentaculoHud';
 import {summarizeVxConversation,selectedAgentReadback} from '../src/cockpit/conversationActivity';
+import {projectMcpConnectionReadback} from '../src/cockpit/mcpConnectionReadback';
 const t=Date.parse('2026-11-09T20:00:00.000Z');
+test('MCP status readback exposes only valid recent native connection states',()=>{
+  const input={fetching:false,error:false,receivedAtMs:t-1000,nowMs:t,
+    data:{success:true,connectionStatus:{'nostromo-local':{connectionState:'connected',
+      authorizationGeneration:'private-value'}}}};
+  const view=projectMcpConnectionReadback(input);
+  assert.deepEqual(view,{receivedAtMs:t-1000,servers:[{name:'nostromo-local',state:'connected'}]});
+  assert.doesNotMatch(JSON.stringify(view),/private-value/);
+  assert.equal(projectMcpConnectionReadback({...input,error:true}),null);
+  assert.equal(projectMcpConnectionReadback({...input,fetching:true}),null);
+  assert.equal(projectMcpConnectionReadback({...input,receivedAtMs:t-300_001}),null);
+  assert.equal(projectMcpConnectionReadback({...input,receivedAtMs:t+1}),null);
+  assert.equal(projectMcpConnectionReadback({...input,data:{success:true,
+    connectionStatus:{server:{connectionState:'invented'}}}}),null);
+});
 test('selected agent metadata is displayed only after matching authenticated readback',()=>{
   const input={endpoint:'agents',agentId:'agent-one',fetching:false,error:false,
     data:{id:'agent-one',name:'NOSTROMO',model:'qwen3:4b',instructions:'private'}};
@@ -181,6 +196,15 @@ test('Tentáculo Hub displays truthful SOURCE inventory without execution action
   assert.equal(html.includes('LIVE_VERIFIED'),false);
   assert.equal(html.includes('<form'),false);
   assert.equal(html.includes('ejecutar ahora'),false);
+});
+test('Hub presents authenticated MCP connection readback without claiming execution',()=>{
+  const html=renderToStaticMarkup(React.createElement(TentaculoHub,{
+    snapshot:nostromoHubSourceSnapshot(),
+    mcpConnections:{receivedAtMs:t,servers:[{name:'nostromo-local',state:'connected'}]},
+  }));
+  assert.match(html,/nostromo-local: connected/);
+  assert.match(html,/No prueba llamadas ni permisos del agente/);
+  assert.doesNotMatch(html,/LIVE_VERIFIED/);
 });
 
 test('Tentáculo Hub blocks mixed-system parent links and duplicates',()=>{
