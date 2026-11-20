@@ -1,4 +1,13 @@
 {
+  "e5_authenticated_status_20261120": {
+    "status": "R0_STATUS_VERIFIED_GENERAL_AUTONOMY_PENDING",
+    "agent": "agent_9ex2a9buul2cwzyo",
+    "configured_model": "qwen3:4b-instruct-2507-q4_K_M",
+    "authenticated_receipt": "nostromo-receipt:57e7bac937fcc3b937a74995f8bc696c31d6984618e7546888fe3fe5ce62a1c7",
+    "recovered_after_backend_restart": true,
+    "receipts": ["operating/sync-receipts/e5-authenticated-status-cockpit-20261120.json", "operating/sync-receipts/e5-activity-live-reconciliation-20261120.json"],
+    "final_verified": false
+  },
   "e4_p0_patch_install_20261120": {
     "status": "E4_P0_HOST_PATCH_INSTALLED_VERIFIED_E2E_PENDING",
     "source_head": "0a52843124815ab994ac833945ea600755de1013",
