@@ -25,6 +25,13 @@ test('preview requires an explicit confirmation; host derives plan, agreement an
   const store=new MemoryStore(), service=new NativeObjectiveAgreement(store);
   const preview=await service.preview(scope,proposal(),0);
   assert.equal(preview.ok,true); if(!preview.ok)return;
+  const currentPreview=await service.current(scope);
+  assert.equal(currentPreview.ok,true);
+  if(currentPreview.ok && currentPreview.phase!=='NONE') {
+    assert.equal(currentPreview.phase,'PREVIEWED');
+    assert.equal('agreement_ref' in currentPreview.plan,false);
+    assert.equal('idempotency_key' in currentPreview.plan,false);
+  }
   assert.equal(preview.preview.plan_version,1);
   assert.notEqual(preview.preview.plan_hash,proposal().plan_hash);
   assert.equal('agreement_ref' in preview.preview,false);
@@ -39,6 +46,13 @@ test('preview requires an explicit confirmation; host derives plan, agreement an
   assert.notEqual(agreed.handoff.agreement_ref,'model-claim');
   assert.notEqual(agreed.handoff.idempotency_key,proposal().idempotency_key);
   assert.equal(await service.verify(scope,agreed.handoff),true);
+  const currentAgreement=await service.current(scope);
+  assert.equal(currentAgreement.ok,true);
+  if(currentAgreement.ok && currentAgreement.phase!=='NONE') {
+    assert.equal(currentAgreement.phase,'AGREED');
+    assert.equal('agreement_ref' in currentAgreement.plan,false);
+    assert.equal('idempotency_key' in currentAgreement.plan,false);
+  }
   assert.equal(await service.verify({...scope,userId:'other'},agreed.handoff),false);
   assert.equal(await service.verify({...scope,tenantId:'other'},agreed.handoff),false);
   assert.equal(await service.verify(scope,{...agreed.handoff,objective:'different'}),false);

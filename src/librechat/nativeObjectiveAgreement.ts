@@ -90,6 +90,20 @@ function validState(state: AgreementState | undefined, scope: AgreementScope): s
 export class NativeObjectiveAgreement {
   constructor(private readonly store: ConversationAgreementStore) {}
 
+  /** Reconnect readback exposes the current plan, never the host agreement or idempotency key. */
+  async current(scope: AgreementScope) {
+    try { scope=structuredClone(scope); } catch { return {ok:false as const,reason:'INVALID_SCOPE'}; }
+    if (!validScope(scope)) return {ok:false as const,reason:'INVALID_SCOPE'};
+    const loaded=await this.store.read(scope);
+    if (!loaded.found) return {ok:false as const,reason:'CONVERSATION_UNAVAILABLE'};
+    if (!loaded.state) return {ok:true as const,revision:0,phase:'NONE' as const,authority:false as const};
+    if (!validState(loaded.state,scope)) return {ok:false as const,reason:'AGREEMENT_STATE_INVALID'};
+    const last=loaded.state.plans.at(-1);
+    if (!last) return {ok:true as const,revision:0,phase:'NONE' as const,authority:false as const};
+    const {agreement_ref:_a,idempotency_key:_i,status:_s,...plan}=last.handoff;
+    return {ok:true as const,revision:loaded.state.revision,phase:last.phase,plan:structuredClone(plan),authority:false as const};
+  }
+
   async preview(scope: AgreementScope, proposal: unknown, expectedRevision: number) {
     try { scope=structuredClone(scope); proposal=structuredClone(proposal); } catch { return { ok:false as const, reason:'INVALID_PROPOSAL' }; }
     if (!validScope(scope) || !Number.isSafeInteger(expectedRevision) || expectedRevision < 0 || !isObjectiveHandoff(proposal) ||
