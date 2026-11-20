@@ -129,3 +129,60 @@ test('Mongo adapter scopes reads and writes by owner, tenant, retention and revi
  const noTenant={...scope,tenantId:null};await store.read(noTenant);
  assert.deepEqual(calls.at(-1)?.filter.tenantId,{$exists:false});
 });
+
+import { argumentCommitment } from '../src/cockpit/governedMcpDispatch';
+import { createNativeAgreementArgumentBinding } from '../src/librechat/nativeGovernedExecution';
+
+test('NativeAgreementArgumentBinding requires a host-visible argument presentation, exact current plan and scoped owner', async () => {
+  const store=new MemoryStore(), service=new NativeObjectiveAgreement(store);
+  const committed=argumentCommitment({cwd:'/tmp',argv:['pwd']});
+  const altered=argumentCommitment({cwd:'/tmp',argv:['rm']});
+  assert.ok(committed && altered);
+  const shown={...proposal(),objective:'Read cwd /tmp using pwd',context_refs:[committed]};
+  const preview=await service.preview(scope,shown,0);
+  assert.equal(preview.ok,true);if(!preview.ok)return;
+  const confirmed=await service.confirm(scope,1,preview.preview.plan_hash,preview.revision);
+  assert.equal(confirmed.ok,true);if(!confirmed.ok)return;
+  const tool={capabilityRef:'nostromo_estado',targetId:'NOSTROMO_LOCAL',toolId:'nostromo_estado',
+    risk:'R0' as const,availability:'LIVE' as const,registryBacked:true,
+    aclAllowed:true,adapterLive:true,sourceRevision:'installed-catalog-readback'};
+  let displayed=false;
+  let displayedHash='';
+  const bind=createNativeAgreementArgumentBinding({agreements:service,scope,
+    presentationReadback:async(authScope,agreed,selected,hash)=>{
+      assert.equal(authScope.userId,'u1');
+      assert.equal(agreed.plan_hash,confirmed.handoff.plan_hash);
+      assert.equal(selected.toolId,'nostromo_estado');
+      return displayed && displayedHash===hash;
+    }});
+  const hash=committed.slice('nostromo.args.sha256:'.length);
+  assert.equal(await bind(confirmed.handoff,tool,hash),false,'no rendered confirmation');
+  displayed=true;displayedHash=hash;
+  assert.equal(await bind(confirmed.handoff,tool,hash),true);
+  assert.equal(await bind(confirmed.handoff,tool,altered.slice('nostromo.args.sha256:'.length)),false);
+  assert.equal(await bind(confirmed.handoff,{...tool,capabilityRef:'nostromo_metricas'},hash),false);
+  assert.equal(await bind(confirmed.handoff,{...tool,sourceRevision:''},hash),false);
+  const other=createNativeAgreementArgumentBinding({agreements:service,scope:{...scope,userId:'someone-else'},
+    presentationReadback:async()=>true});
+  assert.equal(await other(confirmed.handoff,tool,hash),false);
+  const newer=await service.preview(scope,{...proposal(),objective:'Changed'},confirmed.revision);
+  assert.equal(newer.ok,true);
+  assert.equal(await bind(confirmed.handoff,tool,hash),false,'stale agreement after new preview');
+});
+test('NativeAgreementArgumentBinding fails closed on missing or throwing authenticated preview proof',async()=>{
+  const store=new MemoryStore(), service=new NativeObjectiveAgreement(store);
+  const ref=argumentCommitment({cwd:'/tmp'});assert.ok(ref);
+  const preview=await service.preview(scope,{...proposal(),context_refs:[ref]},0);
+  assert.equal(preview.ok,true);if(!preview.ok)return;
+  const confirmed=await service.confirm(scope,1,preview.preview.plan_hash,preview.revision);
+  assert.equal(confirmed.ok,true);if(!confirmed.ok)return;
+  const tool={capabilityRef:'nostromo_estado',targetId:'NOSTROMO_LOCAL',toolId:'nostromo_estado',
+    risk:'R0' as const,availability:'LIVE' as const,registryBacked:true,aclAllowed:true,
+    adapterLive:true,sourceRevision:'catalog'};
+  const hash=ref.slice('nostromo.args.sha256:'.length);
+  const missing=createNativeAgreementArgumentBinding({agreements:service,scope});
+  assert.equal(await missing(confirmed.handoff,tool,hash),false);
+  const broken=createNativeAgreementArgumentBinding({agreements:service,scope,
+    presentationReadback:async()=>{throw Error('UNAVAILABLE');}});
+  assert.equal(await broken(confirmed.handoff,tool,hash),false);
+});
