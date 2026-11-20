@@ -172,6 +172,7 @@ test('MCP async tool calls return jobId, permit polling and bound R2 without app
 
 test('MCP persistent async task survives server restart without replay',async()=>{
  const root=await mkdtemp(path.join(tmpdir(),'nostromo-persistent-mcp-'));
+ const request={cwd:root,argv:['pwd'],timeout_s:5,max_output:1024,idempotency_key:'d'.repeat(64)};
  const env={
    NOSTROMO_MCP_ENABLED:'1',NOSTROMO_ALLOWED_ROOTS:root,
    NOSTROMO_APPROVAL_DIR:root,
@@ -187,9 +188,7 @@ test('MCP persistent async task survives server restart without replay',async()=
    assert.equal(names.includes('nostromo_terminal_ejecutar'),false);
    const identity=parse(await client.callTool({name:'nostromo_estado',arguments:{}}));
    assert.equal(identity.taskPersistence,'READY');
-   const started=parse(await client.callTool({name:'nostromo_tarea_iniciar',arguments:{
-     cwd:root,argv:['pwd'],timeout_s:5,max_output:1024
-   }}));
+   const started=parse(await client.callTool({name:'nostromo_tarea_iniciar',arguments:request}));
    assert.equal(started.status,'RUNNING');
    assert.equal(started.persisted,true);
    jobId=started.jobId;
@@ -208,6 +207,12 @@ test('MCP persistent async task survives server restart without replay',async()=
    assert.equal(recovered.persisted,true);
    assert.equal(recovered.result.exitCode,0);
    assert.equal(recovered.materialVerified,false);
+   const retry=parse(await client.callTool({name:'nostromo_tarea_iniciar',arguments:request}));
+   assert.equal(retry.jobId,jobId);
+   assert.equal(retry.deduplicated,true);
+   assert.equal(retry.started,false);
+   const conflict=parse(await client.callTool({name:'nostromo_tarea_iniciar',arguments:{...request,argv:['uname']}}));
+   assert.equal(conflict.status,'IDEMPOTENCY_CONFLICT');
   });
  }finally{await rm(root,{recursive:true,force:true});}
 });

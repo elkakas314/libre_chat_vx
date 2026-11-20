@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {mkdtemp,rm,readdir,stat} from 'node:fs/promises';
+import {mkdtemp,rm,readdir,stat,writeFile} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
 import {createAsyncJobs} from '../async-jobs.mjs';
@@ -162,8 +162,9 @@ test('a persisted RUNNING job becomes UNKNOWN_OUTCOME after restart and is never
  let settle;
  try{
   const jobs=createAsyncJobs({stateDir,execute:()=>new Promise(resolve=>{settle=resolve;})});
-  const started=await jobs.start({cwd:root,argv:['pwd'],timeout_s:5,max_output:1024},
-    {settings:{enabled:true,roots:[root]},approvalDir:''});
+  const request={cwd:root,argv:['pwd'],timeout_s:5,max_output:1024,idempotency_key:'e'.repeat(64)};
+  const config={settings:{enabled:true,roots:[root]},approvalDir:''};
+  const started=await jobs.start(request,config);
   assert.equal(started.status,'RUNNING');
   for(let i=0;i<40&&!settle;i++)await new Promise(resolve=>setTimeout(resolve,5));
   assert.equal(typeof settle,'function');
@@ -173,7 +174,95 @@ test('a persisted RUNNING job becomes UNKNOWN_OUTCOME after restart and is never
   assert.equal(state.result.status,'UNKNOWN_OUTCOME');
   assert.equal(state.persisted,true);
   assert.equal(state.materialVerified,false);
+  const retry=await recovered.start(request,config);
+  assert.equal(retry.status,'UNKNOWN_OUTCOME');
+  assert.equal(retry.started,false);
+  assert.equal(retry.jobId,started.jobId);
   settle({status:'CANCELLED',materialVerified:false});
   await wait(()=>jobs.status(started.jobId).finishedAt?true:null);
+ }finally{await rm(root,{recursive:true,force:true});}
+});
+
+test('idempotency cannot authorize an R2 operation',async()=>{
+ const root=await mkdtemp(path.join(tmpdir(),'nostromo-idempotency-r2-'));
+ const stateDir=path.join(root,'state');
+ const config={settings:{enabled:true,roots:[root]},approvalDir:''};
+ const req={cwd:root,argv:['/usr/bin/false'],idempotency_key:'f'.repeat(64)};
+ let permitted=false,executions=0;
+ try{
+  const jobs=createAsyncJobs({stateDir,approve:async()=>permitted,
+    execute:async()=>{executions++;return {status:'EXIT_0',exitCode:0};}});
+  assert.equal((await jobs.start(req,config)).status,'LOCAL_APPROVAL_REQUIRED');
+  assert.equal(executions,0);
+  permitted=true;
+  const start=await jobs.start(req,config);
+  assert.equal(start.started,true);
+  await wait(()=>jobs.status(start.jobId).finishedAt?true:null);
+  permitted=false;
+  const retry=await jobs.start(req,config);
+  assert.equal(retry.deduplicated,true);
+  assert.equal(retry.started,false);
+  assert.equal(executions,1);
+ }finally{await rm(root,{recursive:true,force:true});}
+});
+
+test('idempotency is durable and bound to the exact canonical request',async()=>{
+ const root=await mkdtemp(path.join(tmpdir(),'nostromo-idempotency-'));
+ const stateDir=path.join(root,'state');
+ const config={settings:{enabled:true,roots:[root]},approvalDir:''};
+ const req={cwd:root,argv:['pwd'],idempotency_key:'a'.repeat(64)};
+ let executions=0;
+ try{
+  const jobs=createAsyncJobs({stateDir,execute:async()=>{executions++;return {status:'EXIT_0',exitCode:0};}});
+  const first=await jobs.start(req,config);
+  assert.equal(first.started,true);
+  await wait(()=>jobs.status(first.jobId).finishedAt?true:null);
+  const retry=await jobs.start(req,config);
+  assert.equal(retry.jobId,first.jobId);
+  assert.equal(retry.deduplicated,true);
+  assert.equal(retry.started,false);
+  assert.equal((await jobs.start({...req,argv:['uname']},config)).status,'IDEMPOTENCY_CONFLICT');
+  const recovered=createAsyncJobs({stateDir,execute:async()=>{executions++;return {status:'EXIT_0'};}});
+  const afterRestart=await recovered.start(req,config);
+  assert.equal(afterRestart.jobId,first.jobId);
+  assert.equal(afterRestart.status,'EXIT_0');
+  assert.equal(executions,1);
+ }finally{await rm(root,{recursive:true,force:true});}
+});
+
+test('concurrent managers cannot both claim the same key',async()=>{
+ const root=await mkdtemp(path.join(tmpdir(),'nostromo-idempotency-race-'));
+ const stateDir=path.join(root,'state');
+ const config={settings:{enabled:true,roots:[root]},approvalDir:''};
+ const req={cwd:root,argv:['pwd'],idempotency_key:'b'.repeat(64)};
+ let executions=0,settle;
+ try{
+  const execute=()=>{executions++;return new Promise(resolve=>{settle=resolve;});};
+  const first=createAsyncJobs({stateDir,execute}),second=createAsyncJobs({stateDir,execute});
+  const results=await Promise.all([first.start(req,config),second.start(req,config)]);
+  assert.equal(results.filter(x=>x.started===true).length,1);
+  assert.equal(results.filter(x=>x.started===false).length,1);
+  await wait(()=>settle);
+  assert.equal(executions,1);
+  settle({status:'EXIT_0',exitCode:0});
+  await wait(()=>first.activeCount()+second.activeCount()===0);
+ }finally{await rm(root,{recursive:true,force:true});}
+});
+
+test('an incomplete claim is unknown and cannot be replayed; keys require durable storage',async()=>{
+ const root=await mkdtemp(path.join(tmpdir(),'nostromo-idempotency-unknown-'));
+ const stateDir=path.join(root,'state'),key='c'.repeat(64);
+ const config={settings:{enabled:true,roots:[root]},approvalDir:''};
+ const req={cwd:root,argv:['pwd'],idempotency_key:key};
+ let executions=0;
+ try{
+  assert.equal((await createAsyncJobs().start(req,config)).status,'PERSISTENCE_UNAVAILABLE');
+  const jobs=createAsyncJobs({stateDir,execute:async()=>{executions++;return {status:'EXIT_0'};}});
+  await writeFile(path.join(stateDir,key+'.claim'),'{',{mode:0o600});
+  const outcome=await jobs.start(req,config);
+  assert.equal(outcome.status,'UNKNOWN_OUTCOME');
+  assert.equal(outcome.retrySafe,false);
+  assert.equal(executions,0);
+  assert.equal((await jobs.start({...req,idempotency_key:'invalid'},config)).status,'IDEMPOTENCY_KEY_INVALID');
  }finally{await rm(root,{recursive:true,force:true});}
 });

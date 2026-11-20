@@ -33,7 +33,7 @@ function safeResult(x){
   };
 }
 function createStore(dir,clock){
-  if(!dir)return {status:'DISABLED',load:()=>[],save:()=>false,remove:()=>{}};
+  if(!dir)return {status:'DISABLED',load:()=>[],save:()=>false,remove:()=>{},readClaim:()=>null,claim:()=>({status:'UNAVAILABLE'})};
   let status='READY';
   try{
     if(!path.isAbsolute(dir))throw Error('STATE_DIR_NOT_ABSOLUTE');
@@ -80,6 +80,39 @@ function createStore(dir,clock){
       if(st.isSymbolicLink()||!validPrivateStat(st))return;
       unlinkSync(f);
     }catch{}
+  }
+  // Claims are intentionally retained even when job history expires: a missing
+  // result must never become permission to repeat a possibly completed effect.
+  function readClaim(key){
+    if(status!=='READY'||!HASH.test(key))return {status:'UNAVAILABLE'};
+    let fd=null;
+    try{
+      const f=path.join(dir,key+'.claim'),before=lstatSync(f);
+      if(before.isSymbolicLink()||!validPrivateStat(before)||before.size>1024)return {status:'UNKNOWN_OUTCOME'};
+      fd=openSync(f,fs.O_RDONLY|fs.O_NOFOLLOW);
+      const st=fstatSync(fd);
+      if(!validPrivateStat(st)||st.size>1024)return {status:'UNKNOWN_OUTCOME'};
+      const data=JSON.parse(readFileSync(fd,'utf8'));
+      if(data.schema!=='nostromo.job.claim.v1'||!HASH.test(data.requestHash)||!UUID.test(data.jobId))
+        return {status:'UNKNOWN_OUTCOME'};
+      return {status:'CLAIMED',requestHash:data.requestHash,jobId:data.jobId};
+    }catch(e){return e?.code==='ENOENT'?null:{status:'UNKNOWN_OUTCOME'};}
+    finally{if(fd!==null)try{closeSync(fd);}catch{}}
+  }
+  function claim(key,requestHash,jobId){
+    if(status!=='READY'||!HASH.test(key)||!HASH.test(requestHash)||!UUID.test(jobId))return {status:'UNAVAILABLE'};
+    let fd=null,dirFd=null;
+    try{
+      fd=openSync(path.join(dir,key+'.claim'),fs.O_WRONLY|fs.O_CREAT|fs.O_EXCL|fs.O_NOFOLLOW,0o600);
+      writeFileSync(fd,JSON.stringify({schema:'nostromo.job.claim.v1',requestHash,jobId}),{encoding:'utf8'});
+      fsyncSync(fd);closeSync(fd);fd=null;
+      dirFd=openSync(dir,fs.O_RDONLY);fsyncSync(dirFd);closeSync(dirFd);dirFd=null;
+      return {status:'CREATED'};
+    }catch(e){return e?.code==='EEXIST'?(readClaim(key)??{status:'UNKNOWN_OUTCOME'}):{status:'UNKNOWN_OUTCOME'};}
+    finally{
+      if(fd!==null)try{closeSync(fd);}catch{}
+      if(dirFd!==null)try{closeSync(dirFd);}catch{}
+    }
   }
   function load(){
     if(status!=='READY')return [];
@@ -130,7 +163,7 @@ function createStore(dir,clock){
     }
     return rows;
   }
-  return {get status(){return status;},load,save:write,remove};
+  return {get status(){return status;},load,save:write,remove,readClaim,claim};
 }
 
 export function createAsyncJobs({
@@ -166,11 +199,28 @@ export function createAsyncJobs({
   let admitting=false;
   async function start(input,{settings,approvalDir}){
     gc();
+    const idempotencyKey=input?.idempotency_key;
+    if(idempotencyKey!==undefined && (typeof idempotencyKey!=='string'||!HASH.test(idempotencyKey)))
+      return {status:'IDEMPOTENCY_KEY_INVALID',started:false,persisted:false};
+    if(idempotencyKey!==undefined && (!stateDir||store.status!=='READY'))
+      return {status:'PERSISTENCE_UNAVAILABLE',started:false,persisted:false,storageStatus:store.status};
     const d=await preview(input,settings);
     if(d.status!=='READY_R0'&&d.status!=='LOCAL_APPROVAL_REQUIRED')
       return {status:d.status,reason:d.reason??'PREVIEW_DENIED',started:false,persisted:false};
     if(stateDir&&store.status!=='READY')
       return {status:'PERSISTENCE_UNAVAILABLE',started:false,persisted:false,storageStatus:store.status};
+    const existingClaim=(claim)=>{
+      if(!claim)return null;
+      if(claim.status!=='CLAIMED')return {status:'UNKNOWN_OUTCOME',started:false,retrySafe:false};
+      if(claim.requestHash!==d.requestHash)return {status:'IDEMPOTENCY_CONFLICT',started:false,retrySafe:false};
+      const existing=records.get(claim.jobId);
+      return existing?{...view(existing),started:false,deduplicated:true,retrySafe:false}:
+        {status:'UNKNOWN_OUTCOME',jobId:claim.jobId,started:false,deduplicated:true,retrySafe:false};
+    };
+    if(idempotencyKey!==undefined){
+      const existing=existingClaim(store.readClaim(idempotencyKey));
+      if(existing)return existing;
+    }
     if(active()>=maxRunning||admitting)return {status:'BUSY',started:false,
       activeJobs:active(),limit:maxRunning,retrySafe:false};
     admitting=true;
@@ -182,7 +232,12 @@ export function createAsyncJobs({
       if(d.risk==='R2'&&!await approve(approvalDir,d.requestHash))
         return {status:'LOCAL_APPROVAL_REQUIRED',risk:d.risk,
           requestHash:d.requestHash,started:false,persisted:false};
-      const controller=new AbortController(),id=randomUUID(),j={
+      const controller=new AbortController(),id=randomUUID();
+      if(idempotencyKey!==undefined){
+        const reservation=store.claim(idempotencyKey,d.requestHash,id);
+        if(reservation.status!=='CREATED')return existingClaim(reservation);
+      }
+      const j={
         id,requestHash:d.requestHash,risk:d.risk,
         startedAt:new Date(clock()).toISOString(),
         status:'RUNNING',controller,endedAt:null,finishedAt:null,

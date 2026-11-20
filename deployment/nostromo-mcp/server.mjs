@@ -115,12 +115,12 @@ if(activeTools.has('nostromo_metricas'))server.registerTool('nostromo_metricas',
   }catch(e){return result({status:'DENIED',reason:String(e?.message||'METRICS_FAILED')},true);}
 });
 if(activeTools.has('nostromo_tarea_iniciar'))server.registerTool('nostromo_tarea_iniciar',{
-  description:'Inicia una tarea CLI a la vez. R0 permitido; R2 exige aprobación física hash-bound. Persiste estado local privado; tras reinicio un RUNNING pasa a UNKNOWN_OUTCOME sin reintento.',
-  inputSchema
+  description:'Inicia una tarea CLI a la vez. R0 permitido; R2 exige aprobación física hash-bound. Una clave de idempotencia opcional evita repetir una petición y exige persistencia privada. Tras reinicio un RUNNING pasa a UNKNOWN_OUTCOME sin reintento.',
+  inputSchema:{...inputSchema,idempotency_key:z.string().regex(/^[a-f0-9]{64}$/).optional()}
 },async args=>{
   try{
     const state=await jobs.start(args,{settings,approvalDir});
-    return result(state,state.status!=='RUNNING');
+    return result(state,state.status!=='RUNNING' && !(state.deduplicated && state.status==='EXIT_0'));
   }catch(e){return result({status:'DENIED',reason:String(e?.message||'ASYNC_START_FAILED'),started:false},true);}
 });
 if(activeTools.has('nostromo_tarea_estado'))server.registerTool('nostromo_tarea_estado',{
