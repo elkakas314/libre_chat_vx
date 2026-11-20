@@ -617,3 +617,10 @@ PRECEDENCE: this update supersedes older `PR26 DRAFT` or ChatGPT usage assumptio
 - GeForce 840M readback: 0% utilization, 5 MiB VRAM, 58–66 °C. Ollama/backend inference was not run. Services were not stopped, tabs were not closed, and no cleanup was performed.
 - **REAL_IDLE remains unverified.** Work, ChatGPT/Codex and Chromium were active; current evidence cannot prove the owner's reported no-use condition or establish a leak. Receipt: `operating/sync-receipts/e3-kubuntu-work-active-quiet-resource-diagnostic-20261119.json`.
 - HOST_CONTROL remains `kernel_authority=false`, with only lock files in the grants directory. The prior chat selection did not materialize a local R2 grant; the runtime hook and service remain unchanged.
+
+## 2026-11-20 — Post-install canary remains context-saturated
+
+- Verified the installed hook, six patched package targets, four preimages and active backend. No reinstall or restart was performed.
+- One real AgentClient turn selected agent `agent_9ex2a9buul2cwzyo`; context reached 5360/5837 with approximately 1900 system-tool tokens. It was manually stopped after about 23 seconds with no observed MCP dispatch. MongoDB retained the user turn and an empty unfinished assistant; reload recovered them but did not establish a completed reply.
+- Source inspection found separate LibreChat API registration for file-authoring, read_file and skill tools, outside the patched SDK LocalCodingTools factory. This is a plausible cause of the unchanged tool meter, not yet proof of the actual runtime binding or of an accounting error. Do not repeat inference before resolving this.
+- Receipt: `operating/sync-receipts/e4-post-install-context-canary-20261120.json`. Product remains PARTIAL, not PASS.

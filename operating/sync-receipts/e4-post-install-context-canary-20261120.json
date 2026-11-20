@@ -1,0 +1,36 @@
+{
+  "schema": "nostromo.e4.post-install-canary.v1",
+  "captured_at_utc": "2026-11-20T14:53:59.689943+00:00",
+  "base_head": "8e0155300096747d6064f33ffaef2af486da271d",
+  "agent_id": "agent_9ex2a9buul2cwzyo",
+  "conversation_id": "64e33fbe-c600-5cae-b833-89b2ab28740c",
+  "install_readback": {
+    "hook_sha256": "d4cecf1014eb726571e9c22432c50c609c63356bedb090a28f66ec1a10bcea42",
+    "six_targets": "ALREADY_PATCHED",
+    "four_preimages": "HASHES_MATCH_RECEIPT",
+    "service": "active"
+  },
+  "live_canary": {
+    "endpoint": "agents",
+    "context": "5360/5837",
+    "meter": {
+      "messages": 53,
+      "system_prompt_approx": 2700,
+      "system_tools_approx": 1900,
+      "mcp_tools": 234,
+      "skills": 441,
+      "free": 477
+    },
+    "tool_calls": 0,
+    "outcome": "MANUALLY_STOPPED_NO_DISPATCH",
+    "mongo_assistant": "unfinished=true, error=false, empty content",
+    "reload": "prompt and interrupted empty assistant recovered; no completed answer"
+  },
+  "diagnosis": {
+    "observed": "System tools meter remains approximately at pre-install baseline.",
+    "source_evidence": "LibreChat packages/api/src/agents/initialize.ts separately registers read_file and file-authoring tools, and skills.ts registers skill; this is distinct from the patched SDK LocalCodingTools factory.",
+    "inference": "This separate registration may explain unchanged context; effective runtime registration and binding remain unproven. The meter alone does not distinguish binding from accounting drift."
+  },
+  "next": "Inspect runtime registration and actual binding with non-inference fixtures; preserve skills and tool discovery; do not repeat inference until context is corrected and validated.",
+  "product_status": "PARTIAL_NOT_PASS"
+}

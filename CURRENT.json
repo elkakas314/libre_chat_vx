@@ -3410,5 +3410,12 @@
     "drive_current_revision": "AHj4eMQy6BZAXYXVAxeYDcLaw4ps5MrpBXDcqgnliqrigyhZZ4QgqikFocMXSB0okev0cRIxEH3-YQir3Rz64RaVGveLf0llqL7FUzLTDRY",
     "drive_handoff_revision": "AHj4eMQsmPELlHklqbnYlPrfMELXHnhDx90gMqeAq5BsVPGm1KCMDnehw4lPJRY9YuR76cHZrs_gjSjc26CGY_6t3DNam7l3H7NSUdzhuXs",
     "drive_readback": "BOTH_MARKERS_PRESENT"
+  },
+  "e4_post_install_context_canary_20261120": {
+    "receipt": "operating/sync-receipts/e4-post-install-context-canary-20261120.json",
+    "status": "PARTIAL_NOT_PASS",
+    "context": "5360/5837",
+    "mcp_dispatch": "NONE_OBSERVED",
+    "next": "Diagnose native API tool registration and effective binding without inference."
   }
 }
