@@ -3417,5 +3417,11 @@
     "context": "5360/5837",
     "mcp_dispatch": "NONE_OBSERVED",
     "next": "Diagnose native API tool registration and effective binding without inference."
+  },
+  "e4_native_file_deferral_live_canary_20261120": {
+    "receipt": "operating/sync-receipts/e4-native-file-deferral-live-canary-20261120.json",
+    "context": "3818/5837 vs 5360/5837 previously",
+    "status": "CONTEXT_REDUCED; AGENT_MCP_NOT_VERIFIED",
+    "runtime_rebuild_persistence": "UNVERIFIED"
   }
 }
