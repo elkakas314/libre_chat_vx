@@ -1,3 +1,11 @@
+## 2026-11-20 — E5 DeepSeek governed dispatch integrado en SOURCE (NO PRODUCTIVO)
+
+- Dos propuestas de DeepSeek se compararon; adoptada versión más reciente con correcciones de tipos, clock, fingerprint, readback, idempotencia y UNKNOWN_OUTCOME. No crear otra cola, MCP ni base de datos.
+- Rutas: `src/cockpit/governedMcpDispatch.ts`, `src/librechat/nativeGovernedExecution.ts`; tests `tests/governed-mcp-dispatch.test.ts` y fixture MCP instalada `scripts/tests/e5-installed-governed-mcp-fixture.test.mjs`.
+- Compilación PASS; 19/19 pruebas aisladas PASS; 1/1 fixture usando ejecutable MCP instalado PASS, 2 llamadas R0 (despacho+readback), **LLM_CALLS=0**. Acuerdo/ACL de la fixture SIMULADOS. No se afirma prueba autenticada de LibreChat ni E2E material.
+- Receipt `operating/sync-receipts/e5-deepseek-governed-dispatch-source-fixture-20261120.json`. Backend no modificado, PR #54 permanece DRAFT.
+- NEXT: conectar acuerdo autenticado y catálogo/runtime/permisos al MCP productivo con ledger duradero existente; verificar persistencia y un canario R0 completo. Mantener `FINAL_VERIFIED=false`.
+
 ## 2026-11-20 — Contrato contract-first SOURCE para cierre Work (NO LIVE)
 
 - Archivos: `docs/NOSTROMO_CONTRACT_FIRST_EXECUTION_CANON_20261120.md`, `contracts/nostromo-objective-handoff.schema.json`. Referencia al contrato de conversación existente y operating canon; revisión no despliega backend ni agrega servicio/DB.
