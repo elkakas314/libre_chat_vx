@@ -46,3 +46,7 @@ El modelo genera el borrador; el host verifica registro del acuerdo; el gobernan
 
 ## Corrección del informe Gemini 18/11/2026 (aprobada como diseño, no como ejecución)
 El estudio sugiere ocho estados, pero RESEARCH puede ser subfase iterativa y `DECISION_REQUIRED` es pausa durante ejecución. `PROPOSAL_VIEW` no es enum SOURCE demostrado: `presentationPlanner` ya dispone de `COMPARISON_TABLE`, `INTERACTIVE_ARTIFACT`, `MERMAID_DIAGRAM`. `PlanGraph` muestra futuro; `ActiveFlow` sólo aristas con evidencia real. No crear `NostromoStatusRail` ni otro `VXCockpitBridge` bajo rutas inexistentes. Prohibido `onGrantAgreement(planId || 'default-hash')` y filtros de herramienta con `parameters:{}`. Ver auditoría completa `docs/NOSTROMO_GEMINI_DIALOGUE_RESEARCH_AUDIT_20261118.md`.
+
+## Actualización contractual 2026-11-20 — separación conversación / ejecución
+
+Ver [canon de ejecución contractual](NOSTROMO_CONTRACT_FIRST_EXECUTION_CANON_20261120.md) y esquema `contracts/nostromo-objective-handoff.schema.json`. **SOURCE/DOCUMENTED; no instalado, no sustituye el contrato 18/11.** Resolver obligatoriamente capacidades, usuario/acuerdo desde el host y autoridad del target; Qwen3 no es paso obligatorio para operaciones deterministas. Se preservan el bridge, router, MCP, jobs, Mongo, UI y Tool Search existentes. No crear otra base ni motor.

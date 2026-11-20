@@ -1,3 +1,11 @@
+## 2026-11-20 — Contrato contract-first SOURCE para cierre Work (NO LIVE)
+
+- Archivos: `docs/NOSTROMO_CONTRACT_FIRST_EXECUTION_CANON_20261120.md`, `contracts/nostromo-objective-handoff.schema.json`. Referencia al contrato de conversación existente y operating canon; revisión no despliega backend ni agrega servicio/DB.
+- Diagnóstico: DeepSeek favorece separar razonamiento y ejecución; el canario 65% contexto / GPU 100% no prueba causa única. La ejecución determinista no debería depender de qwen3, pero **no está cableada ni LIVE**.
+- Arquitectura: LibreChat+SIWC/router conversacional → acuerdo HOST autenticado → handoff compacto y capacidad viva → política propia → MCP/jobs existentes → readback+receipt. `NOSTROMO_LOCAL` no es un ConcreteTargetId externo.
+- Auditoría R0: 647 archivos Git, 504 imports relativos, 1 fixture pendiente de verificar, 0 JSON inválidos, `logs/` untracked preservado; PR #54 DRAFT. Sin instalador ni clean.
+- NEXT ELIGIBLE: completar schema/host agreement tests, binding de resolver→catálogo→MCP sin LLM para acciones deterministas, persistir patch tras rebuild, reconciliar frontend, probar SIWC cuando consentido, E2E seguro, actualizar Drive y cerrar solo por LIVE readback. `FINAL_VERIFIED=false`.
+
 ## 2026-11-20 — E4: parche local de herramientas instalado en HOST_CONTROL
 
 - SOURCE base: `0a52843124815ab994ac833945ea600755de1013` (PR #54 DRAFT). Worktree temporal limpio antes del cambio. No se modificó el código propio de otros repositorios.
