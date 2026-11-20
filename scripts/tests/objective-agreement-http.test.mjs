@@ -18,7 +18,7 @@ test('objective HTTP adapter checks owner, origin and revision on real Mongo fix
   await col.insertOne({_id:fixtureId,user,tenantId:tenant,conversationId,nostromoE5Fixture:true,expiredAt:null});inserted=true;
   const service=new NativeObjectiveAgreement(mongoConversationAgreementStore(col));
   // Test-only authentication: production must supply native requireJwtAuth.
-  const auth=(req,res,next)=>{if(!req.get('x-test-user'))return res.status(401).end();req.user={id:req.get('x-test-user'),tenantId:tenant};next();};
+  const auth=(req,res,next)=>{if(!req.get('x-test-user'))return res.status(401).end();req.user={_id:{toString:()=>req.get('x-test-user')},tenantId:tenant};next();};
   const app=express();app.use(express.json());app.use('/api/nostromo/objectives',createObjectiveAgreementRouter({express,requireJwtAuth:auth,serviceFor:()=>service}));
   server=await new Promise((resolve)=>{const s=app.listen(0,'127.0.0.1',()=>resolve(s));});
   const origin=`http://127.0.0.1:${server.address().port}`,url=`${origin}/api/nostromo/objectives/${conversationId}`;

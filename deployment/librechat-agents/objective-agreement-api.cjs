@@ -17,7 +17,7 @@ function createObjectiveAgreementRouter({express,requireJwtAuth,serviceFor}) {
     } catch { return res.status(403).json({error:'ORIGIN_REJECTED'}); }
   };
   const scopeFor=(req)=>{
-    const userId=req.user?.id?.toString?.();
+    const userId=(req.user?.id ?? req.user?._id)?.toString?.();
     const tenant=req.user?.tenantId;
     if (!userId || !uuid.test(req.params.conversationId) || (tenant!=null && (typeof tenant!=='string'||!tenant))) return null;
     return {userId,tenantId:tenant??null,conversationId:req.params.conversationId};
