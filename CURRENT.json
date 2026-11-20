@@ -1,4 +1,22 @@
 {
+  "e4_p0_patch_install_20261120": {
+    "status": "E4_P0_HOST_PATCH_INSTALLED_VERIFIED_E2E_PENDING",
+    "source_head": "0a52843124815ab994ac833945ea600755de1013",
+    "host": "elkakas314-Lenovo-Z50-70",
+    "backend_pid": 996869,
+    "mcp_pid": 996940,
+    "installed_hook_sha256": "d4cecf1014eb726571e9c22432c50c609c63356bedb090a28f66ec1a10bcea42",
+    "backups": "/home/elkakas314/librechat/nostromo/backups/p0-localcodingtools-20261120-0a528431",
+    "authority": "EXISTING_HOST_CONTROL_OPERATOR_MODE_R2_NO_GRANT_CREATED",
+    "tests": "3/3 PATCH_SOURCE; 16/16 INSTALLED_MCP_ISOLATED; HEALTH_HTTP_200",
+    "unverified": [
+      "AGENTCLIENT_TOOL_DISPATCH",
+      "MONGO_RECONNECT_POST_PATCH",
+      "SIWC",
+      "COCKPIT_LIVE"
+    ],
+    "receipt": "operating/sync-receipts/e4-hostcontrol-localcodingtools-p0-20261120.json"
+  },
   "schema": "libre-chat-vx.current.v2",
   "status": "E3_PUBLISHED_SOURCE_HOST_R2_PENDING_WORK_ACTIVE_CPU_SAMPLE_RECORDED_REAL_IDLE_UNVERIFIED",
   "latest_native_tool_deferral_candidate": {

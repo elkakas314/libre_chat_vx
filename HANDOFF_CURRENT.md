@@ -1,3 +1,13 @@
+## 2026-11-20 — E4: parche local de herramientas instalado en HOST_CONTROL
+
+- SOURCE base: `0a52843124815ab994ac833945ea600755de1013` (PR #54 DRAFT). Worktree temporal limpio antes del cambio. No se modificó el código propio de otros repositorios.
+- INSTALLED/LIVE: HOST_CONTROL MCP real con Operator Mode **preexistente**, sin crear grants ni cambiar su política. Operaciones R2 auditadas: 4 preimágenes, sustitución del hook por SHA-256 `d4cecf1014eb726571e9c22432c50c609c63356bedb090a28f66ec1a10bcea42`, un reinicio de `vx-backend.service`.
+- SDK `@librechat/agents@4.0.1`: AgentContext 3 variantes ya parcheadas, sin reescritura; LocalCodingTools TypeScript/CJS/ESM actualizadas por ExecStartPre con hashes exactos verificados. Backend activo PID `996869`, MCP PID `996940`, /health HTTP 200.
+- TEST: 3/3 de parche SOURCE + 16/16 de MCP instalado, en pruebas aisladas. **No** equivale a AgentClient→MCP→Mongo E2E ni valida presupuesto de contexto.
+- ROLLBACK: `/home/elkakas314/librechat/nostromo/backups/p0-localcodingtools-20261120-0a528431`; cuatro preimágenes verificadas. Nada borrado ni fusionado.
+- BLOCKER: el navegador conectado exige contexto original y no se observan puertos CDP 9222/9223. SIWC, agente autenticado, persistencia post-parche y cabina avanzada siguen NO_VERIFICADOS.
+- RECEIPT: `operating/sync-receipts/e4-hostcontrol-localcodingtools-p0-20261120.json`. Cierre general: `FINAL_VERIFIED=false`. NEXT: canario real de bajo consumo con dos MCP + Mongo + reconexión; no merge de PR #54.
+
 ## 2026-11-19 — Agente, cabina y llamadas MCP: lectura R0 y corrección SOURCE
 
 - El CI Android del HEAD `1429373` volvió a fallar al buscar Kotlin incluso tras añadir Maven Central; el runner restauró caché y las mismas URLs respondieron 200 desde el Lenovo. Se añadió `--refresh-dependencies` solo a ese job para contrastar la hipótesis de metadatos negativos en caché. La causa y el resultado de esta modificación siguen pendientes del CI exacto; el repositorio móvil no se modificó.
