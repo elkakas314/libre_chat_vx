@@ -9,7 +9,9 @@ import {patchObjectivePrivateField} from './objective-private-field.mjs';
 const root=process.env.NOSTROMO_E5_TEST_UPSTREAM;
 async function candidate(){
  const paths={schema:'packages/data-schemas/src/schema/convo.ts',methods:'packages/data-schemas/src/methods/conversation.ts',compiled:'packages/data-schemas/dist/index.cjs',esm:'packages/data-schemas/dist/index.mjs'};
- const original=Object.fromEntries(await Promise.all(Object.entries(paths).map(async ([k,p])=>[k,await readFile(path.join(root,p),'utf8')])));
+ const backups={schema:'e5-private-convo-1ef315f-preimage.ts',methods:'e5-private-methods-c829e10-preimage.ts',compiled:'e5-private-index-7255af9-preimage.cjs',esm:'e5-private-index-b40c3e3-preimage.mjs'};
+ const preimageDir=process.env.NOSTROMO_E5_PREIMAGE_DIR;
+ const original=Object.fromEntries(await Promise.all(Object.entries(paths).map(async ([k,p])=>[k,await readFile(preimageDir?path.join(preimageDir,backups[k]):path.join(root,p),'utf8')])));
  return {original,patched:patchObjectivePrivateField(original),paths};
 }
 

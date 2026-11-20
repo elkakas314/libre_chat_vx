@@ -1,0 +1,41 @@
+{
+  "schema": "nostromo.e5.private-agreement-field-install.v1",
+  "captured_at_utc": "2026-11-20T17:43:13.592312+00:00",
+  "source_commit": "b09a0d38605bc6d7d9336358acf7fb354429552c",
+  "finding_before": {
+    "ordinary_getConvo_exposes_unregistered_field": true,
+    "bulk_import_unknown_field_dropped_by_current_schema": true,
+    "scope": "real Mongo disposable fixtures; not exhaustive of other paths"
+  },
+  "change": "Mark server-owned agreement field select:false and extend existing server-owned field stripping to ordinary save/unset and bulk import, including dotted paths.",
+  "host_control": {
+    "preimages": {
+      "schema": "1ef315f8504e3e658d60f07f9525b0f288f149979c249273fa47272d8b66a011",
+      "methods": "c829e1033b5de2259d519f39e7dd35173ba616dddbd7d98b76ac50f950225c7c",
+      "cjs": "7255af98e3058105f8387d054efef34843f6b26f212d40324cd109d496428196",
+      "esm": "b40c3e3724bd895be7c155d5c51e2423d4535780580d71b39093c3f62127e933"
+    },
+    "backup_directory": "/home/elkakas314/librechat/nostromo/backups",
+    "installed": {
+      "schema": "43d28ef87a0d359ed434880a944df4ac8a02ef8b70b5c8a9ce426537479ab169",
+      "methods": "82198a9b0fa6231470c159c343de8b9295a9018b87910574ba3ad7636a3367ea",
+      "cjs": "3392d2e72ef1e5631387df0401b9a2bf2d5e71888a049e7aa33bba72631bdb1a",
+      "esm": "ebe0cac2218b93ffd92801f6e2d98a235ef0ad294e193536a8bf9d80d26d708d"
+    },
+    "restart": "vx-backend.service active MainPID 1148343, NRestarts 0; HTTP 200; MCP PID 1148476"
+  },
+  "verification": {
+    "source_and_mocked_candidate": "3/3 tests PASS including real Mongo fixture on candidate CJS",
+    "installed_cjs": "real Mongo disposable fixture: ordinary read hidden; save/unset and bulk import cannot modify field",
+    "installed_esm": "module loads and private schema path has select:false; ESM write paths not independently executed",
+    "source_typescript": "transpile syntax PASS; full upstream rebuild/typecheck not performed",
+    "librechat": "authenticated UI reopened existing conversation, no inference",
+    "temporary_guard_records_remaining": 0
+  },
+  "limitations": [
+    "Not every aggregation, export, share or direct Mongo read/write surface has been proven private.",
+    "Authenticated agreement route and UI are not installed; no genuine user agreement or end-to-end dispatch is claimed.",
+    "A full rebuild and exact final release regression remain unverified."
+  ],
+  "status": "INSTALLED_SCOPED_GUARDS_VERIFIED_PRODUCT_E2E_OPEN"
+}
