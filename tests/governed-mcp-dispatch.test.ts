@@ -2,6 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   dispatchGovernedObjective,
+  argumentCommitment,
+  matchesArgumentCommitment,
   type GovernedObjectiveHost,
   type IdempotencyLedger,
   type LedgerEntry,
@@ -157,6 +159,7 @@ test('dispatch snapshots nested arguments and owner before asynchronous admissio
     handoff:handoff(),args,owner,
     host:host({
       async verifyAgreement(){await gate;return true;},
+      async verifyArgumentsBinding(){return true;},
       async readToolSchema(){return {safeRepeatReadback:true,inputSchema:{type:'object',additionalProperties:false,required:['filter'],
         properties:{filter:{type:'object',additionalProperties:false,required:['value'],properties:{value:{type:'string'}}}}}};},
     }),
@@ -196,10 +199,49 @@ test('a missing or failed receipt never becomes VERIFIED', async () => {
   }
 });
 
+test('argument commitments bind canonical payloads and reject ambiguity', () => {
+  const ref=argumentCommitment({b:2,a:{value:'original'}});assert.ok(ref);
+  assert.equal(ref,argumentCommitment({a:{value:'original'},b:2}));
+  assert.notEqual(ref,argumentCommitment({a:{value:'changed'},b:2}));
+  const plan=handoff({context_refs:[ref]}) as unknown as import('../src/contracts/objectiveHandoff').ObjectiveHandoff;
+  const hash=ref.slice('nostromo.args.sha256:'.length);
+  assert.equal(matchesArgumentCommitment(plan,hash),true);
+  assert.equal(matchesArgumentCommitment({...plan,context_refs:[ref,ref]},hash),false);
+  assert.equal(matchesArgumentCommitment(plan,'0'.repeat(64)),false);
+  assert.equal(argumentCommitment({bad:undefined}),null);
+});
+
+test('non-status arguments require an agreement-bound host proof', async () => {
+  let calls=0;
+  const wire=transport({async callTool(){calls++;return {status:'OK',structuredContent:{mcpLive:true}};}});
+  const schema={async readToolSchema(){return {inputSchema:{type:'object' as const,properties:{value:{type:'string' as const}}}};}};
+  const missing=await run({args:{value:'other'},host:schema,transport:wire});
+  assert.deepEqual(missing,{status:'DENIED',reason:'ARGUMENT_BINDING_UNVERIFIED'});
+  const rejected=await run({args:{value:'other'},host:{...schema,async verifyArgumentsBinding(){return false;}},transport:wire});
+  assert.deepEqual(rejected,{status:'DENIED',reason:'ARGUMENT_BINDING_UNVERIFIED'});
+  assert.equal(calls,0);
+});
+
+test('host rejects a payload different from the committed plan before MCP dispatch', async () => {
+  const ref=argumentCommitment({value:'original'});assert.ok(ref);
+  const agreed=handoff({context_refs:[ref]});let calls=0;
+  const wire=transport({async callTool(){calls++;return {status:'OK',structuredContent:{mcpLive:true}};}});
+  const binding={
+    async verifyArgumentsBinding(plan:import('../src/contracts/objectiveHandoff').ObjectiveHandoff,_tool:unknown,hash:string){
+      return matchesArgumentCommitment(plan,hash);
+    },
+    async readToolSchema(){return {safeRepeatReadback:true,inputSchema:{type:'object' as const,properties:{value:{type:'string' as const}}}};},
+  };
+  const changed=await run({handoff:agreed,args:{value:'changed'},host:binding,transport:wire});
+  assert.deepEqual(changed,{status:'DENIED',reason:'ARGUMENT_BINDING_UNVERIFIED'});assert.equal(calls,0);
+  const original=await run({handoff:agreed,args:{value:'original'},host:binding,transport:wire});
+  assert.equal(original.status,'VERIFIED');assert.equal(calls,2);
+});
+
 test('an R0 task start requires a ledger before dispatch', async () => {
   let calls=0;
   const result=await run({
-    host:{async readCapabilities(){return {observedAtMs:Date.now(),entries:[capabilityEntry({toolId:'nostromo_tarea_iniciar'})]};}},
+    host:{async verifyArgumentsBinding(){return true;},async readCapabilities(){return {observedAtMs:Date.now(),entries:[capabilityEntry({toolId:'nostromo_tarea_iniciar'})]};}},
     transport:transport({async callTool(){calls++;return {status:'OK',structuredContent:{mcpLive:true}};}}),
   });
   assert.deepEqual(result,{status:'DENIED',reason:'IDEMPOTENCY_LEDGER_REQUIRED'});
@@ -210,6 +252,7 @@ test('an R0 task-start operation is never repeated as an implicit readback', asy
   let calls=0;
   const result=await run({
     host:{
+      async verifyArgumentsBinding(){return true;},
       async readCapabilities(){return {observedAtMs:Date.now(),entries:[capabilityEntry({toolId:'nostromo_tarea_iniciar'})]};},
       async readToolSchema(){return {safeRepeatReadback:true,inputSchema:{type:'object',properties:{}}};},
     },
@@ -422,6 +465,7 @@ test('idempotencia reutilizada con otro payload se rechaza', async () => {
   const ledger = memoryLedger();
 
   const schemaHost = {
+    async verifyArgumentsBinding(){return true;},
     async readToolSchema() {
       return {
         safeRepeatReadback:true,

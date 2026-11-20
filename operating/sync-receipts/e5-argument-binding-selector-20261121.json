@@ -1,0 +1,8 @@
+{
+ "status":"ARGUMENT_GUARD_SOURCE_TESTED_SELECTOR_INSTALLED",
+ "argument_guard":"SOURCE only: all calls except argument-free nostromo_estado require host proof that the confirmed plan binds the exact argument hash. Reserved context-reference helpers reject ambiguity. Host implementation, readable preview and general task ledger adapter remain unbound.",
+ "tests":"TypeScript and 28 focused dispatch tests pass; agreement and host in these tests are simulated.",
+ "selector":{"source_preimage":"e5-cockpit-e5698b1-preimage.tsx","installed_source_sha256":"227e97de74e088cfc972c786a0b0710a4dab2717e6a477c4f83dae53526d9372","frontend_index_sha256":"add281c5ef22a1306fd9aebd3fa8b5e549fdc7bed2a43978f85558dfcc3bee47","bundle_preimage":"e5-status-client-dist-fcbc0a4a-preimage","browser":"Button closes cockpit and opens native LibreChat selector with My Agents selected; no agent changed automatically."},
+ "backend":{"active":true,"main_pid":1336288,"automatic_restarts":0},
+ "limits":["new argument guard not yet installed in product status runtime","persistent target-ledger adapter absent","SIWC unavailable","full autonomy and final closeout not verified"],"final_verified":false
+}

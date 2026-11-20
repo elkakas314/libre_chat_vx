@@ -358,6 +358,9 @@ export interface GovernedToolSchema {
 export interface GovernedObjectiveHost extends ObjectiveHandoffHost {
   readToolSchema?(tool: ToolProjection): Promise<GovernedToolSchema | null>;
 
+  /** Host proves these exact args were included in the confirmed plan. */
+  verifyArgumentsBinding?(handoff: ObjectiveHandoff, tool: ToolProjection, argsHash: string): Promise<boolean>;
+
   verifyAcceptance?(
     handoff: ObjectiveHandoff,
     criterion: {
@@ -520,6 +523,19 @@ function snapshotArguments(value: unknown): Readonly<Record<string, unknown>> | 
   };
   if(copy===null || typeof copy!=='object' || Array.isArray(copy) || !freeze(copy,0)) return null;
   return copy as Readonly<Record<string,unknown>>;
+}
+
+/** A plan may commit to a canonical argument snapshot via a reserved context reference.
+ * The host must still verify that the confirmed plan is current and authorized. */
+export function argumentCommitment(args: unknown): string | null {
+  const snapshot = snapshotArguments(args);
+  return snapshot ? `nostromo.args.sha256:${hashValue(snapshot)}` : null;
+}
+
+export function matchesArgumentCommitment(handoff: ObjectiveHandoff, argsHash: string): boolean {
+  if (!/^[a-f0-9]{64}$/.test(argsHash)) return false;
+  const commitments = handoff.context_refs.filter((ref) => ref.startsWith('nostromo.args.sha256:'));
+  return commitments.length === 1 && commitments[0] === `nostromo.args.sha256:${argsHash}`;
 }
 
 function buildReceipt(
@@ -755,6 +771,14 @@ export async function dispatchGovernedObjective(
 
   const args = Object.freeze({ ...input.args });
   const argsHash = hashValue(args);
+
+  // The only exception is the exact argument-free status lane. All other
+  // calls need a host-owned proof that the confirmed plan binds the payload.
+  if (!(tool.toolId === 'nostromo_estado' && Object.keys(args).length === 0)) {
+    let bound = false;
+    try { bound = await input.host.verifyArgumentsBinding?.(handoff, tool, argsHash) === true; } catch { /* fail closed */ }
+    if (!bound) return { status: 'DENIED', reason: 'ARGUMENT_BINDING_UNVERIFIED' };
+  }
 
   /* 3. Idempotency: key is the contract key; fingerprint binds tool + args. */
   const ledgerKey = handoff.idempotency_key;
