@@ -685,3 +685,9 @@ PRECEDENCE: this update supersedes older `PR26 DRAFT` or ChatGPT usage assumptio
 - Installed persistent runtime `/home/elkakas314/librechat/nostromo/runtime/e5-objective` from the pinned SOURCE artifact and manifest; a fresh TypeScript compilation matched staged artifacts. HOST_CONTROL saved the clean API server index preimage and installed the scoped mount. One service restart yielded backend PID 1240966, MCP PID 1241101 and HTTP 200.
 - An unauthenticated GET returns 401; direct browser navigation has no bearer credential and was rejected. No real user plan, confirmation, authenticated route test, owner-authorized dispatch or product E2E was performed. Route supplies preview/confirmation only and grants no execution authority.
 - Receipt: `operating/sync-receipts/e5-objective-route-install-20261120.json`. Next: native UI and actual authenticated session, host-owned capability/ACL and persistent MCP dispatch; do not inspect credentials.
+
+## 2026-11-20 — Dispatch uncertainty guard
+
+- SOURCE commit `c3e4e12` prevents a fresh status read from proving that an earlier uncertain call executed. Reconciliation requires a host-verified correlated record with a nonempty evidence reference. Starting an R0 task also requires a ledger before dispatch. TypeScript and 25 focused tests pass with simulated hosts; no product adapter or installation is claimed.
+- LibreChat exposes `userCanUseMCPServers` and its existing `MCPManager.callTool`; using the manager alone does not establish server resource ACL, tenant isolation or ownership. Continue native binding against those existing checks and the existing persistence mechanism before installation and authenticated E2E.
+- Current backend active with zero automatic restarts; available RAM 8535 MiB, swap free 0 MiB, GPU idle during active Work. No inference or service restart. Receipt: `operating/sync-receipts/e5-correlated-dispatch-readback-20261120.json`.

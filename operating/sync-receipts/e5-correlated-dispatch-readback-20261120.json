@@ -1,0 +1,11 @@
+{
+  "scope":"SOURCE only; product execution adapter and installation remain pending",
+  "base":"c44d9ab13fa1ccb2b6f4ffc6d72a89776bc1371e",
+  "code_commit":"c3e4e123e47b39416dca27e9b27065923a79862a",
+  "change":"A fresh status observation cannot prove a previous ambiguous call executed; reconciliation requires an explicitly correlated host record and nonempty evidence reference. R0 task-start also requires an idempotency ledger before dispatch.",
+  "tests":"TypeScript compile and 25 focused tests PASS; test hosts and receipts are simulated.",
+  "native_binding_findings":"LibreChat MCP service exports userCanUseMCPServers and uses MCPManager.callTool. Server resource access and tenant-scoped configuration must also be verified; invoking the manager alone is not authorization.",
+  "host_sample":"vx-backend active with no service restarts; RAM available 8535 MiB, swap free 0 MiB, memory PSI avg10 0%, GPU 0% and 5 MiB VRAM. Work active, not idle; no inference performed.",
+  "not_verified":["real host adapter and authorization","persistent ledger adapter","authenticated agreement and product execution","end-to-end reconnect","complete frontend integration"],
+  "final_verified":false
+}
