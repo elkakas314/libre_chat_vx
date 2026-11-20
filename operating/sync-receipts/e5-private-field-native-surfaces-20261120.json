@@ -1,0 +1,22 @@
+{
+  "schema": "nostromo.e5.private-field-native-surfaces.v1",
+  "captured_at_utc": "2026-11-20T20:40:31.117335+00:00",
+  "source_base_head": "c50d82319f04f52881e20fc67782ece053e54792",
+  "scope": "installed data-schemas package and existing LibreChat MongoDB, disposable synthetic conversation and share",
+  "verification": {
+    "real_mongo_test": "PASS: getConvo, getConvosByCursor, getConvosQueried, createSharedLink, getSharedLink and getSharedMessages do not return the fixture private marker",
+    "aggregate_inspection": "Conversation.aggregate in conversation.ts returns grouped pending/age metrics; this is a targeted source inspection, not an exhaustive all-package proof",
+    "fixture_cleanup": {
+      "conversations": 0,
+      "messages": 0,
+      "shares": 0
+    },
+    "models_called": 0
+  },
+  "limits": [
+    "No authenticated browser export/share test.",
+    "No exhaustive audit of arbitrary raw Mongo reads or all possible aggregation paths.",
+    "No objective HTTP route installed or owner-authorized dispatch yet."
+  ],
+  "status": "TARGETED_INSTALLED_DATA_SURFACES_PASS_PRODUCT_E2E_OPEN"
+}
