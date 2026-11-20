@@ -140,6 +140,10 @@ export async function resolveAgreedObjective(
       if (!await host.checkOwnerAuthority(handoff, tool)) return denied('AUTHORITY_DENIED');
       tools.push(tool);
     }
+    // A plan can be superseded while capability and authority reads await.
+    // Execution still must perform an atomic last-moment owner check.
+    if (!await host.verifyAgreement(handoff)) return denied('AGREEMENT_UNVERIFIED');
+    if ((nowMs ?? Date.now())-projection.observedAtMs>60_000) return denied('CAPABILITIES_STALE');
     return { ok: true, handoff, tools, authority: false };
   } catch {
     return denied('HOST_READ_FAILED');

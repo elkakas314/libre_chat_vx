@@ -654,3 +654,9 @@ PRECEDENCE: this update supersedes older `PR26 DRAFT` or ChatGPT usage assumptio
 - HOST_CONTROL preserved the two preimages and installed async SHA `cc203aca0fcf9b8a1b8462ae7727538df4696fbb8b783c61b7ffd5e43fcb7635` and server SHA `124400d4905bb715adb198b62b4970cc9d7d34f1d109f3b3a13571e6aa4852c4`; one backend restart read back HTTP 200, backend PID 1118520 and MCP PID 1118700. Previous context patch SHA remains unchanged.
 - Authenticated LibreChat readback shows nostromo-local Connected and the updated idempotency description on nostromo_tarea_iniciar. This verifies advertisement, not authenticated dispatch.
 - Authenticated agreement, host-derived key, real owner authorization, dispatch, verifier and full product E2E remain open. Receipt: `operating/sync-receipts/e5-mcp-job-idempotency-install-20261120.json`.
+
+## 2026-11-20 — Host agreement and real Mongo/MCP fixture
+
+- Added SOURCE host agreement logic: scoped preview, explicit confirmation, server-derived hashes/keys, bounded plan history, invalidation of stale plans and Mongo conversation CAS adapter. The preflight reads the agreement again after asynchronous capability/authority checks.
+- 23 focused tests passed; two tests against the existing local Mongo conversations collection used synthetic disposable identities and records and verified cleanup (zero remaining). One fixture chained Mongo-backed agreement, installed MCP state/metrics, an R0 task and reconnect/dedup without an LLM. Owner authority was mocked; no real user agreement or product execution is claimed.
+- Not installed or mounted. Before promotion, harden the private conversation field against native client writes/imports and disclosure, add authenticated CSRF-protected preview/confirmation UI, real owner authorization and execution-time recheck. Receipt: `operating/sync-receipts/e5-objective-agreement-mongo-fixture-20261120.json`.

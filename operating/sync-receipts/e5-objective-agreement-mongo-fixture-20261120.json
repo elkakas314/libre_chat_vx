@@ -1,0 +1,29 @@
+{
+  "schema": "nostromo.e5.objective-agreement-mongo-fixture.v1",
+  "captured_at_utc": "2026-11-20T17:34:19.402792+00:00",
+  "base_head": "e5d807d4d3e453b2e8565034bf26280a95d28a61",
+  "scope": "SOURCE host agreement service and isolated real MongoDB/MCP fixture, not installed native route",
+  "changes": [
+    "host-scoped proposal and explicit confirmation with server-derived plan hash, agreement ref and idempotency key",
+    "existing conversation collection adapter with owner, tenant, retention, subagent and revision CAS predicates",
+    "immutable snapshot, plan history bounded without deletion, stale plan invalidation",
+    "preflight rechecks agreement after asynchronous authority checks"
+  ],
+  "tests": {
+    "focused_typescript": "23/23 PASS",
+    "real_mongo_fixtures": "2/2 PASS against existing LibreChat conversations collection using randomly identified disposable records; cleanup readback count 0",
+    "isolated_mcp": "installed server executable stdio fixture returned state and metrics, ran R0 pwd in isolated directory, reconnect recovered same job without replay",
+    "models": "NO_LLM_CALLS",
+    "principal": "SYNTHETIC_TEST_IDENTITY",
+    "owner_authority": "MOCKED_NOT_A_REAL_GRANT"
+  },
+  "limitations": [
+    "No authenticated product route or explicit LibreChat confirmation UI is mounted.",
+    "Native conversation client-write/import paths and private field exclusion have not been fully hardened for agreement storage.",
+    "No real owner capability permission integration or atomic authorization/dispatch recheck.",
+    "No product task result verifier, authenticated conversation response or full product E2E.",
+    "Plan history is capped at 32 and rejects further previews rather than deleting history."
+  ],
+  "status": "SOURCE_AND_REAL_DB_DISPOSABLE_FIXTURE_ONLY_NOT_AUTHENTICATED_PRODUCT",
+  "next": "Harden the server-owned conversation field against all native client write/import and client read paths; mount authenticated CSRF-protected preview/confirm UI, then wire owner-owned MCP capability and authorization checks."
+}

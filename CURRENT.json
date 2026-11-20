@@ -3433,5 +3433,10 @@
     "receipt": "operating/sync-receipts/e5-mcp-job-idempotency-install-20261120.json",
     "status": "INSTALLED_RESTARTED; ISOLATED_MCP_RETRY_TEST_PASS; PRODUCT_E2E_OPEN",
     "next": "Bind authenticated objective and host-derived key to existing MCP task entry, then verify product readback."
+  },
+  "e5_objective_agreement_mongo_fixture_20261120": {
+    "receipt": "operating/sync-receipts/e5-objective-agreement-mongo-fixture-20261120.json",
+    "status": "SOURCE_AND_REAL_DB_DISPOSABLE_FIXTURE_ONLY_NOT_AUTHENTICATED_PRODUCT",
+    "next": "Harden server-owned field and wire authenticated native route plus owner authority."
   }
 }
