@@ -351,6 +351,8 @@ export interface IdempotencyLedger {
 export interface GovernedToolSchema {
   inputSchema: JsonSchema;
   readbackToolId?: string;
+  /** Host-verified property of this exact tool; R0 alone does not imply safe repetition. */
+  safeRepeatReadback?: boolean;
 }
 
 export interface GovernedObjectiveHost extends ObjectiveHandoffHost {
@@ -444,7 +446,7 @@ export type GovernedExecutionResult =
       tool: ToolProjection;
       observation?: unknown;
       receipt: ExecutionReceipt;
-      reason: 'READBACK_MISSING' | 'ACCEPTANCE_FAILED' | 'ACCEPTANCE_UNKNOWN';
+      reason: 'READBACK_MISSING' | 'ACCEPTANCE_FAILED' | 'ACCEPTANCE_UNKNOWN' | 'RECEIPT_MISSING';
     }
   | {
       status: 'DENIED';
@@ -491,6 +493,33 @@ function canonical(value: unknown): string {
 
 function hashValue(value: unknown): string {
   return sha256(canonical(value ?? null));
+}
+
+/** Snapshot bounded JSON arguments before any asynchronous host operation. */
+function snapshotArguments(value: unknown): Readonly<Record<string, unknown>> | null {
+  let copy: unknown;
+  try { copy=structuredClone(value); } catch { return null; }
+  let nodes=0;
+  const ancestors=new WeakSet<object>();
+  const freeze=(item:unknown,depth:number):boolean=>{
+    if (++nodes>10_000 || depth>32) return false;
+    if (item===null || typeof item==='string' || typeof item==='boolean') return true;
+    if (typeof item==='number') return Number.isFinite(item);
+    if (typeof item!=='object' || ancestors.has(item)) return false;
+    if (!Array.isArray(item) && Object.getPrototypeOf(item)!==Object.prototype && Object.getPrototypeOf(item)!==null) return false;
+    ancestors.add(item);
+    if (Array.isArray(item)) {
+      if (Object.keys(item).length!==item.length) return false;
+      for(let i=0;i<item.length;i++) if(!Object.hasOwn(item,i)||!freeze(item[i],depth+1)) return false;
+    } else {
+      for(const child of Object.values(item)) if(!freeze(child,depth+1)) return false;
+    }
+    ancestors.delete(item);
+    Object.freeze(item);
+    return true;
+  };
+  if(copy===null || typeof copy!=='object' || Array.isArray(copy) || !freeze(copy,0)) return null;
+  return copy as Readonly<Record<string,unknown>>;
 }
 
 function buildReceipt(
@@ -574,9 +603,10 @@ async function performReadback(
       if (readback) return readback;
     }
 
-    // R0 tools are idempotent by contract; use the same tool for readback
-    // unless the host supplied an explicit readback tool.
-    if (tool.risk === 'R0' && (!schema.readbackToolId || schema.readbackToolId === tool.toolId)) {
+    // A task start may have R0 risk yet still create a job. Repeat only when
+    // the trusted host explicitly attests that this exact read is repeatable.
+    const startsJob=/^nostromo_tarea_iniciar(?:_mcp_.*)?$/.test(tool.toolId);
+    if (!startsJob && tool.risk === 'R0' && schema.safeRepeatReadback === true && (!schema.readbackToolId || schema.readbackToolId === tool.toolId)) {
       const raw = await input.transport.callTool({
         name: schema.readbackToolId ?? tool.toolId,
         arguments: { ...input.args },
@@ -649,7 +679,11 @@ async function reconcileUnknown(
       acceptance,
     },
   );
-  const ref = await input.host.writeReceipt?.(receipt);
+  let ref: {receiptRef:string} | null | undefined;
+  try { ref = await input.host.writeReceipt?.(receipt); } catch { ref = null; }
+  if (!ref || typeof ref.receiptRef!=='string' || !ref.receiptRef.trim()) {
+    return { status:'UNKNOWN_OUTCOME', handoff, tool, reason:'RECEIPT_MISSING', readback:readback.observation };
+  }
   const finalReceipt = ref
     ? { ...receipt, receipt_ref: ref.receiptRef }
     : receipt;
@@ -673,6 +707,13 @@ async function reconcileUnknown(
 export async function dispatchGovernedObjective(
   input: GovernedExecutionInput,
 ): Promise<GovernedExecutionResult> {
+  const argsSnapshot=snapshotArguments(input.args);
+  if(!argsSnapshot) return {status:'INVALID_ARGUMENTS',issues:['$:INVALID_JSON_ARGUMENTS']};
+  const principal=input.owner?.principalRef,tenant=input.owner?.tenantRef;
+  if(typeof principal!=='string'||!principal.trim()||principal.length>256 ||
+      (tenant!=null&&(typeof tenant!=='string'||!tenant.trim()||tenant.length>256)))
+    return {status:'DENIED',reason:'INVALID_HOST_IDENTITY'};
+  input={...input,args:argsSnapshot,owner:Object.freeze({principalRef:principal,tenantRef:tenant??null})};
   input.llmGuard?.assertNotCalled();
 
   /* Do not freeze the clock before async capability reads; owner may observe later. */
@@ -874,7 +915,13 @@ export async function dispatchGovernedObjective(
     },
   );
 
-  const ref = await input.host.writeReceipt?.(receipt);
+  let ref: {receiptRef:string} | null | undefined;
+  try { ref = await input.host.writeReceipt?.(receipt); } catch { ref = null; }
+  if (!failed && (!ref || typeof ref.receiptRef!=='string' || !ref.receiptRef.trim())) {
+    await input.ledger?.markUnknown(ledgerKey, Date.now());
+    return { status:'EXECUTED_UNVERIFIED',handoff,tool,observation:readback.observation,
+      receipt:{...receipt,outcome:'EXECUTED_UNVERIFIED',reason:'RECEIPT_MISSING'},reason:'RECEIPT_MISSING' };
+  }
   const finalReceipt = ref
     ? { ...receipt, receipt_ref: ref.receiptRef }
     : receipt;

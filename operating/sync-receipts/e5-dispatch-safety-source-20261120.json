@@ -1,0 +1,7 @@
+{
+  "scope": "SOURCE only; not installed in the product runtime",
+  "base": "6f0c19a14515c47263f7a8cb83bb58247df6d9c7",
+  "changes": ["Snapshot bounded JSON arguments and host identity before asynchronous admission", "Do not repeat task-start calls for readback; repeat a read only with explicit trusted-host attestation", "Do not report verified execution when receipt persistence is absent or fails", "Isolate installed MCP fixture state in a temporary directory"],
+  "validation": {"typescript": "PASS", "dispatch_tests": "23 PASS", "installed_mcp_fixture": "1 PASS; two R0 calls; simulated agreement and ACL; zero LLM calls", "regression": "Mutable nested arguments and repeated task start reproduced before correction"},
+  "limitations": ["No authenticated product end-to-end test", "Real ACL, tenant, persisted ledger and MCP dispatch adapter are not connected", "Receipt and readback callbacks in unit tests are fixtures", "Readback evidence reference enforcement requires further review"]
+}

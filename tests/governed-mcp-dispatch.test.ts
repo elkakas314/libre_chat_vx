@@ -72,6 +72,7 @@ function host(
     },
     async readToolSchema() {
       return {
+        safeRepeatReadback:true,
         inputSchema: {
           type: 'object',
           additionalProperties: false,
@@ -145,6 +146,71 @@ function memoryLedger(): IdempotencyLedger & {
     },
   };
 }
+
+test('dispatch snapshots nested arguments and owner before asynchronous admission', async () => {
+  let release!:()=>void;
+  const gate=new Promise<void>((resolve)=>{release=resolve;});
+  const args={filter:{value:'original'}};
+  const owner={principalRef:'original-user',tenantRef:'tenant'};
+  const seen:string[]=[];
+  const pending=dispatchGovernedObjective({
+    handoff:handoff(),args,owner,
+    host:host({
+      async verifyAgreement(){await gate;return true;},
+      async readToolSchema(){return {safeRepeatReadback:true,inputSchema:{type:'object',additionalProperties:false,required:['filter'],
+        properties:{filter:{type:'object',additionalProperties:false,required:['value'],properties:{value:{type:'string'}}}}}};},
+    }),
+    transport:transport({async callTool(call){seen.push((call.arguments.filter as {value:string}).value);
+      return {status:'OK',structuredContent:{mcpLive:true}};}}),
+  });
+  args.filter.value='changed';owner.principalRef='changed-user';release();
+  const result=await pending;
+  assert.equal(result.status,'VERIFIED');
+  assert.deepEqual(seen,['original','original']);
+  if(result.status==='VERIFIED')assert.equal(result.receipt.principal_ref,'original-user');
+});
+
+test('non-JSON arguments and missing host identity never reach the MCP', async () => {
+  let calls=0;
+  const wire=transport({async callTool(){calls++;return {status:'OK',structuredContent:{mcpLive:true}};}});
+  const cyclic:Record<string,unknown>={};cyclic.self=cyclic;
+  for(const args of [cyclic,{value:NaN},{value:new Date()}, {value:undefined}]) {
+    const result=await dispatchGovernedObjective({handoff:handoff(),args,owner:{principalRef:'user'},host:host(),transport:wire});
+    assert.equal(result.status,'INVALID_ARGUMENTS');
+  }
+  const missing=await dispatchGovernedObjective({handoff:handoff(),args:{},owner:{principalRef:''},host:host(),transport:wire});
+  assert.deepEqual(missing,{status:'DENIED',reason:'INVALID_HOST_IDENTITY'});
+  assert.equal(calls,0);
+});
+
+test('a missing or failed receipt never becomes VERIFIED', async () => {
+  for(const writeReceipt of [async()=>null,async()=>{throw Error('storage unavailable');}]) {
+    const ledger=memoryLedger();
+    const result=await run({ledger,host:{writeReceipt}});
+    assert.equal(result.status,'EXECUTED_UNVERIFIED');
+    if(result.status==='EXECUTED_UNVERIFIED') {
+      assert.equal(result.reason,'RECEIPT_MISSING');
+      assert.equal(result.receipt.outcome,'EXECUTED_UNVERIFIED');
+    }
+    assert.equal(ledger.entries.get('b'.repeat(64))?.state,'UNKNOWN_OUTCOME');
+  }
+});
+
+test('an R0 task-start operation is never repeated as an implicit readback', async () => {
+  let calls=0;
+  const result=await run({
+    host:{
+      async readCapabilities(){return {observedAtMs:Date.now(),entries:[capabilityEntry({toolId:'nostromo_tarea_iniciar'})]};},
+      async readToolSchema(){return {safeRepeatReadback:true,inputSchema:{type:'object',properties:{}}};},
+    },
+    transport:transport({async callTool(){calls++;return calls===1
+      ? {status:'UNKNOWN_OUTCOME',reason:'TIMEOUT'}
+      : {status:'OK',structuredContent:{mcpLive:true}};}}),
+    ledger:memoryLedger(),
+  });
+  assert.equal(result.status,'UNKNOWN_OUTCOME');
+  assert.equal(calls,1);
+});
 
 async function run(
   options: {
@@ -348,6 +414,7 @@ test('idempotencia reutilizada con otro payload se rechaza', async () => {
   const schemaHost = {
     async readToolSchema() {
       return {
+        safeRepeatReadback:true,
         inputSchema: {
           type: 'object' as const,
           properties: { a: { type: 'number' as const } },

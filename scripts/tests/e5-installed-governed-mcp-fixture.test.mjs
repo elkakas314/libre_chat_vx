@@ -4,6 +4,9 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import { resolve } from 'node:path';
 import { existsSync } from 'node:fs';
+import { mkdtemp, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
 const app = process.env.NOSTROMO_E5_INSTALLED_MCP_DIR;
 const enabled = Boolean(app && existsSync(app+'/package.json') && existsSync(app+'/server.mjs'));
 const sdkRequire = enabled ? createRequire(app + '/package.json') : null;
@@ -12,9 +15,10 @@ test('FIXTURE installed MCP binary + governed read-only dispatch; no LLM, mock a
  const { Client } = sdkRequire('@modelcontextprotocol/sdk/client/index.js');
  const { StdioClientTransport } = sdkRequire('@modelcontextprotocol/sdk/client/stdio.js');
  let llmCalls=0, physicalCalls=0;
+ const fixtureDir=await mkdtemp(path.join(tmpdir(),'nostromo-e5-dispatch-'));
  const t=new StdioClientTransport({command:process.execPath,
    args:[app+'/server.mjs'],
-   env:{HOME:'/home/elkakas314',PATH:'/usr/bin:/bin',NOSTROMO_MCP_ENABLED:'1',
+   env:{PATH:'/usr/bin:/bin',NOSTROMO_MCP_ENABLED:'1',NOSTROMO_APPROVAL_DIR:fixtureDir,
       NOSTROMO_ALLOWED_ROOTS:'/home/elkakas314',
       NOSTROMO_TOOL_SET:'nostromo_metricas,nostromo_directorio_listar'},
    stderr:'pipe'});
@@ -31,7 +35,7 @@ test('FIXTURE installed MCP binary + governed read-only dispatch; no LLM, mock a
      capabilityRef:'nostromo.estado',targetId:'NOSTROMO_LOCAL',toolId:'nostromo_estado',
      risk:'R0',availability:'LIVE',registryBacked:true,aclAllowed:true,
      adapterLive:true,sourceRevision:'MCP_INSTALLED_FIXTURE'}]};},
-   async readToolSchema(){return {inputSchema:tool.inputSchema};},
+   async readToolSchema(){return {inputSchema:tool.inputSchema,safeRepeatReadback:true};},
    async verifyAcceptance(_handoff,_criterion,observation){return observation?.mcpLive===true?'PASS':'FAIL';},
    async writeReceipt(){return {receiptRef:'FIXTURE_ONLY'};}
   };
@@ -52,5 +56,5 @@ test('FIXTURE installed MCP binary + governed read-only dispatch; no LLM, mock a
   assert.equal(physicalCalls,2,'R0 execution and independent readback');
   assert.equal(llmCalls,0);
   console.log('E5_MCP_FIXTURE_VERIFIED',JSON.stringify({calls:physicalCalls,LLM_CALLS:llmCalls,installedExecutable:true,agreementAuthenticated:false}));
- }finally{await client.close().catch(()=>{});}
+ }finally{await client.close().catch(()=>{});await rm(fixtureDir,{recursive:true,force:true});}
 });
