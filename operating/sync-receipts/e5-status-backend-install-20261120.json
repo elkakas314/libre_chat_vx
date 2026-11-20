@@ -1,0 +1,14 @@
+{
+ "status":"INSTALLED_UNVERIFIED_AUTHENTICATED_PRODUCT",
+ "source_commit":"f7ce0a7992d6d6430dbab50c969ad1dae6e381d8",
+ "runtime":"/home/elkakas314/librechat/nostromo/runtime/e5-status",
+ "index_before_sha256":"9561e5107f75b883973db1cb6307dc0a966c0b1463a86113ab8013bd5907d580",
+ "index_after_sha256":"b4d65b0ea59330680d929cdfae3bc14d4f0da8cea673e9a1579cb5c622f0dbf6",
+ "index_preimage":"/home/elkakas314/librechat/nostromo/backups/e5-status-api-index-9561e510-preimage.js",
+ "manifest":"/home/elkakas314/librechat/nostromo/runtime/e5-status/manifest.json",
+ "restart":"HOST_CONTROL vx-backend.service; PID 1317650; NRestarts 0; HTTP root 200; unauthenticated execution endpoint 401",
+ "tests":"TypeScript, 6 agreement tests, real Mongo disposable agreement/receipt and HTTP fixtures, native port fixture including installed MCP. HTTP authentication, owner ACL and native MCP manager are simulated in fixtures.",
+ "scope":"Existing authenticated route extended for fixed read-only nostromo_estado. No task queue, model call or new MCP server.",
+ "pending":["authenticated LibreChat actual owner and MCP manager","real receipt and reconnect","frontend installation and served bundle verification","full autonomy and global integration"],
+ "final_verified":false
+}
