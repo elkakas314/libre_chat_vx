@@ -1,7 +1,9 @@
 import { interpretIntent, type IntentSignals } from '../intent/intentInterpreter';
 import {
   bridgeIntentToDecision,
+  resolveAgreedObjective,
   type NostromoDecisionHints,
+  type ObjectiveHandoffHost,
 } from '../intent/nostromoDecisionBridge';
 import {
   NostromoInferenceGateway,
@@ -72,6 +74,15 @@ export type NativeInferenceRouteResult =
     };
 
 const gateway = new NostromoInferenceGateway();
+
+/** Native host entry for an already agreed contract. This preflight never calls a model. */
+export async function resolveNativeAgreedObjective(
+  handoff: unknown,
+  host: ObjectiveHandoffHost,
+  nowMs?: number,
+) {
+  return resolveAgreedObjective(handoff, host, nowMs);
+}
 
 /**
  * Adapts the existing intent and provider routers to a native LibreChat turn.

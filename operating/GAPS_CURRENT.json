@@ -15,6 +15,16 @@
   },
   "gaps": [
     {
+      "gapId": "LC-E5-AUTHENTICATED-OBJECTIVE-RUNTIME",
+      "summary": "Bind authenticated agreed objective to live capability and owner authorization, existing MCP dispatch, durable idempotency and verified readback",
+      "state": "OPEN",
+      "priority": 5,
+      "scope": "objective_runtime_live",
+      "requiresLive": true,
+      "dependencies": [],
+      "preferredRoute": "AUTHENTICATED_LIBRECHAT_HOST_AND_EXISTING_MCP"
+    },
+    {
       "gapId": "LC-CF-AIG-BINDING",
       "summary": "Live Cloudflare AI Gateway: zero-cost provider probes, seven routes, canary/readback/rollback",
       "state": "OPEN",

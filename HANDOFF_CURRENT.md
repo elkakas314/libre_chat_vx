@@ -639,3 +639,10 @@ PRECEDENCE: this update supersedes older `PR26 DRAFT` or ChatGPT usage assumptio
 - HOST_CONTROL saved and verified preimage SHA `261fb74fe9831e208097642d50d1a675a74c6c80accfca9f2332baef028c695f`, installed compiled API SHA `bdc458e5a06ae6cc52bb57139f59d2a543b69b6455954365bbc5a2d95249fdb2`, and restarted vx-backend once. Backend and MCP returned active. This compiled-bundle change may be lost on rebuild; durable promotion remains open.
 - A single real agent turn showed 3818/5837 (65%), system tools 335 versus about 1900 before. It was stopped after 43 seconds with no tool dispatch as GPU reached 100%, swap free 0 and memory PSI some avg10 5.43%. MongoDB retained user input and empty unfinished assistant. Context reduction is verified; full agent/MCP execution and reconnect are not.
 - Receipt: `operating/sync-receipts/e4-native-file-deferral-live-canary-20261120.json`. Do not repeat inference without resource diagnosis. Product remains PARTIAL.
+
+## 2026-11-20 — E5 contract preflight and isolated installed MCP fixture
+
+- Added schema-driven validation, immutable contract snapshot, host agreement callback, fresh capability/ACL preflight and a native adapter entry without model routing. These are SOURCE preflight components, not a grant or product dispatcher.
+- 18 focused tests passed; 137 differential schema cases matched Draft 2020-12. A separate SDK stdio fixture launched the installed MCP executable and read state and metrics without a model; host agreement and ACL were synthetic, so this does not prove an authenticated LibreChat execution. Source and installed MCP server hashes differ.
+- `ci/fixtures/native-overlay-prereq.spec.ts` is copied by CI to upstream/e2e/screenshots, where its relative mock helper exists.
+- Remaining: real authenticated agreement binding and identity, owner authorization and catalog readback, actual host entry/dispatch, idempotent persistence, readback/recovery, production install and product E2E. Receipt: `operating/sync-receipts/e5-objective-preflight-installed-mcp-fixture-20261120.json`.

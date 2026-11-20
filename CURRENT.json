@@ -3423,5 +3423,10 @@
     "context": "3818/5837 vs 5360/5837 previously",
     "status": "CONTEXT_REDUCED; AGENT_MCP_NOT_VERIFIED",
     "runtime_rebuild_persistence": "UNVERIFIED"
+  },
+  "e5_objective_preflight_fixture_20261120": {
+    "receipt": "operating/sync-receipts/e5-objective-preflight-installed-mcp-fixture-20261120.json",
+    "status": "SOURCE_AND_ISOLATED_FIXTURE_ONLY_NOT_LIVE",
+    "next": "Wire authenticated host agreement and owner-authorized existing MCP dispatch."
   }
 }
