@@ -3428,5 +3428,10 @@
     "receipt": "operating/sync-receipts/e5-objective-preflight-installed-mcp-fixture-20261120.json",
     "status": "SOURCE_AND_ISOLATED_FIXTURE_ONLY_NOT_LIVE",
     "next": "Wire authenticated host agreement and owner-authorized existing MCP dispatch."
+  },
+  "e5_mcp_idempotency_install_20261120": {
+    "receipt": "operating/sync-receipts/e5-mcp-job-idempotency-install-20261120.json",
+    "status": "INSTALLED_RESTARTED; ISOLATED_MCP_RETRY_TEST_PASS; PRODUCT_E2E_OPEN",
+    "next": "Bind authenticated objective and host-derived key to existing MCP task entry, then verify product readback."
   }
 }

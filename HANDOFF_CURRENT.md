@@ -646,3 +646,10 @@ PRECEDENCE: this update supersedes older `PR26 DRAFT` or ChatGPT usage assumptio
 - 18 focused tests passed; 137 differential schema cases matched Draft 2020-12. A separate SDK stdio fixture launched the installed MCP executable and read state and metrics without a model; host agreement and ACL were synthetic, so this does not prove an authenticated LibreChat execution. Source and installed MCP server hashes differ.
 - `ci/fixtures/native-overlay-prereq.spec.ts` is copied by CI to upstream/e2e/screenshots, where its relative mock helper exists.
 - Remaining: real authenticated agreement binding and identity, owner authorization and catalog readback, actual host entry/dispatch, idempotent persistence, readback/recovery, production install and product E2E. Receipt: `operating/sync-receipts/e5-objective-preflight-installed-mcp-fixture-20261120.json`.
+
+## 2026-11-20 — MCP async job idempotency installed
+
+- Existing async jobs now accept an optional hash key with a private durable claim bound to the canonical request hash. Repeated keys recover the known task; changed requests conflict; incomplete/orphaned claims fail closed as UNKNOWN_OUTCOME. R2 remains separately authorized. Claims survive job expiry to prevent blind replay; lifecycle/capacity management remains open.
+- 21 source/stdio tests pass in isolated staging. A narrow merge on the old installed server preserves its directory implementation, and the actual installed executable passed a temporary-state MCP restart/retry fixture. This was not an authenticated LibreChat task.
+- HOST_CONTROL preserved the two preimages and installed async SHA `cc203aca0fcf9b8a1b8462ae7727538df4696fbb8b783c61b7ffd5e43fcb7635` and server SHA `124400d4905bb715adb198b62b4970cc9d7d34f1d109f3b3a13571e6aa4852c4`; one backend restart read back HTTP 200, backend PID 1118520 and MCP PID 1118700. Previous context patch SHA remains unchanged.
+- Authenticated agreement, host-derived key, real owner authorization, dispatch, verifier and full product E2E remain open. Receipt: `operating/sync-receipts/e5-mcp-job-idempotency-install-20261120.json`.
