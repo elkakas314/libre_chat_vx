@@ -371,7 +371,7 @@ export interface GovernedObjectiveHost extends ObjectiveHandoffHost {
   readReadback?(
     handoff: ObjectiveHandoff,
     tool: ToolProjection,
-  ): Promise<{ observation: unknown; evidenceRef?: string } | null>;
+  ): Promise<{ observation: unknown; evidenceRef?: string; confirmsDispatch?: boolean } | null>;
 
   writeReceipt?(
     receipt: ExecutionReceipt,
@@ -596,7 +596,7 @@ async function performReadback(
   handoff: ObjectiveHandoff,
   tool: ToolProjection,
   schema: GovernedToolSchema,
-): Promise<{ observation: unknown; evidenceRef?: string } | null> {
+): Promise<{ observation: unknown; evidenceRef?: string; confirmsDispatch?: boolean } | null> {
   try {
     if (input.host.readReadback) {
       const readback = await input.host.readReadback(handoff, tool);
@@ -642,6 +642,11 @@ async function reconcileUnknown(
       tool,
       reason,
     };
+  }
+
+  // A fresh status reading does not prove the earlier uncertain call ran.
+  if (readback.confirmsDispatch !== true || typeof readback.evidenceRef !== 'string' || !readback.evidenceRef.trim()) {
+    return { status: 'UNKNOWN_OUTCOME', handoff, tool, reason: 'DISPATCH_EVIDENCE_MISSING', readback: readback.observation };
   }
 
   const acceptance = await evaluateAcceptance(
@@ -793,7 +798,8 @@ export async function dispatchGovernedObjective(
         );
       }
     }
-  } else if (tool.risk !== 'R0') {
+  } else if (tool.risk !== 'R0' || /^nostromo_tarea_iniciar(?:_mcp_.*)?$/.test(tool.toolId)) {
+    // Starting a task has a persistent effect even if its declared risk is R0.
     return { status: 'DENIED', reason: 'IDEMPOTENCY_LEDGER_REQUIRED' };
   }
 

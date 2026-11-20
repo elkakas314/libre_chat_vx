@@ -196,6 +196,16 @@ test('a missing or failed receipt never becomes VERIFIED', async () => {
   }
 });
 
+test('an R0 task start requires a ledger before dispatch', async () => {
+  let calls=0;
+  const result=await run({
+    host:{async readCapabilities(){return {observedAtMs:Date.now(),entries:[capabilityEntry({toolId:'nostromo_tarea_iniciar'})]};}},
+    transport:transport({async callTool(){calls++;return {status:'OK',structuredContent:{mcpLive:true}};}}),
+  });
+  assert.deepEqual(result,{status:'DENIED',reason:'IDEMPOTENCY_LEDGER_REQUIRED'});
+  assert.equal(calls,0);
+});
+
 test('an R0 task-start operation is never repeated as an implicit readback', async () => {
   let calls=0;
   const result=await run({
@@ -461,7 +471,7 @@ test('interrupción tras despacho produce UNKNOWN_OUTCOME si no hay readback', a
   assert.equal(result.status, 'UNKNOWN_OUTCOME');
 });
 
-test('recuperación UNKNOWN_OUTCOME reconcilia por readback', async () => {
+test('una lectura nueva no prueba que se ejecutó el despacho incierto', async () => {
   let calls = 0;
   const t: McpToolTransport = {
     async callTool() {
@@ -478,8 +488,19 @@ test('recuperación UNKNOWN_OUTCOME reconcilia por readback', async () => {
     ledger: memoryLedger(),
   });
 
-  assert.equal(result.status, 'VERIFIED');
+  assert.equal(result.status, 'UNKNOWN_OUTCOME');
+  if (result.status === 'UNKNOWN_OUTCOME') assert.equal(result.reason, 'DISPATCH_EVIDENCE_MISSING');
   assert.equal(calls, 2);
+});
+
+test('evidencia correlacionada permite reconciliar un despacho incierto', async () => {
+  const result = await run({
+    transport: transport({async callTool(){return {status:'UNKNOWN_OUTCOME',reason:'TIMEOUT'};}}),
+    ledger: memoryLedger(),
+    host: {async readReadback(){return {observation:{mcpLive:true}, evidenceRef:'execution-record-1', confirmsDispatch:true};}},
+  });
+  assert.equal(result.status, 'VERIFIED');
+  if (result.status === 'VERIFIED') assert.equal(result.receipt.readback_ref, 'execution-record-1');
 });
 
 test('readback contradictorio no se declara VERIFIED', async () => {
