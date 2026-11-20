@@ -16,6 +16,7 @@ import {
 import type { HudSystem, PhoneModuleSnapshot, VxConversationActivityInput } from '@librechat/vx';
 import { useGetAgentByIdQuery, useMCPConnectionStatusQuery } from '~/data-provider';
 import './VXCockpit.css';
+import NostromoObjectiveStatus from './NostromoObjectiveStatus';
 
 export interface VXCockpitBridgeProps {
   onClose?: () => void;
@@ -145,6 +146,7 @@ export default function VXCockpitBridge({ onClose, activity: activityInput, phon
           }}>Elegir agente en LibreChat</button>
           {selectorUnavailable ? <p role="status">Selector nativo no disponible en esta vista.</p> : null}
         </div> : null}
+        {activeMode==='AUTONOMO' ? <NostromoObjectiveStatus conversationId={activity.conversationId} /> : null}
         {activeMode==='AUTONOMO' ? (
         <section className="vx-autonomy-card" aria-labelledby="vx-autonomy-heading">
           <div className="vx-autonomy-topline">
