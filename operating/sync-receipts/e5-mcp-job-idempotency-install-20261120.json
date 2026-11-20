@@ -41,5 +41,12 @@
     "No authenticated objective dispatch, live product job invocation, final readback verifier or conversation E2E was run.",
     "Compiled context patch remains vulnerable to rebuild until a durable hook is verified."
   ],
-  "status": "INSTALLED_MCP_PROCESS_RESTARTED_ISOLATED_TEST_ONLY; PRODUCT_E2E_OPEN"
+  "status": "INSTALLED_MCP_PROCESS_RESTARTED_ISOLATED_TEST_ONLY; PRODUCT_E2E_OPEN",
+  "authenticated_ui_readback": {
+    "surface": "LibreChat agent builder, nostromo-local tool configuration",
+    "connection": "Connected",
+    "tool": "nostromo_tarea_iniciar",
+    "description": "New optional idempotency key and private persistence description visible",
+    "scope": "Tool advertisement only; no authenticated task was submitted"
+  }
 }
