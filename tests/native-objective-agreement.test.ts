@@ -74,6 +74,19 @@ test('new preview invalidates the old agreement, retains history and rejects sta
  assert.deepEqual(await service.preview(scope,proposal(),0),{ok:false,reason:'REVISION_CONFLICT'});
 });
 
+test('host resolves only the current confirmed plan for the scoped owner',async()=>{
+ const store=new MemoryStore(),service=new NativeObjectiveAgreement(store);
+ const p=await service.preview(scope,proposal(),0);assert.ok(p.ok);if(!p.ok)return;
+ assert.equal(await service.resolveConfirmed(scope,1,p.preview.plan_hash),null);
+ const a=await service.confirm(scope,1,p.preview.plan_hash,p.revision);assert.ok(a.ok);if(!a.ok)return;
+ assert.deepEqual(await service.resolveConfirmed(scope,1,p.preview.plan_hash),a.handoff);
+ assert.equal(await service.resolveConfirmed({...scope,userId:'other'},1,p.preview.plan_hash),null);
+ assert.equal(await service.resolveConfirmed({...scope,tenantId:'other'},1,p.preview.plan_hash),null);
+ assert.equal(await service.resolveConfirmed(scope,1,'f'.repeat(64)),null);
+ const next=await service.preview(scope,{...proposal(),objective:'Changed'},a.revision);assert.ok(next.ok);
+ assert.equal(await service.resolveConfirmed(scope,1,p.preview.plan_hash),null);
+});
+
 test('competing previews use a compare-and-swap and cannot both win',async()=>{
  const store=new MemoryStore(),service=new NativeObjectiveAgreement(store);
  const results=await Promise.all([service.preview(scope,proposal(),0),service.preview(scope,{...proposal(),objective:'other'},0)]);

@@ -40,7 +40,10 @@ export function mongoConversationAgreementStore(collection: AgreementConversatio
       if (!Number.isSafeInteger(expectedRevision) || expectedRevision<0 || !validScope(scope) || !validState(next,scope) || next.revision!==expectedRevision+1) return false;
       const expected=expectedRevision===0 ? {nostromoObjectiveAgreement:{$exists:false}} :
         {'nostromoObjectiveAgreement.revision':expectedRevision};
-      const result=await collection.updateOne({...ownerFilter(scope),...expected},{$set:{nostromoObjectiveAgreement:next}});
+      // Preserve host-owned sibling fields (e.g. execution receipts) during a plan CAS.
+      const result=await collection.updateOne({...ownerFilter(scope),...expected},{$set:{
+        'nostromoObjectiveAgreement.revision':next.revision,'nostromoObjectiveAgreement.plans':next.plans,
+      }});
       return result.matchedCount===1;
     },
   };
@@ -145,6 +148,19 @@ export class NativeObjectiveAgreement {
     const next:AgreementState={revision:state.revision+1,plans:[...state.plans.slice(0,-1),{phase:'AGREED',handoff:agreed}]};
     if (!await this.store.compareAndSwap(scope,state.revision,next)) return { ok:false as const, reason:'REVISION_CONFLICT' };
     return {ok:true as const,revision:next.revision,handoff:structuredClone(agreed),authority:false as const};
+  }
+
+  /** Host-only read for dispatch. Never return this handoff to the browser. */
+  async resolveConfirmed(scope: AgreementScope, version: number, expectedHash: string): Promise<ObjectiveHandoff | null> {
+    try { scope = structuredClone(scope); } catch { return null; }
+    if (!validScope(scope) || !Number.isSafeInteger(version) || version < 1 ||
+        typeof expectedHash !== 'string' || !HASH.test(expectedHash)) return null;
+    const loaded = await this.store.read(scope);
+    if (!loaded.found || !validState(loaded.state, scope)) return null;
+    const current = loaded.state.plans.at(-1);
+    if (!current || current.phase !== 'AGREED' || current.handoff.plan_version !== version ||
+        current.handoff.plan_hash !== expectedHash) return null;
+    return structuredClone(current.handoff);
   }
 
   async verify(scope: AgreementScope, candidate: unknown): Promise<boolean> {

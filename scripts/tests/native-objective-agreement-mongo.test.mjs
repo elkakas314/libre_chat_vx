@@ -35,10 +35,29 @@ test('agreement CAS and owner isolation on the existing local Mongo conversation
     assert.equal(await service.verify(scope,agreed.handoff),true);
     const reconnected=new NativeObjectiveAgreement(mongoConversationAgreementStore(collection));
     assert.equal(await reconnected.verify(scope,agreed.handoff),true);
+    const {NativeObjectiveReceiptStore}=require('../../dist/src/librechat/nativeObjectiveReceipts.js');
+    const receipts=new NativeObjectiveReceiptStore(collection,reconnected), h=agreed.handoff;
+    const receipt={schema:'nostromo.execution.receipt.v1',objective_ref:h.objective_ref,conversation_ref:h.conversation_ref,
+      agreement_ref:h.agreement_ref,plan_hash:h.plan_hash,plan_version:h.plan_version,target_id:h.target_id,
+      capability_ref:'nostromo_estado',tool_id:'nostromo_estado',risk:'R0',principal_ref:scope.userId,tenant_ref:scope.tenantId,
+      idempotency_key:h.idempotency_key,args_hash:'1'.repeat(64),observation_hash:'2'.repeat(64),acceptance:[],
+      outcome:'VERIFIED',started_at_ms:1,finished_at_ms:2};
+    const simultaneous=await Promise.all([receipts.write(scope,receipt),receipts.write(scope,receipt)]);
+    const written=simultaneous[0];assert.ok(written);assert.deepEqual(simultaneous[1],written);
+    assert.deepEqual(await receipts.write(scope,receipt),written);
+    assert.deepEqual(await receipts.read(scope,written.receiptRef),receipt);
+    assert.equal(await receipts.read({...scope,userId:'wrong-user'},written.receiptRef),null);
+    assert.equal(await receipts.write(scope,{...receipt,principal_ref:'wrong-user'}),null);
     assert.equal(await service.verify({...scope,userId:'wrong-user'},agreed.handoff),false);
     assert.equal(await service.verify({...scope,tenantId:'wrong-tenant'},agreed.handoff),false);
+    // A concurrent or prior host-owned sibling must survive plan updates.
+    await collection.updateOne({_id:fixtureId},{$set:{'nostromoObjectiveAgreement.otherHostState':{fixture:'preserved'}}});
     const race=await Promise.all([service.preview(scope,proposal,agreed.revision),service.preview(scope,{...proposal,objective:'changed'},agreed.revision)]);
     assert.equal(race.filter((result)=>result.ok).length,1);
+    const preserved=await collection.findOne({_id:fixtureId},{projection:{'nostromoObjectiveAgreement.otherHostState':1}});
+    assert.deepEqual(preserved.nostromoObjectiveAgreement.otherHostState,{fixture:'preserved'});
+    assert.deepEqual(await receipts.read(scope,written.receiptRef),receipt);
+    assert.equal(await receipts.write(scope,receipt),null);
     assert.equal(await service.verify(scope,agreed.handoff),false);
   }finally{
     if(inserted){
