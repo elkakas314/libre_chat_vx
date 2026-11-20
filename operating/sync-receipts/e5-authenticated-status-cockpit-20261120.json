@@ -1,0 +1,13 @@
+{
+ "status":"AUTHENTICATED_R0_STATUS_VERIFIED_NOT_GLOBAL_CLOSEOUT",
+ "conversation_ref":"4db31229-e97c-555c-9cb2-74f337ffe992",
+ "agent_ref":"agent_9ex2a9buul2cwzyo",
+ "agreement_authenticated":true,"owner_authorized":true,"mcp_executed":true,"readback_verified":true,
+ "persisted":true,"reconnect_after_backend_restart":true,"llm_calls_executor":0,
+ "receipt_ref":"nostromo-receipt:57e7bac937fcc3b937a74995f8bc696c31d6984618e7546888fe3fe5ce62a1c7",
+ "mongo_readback":{"phase":"AGREED","receipt_count_after_reconnect":1,"outcome":"VERIFIED","tool":"nostromo_estado","risk":"R0","acceptance":"PASS"},
+ "agent_mongo":{"provider":"Ollama","model":"qwen3:4b-instruct-2507-q4_K_M","configured_mcp_tools":11,"max_context_tokens":6144},
+ "historical_sample":{"agent_conversations":20,"messages":66,"tool_call_parts":3,"direct_names":3,"stored_outputs":3,"scope":"Mongo conversation records associated with agent; not MCP receipt inventory"},
+ "frontend":{"installed_cockpit_sha256":"e5698b1e6b3690d30ee6c719be04216bbf405f7a6a444fdc6c872aea9bfe4713","served_index":"assets/index.ike-RH12.js","source_preimages":["e5-status-cockpit-cd4e6bc-preimage.tsx","e5-status-cockpit-e4457d6-preimage.tsx"],"bundle_preimages":["e5-status-client-dist-f5e30a90-preimage","e5-status-client-dist-33288a95-preimage"]},
+ "limits":["status-only governed lane; arbitrary autonomous execution and general ledger binding not verified","status R0 is not proof of model-generated tool use","HUD external telemetry and full installed/source reconciliation remain open","CI and global integrations remain pending"],"final_verified":false
+}
