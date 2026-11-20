@@ -1,0 +1,25 @@
+{
+  "schema": "nostromo.e5.native-argument-binding.source.v1",
+  "captured_at_utc": "2026-11-20T23:12:46.321551+00:00",
+  "source_base": "abdcd1f947eae8e506baa1f6cb7d28552486af59",
+  "candidate_commit": "f53bac966ef1cd7a3701ffeb8dc91f7519a8c903",
+  "paths": [
+    "src/librechat/nativeGovernedExecution.ts",
+    "tests/native-objective-agreement.test.ts"
+  ],
+  "change": "Binding requires current authenticated agreement, exact committed arguments, one matching capability, fresh LIVE projection and host-owned explicit argument presentation. Rechecks the agreement after async confirmation; fails closed on missing/stale evidence.",
+  "tests": {
+    "typescript_build": "PASS",
+    "native_objective_agreement_and_governed_dispatch": "36/36 PASS",
+    "log": "/tmp/nostromo-e5-bind-tests3.log"
+  },
+  "runtime_changed": false,
+  "backend_restarted": false,
+  "installed": false,
+  "blockers": [
+    "Host-owned user-visible argument presentation proof requires product integration",
+    "Existing MCP task claims do not directly provide a pre-dispatch durable ledger; must not create a parallel queue",
+    "Generic authenticated task execution and SIWC remain unverified"
+  ],
+  "final_verified": false
+}

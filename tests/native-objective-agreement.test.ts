@@ -160,7 +160,8 @@ test('NativeAgreementArgumentBinding requires a host-visible argument presentati
   displayed=true;displayedHash=hash;
   assert.equal(await bind(confirmed.handoff,tool,hash),true);
   assert.equal(await bind(confirmed.handoff,tool,altered.slice('nostromo.args.sha256:'.length)),false);
-  assert.equal(await bind(confirmed.handoff,{...tool,capabilityRef:'nostromo_metricas'},hash),false);
+  const changedCapability={...tool,capabilityRef:'nostromo_metricas'};
+  assert.equal(await bind(confirmed.handoff,changedCapability,hash),false);
   assert.equal(await bind(confirmed.handoff,{...tool,sourceRevision:''},hash),false);
   const other=createNativeAgreementArgumentBinding({agreements:service,scope:{...scope,userId:'someone-else'},
     presentationReadback:async()=>true});

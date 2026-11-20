@@ -1,3 +1,9 @@
+## 2026-11-21 — E5: host-bound arguments proof SOURCE, general tasks pending
+
+- Added `createNativeAgreementArgumentBinding` to the EXISTING `nativeGovernedExecution.ts`: current host-scoped agreement + exact committed argument hash + LIVE capability + explicit host evidence of user-visible confirmation; checks agreement again after async callbacks. No model-issued permission.
+- Validation: `npm run build` PASS, 36/36 targeted tests PASS on Lenovo against HEAD. Receipt: `operating/sync-receipts/e5-native-agreement-argument-binding-20261121.json`. No product runtime modifications or restarts.
+- Blocking boundary: host presentation proof and existing MCP persistent claim/ledger must be wired before general execution. Authenticated R0 `nostromo_estado` remains verified from prior E5 receipt. SIWC and full autonomy remain open; `FINAL_VERIFIED=false`.
+
 ## 2026-11-20 — E5 DeepSeek governed dispatch integrado en SOURCE (NO PRODUCTIVO)
 
 - Dos propuestas de DeepSeek se compararon; adoptada versión más reciente con correcciones de tipos, clock, fingerprint, readback, idempotencia y UNKNOWN_OUTCOME. No crear otra cola, MCP ni base de datos.
