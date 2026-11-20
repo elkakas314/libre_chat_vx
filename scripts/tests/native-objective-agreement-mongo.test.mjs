@@ -26,8 +26,8 @@ test('agreement CAS and owner isolation on the existing local Mongo conversation
       nostromoE5Fixture:true,title:'NOSTROMO E5 disposable fixture',expiredAt:null});inserted=true;
     const service=new NativeObjectiveAgreement(mongoConversationAgreementStore(collection));
     const proposal={schema:'nostromo.objective.handoff.v1',objective_ref:'fixture',conversation_ref:scope.conversationId,agreement_ref:'untrusted',
-      plan_hash:'a'.repeat(64),plan_version:1,execution_lane:'NOSTROMO_LOCAL',target_id:'NOSTROMO_LOCAL',objective:'Read status',expected_result:'status returned',
-      acceptance_criteria:[{criterion_id:'state',predicate_ref:'state-read'}],capability_refs:['nostromo_estado'],context_refs:[],
+      plan_hash:'a'.repeat(64),plan_version:1,execution_lane:'NOSTROMO_LOCAL',target_id:'NOSTROMO_LOCAL',objective:'Consultar el estado del MCP NOSTROMO',expected_result:'Comprobar si el MCP NOSTROMO responde',
+      acceptance_criteria:[{criterion_id:'state',predicate_ref:'nostromo.mcp.live'}],capability_refs:['nostromo_estado'],context_refs:[],
       constraints:{no_paid_fallback:true,max_execution_seconds:30},risk:'R0',idempotency_key:'b'.repeat(64),readback_required:true,status:'AGREED',authority:false};
     const preview=await service.preview(scope,proposal,0);assert.equal(preview.ok,true);
     assert.equal(await service.verify(scope,proposal),false);
@@ -37,6 +37,17 @@ test('agreement CAS and owner isolation on the existing local Mongo conversation
     assert.equal(await reconnected.verify(scope,agreed.handoff),true);
     const {NativeObjectiveReceiptStore}=require('../../dist/src/librechat/nativeObjectiveReceipts.js');
     const receipts=new NativeObjectiveReceiptStore(collection,reconnected), h=agreed.handoff;
+    const {executeNativeStatus}=require('../../dist/src/librechat/nativeStatusExecution.js');
+    let calls=0;
+    const port={available:async()=>true,call:async()=>{calls++;return {status:'OK',structuredContent:{kind:'nostromo.autonomous.local-mcp.v1',mcpLive:true}};}};
+    const execution=await executeNativeStatus({scope,planVersion:1,planHash:h.plan_hash,agreements:reconnected,receipts,port});
+    assert.equal(execution.status,'VERIFIED');assert.equal(calls,2);
+    assert.equal((await receipts.read(scope,execution.receiptRef)).outcome,'VERIFIED');
+    const last=await receipts.latest(scope,1,h.plan_hash);assert.equal(last.receiptRef,execution.receiptRef);
+    assert.equal(await receipts.latest({...scope,tenantId:'other'},1,h.plan_hash),null);
+    const denied=await executeNativeStatus({scope,planVersion:1,planHash:h.plan_hash,agreements:reconnected,receipts,
+      port:{available:async()=>false,call:async()=>{throw Error('must not dispatch');}}});
+    assert.equal(denied.status,'DENIED');
     const receipt={schema:'nostromo.execution.receipt.v1',objective_ref:h.objective_ref,conversation_ref:h.conversation_ref,
       agreement_ref:h.agreement_ref,plan_hash:h.plan_hash,plan_version:h.plan_version,target_id:h.target_id,
       capability_ref:'nostromo_estado',tool_id:'nostromo_estado',risk:'R0',principal_ref:scope.userId,tenant_ref:scope.tenantId,
@@ -58,6 +69,7 @@ test('agreement CAS and owner isolation on the existing local Mongo conversation
     assert.deepEqual(preserved.nostromoObjectiveAgreement.otherHostState,{fixture:'preserved'});
     assert.deepEqual(await receipts.read(scope,written.receiptRef),receipt);
     assert.equal(await receipts.write(scope,receipt),null);
+    assert.equal(await receipts.latest(scope,1,h.plan_hash),null);
     assert.equal(await service.verify(scope,agreed.handoff),false);
   }finally{
     if(inserted){

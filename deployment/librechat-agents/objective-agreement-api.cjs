@@ -1,7 +1,7 @@
 'use strict';
 
 /** Native host HTTP adapter: no model, target grant, or tool dispatch. */
-function createObjectiveAgreementRouter({express,requireJwtAuth,serviceFor}) {
+function createObjectiveAgreementRouter({express,requireJwtAuth,serviceFor,executeStatusFor,readStatusFor}) {
   if (!express?.Router || typeof requireJwtAuth!=='function' || typeof serviceFor!=='function')
     throw Error('OBJECTIVE_HOST_DEPENDENCIES_REQUIRED');
   const router=express.Router();
@@ -53,6 +53,34 @@ function createObjectiveAgreementRouter({express,requireJwtAuth,serviceFor}) {
         return res.status(409).json({error:'AGREEMENT_SUPERSEDED',authority:false});
       return res.json(readback);
     }catch{return res.status(503).json({error:'AGREEMENT_CONFIRM_FAILED'});}
+  });
+  router.get('/:conversationId/execution',async(req,res)=>{
+    const scope=scopeFor(req),version=Number(req.query.plan_version),hash=req.query.plan_hash;
+    if(!scope || !Number.isSafeInteger(version) || version<1 || typeof hash!=='string' || !/^[a-f0-9]{64}$/.test(hash))
+      return res.status(400).json({error:'INVALID_REQUEST'});
+    if(typeof readStatusFor!=='function')return res.status(503).json({error:'EXECUTION_NOT_CONFIGURED'});
+    try {
+      const result=await readStatusFor(req,scope,version,hash);
+      if(!result)return res.json({status:'UNKNOWN',authority:false});
+      return res.json({status:result.receipt.outcome,receiptRef:result.receiptRef,authority:false});
+    } catch { return res.status(503).json({error:'EXECUTION_READ_FAILED'}); }
+  });
+  router.post('/:conversationId/execute-status',sameOrigin,async(req,res)=>{
+    const scope=scopeFor(req);
+    if(!scope || !shape(req.body,['plan_version','plan_hash']) || !Number.isSafeInteger(req.body.plan_version) ||
+       req.body.plan_version<1 || typeof req.body.plan_hash!=='string' || !/^[a-f0-9]{64}$/.test(req.body.plan_hash))
+      return res.status(400).json({error:'INVALID_REQUEST'});
+    if(typeof executeStatusFor!=='function')return res.status(503).json({error:'EXECUTION_NOT_CONFIGURED'});
+    try {
+      const result=await executeStatusFor(req,scope,req.body.plan_version,req.body.plan_hash);
+      // Host bindings, idempotency keys, raw observations and receipts never cross this boundary.
+      const safe={status:result.status,authority:false};
+      if(typeof result.reason==='string')safe.reason=result.reason;
+      if(result.status==='VERIFIED' && typeof result.receiptRef==='string'){
+        safe.receiptRef=result.receiptRef;safe.mcpLive=result.observation?.mcpLive===true;
+      }
+      return res.status(result.status==='DENIED'?403:200).json(safe);
+    } catch { return res.status(503).json({error:'EXECUTION_UNAVAILABLE'}); }
   });
   return router;
 }

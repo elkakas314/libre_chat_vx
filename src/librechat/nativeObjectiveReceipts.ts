@@ -42,6 +42,9 @@ export class NativeObjectiveReceiptStore {
           receipt.risk !== agreement.risk) return null;
       const json = JSON.stringify(receipt);
       if (Buffer.byteLength(json, 'utf8') > 32_768) return null;
+      // MongoDB may materialize undefined fields as null. Persist exactly the
+      // JSON representation that is hashed so readback remains reproducible.
+      receipt = JSON.parse(json) as ExecutionReceipt;
       const ref = 'nostromo-receipt:' + createHash('sha256').update(json).digest('hex');
       const filter = this.filter(scope);
       const doc = await this.collection.findOne(filter, { projection: { 'nostromoObjectiveAgreement.revision': 1,
@@ -65,6 +68,26 @@ export class NativeObjectiveReceiptStore {
       if (!await this.agreements.verify(scope, agreement)) return null;
       const readback = await this.read(scope, ref);
       return readback && JSON.stringify(readback) === json ? { receiptRef: ref } : null;
+    } catch { return null; }
+  }
+
+  async latest(scope: AgreementScope, version: number, planHash: string): Promise<{receiptRef:string; receipt:ExecutionReceipt} | null> {
+    if (!this.valid(scope)) return null;
+    try {
+      const agreement=await this.agreements.resolveConfirmed(scope,version,planHash);
+      if (!agreement) return null;
+      const doc=await this.collection.findOne(this.filter(scope),{projection:{'nostromoObjectiveAgreement.receipts':1}});
+      const records=doc?.nostromoObjectiveAgreement?.receipts;
+      if (!Array.isArray(records)) return null;
+      for (const record of [...records].reverse()) {
+        if (record.receipt.agreement_ref!==agreement.agreement_ref || record.receipt.plan_hash!==planHash ||
+            record.receipt.plan_version!==version || record.receipt.principal_ref!==scope.userId ||
+            record.receipt.tenant_ref!==scope.tenantId) continue;
+        const receipt=await this.read(scope,record.ref);
+        if (receipt && await this.agreements.verify(scope,agreement)) return {receiptRef:record.ref,receipt};
+        return null;
+      }
+      return null;
     } catch { return null; }
   }
 
