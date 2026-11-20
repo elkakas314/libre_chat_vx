@@ -679,3 +679,9 @@ PRECEDENCE: this update supersedes older `PR26 DRAFT` or ChatGPT usage assumptio
 
 - On the installed data-schemas package and existing Mongo, an isolated test checked ordinary conversation read/list/search and create/read shared-link snapshots using disposable records. The private marker did not appear; all three fixture collections read back zero residual records. The tested share contained no user data.
 - The known conversation aggregate was inspected as a grouped metrics projection. This is not a proof for every raw Mongo/export/aggregation route or authenticated browser export. Objective route and owner-authorized E2E remain open. Receipt: `operating/sync-receipts/e5-private-field-native-surfaces-20261120.json`.
+
+## 2026-11-20 — Native objective agreement route installed
+
+- Installed persistent runtime `/home/elkakas314/librechat/nostromo/runtime/e5-objective` from the pinned SOURCE artifact and manifest; a fresh TypeScript compilation matched staged artifacts. HOST_CONTROL saved the clean API server index preimage and installed the scoped mount. One service restart yielded backend PID 1240966, MCP PID 1241101 and HTTP 200.
+- An unauthenticated GET returns 401; direct browser navigation has no bearer credential and was rejected. No real user plan, confirmation, authenticated route test, owner-authorized dispatch or product E2E was performed. Route supplies preview/confirmation only and grants no execution authority.
+- Receipt: `operating/sync-receipts/e5-objective-route-install-20261120.json`. Next: native UI and actual authenticated session, host-owned capability/ACL and persistent MCP dispatch; do not inspect credentials.

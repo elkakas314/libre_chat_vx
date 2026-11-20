@@ -3448,5 +3448,10 @@
     "receipt": "operating/sync-receipts/e5-private-field-native-surfaces-20261120.json",
     "status": "TARGETED_INSTALLED_DATA_SURFACES_PASS",
     "next": "Deploy authenticated objective route using reproducible artifact and verify without implying tool authority."
+  },
+  "e5_objective_route_install_20261120": {
+    "receipt": "operating/sync-receipts/e5-objective-route-install-20261120.json",
+    "status": "INSTALLED_UNAUTHENTICATED_DENIAL_VERIFIED; AUTHENTICATED_E2E_OPEN",
+    "next": "Connect native UI and owner-authorized dispatch; verify actual session agreement without reading credentials."
   }
 }
