@@ -1,0 +1,45 @@
+{
+  "schema": "nostromo.e5.full-suite-host.v1",
+  "captured_at_utc": "2026-11-21T00:47:37.974046+00:00",
+  "head": "37cb94a06ad6a530c8c08d54dd006361b5d3e79c",
+  "command": "nice -n 10 ionice -c3 npm test",
+  "exit_code": 0,
+  "root_build": "PASS",
+  "typescript_node_tests": "324/324 PASS",
+  "subsuite_outputs": [
+    {
+      "tests": 324,
+      "pass": 324,
+      "fail": 0
+    },
+    {
+      "tests": 1,
+      "pass": 1,
+      "fail": 0
+    },
+    {
+      "tests": 3,
+      "pass": 3,
+      "fail": 0
+    },
+    {
+      "tests": 7,
+      "pass": 7,
+      "fail": 0
+    },
+    {
+      "tests": 1,
+      "pass": 1,
+      "fail": 0
+    }
+  ],
+  "log_local_only": "/tmp/nostromo-e5-full-npm-test-20261121.log",
+  "host_backend_active": true,
+  "host_backend_http": 200,
+  "installed_index_sha256": "388cd8998f51ecbab10d379084a4d62259205f95d2bc8e13a2c8bf06113547b0",
+  "installed_web_index_sha256": "daf1de6fcb4447aee4cd8fa7859d8bccb31bace695ad0964c9716f95bf17bbf0",
+  "browser_authenticated_metrics_e2e": false,
+  "siwc_consent_live": false,
+  "general_autonomy_e2e": false,
+  "final_verified": false
+}

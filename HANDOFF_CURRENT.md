@@ -1,3 +1,8 @@
+## 2026-11-21 — Full repository npm test passed on Lenovo at metrics HEAD
+
+- At GitHub branch `37cb94a06ad6a530c8c08d54dd006361b5d3e79c`: complete `npm test` exit 0, main 324/324 TS tests PASS plus remaining scripted regression suites PASS, no failures. Backend still LIVE HTTP 200; frontend and index installed hashes unchanged. Evidence `operating/sync-receipts/e5-global-npm-suite-live-20261121.json`.
+- This proves SOURCE suite and installed server health; NOT real authenticated browser metrics user-action, NO SIWC consent verified, NOT general autonomous execution. `FINAL_VERIFIED=false`.
+
 ## 2026-11-21 — E5 fixed R0 metrics installed in LibreChat VX (LIVE route, auth E2E pending)
 
 - Added **second native authenticated read-only capability** `nostromo_metricas` with fixed cwd `/home/elkakas314`, plan + args commitment, owner-bound Mongo `NativeObjectiveDispatchLedger`, live MCPManager tool check and receipt readback.

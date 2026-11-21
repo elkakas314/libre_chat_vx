@@ -3477,5 +3477,14 @@
     "real_user_authenticated_metrics": false,
     "general_autonomy": false,
     "final_verified": false
+  },
+  "e5_full_npm_suite_20261121": {
+    "status": "FULL_TEST_SUITE_PASS_CURRENT_HEAD_LIVE_METRICS_INSTALLED_GENERAL_AUTONOMY_PENDING",
+    "base_head": "37cb94a06ad6a530c8c08d54dd006361b5d3e79c",
+    "test": "npm test",
+    "exit_code": 0,
+    "typescript_tests": "324/324_PASS",
+    "receipt": "operating/sync-receipts/e5-global-npm-suite-live-20261121.json",
+    "final_verified": false
   }
 }
