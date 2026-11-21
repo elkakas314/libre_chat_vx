@@ -1,0 +1,627 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {
+  dispatchGovernedObjective,
+  argumentCommitment,
+  matchesArgumentCommitment,
+  type GovernedObjectiveHost,
+  type IdempotencyLedger,
+  type LedgerEntry,
+  type McpToolTransport,
+} from '../src/cockpit/governedMcpDispatch';
+
+/* MOCK-only. No LIVE claims. */
+
+function handoff(overrides: Record<string, unknown> = {}) {
+  return {
+    schema: 'nostromo.objective.handoff.v1',
+    objective_ref: 'objective-1',
+    conversation_ref: 'conversation-1',
+    agreement_ref: 'agreement-1',
+    plan_hash: 'a'.repeat(64),
+    plan_version: 1,
+    execution_lane: 'NOSTROMO_LOCAL',
+    target_id: 'NOSTROMO_LOCAL',
+    objective: 'Consultar el estado del MCP NOSTROMO',
+    expected_result: 'mcpLive debe ser true',
+    acceptance_criteria: [
+      { criterion_id: 'mcp-live', predicate_ref: 'nostromo.mcp.live' },
+    ],
+    capability_refs: ['nostromo.estado'],
+    context_refs: [],
+    constraints: { no_paid_fallback: true, max_execution_seconds: 30 },
+    risk: 'R0',
+    idempotency_key: 'b'.repeat(64),
+    readback_required: true,
+    status: 'AGREED',
+    authority: false,
+    ...overrides,
+  };
+}
+
+function capabilityEntry(overrides: Partial<import('../src/cockpit/targetToolGate').ToolProjection> = {}): import('../src/cockpit/targetToolGate').ToolProjection & { capabilityRef: string } {
+  return {
+    targetId: 'NOSTROMO_LOCAL',
+    toolId: 'nostromo_estado',
+    risk: 'R0',
+    availability: 'LIVE',
+    registryBacked: true,
+    aclAllowed: true,
+    adapterLive: true,
+    sourceRevision: 'rev-1',
+    capabilityRef: 'nostromo.estado',
+    ...overrides,
+  };
+}
+
+function host(
+  overrides: Partial<GovernedObjectiveHost> = {},
+): GovernedObjectiveHost {
+  const observedAtMs = Date.now();
+
+  return {
+    async verifyAgreement() {
+      return true;
+    },
+    async readCapabilities() {
+      return {
+        observedAtMs,
+        entries: [capabilityEntry()],
+      };
+    },
+    async checkOwnerAuthority() {
+      return true;
+    },
+    async readToolSchema() {
+      return {
+        safeRepeatReadback:true,
+        inputSchema: {
+          type: 'object',
+          additionalProperties: false,
+          properties: {},
+        },
+      };
+    },
+    async verifyAcceptance(_handoff, _criterion, observation) {
+      return (observation as { mcpLive?: boolean } | null)?.mcpLive === true
+        ? 'PASS'
+        : 'FAIL';
+    },
+    async writeReceipt() {
+      return { receiptRef: 'receipt-1' };
+    },
+    ...overrides,
+  };
+}
+
+function transport(
+  overrides: Partial<McpToolTransport> = {},
+): McpToolTransport {
+  return {
+    async callTool(call) {
+      if (call.name === 'nostromo_estado') {
+        return {
+          status: 'OK',
+          structuredContent: { mcpLive: true, mode: 'TERMINAL' },
+        };
+      }
+      return {
+        status: 'ERROR',
+        errorCode: 'UNKNOWN_TOOL',
+        message: 'unknown tool',
+        retryable: false,
+      };
+    },
+    ...overrides,
+  };
+}
+
+function memoryLedger(): IdempotencyLedger & {
+  entries: Map<string, LedgerEntry>;
+} {
+  const entries = new Map<string, LedgerEntry>();
+
+  return {
+    entries,
+    async get(key) {
+      return entries.get(key) ?? null;
+    },
+    async begin(key, fingerprint, atMs) {
+      const prior = entries.get(key);
+      if (prior && prior.fingerprint !== fingerprint) return false;
+      if (prior && prior.state === 'DISPATCHED') return false;
+      entries.set(key, { state: 'DISPATCHED', fingerprint, atMs });
+      return true;
+    },
+    async markUnknown(key, atMs) {
+      const prior = entries.get(key);
+      if (prior) {
+        entries.set(key, { ...prior, state: 'UNKNOWN_OUTCOME', atMs });
+      }
+    },
+    async complete(key, outcome, atMs, receiptRef) {
+      const prior = entries.get(key);
+      if (prior) {
+        if (outcome === 'VERIFIED') entries.set(key, { state: 'VERIFIED', fingerprint: prior.fingerprint, atMs, ...(receiptRef ? { receiptRef } : {}) });
+        else entries.set(key, { state: 'FAILED', fingerprint: prior.fingerprint, atMs, reason: 'HOST_RECORDED_FAILURE' });
+      }
+    },
+  };
+}
+
+test('dispatch snapshots nested arguments and owner before asynchronous admission', async () => {
+  let release!:()=>void;
+  const gate=new Promise<void>((resolve)=>{release=resolve;});
+  const args={filter:{value:'original'}};
+  const owner={principalRef:'original-user',tenantRef:'tenant'};
+  const seen:string[]=[];
+  const pending=dispatchGovernedObjective({
+    handoff:handoff(),args,owner,
+    host:host({
+      async verifyAgreement(){await gate;return true;},
+      async verifyArgumentsBinding(){return true;},
+      async readToolSchema(){return {safeRepeatReadback:true,inputSchema:{type:'object',additionalProperties:false,required:['filter'],
+        properties:{filter:{type:'object',additionalProperties:false,required:['value'],properties:{value:{type:'string'}}}}}};},
+    }),
+    transport:transport({async callTool(call){seen.push((call.arguments.filter as {value:string}).value);
+      return {status:'OK',structuredContent:{mcpLive:true}};}}),
+  });
+  args.filter.value='changed';owner.principalRef='changed-user';release();
+  const result=await pending;
+  assert.equal(result.status,'VERIFIED');
+  assert.deepEqual(seen,['original','original']);
+  if(result.status==='VERIFIED')assert.equal(result.receipt.principal_ref,'original-user');
+});
+
+test('non-JSON arguments and missing host identity never reach the MCP', async () => {
+  let calls=0;
+  const wire=transport({async callTool(){calls++;return {status:'OK',structuredContent:{mcpLive:true}};}});
+  const cyclic:Record<string,unknown>={};cyclic.self=cyclic;
+  for(const args of [cyclic,{value:NaN},{value:new Date()}, {value:undefined}]) {
+    const result=await dispatchGovernedObjective({handoff:handoff(),args,owner:{principalRef:'user'},host:host(),transport:wire});
+    assert.equal(result.status,'INVALID_ARGUMENTS');
+  }
+  const missing=await dispatchGovernedObjective({handoff:handoff(),args:{},owner:{principalRef:''},host:host(),transport:wire});
+  assert.deepEqual(missing,{status:'DENIED',reason:'INVALID_HOST_IDENTITY'});
+  assert.equal(calls,0);
+});
+
+test('a missing or failed receipt never becomes VERIFIED', async () => {
+  for(const writeReceipt of [async()=>null,async()=>{throw Error('storage unavailable');}]) {
+    const ledger=memoryLedger();
+    const result=await run({ledger,host:{writeReceipt}});
+    assert.equal(result.status,'EXECUTED_UNVERIFIED');
+    if(result.status==='EXECUTED_UNVERIFIED') {
+      assert.equal(result.reason,'RECEIPT_MISSING');
+      assert.equal(result.receipt.outcome,'EXECUTED_UNVERIFIED');
+    }
+    assert.equal(ledger.entries.get('b'.repeat(64))?.state,'UNKNOWN_OUTCOME');
+  }
+});
+
+test('argument commitments bind canonical payloads and reject ambiguity', () => {
+  const ref=argumentCommitment({b:2,a:{value:'original'}});assert.ok(ref);
+  assert.equal(ref,argumentCommitment({a:{value:'original'},b:2}));
+  assert.notEqual(ref,argumentCommitment({a:{value:'changed'},b:2}));
+  const plan=handoff({context_refs:[ref]}) as unknown as import('../src/contracts/objectiveHandoff').ObjectiveHandoff;
+  const hash=ref.slice('nostromo.args.sha256:'.length);
+  assert.equal(matchesArgumentCommitment(plan,hash),true);
+  assert.equal(matchesArgumentCommitment({...plan,context_refs:[ref,ref]},hash),false);
+  assert.equal(matchesArgumentCommitment(plan,'0'.repeat(64)),false);
+  assert.equal(argumentCommitment({bad:undefined}),null);
+});
+
+test('non-status arguments require an agreement-bound host proof', async () => {
+  let calls=0;
+  const wire=transport({async callTool(){calls++;return {status:'OK',structuredContent:{mcpLive:true}};}});
+  const schema={async readToolSchema(){return {inputSchema:{type:'object' as const,properties:{value:{type:'string' as const}}}};}};
+  const missing=await run({args:{value:'other'},host:schema,transport:wire});
+  assert.deepEqual(missing,{status:'DENIED',reason:'ARGUMENT_BINDING_UNVERIFIED'});
+  const rejected=await run({args:{value:'other'},host:{...schema,async verifyArgumentsBinding(){return false;}},transport:wire});
+  assert.deepEqual(rejected,{status:'DENIED',reason:'ARGUMENT_BINDING_UNVERIFIED'});
+  assert.equal(calls,0);
+});
+
+test('host rejects a payload different from the committed plan before MCP dispatch', async () => {
+  const ref=argumentCommitment({value:'original'});assert.ok(ref);
+  const agreed=handoff({context_refs:[ref]});let calls=0;
+  const wire=transport({async callTool(){calls++;return {status:'OK',structuredContent:{mcpLive:true}};}});
+  const binding={
+    async verifyArgumentsBinding(plan:import('../src/contracts/objectiveHandoff').ObjectiveHandoff,_tool:unknown,hash:string){
+      return matchesArgumentCommitment(plan,hash);
+    },
+    async readToolSchema(){return {safeRepeatReadback:true,inputSchema:{type:'object' as const,properties:{value:{type:'string' as const}}}};},
+  };
+  const changed=await run({handoff:agreed,args:{value:'changed'},host:binding,transport:wire});
+  assert.deepEqual(changed,{status:'DENIED',reason:'ARGUMENT_BINDING_UNVERIFIED'});assert.equal(calls,0);
+  const original=await run({handoff:agreed,args:{value:'original'},host:binding,transport:wire});
+  assert.equal(original.status,'VERIFIED');assert.equal(calls,2);
+});
+
+test('an R0 task start requires a ledger before dispatch', async () => {
+  let calls=0;
+  const result=await run({
+    host:{async verifyArgumentsBinding(){return true;},async readCapabilities(){return {observedAtMs:Date.now(),entries:[capabilityEntry({toolId:'nostromo_tarea_iniciar'})]};}},
+    transport:transport({async callTool(){calls++;return {status:'OK',structuredContent:{mcpLive:true}};}}),
+  });
+  assert.deepEqual(result,{status:'DENIED',reason:'IDEMPOTENCY_LEDGER_REQUIRED'});
+  assert.equal(calls,0);
+});
+
+test('an R0 task-start operation is never repeated as an implicit readback', async () => {
+  let calls=0;
+  const result=await run({
+    host:{
+      async verifyArgumentsBinding(){return true;},
+      async readCapabilities(){return {observedAtMs:Date.now(),entries:[capabilityEntry({toolId:'nostromo_tarea_iniciar'})]};},
+      async readToolSchema(){return {safeRepeatReadback:true,inputSchema:{type:'object',properties:{}}};},
+    },
+    transport:transport({async callTool(){calls++;return calls===1
+      ? {status:'UNKNOWN_OUTCOME',reason:'TIMEOUT'}
+      : {status:'OK',structuredContent:{mcpLive:true}};}}),
+    ledger:memoryLedger(),
+  });
+  assert.equal(result.status,'UNKNOWN_OUTCOME');
+  assert.equal(calls,1);
+});
+
+async function run(
+  options: {
+    handoff?: unknown;
+    host?: Partial<GovernedObjectiveHost>;
+    transport?: McpToolTransport;
+    args?: Record<string, unknown>;
+    ledger?: IdempotencyLedger;
+    llmGuard?: { assertNotCalled(): void };
+  } = {},
+) {
+  return dispatchGovernedObjective({
+    handoff: options.handoff ?? handoff(),
+    args: options.args ?? {},
+    host: host(options.host),
+    transport: options.transport ?? transport(),
+    owner: { principalRef: 'user-1', tenantRef: 'tenant-1' },
+    ledger: options.ledger,
+    llmGuard: options.llmGuard,
+  });
+}
+
+/* Central: deterministic nostromo_estado without LLM. */
+test('MOCK: nostromo_estado determinista completa con LLM_CALLS=0', async () => {
+  let llmCalls = 0;
+  const llmGuard = {
+    assertNotCalled() {
+      assert.equal(llmCalls, 0);
+    },
+  };
+
+  const result = await run({ llmGuard });
+
+  assert.equal(result.status, 'VERIFIED');
+  if (result.status !== 'VERIFIED') return;
+
+  assert.equal(result.tool.toolId, 'nostromo_estado');
+  assert.equal(result.receipt.receipt_ref, 'receipt-1');
+  assert.equal(result.receipt.outcome, 'VERIFIED');
+  assert.equal(llmCalls, 0);
+});
+
+/* Contract / agreement / owner. */
+test('contrato malformado se deniega', async () => {
+  const result = await run({ handoff: { schema: 'wrong' } });
+  assert.equal(result.status, 'DENIED');
+  if (result.status !== 'DENIED') return;
+  assert.equal(result.reason, 'INVALID_HANDOFF');
+});
+
+test('acuerdo ausente o revocado se deniega', async () => {
+  const result = await run({
+    host: {
+      async verifyAgreement() {
+        return false;
+      },
+    },
+  });
+  assert.equal(result.status, 'DENIED');
+  if (result.status !== 'DENIED') return;
+  assert.equal(result.reason, 'AGREEMENT_UNVERIFIED');
+});
+
+test('usuario o tenant incorrecto se deniega', async () => {
+  const result = await run({
+    host: {
+      async checkOwnerAuthority() {
+        return false;
+      },
+    },
+  });
+  assert.equal(result.status, 'DENIED');
+  if (result.status !== 'DENIED') return;
+  assert.equal(result.reason, 'AUTHORITY_DENIED');
+});
+
+/* Capability resolution. */
+test('capacidad inexistente se deniega', async () => {
+  const result = await run({
+    host: {
+      async readCapabilities() {
+        return { observedAtMs: Date.now(), entries: [] };
+      },
+    },
+  });
+  assert.equal(result.status, 'DENIED');
+  if (result.status !== 'DENIED') return;
+  assert.equal(result.reason, 'CAPABILITY_UNRESOLVED');
+});
+
+test('capacidad ambigua se deniega', async () => {
+  const result = await run({
+    host: {
+      async readCapabilities() {
+        return {
+          observedAtMs: Date.now(),
+          entries: [capabilityEntry(), capabilityEntry()],
+        };
+      },
+    },
+  });
+  assert.equal(result.status, 'DENIED');
+  if (result.status !== 'DENIED') return;
+  assert.equal(result.reason, 'CAPABILITY_AMBIGUOUS');
+});
+
+test('ACL denegada se deniega', async () => {
+  const result = await run({
+    host: {
+      async readCapabilities() {
+        return {
+          observedAtMs: Date.now(),
+          entries: [capabilityEntry({ aclAllowed: false })],
+        };
+      },
+    },
+  });
+  assert.equal(result.status, 'DENIED');
+  if (result.status !== 'DENIED') return;
+  assert.equal(result.reason, 'CAPABILITY_UNAVAILABLE');
+});
+
+test('riesgo superior al autorizado se deniega', async () => {
+  const result = await run({ handoff: handoff({ risk: 'R1' }) });
+  assert.equal(result.status, 'DENIED');
+  if (result.status !== 'DENIED') return;
+  assert.equal(result.reason, 'RISK_MISMATCH');
+});
+
+test('catálogo caducado se deniega', async () => {
+  const result = await run({
+    host: {
+      async readCapabilities() {
+        return {
+          observedAtMs: Date.now() - 61_000,
+          entries: [capabilityEntry()],
+        };
+      },
+    },
+  });
+  assert.equal(result.status, 'DENIED');
+  if (result.status !== 'DENIED') return;
+  assert.equal(result.reason, 'CAPABILITIES_STALE');
+});
+
+/* Arguments. */
+test('parámetros inválidos se rechazan', async () => {
+  const result = await run({
+    host: {
+      async readToolSchema() {
+        return {
+          inputSchema: {
+            type: 'object',
+            additionalProperties: false,
+            properties: { foo: { type: 'string' } },
+            required: ['foo'],
+          },
+        };
+      },
+    },
+    args: {},
+  });
+
+  assert.equal(result.status, 'INVALID_ARGUMENTS');
+  if (result.status !== 'INVALID_ARGUMENTS') return;
+  assert.ok(result.issues.some((issue) => issue.includes('REQUIRED')));
+});
+
+/* Idempotency. */
+test('idempotencia repetida no re-despacha', async () => {
+  const ledger = memoryLedger();
+  let dispatches = 0;
+  const t = transport({
+    async callTool(call) {
+      dispatches++;
+      if (call.name === 'nostromo_estado') {
+        return { status: 'OK', structuredContent: { mcpLive: true } };
+      }
+      return {
+        status: 'ERROR',
+        errorCode: 'UNKNOWN_TOOL',
+        message: 'unknown',
+        retryable: false,
+      };
+    },
+  });
+
+  const first = await run({ ledger, transport: t });
+  assert.equal(first.status, 'VERIFIED');
+
+  const second = await run({ ledger, transport: t });
+  assert.equal(second.status, 'DENIED');
+  if (second.status !== 'DENIED') return;
+  assert.equal(second.reason, 'IDEMPOTENT_REPLAY_VERIFIED');
+  assert.equal(dispatches, 2); // one dispatch + one R0 readback; replay adds zero
+});
+
+test('idempotencia reutilizada con otro payload se rechaza', async () => {
+  const ledger = memoryLedger();
+
+  const schemaHost = {
+    async verifyArgumentsBinding(){return true;},
+    async readToolSchema() {
+      return {
+        safeRepeatReadback:true,
+        inputSchema: {
+          type: 'object' as const,
+          properties: { a: { type: 'number' as const } },
+        },
+      };
+    },
+  };
+
+  const first = await run({
+    ledger,
+    args: { a: 1 },
+    host: schemaHost,
+  });
+  assert.equal(first.status, 'VERIFIED');
+
+  const second = await run({
+    ledger,
+    args: { a: 2 },
+    host: schemaHost,
+  });
+  assert.equal(second.status, 'DENIED');
+  if (second.status !== 'DENIED') return;
+  assert.equal(second.reason, 'IDEMPOTENCY_CONFLICT');
+});
+
+/* UNKNOWN_OUTCOME / interruption / recovery. */
+test('interrupción tras despacho produce UNKNOWN_OUTCOME si no hay readback', async () => {
+  const t: McpToolTransport = {
+    async callTool() {
+      return { status: 'UNKNOWN_OUTCOME', reason: 'TIMEOUT' };
+    },
+  };
+
+  const result = await run({
+    transport: t,
+    ledger: memoryLedger(),
+    host: {
+      async readReadback() {
+        return null;
+      },
+    },
+  });
+
+  assert.equal(result.status, 'UNKNOWN_OUTCOME');
+});
+
+test('una lectura nueva no prueba que se ejecutó el despacho incierto', async () => {
+  let calls = 0;
+  const t: McpToolTransport = {
+    async callTool() {
+      calls++;
+      if (calls === 1) {
+        return { status: 'UNKNOWN_OUTCOME', reason: 'TIMEOUT' };
+      }
+      return { status: 'OK', structuredContent: { mcpLive: true } };
+    },
+  };
+
+  const result = await run({
+    transport: t,
+    ledger: memoryLedger(),
+  });
+
+  assert.equal(result.status, 'UNKNOWN_OUTCOME');
+  if (result.status === 'UNKNOWN_OUTCOME') assert.equal(result.reason, 'DISPATCH_EVIDENCE_MISSING');
+  assert.equal(calls, 2);
+});
+
+test('evidencia correlacionada permite reconciliar un despacho incierto', async () => {
+  const result = await run({
+    transport: transport({async callTool(){return {status:'UNKNOWN_OUTCOME',reason:'TIMEOUT'};}}),
+    ledger: memoryLedger(),
+    host: {async readReadback(){return {observation:{mcpLive:true}, evidenceRef:'execution-record-1', confirmsDispatch:true};}},
+  });
+  assert.equal(result.status, 'VERIFIED');
+  if (result.status === 'VERIFIED') assert.equal(result.receipt.readback_ref, 'execution-record-1');
+});
+
+test('readback contradictorio no se declara VERIFIED', async () => {
+  let calls = 0;
+  const t: McpToolTransport = {
+    async callTool() {
+      calls++;
+      if (calls === 1) {
+        return { status: 'OK', structuredContent: { mcpLive: true } };
+      }
+      return { status: 'OK', structuredContent: { mcpLive: false } };
+    },
+  };
+
+  const result = await run({ transport: t });
+
+  assert.equal(result.status, 'EXECUTED_UNVERIFIED');
+  if (result.status !== 'EXECUTED_UNVERIFIED') return;
+  assert.equal(result.reason, 'ACCEPTANCE_FAILED');
+});
+
+test('MCP desconectado se trata como UNKNOWN_OUTCOME', async () => {
+  const t: McpToolTransport = {
+    async callTool() {
+      throw new Error('ECONNREFUSED');
+    },
+  };
+
+  const result = await run({ transport: t });
+  assert.equal(result.status, 'UNKNOWN_OUTCOME');
+});
+
+test('resultado desconocido se conserva como UNKNOWN_OUTCOME', async () => {
+  const t: McpToolTransport = {
+    async callTool() {
+      return { status: 'UNKNOWN_OUTCOME', reason: 'MCP_UNKNOWN' };
+    },
+  };
+
+  const result = await run({
+    transport: t,
+    host: {
+      async readReadback() {
+        return null;
+      },
+    },
+  });
+
+  assert.equal(result.status, 'UNKNOWN_OUTCOME');
+});
+
+/* No paid fallback. */
+test('sin fallback facturable en receipt ni en contrato', async () => {
+  const result = await run();
+  assert.equal(result.status, 'VERIFIED');
+  if (result.status !== 'VERIFIED') return;
+
+  assert.equal(Object.hasOwn(result.receipt, 'billing'), false);
+  assert.equal(Object.hasOwn(result.receipt, 'paid'), false);
+  assert.equal(result.handoff.constraints.no_paid_fallback, true);
+});
+
+test('readback ausente conserva idempotencia UNKNOWN_OUTCOME (no FAILED)', async () => {
+  const ledger = memoryLedger();
+  let calls = 0;
+  const raw: McpToolTransport = {
+    async callTool() {
+      calls++;
+      return calls === 1
+        ? { status: 'OK', structuredContent: { mcpLive: true } }
+        : { status: 'UNKNOWN_OUTCOME', reason: 'READBACK_OFFLINE' };
+    },
+  };
+  const result = await run({ ledger, transport: raw });
+  assert.equal(result.status, 'EXECUTED_UNVERIFIED');
+  assert.equal(ledger.entries.get('b'.repeat(64))?.state, 'UNKNOWN_OUTCOME');
+  const retry = await run({ ledger, transport: raw });
+  assert.equal(retry.status, 'UNKNOWN_OUTCOME');
+  assert.equal(calls, 3); // one dispatch + readback + readback retry; no second dispatch
+});

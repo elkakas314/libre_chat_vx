@@ -1,0 +1,18 @@
+{
+  "head": "31eb56360e8b86951d9de5b336871a7237d41146",
+  "startedAt": "2026-11-19T02:14:50Z",
+  "result": "PASS",
+  "exitCode": 0,
+  "log": "operating/sync-receipts/local-ci-31eb56360e8b.log",
+  "scope": [
+    "npm test",
+    "MCP stdio/package suite",
+    "visual reconciliation and Playwright desktop/mobile SOURCE fixture"
+  ],
+  "visualSmoke": "PASS",
+  "visualProofRoot": "visual-evidence/",
+  "hostRuntimeModified": false,
+  "githubActions": false,
+  "logSha256": "db2b4241b8ace3ddd41b1509179c9f40125ae3218306574da91e00e8272ac0e3",
+  "logBytes": 87709
+}

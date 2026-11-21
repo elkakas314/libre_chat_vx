@@ -5,15 +5,17 @@ export const catalog=Object.freeze([
  {name:'nostromo_terminal_preparar',group:'TERMINAL',description:'Prepara comando y riesgo sin ejecutarlo'},
  {name:'nostromo_terminal_ejecutar',group:'TERMINAL',description:'Ejecuta y devuelve stdout, stderr y código de salida'},
  {name:'nostromo_archivo_leer',group:'ARCHIVOS_R0',description:'Lee texto limitado dentro de raíces permitidas, sin secretos'},
+ {name:'nostromo_directorio_listar',group:'ARCHIVOS_R0',description:'Lista directorio dentro de raíz permitida, filtra nombres sensibles y no sigue symlinks'},
  {name:'nostromo_git_inspeccionar',group:'GIT_R0',description:'Consulta HEAD, rama, cambios y resumen diff sin modificar Git'},
  {name:'nostromo_metricas',group:'METRICAS_R0',description:'Carga, memoria y disco reales, sin fingir VRAM'},
  {name:'nostromo_tarea_iniciar',group:'CLI_ASYNC',description:'Inicia un único proceso CLI gobernado sin bloquear la respuesta MCP'},
  {name:'nostromo_tarea_estado',group:'CLI_ASYNC',description:'Consulta estado y resultado de tarea por ID opaco'},
  {name:'nostromo_tarea_cancelar',group:'CLI_ASYNC',description:'Solicita cancelación del proceso; readback posterior obligatorio'},
+ {name:'nostromo_auditoria_r0',group:'AUDITORIA_R0',description:'Auditoría determinista R0 del sistema completo (backend, puertos, ollama, git, host, systemd, mcp). Read-only, un JSON.'},
 ]);
 const known=new Set(catalog.map(x=>x.name));
 export function selectedTools(raw) {
-  const mandatory=['nostromo_estado','nostromo_herramientas'];
+  const mandatory=['nostromo_estado','nostromo_herramientas','nostromo_auditoria_r0'];
   const names=raw===undefined?catalog.slice(0,4).map(x=>x.name):
     String(raw).split(',').map(x=>x.trim()).filter(Boolean);
   if(new Set(names).size!==names.length||names.some(x=>!known.has(x)))

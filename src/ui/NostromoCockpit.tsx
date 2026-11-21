@@ -18,6 +18,9 @@ import type { BrowserView } from '../browser/browserView';
 import type { BuildPanelItem } from '../build/buildPanel';
 import type { CockpitWindow } from '../cockpit/windowRouter';
 import type { BackgroundTaskProjection } from './BackgroundTasksView';
+import type { PlanNode } from './PlanGraphView';
+import type { FlowEdge } from '../cockpit/activeFlow';
+import type { StatusRailState } from '../cockpit/statusRail';
 import { TargetScopeNavigator } from './TargetNavigator';
 import { TentacleHud } from './TentacleHud';
 import { MinimalTruthView } from './MinimalTruthView';
@@ -36,7 +39,12 @@ import { AudioPanelView } from './AudioPanelView';
 import { BrowserPanelView } from './BrowserPanelView';
 import { BuildPanelView } from './BuildPanelView';
 import { BackgroundTasksView } from './BackgroundTasksView';
+import { PhoneModuleView } from './PhoneModuleView';
+import type { PhoneModuleSnapshot } from '../mobile/phoneModule';
 import { ControlDeckView } from './ControlDeckView';
+import { PlanGraphView } from './PlanGraphView';
+import { ActiveFlowView } from './ActiveFlowView';
+import { StatusRailView } from './StatusRailView';
 
 export interface NostromoCockpitProps {
   scope: TargetScope;
@@ -62,6 +70,10 @@ export interface NostromoCockpitProps {
   browser?: BrowserView;
   builds?: BuildPanelItem[];
   backgroundTasks?: BackgroundTaskProjection[];
+  phone?: PhoneModuleSnapshot;
+  status?: StatusRailState;
+  planNodes?: PlanNode[];
+  flowEdges?: FlowEdge[];
   authorizationRef?: string;
   capabilityRef?: string;
   onScopeChange?: (scope: TargetScope) => void;
@@ -71,6 +83,7 @@ export function NostromoCockpit(props: NostromoCockpitProps) {
   const has = (window: CockpitWindow) => props.windows.includes(window);
   return (
     <div aria-label="Nostromo cockpit" data-testid="vx-nostromo-cockpit">
+      {has('STATUS_RAIL') && props.status ? <StatusRailView state={props.status} /> : null}
       <TargetScopeNavigator scope={props.scope} onChange={props.onScopeChange} />
       <TentacleHud model={props.hud} />
       {has('MINIMAL_TRUTH') ? <MinimalTruthView targets={props.targetTruth} /> : null}
@@ -86,6 +99,8 @@ export function NostromoCockpit(props: NostromoCockpitProps) {
         />
       ) : null}
       {has('INTERFLOW_MAP') ? <InterflowLensView domains={props.interflowDomains ?? []} /> : null}
+      {has('PLAN_GRAPH') && props.planNodes ? <PlanGraphView nodes={props.planNodes} /> : null}
+      {has('ACTIVE_FLOW') && props.flowEdges ? <ActiveFlowView edges={props.flowEdges} /> : null}
       {has('CONVERSATION_CORE') && props.hybridArchitecture && props.hybridMode
         ? <NostromoHybridView architecture={props.hybridArchitecture} mode={props.hybridMode} />
         : null}
@@ -97,6 +112,7 @@ export function NostromoCockpit(props: NostromoCockpitProps) {
       {has('BROWSER') ? <BrowserPanelView view={props.browser} /> : null}
       {has('BUILD') ? <BuildPanelView items={props.builds ?? []} /> : null}
       {has('BACKGROUND_TASKS') ? <BackgroundTasksView tasks={props.backgroundTasks ?? []} /> : null}
+      {has('PHONE') && props.phone ? <PhoneModuleView snapshot={props.phone} /> : null}
       <ControlDeckView
         scope={props.scope}
         target={props.activeTruth}

@@ -1,0 +1,217 @@
+#!/usr/bin/env bash
+# Manual, serialized local SOURCE CI. Steps yield with nice/idle-I/O and one allowed CPU by default.
+# Set NOSTROMO_CI_SINGLE_CPU=0 to opt out, or NOSTROMO_CI_CPU=<id> to choose the allowed CPU.
+# No service, host, OAuth, or GitHub Actions writes.
+set -euo pipefail
+set +x
+
+ROOT="$(git -C "$(dirname "${BASH_SOURCE[0]}")/.." rev-parse --show-toplevel)"
+EXPECTED_SHA="${1:-}"
+if [[ ! "$EXPECTED_SHA" =~ ^[0-9a-f]{40}$ ]]; then
+  echo 'USAGE: ci/nostromo-local-ci.sh <expected-40-char-SHA>' >&2
+  exit 2
+fi
+cd "$ROOT"
+ACTUAL_SHA="$(git rev-parse HEAD)"
+if [[ "$ACTUAL_SHA" != "$EXPECTED_SHA" ]]; then
+  echo "EXACT_SHA_MISMATCH expected=$EXPECTED_SHA actual=$ACTUAL_SHA" >&2
+  exit 3
+fi
+
+RECEIPT_DIR="$ROOT/operating/sync-receipts"
+mkdir -p "$RECEIPT_DIR"
+LOCK_PATH="$(git rev-parse --git-path nostromo-local-ci.lock)"
+exec 9>"$LOCK_PATH"
+if ! flock -n 9; then
+  echo 'LOCAL_CI_LOCK_BUSY' >&2
+  exit 4
+fi
+
+SHORT_SHA="${EXPECTED_SHA:0:12}"
+LOG="$RECEIPT_DIR/local-ci-$SHORT_SHA.log"
+METRICS="$(mktemp)"
+RESULT='FAIL'
+STARTED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+MONITOR_PID=''
+NODE_MODULES_LINKED='false'
+VISUAL_RESULT='NOT_RUN'
+SINGLE_CPU="${NOSTROMO_CI_SINGLE_CPU:-1}"
+[[ "$SINGLE_CPU" == 0 || "$SINGLE_CPU" == 1 ]] || {
+  echo 'NOSTROMO_CI_SINGLE_CPU must be 0 or 1' >&2
+  exit 2
+}
+BUILD_CPU=''
+if [[ -n "${NOSTROMO_CI_CPU:-}" ]]; then
+  [[ "$NOSTROMO_CI_CPU" =~ ^[0-9]+$ ]] || {
+    echo 'NOSTROMO_CI_CPU must be one numeric CPU id' >&2
+    exit 2
+  }
+  if [[ "$SINGLE_CPU" == 1 ]]; then
+    command -v taskset >/dev/null 2>&1 || {
+      echo 'NOSTROMO_CI_CPU requires taskset' >&2
+      exit 6
+    }
+    taskset -c "$NOSTROMO_CI_CPU" true 2>/dev/null || {
+      echo 'NOSTROMO_CI_CPU is outside the allowed CPU set' >&2
+      exit 6
+    }
+    BUILD_CPU="$NOSTROMO_CI_CPU"
+  fi
+elif [[ "$SINGLE_CPU" == 1 ]] && command -v taskset >/dev/null 2>&1 && [[ -r /proc/self/status ]]; then
+  allowed_cpus="$(awk '/^Cpus_allowed_list:/ {print $2}' /proc/self/status)"
+  candidate_cpu="${allowed_cpus##*[-,]}"
+  if [[ "$candidate_cpu" =~ ^[0-9]+$ ]] && taskset -c "$candidate_cpu" true 2>/dev/null; then
+    BUILD_CPU="$candidate_cpu"
+  fi
+fi
+BUILD_POLICY='nice=15;ionice=idle'
+if [[ -n "$BUILD_CPU" ]]; then
+  BUILD_POLICY+=";cpu_affinity=$BUILD_CPU"
+elif [[ "$SINGLE_CPU" == 0 ]]; then
+  BUILD_POLICY+=';cpu_affinity=disabled'
+else
+  BUILD_POLICY+=';cpu_affinity=unavailable'
+fi
+
+if [[ ! -e "$ROOT/node_modules" && -n "${NOSTROMO_CI_NODE_MODULES:-}" ]]; then
+  if [[ ! -d "$NOSTROMO_CI_NODE_MODULES" ]]; then
+    echo 'LOCAL_CI_PRECONDITION=provided_node_modules_path_unavailable' >&2
+    exit 6
+  fi
+  ln -s "$NOSTROMO_CI_NODE_MODULES" "$ROOT/node_modules"
+  NODE_MODULES_LINKED='true'
+fi
+if [[ -d "$ROOT/node_modules/.bin" ]]; then
+  export PATH="$ROOT/node_modules/.bin:$PATH"
+fi
+
+cpu_ticks() {
+  awk '/^cpu / { total=0; for(i=2;i<=NF;i++) total+=$i; idle=$5+$6; printf "total=%d idle=%d", total, idle }' /proc/stat 2>/dev/null || printf 'unavailable'
+}
+
+snapshot() {
+  local stamp
+  stamp="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+  {
+    printf '\nRESOURCE_SAMPLE %s cpu_ticks=' "$stamp"
+    cpu_ticks
+    printf '\n'
+    awk '/^(MemTotal|MemAvailable|SwapTotal|SwapFree):/ {printf "%s=%s%s ", $1, $2, $3}' /proc/meminfo 2>/dev/null || true
+    printf '\n'
+    for pressure in cpu memory; do
+      if [[ -r "/proc/pressure/$pressure" ]]; then
+        printf 'PSI_%s ' "$pressure"
+        tr '\n' ';' < "/proc/pressure/$pressure"
+        printf '\n'
+      fi
+    done
+    if command -v ps >/dev/null 2>&1; then
+      ps -eo pid,pcpu,rss,comm --sort=-pcpu 2>/dev/null | head -n 8 || true
+    fi
+  } >> "$METRICS"
+}
+
+finish() {
+  local status=$?
+  if [[ -n "$MONITOR_PID" ]]; then
+    kill "$MONITOR_PID" 2>/dev/null || true
+    wait "$MONITOR_PID" 2>/dev/null || true
+  fi
+  snapshot
+  {
+    printf 'LOCAL_CI expected_sha=%s started=%s result=%s exit_code=%s\n' \
+      "$EXPECTED_SHA" "$STARTED_AT" "$RESULT" "$status"
+    cat "$METRICS"
+  } | sed -E \
+    -e 's/(Bearer[[:space:]]+)[A-Za-z0-9._~+\/-]+/\1[REDACTED]/g' \
+    -e 's/(github_pat_|gho_|ghp_)[A-Za-z0-9_]{8,}/[REDACTED]/g' \
+    -e 's/(sk-[A-Za-z0-9_-]{8,})/[REDACTED]/g' >> "$LOG"
+  rm -f "$METRICS"
+  if [[ "$NODE_MODULES_LINKED" == 'true' && -L "$ROOT/node_modules" ]]; then
+    unlink "$ROOT/node_modules"
+  fi
+  cat > "$RECEIPT_DIR/local-ci-$SHORT_SHA.json" <<EOF
+{
+  "head": "$EXPECTED_SHA",
+  "startedAt": "$STARTED_AT",
+  "result": "$RESULT",
+  "exitCode": $status,
+  "log": "operating/sync-receipts/local-ci-$SHORT_SHA.log",
+  "scope": ["npm test", "MCP stdio/package suite", "visual reconciliation and Playwright desktop/mobile SOURCE fixture"],
+  "visualSmoke": "$VISUAL_RESULT",
+  "visualProofRoot": "visual-evidence/",
+  "resourcePolicy": "$BUILD_POLICY",
+  "hostRuntimeModified": false,
+  "githubActions": false
+}
+EOF
+  exit "$status"
+}
+trap finish EXIT
+
+: > "$LOG"
+echo "LOCAL_CI_BEGIN sha=$EXPECTED_SHA" | tee -a "$LOG"
+if ! command -v tsc >/dev/null 2>&1; then
+  echo 'LOCAL_CI_PRECONDITION=typescript_compiler_unavailable' | tee -a "$LOG"
+  exit 6
+fi
+snapshot
+(
+  while sleep 2; do snapshot; done
+) >> "$METRICS" 2>/dev/null &
+MONITOR_PID=$!
+
+run_step() {
+  local label="$1"; shift
+  echo "STEP_BEGIN $label" | tee -a "$LOG"
+  if run_low_priority "$@" 2>&1 | sed -E \
+      -e 's/(Bearer[[:space:]]+)[A-Za-z0-9._~+\/-]+/\1[REDACTED]/g' \
+      -e 's/(github_pat_|gho_|ghp_)[A-Za-z0-9_]{8,}/[REDACTED]/g' \
+      -e 's/(sk-[A-Za-z0-9_-]{8,})/[REDACTED]/g' | tee -a "$LOG"; then
+    echo "STEP_PASS $label" | tee -a "$LOG"
+  else
+    local status=$?
+    echo "STEP_FAIL $label exit_code=$status" | tee -a "$LOG"
+    exit "$status"
+  fi
+}
+
+run_low_priority() {
+  local -a prefix=()
+  if [[ -n "$BUILD_CPU" ]]; then prefix+=(taskset -c "$BUILD_CPU"); fi
+  if command -v ionice >/dev/null 2>&1; then prefix+=(ionice -c 3); fi
+  if command -v nice >/dev/null 2>&1; then prefix+=(nice -n 15); fi
+  "${prefix[@]}" "$@"
+}
+
+echo "BUILD_RESOURCE_POLICY $BUILD_POLICY" | tee -a "$LOG"
+
+run_step source-suite npm test
+run_step visual-reconciliation npm run nostromo:visual:test
+VISUAL_BROWSER="${PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH:-}"
+if [[ -z "$VISUAL_BROWSER" ]]; then
+  for candidate in /usr/bin/chromium /usr/bin/chromium-browser /snap/bin/chromium; do
+    if [[ -x "$candidate" ]]; then VISUAL_BROWSER="$candidate"; break; fi
+  done
+fi
+if [[ -z "$VISUAL_BROWSER" ]]; then
+  if ! VISUAL_BROWSER="$(node -e 'process.stdout.write(require("playwright").chromium.executablePath())')"; then
+    echo 'LOCAL_CI_PRECONDITION=playwright_chromium_unavailable' | tee -a "$LOG"
+    exit 6
+  fi
+fi
+if [[ ! -x "$VISUAL_BROWSER" ]]; then
+  echo 'LOCAL_CI_PRECONDITION=playwright_chromium_not_executable' | tee -a "$LOG"
+  exit 6
+fi
+echo "VISUAL_BROWSER_SELECTED" | tee -a "$LOG"
+NOSTROMO_CI_SHA="$EXPECTED_SHA" PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH="$VISUAL_BROWSER" \
+  run_step source-visual-smoke node tests/visual/visual-smoke.cjs
+VISUAL_RESULT='PASS'
+run_step mcp-suite npm --prefix deployment/nostromo-mcp test
+if [[ "$(git rev-parse HEAD)" != "$EXPECTED_SHA" ]]; then
+  echo 'EXACT_SHA_CHANGED_DURING_TEST' | tee -a "$LOG"
+  exit 5
+fi
+RESULT='PASS'
+echo "LOCAL_CI_PASS sha=$EXPECTED_SHA" | tee -a "$LOG"

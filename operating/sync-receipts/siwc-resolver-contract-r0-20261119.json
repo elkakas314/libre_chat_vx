@@ -1,0 +1,81 @@
+{
+  "observed_at_utc": "2026-11-19T01:44:23Z",
+  "evidence_class": "SOURCE_CONTRACT_CORRECTION_AND_HOST_INTERVAL_CPU_ATTRIBUTION",
+  "source_branch_head_before_correction": "82dde12f6d4d21b1d72600152d2c0561923021db",
+  "supersedes": "operating/sync-receipts/siwc-agentclient-wiring-r0-20261119.json",
+  "siwc_contract": {
+    "resolver_property": "app.locals.nostromoSiwc",
+    "lifecycle_service_property": "app.locals.nostromoSiwcConnectionService",
+    "registration_evidence": "registerSiwcAgentClientResolver assigns nostromoSiwc; registerLibreChat separately assigns nostromoSiwcConnectionService and its disposer removes both",
+    "correction": "Reverted commit 1d9491a's incorrect AgentClient property change; restored lookup of nostromoSiwc",
+    "focused_tests": {
+      "command": "nice -n 12 node --test deployment/librechat-agents/agentclient-siwc-binding.test.mjs deployment/librechat-agents/nostromo-siwc-bootstrap.test.cjs dist/tests/siwc-openai-fetch.test.js dist/tests/siwc-connection-service.test.js",
+      "exit_code": 0,
+      "passed": 13,
+      "failed": 0,
+      "coverage": [
+        "configured bootstrap and owner-only host material validation",
+        "both resolver and lifecycle service registration",
+        "resolver execution with authenticated user context",
+        "user-scoped account isolation and no-account behavior",
+        "admitted route and no-admitted-route error (no silent provider fallback from the resolver)",
+        "dual unregister and duplicate registration rejection",
+        "patch generation and fail-closed source mismatch"
+      ],
+      "dist_note": "Existing dist tests were built at 2026-11-19T01:25Z; SIWC TypeScript sources were unchanged since that build. No full build or suite was run."
+    },
+    "runtime": "SOURCE only; no backend or productive upstream changes"
+  },
+  "host_cpu_intervals": [
+    {
+      "start_utc": "2026-11-19T01:37:42Z",
+      "end_utc": "2026-11-19T01:37:52Z",
+      "cpu_busy_pct_by_cpu": {"cpu0": 73.7, "cpu1": 74.2, "cpu2": 79.5, "cpu3": 85.2},
+      "cpu_psi_some_avg10_pct": [18.19, 25.97],
+      "cpu_psi_full_pct": 0,
+      "memory_available_kb": [8701852, 8326520],
+      "memory_psi_some_full_pct": 0,
+      "swap_free_kb": [1997052, 1997052],
+      "process_cpu_pct_over_interval": [
+        {"pid": 14915, "comm": "chrome", "exe": "/snap/chromium/3583/usr/lib/chromium-browser/chrome", "cpu_pct": 98.0, "rss_kb": 1480332, "cgroup": "snap.chromium.chromium scope"},
+        {"pid": 5572, "comm": "chrome", "cpu_pct": 49.4, "rss_kb": 311072},
+        {"pid": 6506, "comm": "ChatGPT", "cpu_pct": 22.9, "rss_kb": 823352},
+        {"pid": 5810, "comm": "ChatGPT", "cpu_pct": 20.8, "rss_kb": 190684},
+        {"pid": 6403, "comm": "codex", "cpu_pct": 16.5, "rss_kb": 357828}
+      ],
+      "thread_interval_followup": {"pid": 14915, "duration_seconds": 5, "process_cpu_pct": 133.7, "main_thread_pct": 90.3, "foreground_pool_threads_pct": [15.8, 12.4, 12.2]},
+      "temperature_c": 77.0,
+      "cpu_frequency_khz": [2095129, 2095144, 2095169, 2095190],
+      "io_psi_some_avg10_pct": [2.77, 3.20],
+      "classification": "Chrome belongs to the interactive Snap Chromium user-session cgroup; specific tab/workload not attributable from R0. DESCONOCIDO_PRESERVAR; not stopped. NOSTROMO backend/MCP/Ollama were not top consumers."
+    },
+    {
+      "start_utc": "2026-11-19T01:43:51Z",
+      "end_utc": "2026-11-19T01:43:56Z",
+      "cpu_busy_pct_all_cores": 19.9,
+      "cpu_busy_pct_by_cpu": {"cpu0": 18.8, "cpu1": 25.8, "cpu2": 17.3, "cpu3": 17.5},
+      "cpu_psi_some_avg10_pct": [5.04, 7.14],
+      "memory_available_kb": [9323388, 9342220],
+      "memory_psi_some_full_pct": 0,
+      "swap_free_kb": [1870076, 1870076],
+      "top_process_cpu_pct": [
+        {"pid": 5810, "comm": "ChatGPT", "cpu_pct": 15.8},
+        {"pid": 6506, "comm": "ChatGPT", "cpu_pct": 15.8},
+        {"pid": 6403, "comm": "codex", "cpu_pct": 10.6},
+        {"pid": 980, "comm": "wpa_supplicant", "cpu_pct": 9.8}
+      ],
+      "interpretation": "Pressure dropped significantly; the large Chromium spike was intermittent, not a constant NOSTROMO workload. No process was changed."
+    }
+  ],
+  "resource_sample_during_tests": {
+    "duration_seconds": 0.77,
+    "priority": "nice 12",
+    "MemAvailable_kb_before_after": [9292940, 9356128],
+    "SwapFree_kb_before_after": [1870076, 1870076],
+    "cpu_psi_some_avg10_pct_before_after": [6.06, 9.13],
+    "memory_psi_some_avg10_pct_before_after": [0.0, 0.0],
+    "interpretation": "Focused tests completed quickly; no evidence they caused sustained pressure."
+  },
+  "actions_taken": "Read-only interval measurement; corrected only the erroneous AgentClient resolver property in SOURCE. No process termination, service changes, driver changes, or full build.",
+  "next": "Commit the property correction, then review PR #59 and continue the remaining low-consumption diagnosis without terminating the interactive browser."
+}

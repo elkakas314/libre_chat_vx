@@ -107,7 +107,8 @@ Para el plan completo, ver
 
 ## Control asíncrono del CLI (v0.3.0, opt-in)
 
-El **mismo servidor MCP stdio** incorpora un gestor en memoria:
+El **mismo servidor MCP stdio** incorpora un gestor con estado en memoria y
+copias persistentes privadas:
 \`nostromo_tarea_iniciar\`, \`nostromo_tarea_estado\`,
 \`nostromo_tarea_cancelar\`. No instala Worker, cola externa, cron,
 daemon ni servicio adicional. Las herramientas son opcionales y sólo
@@ -125,20 +126,24 @@ Secuencia:
    **antes** de iniciar, como en el ejecutor existente.
 4. \`nostromo_tarea_estado({jobId})\` recupera estado y, al finalizar,
    \`exitCode/stdout/stderr/executionId\` y \`materialVerified:false\`.
-   \`NOT_FOUND\` puede significar ID incorrecto o reinicio MCP.
+   Los resultados terminales se recuperan tras reiniciar MCP. Un trabajo
+   guardado como \`RUNNING\` pasa a \`UNKNOWN_OUTCOME\`; nunca se repite solo.
+   \`NOT_FOUND\` significa que el ID no está disponible en el historial.
 5. \`nostromo_tarea_cancelar({jobId})\` solicita SIGKILL del grupo,
    devuelve \`CANCEL_REQUESTED\`. Es obligatorio releer estado y
    comprobar efectos de forma independiente; un comando R2 puede
    haber mutado archivos antes de cancelarse.
 
-**Límites explícitos**: 1 trabajo simultáneo, máximo 120 s por comando,
-16 KiB capturados por stream como máximo, hasta 24 resultados en
-memoria y retención 15 min tras acabar. No hay estado duradero,
-reattach tras restart, control remoto multiusuario, terminal interactiva
-ni garantía de rollback. Cerrar o reiniciar el proceso MCP pierde el
-historial; corte forzado del host deja resultado \`UNKNOWN_OUTCOME\`.
-El cliente debe sondear con moderación, sin bucle infinito ni relanzar
-automáticamente operaciones ambiguas.
+**Persistencia y límites**: de forma predeterminada, los snapshots se guardan
+en \`~/.local/state/nostromo/jobs\`; si se configura \`NOSTROMO_APPROVAL_DIR\`,
+se usa su subdirectorio \`jobs\`. El directorio debe pertenecer al usuario
+actual y no permitir acceso a grupo u otros. Los archivos se escriben con
+permisos \`0600\`, \`fsync\` y reemplazo atómico. Un almacenamiento que no
+cumpla los permisos queda \`UNAVAILABLE\` y no admite iniciar trabajos.
+El gestor permite 1 trabajo simultáneo, hasta 96 registros, 7 días de
+retención, 120 s por comando y 16 KiB por stream. No ofrece control remoto
+multiusuario, terminal interactiva ni garantía de rollback. Tras reiniciar,
+un resultado incierto requiere readback independiente antes de reintentar.
 
 Ejemplo de configuración **cuando se haya verificado el UID y las ACL**
 en \`librechat.yaml\`, conservando \`NOSTROMO_MCP_ENABLED=0\` hasta
@@ -154,6 +159,11 @@ Pruebas en Lenovo sin Actions:
 npm --prefix deployment/nostromo-mcp run check
 \`\`\`
 
-El test recorre llamada MCP real por \`stdio\` en un directorio
-temporal R0, consulta por ID y verifica denegación de R2. **No prueba
-vinculación al agente LibreChat ni persistencia entre reinicios**.
+Los tests recorren el MCP real por \`stdio\`, ejercitan almacenamiento privado,
+readback tras reinicio y recuperación \`UNKNOWN_OUTCOME\` sin replay. **No
+prueban vinculación al agente LibreChat ni una conversación real**.
+
+
+## Listado R0 de directorios (SOURCE en rama de revisión, no despliegue)
+
+La capacidad opcional nostromo_directorio_listar pertenece al MCP stdio existente; no crea segundo servidor, puerto ni worker. Administrador: añadir el nombre a NOSTROMO_TOOL_SET solo tras comparar con el MCP activo del Lenovo. Input: directory absoluta, maxEntries entre 1 y 64. Verifica el directorio real a través de /proc/self/fd en Linux, restringe NOSTROMO_ALLOWED_ROOTS y filtra nombres sensibles. Entrega nombres y tipos sin contenido ni enlaces resueltos; no otorga permisos ni emite materialVerified=true. El proceso activo puede contener una implementación local más nueva: realizar semdiff y preservar su código antes de desplegar. No usar como sustituto del diagnóstico de tool-selection del agente Ollama.

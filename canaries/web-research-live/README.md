@@ -36,18 +36,20 @@ No poner tokens, IDs de usuario, credenciales ni contenido privado en Git o plan
 
 ```bash
 bash canaries/web-research-live/00-source-sanity.sh
-bash canaries/web-research-live/01-read-search-config.sh
+# Independent public provider probes; these do not prove host configuration.
 bash canaries/web-research-live/02-verify-search-provider.sh
 bash canaries/web-research-live/03-verify-scraper-provider.sh
+# Host and native-pipeline checks remain separately gated.
+bash canaries/web-research-live/01-read-search-config.sh
 bash canaries/web-research-live/04-canary-search-query.sh
 bash canaries/web-research-live/05-canary-fetch.sh
 ```
 
 **01:** leer el YAML efectivo en host y cotejar los cuatro valores de `SPEC.json`. Si no hay host, `SKIP`; si los valores difieren, `FAIL`.
 
-**02:** petición de búsqueda keyless al endpoint público Keenable, `POST /v1/search/public` (operación de consulta, no de configuración); exige HTTP 200 y resultados con URL, título y descripción/snippet. Se envía `X-Keenable-Title`. Si no hay clave y Keenable responde 401/403/429, `SKIP` con motivo y evidencia de que no hubo PASS; la documentación admite keyless, pero no se inventan resultados. Sin reintentos.
+**02:** petición de búsqueda keyless al endpoint público Keenable, `POST /v1/search/public` (operación de consulta, no de configuración); exige HTTP 200 y resultados con URL, título y descripción/snippet. Se envía `X-Keenable-Title`. Este probe es independiente de la configuración del host y registra `host_config_verified:false`; no prueba que LibreChat tenga la búsqueda activada. Si no hay clave y Keenable responde 401/403/429, `SKIP` con motivo y evidencia de que no hubo PASS; la documentación admite keyless, pero no se inventan resultados. Sin reintentos.
 
-**03:** `GET /v1/fetch/public?url=https://example.com/&live=true`, sin claves, exige contenido textual no vacío y mínimo 40 caracteres. `live=true` permite obtener la página aunque no esté indexada. Sin redirects ni extracción LLM `prompt`.
+**03:** petición keyless `GET /v1/fetch/public?url=https://example.com/&live=true`, exige contenido textual no vacío y mínimo 40 caracteres. `live=true` permite obtener la página aunque no esté indexada. Sin redirects ni extracción LLM `prompt`. Es una comprobación aislada del proveedor: no acredita `scraperProvider` en el YAML ni el uso desde el agente.
 
 **04 y 05:** en el upstream fijado, lanzar búsqueda/fetch nativo mediante chat puede generar mensajes, inferencia y consumo de cuota. **No existe un endpoint GET estándar para iniciar estas herramientas sin efectos**. Por eso el canario lee un resultado de pipeline previamente capturado con autenticación por el operador y comprueba resultados, URL, snippets, contenido y hashes; en ausencia de readback, `SKIP` explícito. No se inicia un chat ni se simula una búsqueda. La plantilla `expected-outputs/web-research-proof.template.json` describe el contrato de evidencia privada.
 

@@ -1,0 +1,29 @@
+{
+  "schema": "nostromo.e5.objective-preflight-fixture.v1",
+  "captured_at_utc": "2026-11-20T17:13:49.692717+00:00",
+  "base_head": "dc08ac6a8f3da8ef118f01a4a3e3446e0690581f",
+  "scope": "SOURCE preflight plus isolated installed-MCP stdio fixture; agreement and ACL mocked",
+  "implementation": [
+    "schema-driven validation with unsupported vocabulary fail-closed",
+    "immutable contract snapshot and host agreement callback",
+    "fresh unique capability and owner authority preflight via existing decision bridge",
+    "native adapter entry with no inference"
+  ],
+  "validation": {
+    "focused_tests": "18/18 PASS",
+    "schema_differential": "137 cases agree with Python jsonschema Draft202012Validator",
+    "installed_mcp_stdio_fixture": "1/1 PASS: actual installed server executable, synthetic agreement/ACL, nostromo_estado and nostromo_metricas READ_OK; no LLM",
+    "installed_server_sha256": "1a2521893fb8760207ff54eb4e01906e49532d21df24be7a360f0c9454b6d697",
+    "source_server_sha256": "da875e260948cbb916ab1a447298281877e3865303fae05b052dc18d434025d3",
+    "fixture_import": "CI copies fixture to upstream/e2e/screenshots, where ../specs/mock/helpers resolves to existing upstream/e2e/specs/mock/helpers.ts"
+  },
+  "not_verified": [
+    "authenticated agreement creation and binding",
+    "owner authority integration",
+    "production request route and deterministic dispatch",
+    "idempotent persistence and outcome reconciliation",
+    "frontend and agent end-to-end"
+  ],
+  "status": "SOURCE_AND_ISOLATED_FIXTURE_ONLY_NOT_LIVE",
+  "next": "Wire authenticated native host agreement record and owner catalog/ACL into the existing entry; connect idempotent dispatch and readback to current MCP/jobs, fail closed until available."
+}

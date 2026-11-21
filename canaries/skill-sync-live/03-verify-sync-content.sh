@@ -27,7 +27,7 @@ jq -e --argjson stage "$SKILL_SYNC_STAGE" --slurpfile inv "$SS_DIR/02-inventory.
  .enabled==true and .run_on_startup==false and .sync_status=="succeeded" and
  .skipped_skill_count==0 and .skipped_file_count==0 and
  .synced_skill_count==(if $stage==1 then 12 else 10 end) and
- ((.paths|sort)==(if $stage==1 then ["skills"] else ($inv[0].active|map("skills/"+.)|sort) end))' \
+ ((.paths|sort)==(if $stage==1 then (($inv[0].active+$inv[0].legacy)|map("skills/"+.)|sort) else ($inv[0].active|map("skills/"+.)|sort) end))' \
  "$SS_DIR/01-source.json" >/dev/null || ss_fail "Admin sync status/paths/counts do not match selected stage"
 head="$(jq -r '.source_git_commit_sha' "$SS_DIR/02-inventory.json")"; ss_sha "$head"
 [[ "$(git -C "$SS_ROOT" rev-parse HEAD)" == "$head" ]] || ss_fail "Source HEAD moved"

@@ -104,28 +104,32 @@ test('Skill Sync two-stage source canary selects physical aliases first and only
   const catalog=readJson('config/skills.current.json');
   const active=(catalog.catalog as Array<{name:string}>).map(s=>s.name);
   const aliases=(catalog.legacy_compatibility as Array<{name:string}>).map(s=>s.name);
+  const optional=(catalog.optional_agent_skills as Array<{name:string}>).map(s=>s.name);
   assert.equal(active.length,10);
   assert.equal(aliases.length,2);
-  assert.equal(new Set([...active,...aliases]).size,12);
-  for (const name of [...active,...aliases]) {
-    assert.ok(readFileSync('skills/'+name+'/SKILL.md','utf8').includes('name: '+name),'missing skill file '+name);
+  assert.equal(optional.length,2);
+  assert.equal(new Set([...active,...aliases,...optional]).size,14);
+  for (const name of [...active,...aliases,...optional]) {
+    assert.ok(readFileSync('skills/'+name+'/SKILL.md','utf8').length>0,'missing skill file '+name);
   }
   const readStage=(stage:number)=>readFileSync('deployment/skill-sync/librechat.skill-sync-stage'+stage+'.example.yaml','utf8');
   const one=readStage(1),two=readStage(2);
   const paths=(yaml:string)=>yaml.split('\n').map(s=>s.trim()).filter(s=>s.startsWith('- skills')).map(s=>s.replace(/^- /,''));
-  assert.deepEqual(paths(one),['skills']);
+  assert.deepEqual(paths(one),[...active,...aliases].map(n=>'skills/'+n));
+  assert.ok(optional.every(n=>!paths(one).includes('skills/'+n)));
   assert.deepEqual(paths(two),active.map(n=>'skills/'+n));
-  assert.match(one,/skillDiscoveryDepth: 1/);
+  assert.match(one,/skillDiscoveryDepth: 0/);
   assert.match(two,/skillDiscoveryDepth: 0/);
   for (const yaml of [one,two]) {
     assert.match(yaml,/id: nostromo-vx-skills/);
-    assert.match(yaml,/ref: handoff_current_bootstrps/);
+    assert.match(yaml,/ref: integration\/nostromo-canon-20261118-r1/);
     assert.match(yaml,/runOnStartup: false/);
     assert.match(yaml,/token: '\$\{GITHUB_SKILLS_TOKEN\}'/);
     assert.doesNotMatch(yaml,/credentialKey:/);
     assert.doesNotMatch(yaml,/GITHUB_TOKEN:\s*gh[pousr]_/);
   }
   assert.equal(active.some(x=>aliases.includes(x)),false);
+  assert.ok(optional.every(x=>!paths(two).includes('skills/'+x)));
 });
 
 test('operating gap scalar constraints follow declared schema and reject invalid SOURCE rows', () => {

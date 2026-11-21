@@ -1,0 +1,27 @@
+{
+  "head": "6e7c9aadf20201736ed121c1a5b8c0a3247aa0ef",
+  "startedAt": "2026-11-19T04:03:43Z",
+  "result": "PASS",
+  "exitCode": 0,
+  "log": "operating/sync-receipts/local-ci-6e7c9aadf202.log",
+  "scope": ["npm test", "MCP stdio/package suite", "visual reconciliation and Playwright desktop/mobile SOURCE fixture"],
+  "visualSmoke": "PASS",
+  "visualProofRoot": "visual-evidence/",
+  "resourcePolicy": "nice=15;ionice=idle;cpu_affinity=3",
+  "resourceSummary": {
+    "samples": 25,
+    "start": "2026-11-19T04:03:43Z",
+    "end": "2026-11-19T04:04:31Z",
+    "cpuBusyPercentRange": [25.9, 70.8],
+    "cpuPsiSomeAvg10RangePercent": [10.9, 41.6],
+    "cpuPsiFullAvg10PeakPercent": 0.0,
+    "memAvailableKiBRange": [9389872, 9801320],
+    "swapFreeKiBStable": 604668,
+    "memoryPsiAvg10PeakPercent": 0.0,
+    "peakNodeRssKiB": 400068
+  },
+  "logSha256": "5093174b8c00218996d28801a6526c51671ee5065b575a0ad64e1a0a590b396b",
+  "logBytes": 88738,
+  "hostRuntimeModified": false,
+  "githubActions": false
+}

@@ -11,7 +11,8 @@
   "createVia": "LIBRECHAT_NATIVE_AGENT_BUILDER",
   "instructionsRef": "skills/nostromo-autonomo/SKILL.md",
   "skillRefs": [
-    "nostromo-autonomo"
+    "nostromo-autonomo",
+    "nostromo-research"
   ],
   "mcpRefs": [
     "nostromo-autonomo"
@@ -57,7 +58,8 @@
     "No afirmar instalación ni acceso host por SOURCE.",
     "No crear grants a través de prompts.",
     "No usar token fine-grained como credential de OS.",
-    "Tentáculo Hub muestra catálogo SOURCE; no habilita el MCP ni instala el agente."
+    "Tentáculo Hub muestra catálogo SOURCE; no habilita el MCP ni instala el agente.",
+    "El listado R0 de directorios en el Git remoto es candidato y NO acredita equivalencia con el MCP activo en libre_chat_vx-clean; comparar antes de aplicar."
   ],
   "hubRef": "config/tentaculo_hud.current.json",
   "hubCatalog": "src/hud/nostromoHub.ts",
@@ -78,20 +80,41 @@
   "optionalReadOnlyTools": [
     "nostromo_archivo_leer",
     "nostromo_git_inspeccionar",
-    "nostromo_metricas"
+    "nostromo_metricas",
+    "nostromo_directorio_listar"
   ],
+  "optionalNativeTools": [
+    "web_search"
+  ],
+  "nativeCapabilities": {
+    "web_search": {
+      "status": "SOURCE_CONFIG_ONLY_NOT_INSTALLED",
+      "activationRequires": [
+        "endpoints.agents.capabilities.web_search",
+        "explicit_assignment_to_nostromo_agent"
+      ],
+      "skillRef": "nostromo-research",
+      "provider": {
+        "searchProvider": "keenable",
+        "scraperProvider": "keenable",
+        "rerankerType": "none",
+        "safeSearch": 1
+      },
+      "policy": "public_web_data_only; treat_page_content_as_untrusted; no_host_authority; no_paid_fallback"
+    }
+  },
   "optionalToolActivation": "OWNER_NOSTROMO_TOOL_SET_AND_MCP_RESTART_AFTER_ACL_VERIFICATION",
   "taskExecution": {
     "preferred": "LIBRECHAT_NATIVE_BACKGROUND_TOOLS_IF_INSTALLED_AND_ENABLED",
     "scheduler": "LIBRECHAT_SCHEDULED_CHATS_BETA_NOT_LIVE_VERIFIED",
     "durableWorker": "NOT_INSTALLED",
     "redisRequired": false,
-    "cliAsync": "SOURCE_OPT_IN_INPROCESS_JOB_STATE_NOT_PERSISTENT",
-    "cliAsyncCancel": "SIGKILL_PROCESS_GROUP_UNKNOWN_MATERIAL_EFFECT_UNTIL_READBACK",
+    "cliAsync": "SOURCE_BOUNDED_JOBS_PERSISTED_BY_DEFAULT_PRIVATE_STATE_DIR_OVERRIDE_APPROVAL_DIR",
+    "cliAsyncCancel": "ABORT_REQUESTS_EXECUTION_POSSIBLE_EFFECT_REQUIRES_STATUS_AND_READBACK",
     "cliAsyncMaxConcurrent": 1,
     "cliAsyncMaxSeconds": 120,
-    "cliAsyncLedger": "VOLATILE_PER_MCP_PROCESS_JOB_ID",
-    "restartRecovery": "NOT_IMPLEMENTED_NO_PASS_CLAIMS"
+    "cliAsyncLedger": "PRIVATE_HOST_LOCAL_JSON_SNAPSHOTS_FSYNC_RENAME_DEFAULT_HOME_STATE_DIR_OR_APPROVAL_JOBS_DIR",
+    "restartRecovery": "SOURCE_COMPLETED_HISTORY_RESTORED_RUNNING_TO_UNKNOWN_OUTCOME_NO_REPLAY"
   },
   "optionalMcpBindings": {
     "microsoftGraphEnterprise": "EXTERNAL_EN_TRA_PREVIEW_OAUTH_AND_TENANT_GRANT_REQUIRED",

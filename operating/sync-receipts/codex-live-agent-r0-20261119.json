@@ -1,0 +1,31 @@
+{
+  "schema": "libre-chat-vx.operational-receipt.v1",
+  "observed_at_utc": "2026-11-19T21:49:54Z",
+  "source_remote_head_at_observation": "62d0175342e3d15009264e9be49827ac2a31e100",
+  "scope": "Authenticated LibreChat local UI and bounded host readback; not a product acceptance test",
+  "change": "A diagnostic conversation was created, stopped by the operator and reloaded. No service, runtime package or credential was changed.",
+  "live_observations": {
+    "backend": "vx-backend.service active; working directory librechat/upstream",
+    "mcp": "Existing NOSTROMO MCP server process observed from libre_chat_vx-clean; process existence alone does not prove a tool call",
+    "model": "Ollama reported qwen3:4b-instruct-2507-q4_K_M with context_length 6144",
+    "agent_context": "UI reported 5356 of approximately 5837 tokens used, 92 percent, with zero tool calls before interruption",
+    "diagnostic": "Requested nostromo_estado in a new conversation. After roughly three minutes there was no visible response or tool call; operator stopped the generation following a GPU reading of 90 C. Outcome INTERRUPTED, not a completed failure or success.",
+    "persistence": "After reload the diagnostic prompt and an empty interrupted assistant message reappeared. This is not evidence of a completed MCP result or its persistence.",
+    "cockpit": "Opened in the same conversation and reported two loaded messages and zero tool calls. It also displayed an older Qwen2.5 3B claim inconsistent with the observed Ollama model; runtime overlay discrepancy was already documented in CURRENT.json.",
+    "gpu": "During inference NVIDIA reported GeForce 840M, 3052 MiB used of 4096 MiB, 71 percent utilization and 90 C. A later sample after interruption reported 84 C and zero percent utilization. These are snapshots, not a thermal benchmark."
+  },
+  "verification": {
+    "directory_source_tests": "3 of 3 passed after correcting assertions that previously did not verify sensitive names and truncation",
+    "visual_source_ci": "chromium-source-visual passed on source head 62d0175342e3d15009264e9be49827ac2a31e100; not runtime LIVE",
+    "native_mock_ci": "native-librechat-vx-mock-e2e passed on source head 62d0175342e3d15009264e9be49827ac2a31e100; not production E2E",
+    "android_ci": "Failed resolving Kotlin artifacts from the Gradle plugin repository before compilation; the same artifact URL subsequently returned HTTP 200 from this host. Transient cause is unconfirmed until retry.",
+    "ios_ci": "In progress at observation"
+  },
+  "remaining": [
+    "Obtain a legitimate exact HOST_CONTROL authorization before the deferred LocalCodingTools installation and service restart.",
+    "Verify a complete agent tool call, result, response, persistence and reconnect after the authorized repair.",
+    "Reconcile the installed cockpit overlay and its stale copy with SOURCE without overwriting unique local changes.",
+    "Recheck Android and remaining exact-HEAD CI results."
+  ],
+  "material_verified": false
+}

@@ -78,3 +78,6 @@ For MANOJOS3 the TargetAdapter uses MCP. For VX13 the future adapter uses Tentá
 Source implementation does not prove target binding or LIVE provider routing.
 
 Exact-head source tests and pinned-upstream overlay build PASS under GitHub Actions run `37562733264` on the 2026-10-07 interpreter-first refactor HEAD lineage; `build-test=SUCCESS`, `overlay-smoke=SUCCESS`.
+
+## Auditoría visual 2026-11-18: diferenciar puente SOURCE de visor completo
+El puente integrado `overlay/upstream/VXCockpitBridge.tsx` usa `nostromoHubSourceSnapshot()` y `projectTentaculoHud([])` sin observaciones LIVE; `NostromoCockpit.tsx` es otra composición SOURCE con paneles de visor avanzado y contratos de ventana, no probado montado en upstream. Un `ContextInspectorView` de foco no es por sí mismo un visor PDF/imagen o diagnóstico de tokens, y los botones de `ArtifactDockView` necesitan acciones backend reales. **Criterios de aceptación de cabina/visor**: `docs/NOSTROMO_COCKPIT_ADVANCED_VIEWER_WORK_GATE_20261118.md`. No publicar cierre sin host/UI E2E autenticados y control de permisos.

@@ -1,0 +1,82 @@
+{
+  "captured_at_utc": "2026-11-19T04:30:27Z",
+  "repository": "elkakas314/libre_chat_vx",
+  "branch": "integration/nostromo-canon-20261118-r1",
+  "base_head_and_remote_head_at_start": "6ce19a2471c203a9418042dcbc021eca94bd49c4",
+  "scope": "bounded CPU/RAM attribution and SIWC response-body preflight; no runtime/service writes",
+  "siwc": {
+    "change": "Reject oversized declared Content-Length and cancel the body before acquiring a reader; retain the existing incremental byte cap and cancellation when actual streamed bytes exceed the limit.",
+    "files": {
+      "src/llm/siwcResponsesClient.ts": "d1b384f81168a937169cc5f04912f9c6ad10ebd83fe37d5eef45345c8af283c5",
+      "tests/siwc-provider-errors-r0.test.ts": "6a85b122f552ebf852fa99e0b968f1ebcb4b490c5ed7f570619280155ceccf29"
+    },
+    "pr59": {
+      "status": "CLOSED_UNMERGED",
+      "head": "36a0dc8b43fc89b7a747dd353dcf2928b8882bb8",
+      "finding": "Typed provider-error handling is already present on the current branch. Applying the PR head would replace the byte-bounded streaming reader with response.text() and remove the overflow-cancellation test, so it was not merged or cherry-picked."
+    }
+  },
+  "focused_validation": {
+    "command": "npm run build && node --test dist/tests/siwc-provider-errors-r0.test.js dist/tests/siwc-responses-client.test.js",
+    "result": "PASS",
+    "tests": 10,
+    "passed": 10,
+    "failed": 0,
+    "resource_policy": "nice 15; ionice idle; CPU affinity 3",
+    "git_diff_check": "PASS"
+  },
+  "resource_samples": {
+    "before_test_utc": "04:25:12Z",
+    "before_test": {
+      "system_busy_pct_6s": 26.2,
+      "mem_available_kb": 9876472,
+      "swap_free_kb": 434940,
+      "cpu_psi_some_avg10_pct": 7.51,
+      "memory_psi_some_avg10_pct": 0.0
+    },
+    "during_build_utc": "04:25:14Z..04:25:28Z",
+    "during_build": {
+      "node_peak_rss_kb": 409840,
+      "node_peak_cpu_pct_one_core": 91.6,
+      "cpu_psi_some_avg10_peak_pct": 40.08,
+      "memory_psi_some_avg10_peak_pct": 0.30,
+      "mem_available_min_kb": 9595700,
+      "swap_free_min_kb": 347388
+    },
+    "after_test_utc": "04:25:29Z..04:25:37Z",
+    "after_test": {
+      "system_busy_pct_8s": 20.7,
+      "mem_available_kb": "10031776..10024324",
+      "swap_free_kb": 347900,
+      "swap_in_pages_delta": 0,
+      "swap_out_pages_delta": 0,
+      "cpu_psi_some_avg10_pct": "8.67..8.30",
+      "cpu_psi_full_avg10_pct": 0.0,
+      "memory_psi_some_and_full_avg10_pct": 0.0,
+      "thermal_zone_c": "67..66"
+    }
+  },
+  "active_work_attribution": {
+    "state": "WORK_ACTIVE; authentic WORK_QUIET/BROWSER_IDLE sample unavailable",
+    "chrome_renderer_14915": "PPID 5302; 24.0% of one core in a prior 6s active window, then 0% in the post-test 8s sample; cgroup snap.chromium; tab identity unavailable",
+    "chrome_renderer_5572": "alive; 0% of one core in measured windows",
+    "codex_pid_6403": "20.4% of one core, RSS 354856 kB, PSS 298006 kB after the build",
+    "chatgpt_pid_6506": "13.2% of one core, RSS 778092 kB, PSS 653128 kB",
+    "chatgpt_gpu_pid_5810": "14.2% of one core, RSS 172040 kB, PSS 62352 kB",
+    "gnome_keyring_pid_3079": "7.0% of one core, RSS 550692 kB, PSS 545144 kB; UNKNOWN_PRESERVE; earlier receipt showed RSS about 496-499 MB, but no continuous leak is proven and it was not restarted",
+    "cdp": "No Chrome remote-debugging port/listener detected; no private tab content read."
+  },
+  "service_readback": {
+    "vx_backend": "active, PID 5074, NRestarts 0",
+    "ollama": "active, PID 1320, NRestarts 0",
+    "mongodb": "PID 2424 in Docker cgroup; about 0.9% of one core in the post-test sample",
+    "cloudflared_and_tailscaled": "active, NRestarts 0",
+    "caddy": "failed, exit status 1, NRestarts 0; no restart loop; left untouched",
+    "baloo": "inactive",
+    "akonadi": "no matching active unit observed",
+    "project_timers": "no matching user timer observed",
+    "zombies": "none observed",
+    "manojos3": "independent services left untouched"
+  },
+  "overall_status": "Focused source tests PASS. No host runtime, GPU, OAuth, MCP, Mongo conversation, or reconnect PASS claimed. SIWC production route-input setter and owner consent remain unverified; HOST_CONTROL material grants remain absent per prior R0 receipt."
+}

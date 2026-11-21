@@ -5,9 +5,98 @@ import {TentaculoHub} from '../src/ui/TentaculoHub';
 import {nostromoHubSourceSnapshot} from '../src/hud/nostromoHub';
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {resolve} from 'node:path';
 import {projectTentaculoHud, createTentaculoHubTree, hubAgentCandidate}
   from '../src/hud/tentaculoHud';
+import {summarizeVxConversation,selectedAgentReadback} from '../src/cockpit/conversationActivity';
+import {projectMcpConnectionReadback} from '../src/cockpit/mcpConnectionReadback';
+import {openNativeAgentSelector} from '../src/cockpit/nativeAgentSelector';
 const t=Date.parse('2026-11-09T20:00:00.000Z');
+test('agent selection delegates to the visible native selector without selecting an identity',()=>{
+  let focused=0,clicked=0;
+  const button={disabled:false,getClientRects:()=>({length:1}),getAttribute:()=> 'false',
+    focus:()=>{focused++;},click:()=>{clicked++;}};
+  assert.equal(openNativeAgentSelector(button),true);
+  assert.equal(focused,1);assert.equal(clicked,1);
+  assert.equal(openNativeAgentSelector({...button,getAttribute:()=> 'true'}),true);
+  assert.equal(clicked,1);
+  assert.equal(openNativeAgentSelector({...button,disabled:true}),false);
+  assert.equal(openNativeAgentSelector({...button,getClientRects:()=>({length:0})}),false);
+  assert.equal(openNativeAgentSelector(null),false);
+});
+test('MCP status readback exposes only valid recent native connection states',()=>{
+  const input={fetching:false,error:false,receivedAtMs:t-1000,nowMs:t,
+    data:{success:true,connectionStatus:{'nostromo-local':{connectionState:'connected',
+      authorizationGeneration:'private-value'}}}};
+  const view=projectMcpConnectionReadback(input);
+  assert.deepEqual(view,{receivedAtMs:t-1000,servers:[{name:'nostromo-local',state:'connected'}]});
+  assert.doesNotMatch(JSON.stringify(view),/private-value/);
+  assert.equal(projectMcpConnectionReadback({...input,error:true}),null);
+  assert.equal(projectMcpConnectionReadback({...input,fetching:true}),null);
+  assert.equal(projectMcpConnectionReadback({...input,receivedAtMs:t-300_001}),null);
+  assert.equal(projectMcpConnectionReadback({...input,receivedAtMs:t+1}),null);
+  assert.equal(projectMcpConnectionReadback({...input,data:{success:true,
+    connectionStatus:{server:{connectionState:'invented'}}}}),null);
+});
+test('selected agent metadata is displayed only after matching authenticated readback',()=>{
+  const input={endpoint:'agents',agentId:'agent-one',fetching:false,error:false,
+    receivedAtMs:t-1000,nowMs:t,
+    data:{id:'agent-one',name:'NOSTROMO',model:'qwen3:4b',instructions:'private'}};
+  assert.deepEqual(selectedAgentReadback(input),{name:'NOSTROMO',model:'qwen3:4b',receivedAtMs:t-1000});
+  assert.equal(selectedAgentReadback({...input,agentId:'agent-two'}),null);
+  assert.equal(selectedAgentReadback({...input,endpoint:'ollama'}),null);
+  assert.equal(selectedAgentReadback({...input,fetching:true}),null);
+  assert.equal(selectedAgentReadback({...input,error:true}),null);
+  assert.equal(selectedAgentReadback({...input,receivedAtMs:t-300_001}),null);
+  assert.equal(selectedAgentReadback({...input,receivedAtMs:t+1}),null);
+});
+test('conversation activity is content-free and distinguishes calls from stored outputs',()=>{
+  const summary=summarizeVxConversation({
+    conversationId:'conversation-1',endpoint:'agents',agentId:'agent-1',model:'qwen2.5:3b',
+    isSubmitting:false,messages:[
+      {content:[{type:'text',text:'private text'}]},
+      {content:[{type:'tool_call',tool_call:{type:'function',function:{
+        name:'nostromo_estado',arguments:'private args',output:'{"ready":true}'
+      }}}]},
+    ],
+  });
+  assert.equal(summary.messageCount,2);
+  assert.equal(summary.toolCallCount,1);
+  assert.deepEqual(summary.toolCalls,[{name:'nostromo_estado',hasStoredOutput:true}]);
+  assert.equal(JSON.stringify(summary).includes('private text'),false);
+  assert.equal(JSON.stringify(summary).includes('private args'),false);
+  assert.equal(JSON.stringify(summary).includes('{"ready":true}'),false);
+});
+test('conversation activity counts native persisted MCP records without exposing their data',()=>{
+  const summary=summarizeVxConversation({isSubmitting:false,messages:[
+    {content:[
+      {type:'tool_call',tool_call:{type:'tool_call',name:'nostromo_estado_mcp_nostromo-local',
+        args:{private:'input'},output:'private output',runStepStatus:'completed'}},
+      {type:'tool_call',tool_call:{type:'tool_call',name:'nostromo_metricas_mcp_nostromo-local',
+        output:'schema validation failed'}},
+      {type:'tool_call',tool_call:{type:'tool_call',name:'nostromo_estado_mcp_nostromo-local',
+        output:'private output'}},
+    ]},
+  ]});
+  assert.equal(summary.toolCallCount,3);
+  assert.equal(summary.storedOutputCount,3);
+  assert.deepEqual(summary.toolCalls.map(call=>call.name),[
+    'nostromo_estado_mcp_nostromo-local','nostromo_metricas_mcp_nostromo-local',
+    'nostromo_estado_mcp_nostromo-local',
+  ]);
+  assert.ok(summary.toolCalls.every(call=>call.hasStoredOutput));
+  assert.doesNotMatch(JSON.stringify(summary),/private|schema validation/);
+});
+test('stored output count covers all loaded calls, not just the six shown',()=>{
+  const summary=summarizeVxConversation({isSubmitting:false,messages:[{content:
+    Array.from({length:8},(_,i)=>({type:'tool_call',tool_call:{type:'tool_call',
+      name:'tool_'+i,output:'stored'}})),
+  }]});
+  assert.equal(summary.toolCallCount,8);
+  assert.equal(summary.storedOutputCount,8);
+  assert.equal(summary.toolCalls.length,6);
+});
 test('three target HUD surfaces are stable even without services configured',()=>{
   const result=projectTentaculoHud([],t);
   assert.deepEqual(result.map(x=>x.system),['MANOJOS','VX13','ORACULO']);
@@ -33,6 +122,16 @@ test('stale timestamps or missing evidence cannot claim runtime health',()=>{
   const r=projectTentaculoHud([{system:'MANOJOS',reportedProject:'MANOJOS',status:'READY',
     observedAt:'2026-11-09T19:00:00.000Z',peerVerified:true,evidenceRefs:['receipt:foo-12345678']}],t);
   assert.equal(r[0].state,'NO_VERIFICADO');
+});
+test('fresh verified DOWN and UNKNOWN reports are not mislabeled as stale',()=>{
+  const observation={system:'MANOJOS' as const,reportedProject:'MANOJOS3',
+    observedAt:'2026-11-09T19:59:00.000Z',peerVerified:true,evidenceRefs:['receipt:manojos-ready-001']};
+  assert.equal(projectTentaculoHud([{...observation,status:'DOWN'}],t)[0].state,'UNAVAILABLE');
+  assert.equal(projectTentaculoHud([{...observation,status:'UNKNOWN'}],t)[0].state,'NO_VERIFICADO');
+  const cards=projectTentaculoHud([{...observation,status:'DOWN'}],t);
+  const html=renderToStaticMarkup(React.createElement(TentaculoHud,{cards,activeSystem:'MANOJOS'}));
+  assert.match(html,/Servicio no disponible/);
+  assert.doesNotMatch(html,/Lectura caducada/);
 });
 test('Hub remains a typed hierarchy, with no new executor',()=>{
   const items=[
@@ -65,7 +164,7 @@ test('organic HUD renders no UI without a requested focus and never renders a 3-
     {cards,activeSystem:'VX13'}));
   assert.match(vx13,/NOSTROMO \/ FOCO ACTUAL/);
   assert.match(vx13,/VX13/);
-  assert.match(vx13,/En diseño|Sin conectar/);
+  assert.match(vx13,/En diseño|Enlace sin verificar/);
   assert.equal(vx13.includes('ORÁCULO'),false);
   assert.equal(vx13.includes('grid-template-columns'),false);
   const off=renderToStaticMarkup(React.createElement(TentaculoHud,
@@ -73,17 +172,28 @@ test('organic HUD renders no UI without a requested focus and never renders a 3-
   assert.equal(off,'');
 });
 
+test('native visual fixture uses the HUD return button accessible label',()=>{
+  const cards=projectTentaculoHud([],t);
+  const html=renderToStaticMarkup(React.createElement(TentaculoHud,
+    {cards,activeSystem:'VX13',onClose:()=>{}}));
+  const renderedLabel=html.match(/<button\b[^>]*aria-label="([^"]+)"/)?.[1];
+  const fixture=readFileSync(resolve(process.cwd(),'ci/fixtures/native-overlay-prereq.spec.ts'),'utf8');
+  assert.equal(renderedLabel,'Volver al contexto');
+  assert.ok(fixture.includes(`context.getByRole('button',{name:'${renderedLabel}'}).click()`));
+});
+
 test('Tentáculo Hub retains NOSTROMO local agent/MCP before separate external targets',()=>{
   const snapshot=nostromoHubSourceSnapshot();
   assert.deepEqual(snapshot.rootSystems,['NOSTROMO','MANOJOS','VX13','ORACULO']);
   const tree=createTentaculoHubTree(snapshot.items);
   assert.deepEqual(tree.children.nostromo.map(x=>x.id),
-    ['nostromo-agent','nostromo-mcp','nostromo-chatgpt','nostromo-router']);
-  assert.deepEqual(tree.children['nostromo-mcp'].map(x=>x.id),['nostromo-terminal','nostromo-tools']);
+    ['nostromo-agent','nostromo-mcp','nostromo-voice','nostromo-tasks',
+      'nostromo-chatgpt','nostromo-router','nostromo-github-remote','nostromo-graph','nostromo-gpu-mock']);
+  assert.deepEqual(tree.children['nostromo-mcp'].map(x=>x.id),['nostromo-terminal','nostromo-tools','nostromo-files','nostromo-git','nostromo-metrics']);
   assert.ok(snapshot.items.every(x=>x.status==='SOURCE'));
   assert.equal(snapshot.materialVerified,false);
-  assert.equal(snapshot.mcpInstalled,false);
-  assert.equal(snapshot.chatgptConnected,false);
+  assert.equal(snapshot.mcpInstalled,null);
+  assert.equal(snapshot.chatgptConnected,null);
   assert.equal(snapshot.authority,false);
   assert.equal(snapshot.readOnly,true);
   const agent=hubAgentCandidate(snapshot.items.find(x=>x.id==='nostromo-agent')!);
@@ -98,12 +208,29 @@ test('Tentáculo Hub displays truthful SOURCE inventory without execution action
   assert.match(html,/TENTÁCULO HUB/);
   assert.match(html,/NOSTROMO · Autónomo/);
   assert.match(html,/Único MCP local/);
-  assert.match(html,/ChatGPT · OAuth pendiente/);
-  assert.match(html,/Conexiones futuras/);
-  assert.match(html,/MCP no instalado/);
+  assert.match(html,/ChatGPT · conexión no verificada/);
+  assert.match(html,/Destinos externos · estado no verificado/);
+  assert.match(html,/MCP sin vínculo LIVE verificado/);
+  assert.doesNotMatch(html,/MCP no instalado/);
+  assert.match(html,/Git · inspección R0 opcional/);
+  assert.match(html,/CPU, RAM y disco/);
+  assert.match(html,/GitHub remoto · integración gobernada pendiente/);
+  assert.match(html,/Microsoft Graph · permisos OAuth pendientes/);
+  assert.match(html,/Mock 4 GB · simulación informada como verificada/);
+  assert.match(html,/<details/);
+  assert.match(html,/<summary/);
   assert.equal(html.includes('LIVE_VERIFIED'),false);
   assert.equal(html.includes('<form'),false);
   assert.equal(html.includes('ejecutar ahora'),false);
+});
+test('Hub presents authenticated MCP connection readback without claiming execution',()=>{
+  const html=renderToStaticMarkup(React.createElement(TentaculoHub,{
+    snapshot:nostromoHubSourceSnapshot(),
+    mcpConnections:{receivedAtMs:t,servers:[{name:'nostromo-local',state:'connected'}]},
+  }));
+  assert.match(html,/nostromo-local: connected/);
+  assert.match(html,/No prueba llamadas ni permisos del agente/);
+  assert.doesNotMatch(html,/LIVE_VERIFIED/);
 });
 
 test('Tentáculo Hub blocks mixed-system parent links and duplicates',()=>{

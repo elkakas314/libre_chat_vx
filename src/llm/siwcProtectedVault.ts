@@ -1,5 +1,5 @@
 import { constants } from 'node:fs';
-import { open, lstat, unlink, rename } from 'node:fs/promises';
+import { open, lstat, unlink, rename, readdir } from 'node:fs/promises';
 import { createHash, randomUUID, randomBytes, createCipheriv, createDecipheriv } from 'node:crypto';
 import { resolve, join, isAbsolute } from 'node:path';
 import type { SiwcAccountCredentials, SiwcCredentialVault } from './siwcSession';
@@ -81,6 +81,21 @@ export class SiwcProtectedFileVault implements SiwcCredentialVault {
     await this.directory();
     return this.readUnsafe(clientId);
   }
+  async readForUser(userId:string){
+    if(!userId||userId.length>256)throw Error('SIWC_USER_BINDING_INVALID');
+    await this.directory();
+    const entries=await readdir(this.root,{withFileTypes:true});
+    let match:{version:string;record:SiwcAccountCredentials}|null=null;
+    for(const entry of entries){
+      if(!entry.isFile()||!/^oaiapp_[A-Za-z0-9_-]{1,160}\.json$/.test(entry.name))continue;
+      const clientId=entry.name.slice(0,-5);
+      const record=await this.readUnsafe(clientId);
+      if(record?.record.libreChatUserId!==userId)continue;
+      if(match)throw Error('SIWC_VAULT_USER_BINDING_AMBIGUOUS');
+      match=record;
+    }
+    return match;
+  }
   async update(clientId:string,expectedVersion:string|null,record:SiwcAccountCredentials){
     if(record.clientId!==clientId||!record.subject||!record.hostId)
       throw Error('SIWC_VAULT_ACCOUNT_MISMATCH');
@@ -113,6 +128,29 @@ export class SiwcProtectedFileVault implements SiwcCredentialVault {
       if(!result||result.version!==createHash('sha256').update(bytes).digest('hex'))
         throw Error('SIWC_VAULT_READBACK_FAILED');
       return {version:result.version};
+    }finally{
+      await lockFd.close();
+      await unlink(lock).catch(()=>{});
+    }
+  }
+  async remove(clientId:string,expectedVersion:string):Promise<{removed:boolean}>{
+    if(!/^[a-f0-9]{64}$/.test(expectedVersion))throw Error('SIWC_VAULT_VERSION_REQUIRED');
+    await this.directory();
+    const lock=this.file(clientId)+'.lock';
+    let lockFd;
+    try{lockFd=await open(lock,constants.O_CREAT|constants.O_EXCL|
+      constants.O_NOFOLLOW|constants.O_WRONLY,0o600);}
+    catch{throw Error('SIWC_VAULT_BUSY');}
+    try{
+      const current=await this.readUnsafe(clientId);
+      if(!current)return {removed:false};
+      if(current.version!==expectedVersion)throw Error('SIWC_VAULT_VERSION_CONFLICT');
+      await unlink(this.file(clientId));
+      if(await this.readUnsafe(clientId))throw Error('SIWC_VAULT_REMOVE_READBACK_FAILED');
+      return {removed:true};
+    }catch(error){
+      if(error instanceof Error&&error.message.startsWith('SIWC_VAULT_'))throw error;
+      throw Error('SIWC_VAULT_REMOVE_FAILED');
     }finally{
       await lockFd.close();
       await unlink(lock).catch(()=>{});

@@ -1,6 +1,6 @@
 {
   "schema": "libre-chat-vx.skill-catalog.v3",
-  "observed_at": "2026-10-08",
+  "observed_at": "2026-11-18",
   "canonical_path": "skills",
   "authority": false,
   "distribution": {
@@ -78,7 +78,8 @@
     "LAZY_AND_DEFERRED_BY_DEFAULT",
     "LIBRECHAT_INTERPRETS_AND_PRESENTS; TARGETS_EXECUTE",
     "GITHUB_SKILL_SYNC_DIRECT; NO_WORKER_REQUIRED",
-    "NO_LEGACY_SKILL_DELETION_BEFORE_GITHUB_SKILL_SYNC_LIVE_CANARY"
+    "NO_LEGACY_SKILL_DELETION_BEFORE_GITHUB_SKILL_SYNC_LIVE_CANARY",
+    "OPTIONAL_AGENT_SKILLS_NOT_AUTO_ACTIVATED_BY_CATALOG"
   ],
   "legacy_compatibility": [
     {
@@ -95,6 +96,23 @@
   "counts": {
     "active_catalog": 10,
     "legacy_on_disk": 2,
-    "physical_skills": 12
-  }
+    "physical_skills": 14,
+    "optional_agent_skills": 2
+  },
+  "optional_agent_skills": [
+    {
+      "name": "nostromo-autonomo",
+      "scope": "AGENT_SELECTED_ONLY",
+      "role": "LOCAL_MCP_AGENT_PROCEDURE",
+      "status": "SOURCE_OPTIONAL_NO_LIVE_ENABLE",
+      "authority": false
+    },
+    {
+      "name": "nostromo-extension-creator",
+      "scope": "AGENT_SELECTED_ONLY",
+      "role": "EXTENSION_CREATOR_PROCEDURE",
+      "status": "SOURCE_OPTIONAL_NO_LIVE_ENABLE",
+      "authority": false
+    }
+  ]
 }

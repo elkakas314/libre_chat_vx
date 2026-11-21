@@ -28,6 +28,7 @@ export interface HybridTurnSignals {
   needsResearch?: boolean;
   needsVisualization?: boolean;
   needsLongContext: boolean;
+  needsVision?: boolean;
   targetActionRequested: boolean;
   preferLocalVoice?: boolean;
 }
@@ -137,7 +138,11 @@ export function deriveHybridRuntimeMode(s: HybridRuntimeSignals): HybridRuntimeM
 
 export function chooseHybridLane(s: HybridTurnSignals): HybridLane {
   if (s.targetActionRequested) return 'TARGET_OBJECTIVE';
-  if (s.preferLocalVoice) return 'LOCAL_VOICE';
+  // Local voice is an on-demand, lightweight conversation preference.
+  // It must never swallow research, visual, long-context or target objectives.
+  if (s.preferLocalVoice && s.conversationalOnly && !s.needsDeepReasoning &&
+      !s.needsResearch && !s.needsVisualization && !s.needsLongContext &&
+      !s.needsVision) return 'LOCAL_VOICE';
   return 'REMOTE_INFERENCE';
 }
 

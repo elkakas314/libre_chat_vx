@@ -64,6 +64,29 @@ test('resolver performs cognitive failover without admitting unhealthy primary',
   assert.equal(result.selected?.id,'secondary');
 });
 
+test('duplicate route identifiers cannot transfer admission to a billable candidate', () => {
+  const resolver=new StrictZeroCostRouteResolver();
+  const result=resolver.resolve({profile:'NORMAL',nowMs:now},[
+    route({id:'duplicate',latencyMs:50}),
+    route({id:'duplicate',zeroCost:'BILLABLE',latencyMs:1}),
+    route({id:'safe',latencyMs:100}),
+  ]);
+  assert.equal(result.selected?.id,'safe');
+  assert.ok(result.admissions.filter(item=>item.routeId==='duplicate')
+    .every(item=>!item.admitted && item.reasons.includes('DUPLICATE_ROUTE_ID')));
+  const reversed=resolver.resolve({profile:'NORMAL',nowMs:now},[
+    route({id:'duplicate',zeroCost:'BILLABLE',latencyMs:1}),
+    route({id:'duplicate',latencyMs:50}),
+  ]);
+  assert.equal(reversed.selected,undefined);
+  const crossProfile=resolver.resolve({profile:'NORMAL',nowMs:now},[
+    route({id:'shared'}),
+    route({id:'shared',profile:'RAPIDO'}),
+  ]);
+  assert.equal(crossProfile.selected,undefined);
+  assert.ok(crossProfile.admissions[0].reasons.includes('DUPLICATE_ROUTE_ID'));
+});
+
 test('context policy prefers targeted reads then RAG then compact then long context', () => {
   assert.equal(chooseContextStrategy({
     targetedReadsSufficient:false,
@@ -139,6 +162,40 @@ test('Cloudflare client sends OpenAI-compatible chat request without persisting 
   assert.equal(JSON.stringify(binding).includes('runtime-token'),false);
 });
 
+test('Cloudflare client preserves tool schemas and multi-turn tool replies', async () => {
+  const binding=resolveCloudflareGatewayBinding({
+    CLOUDFLARE_ACCOUNT_ID:'account',
+    CLOUDFLARE_AI_GATEWAY_ID:'gateway',
+    CLOUDFLARE_API_TOKEN:'present-only-for-binding-check',
+    CLOUDFLARE_AIG_BYOK_ONLY_REQUIRED:'true',
+  });
+  let sentBody='';
+  const client=new CloudflareAiGatewayClient(
+    binding,
+    {get:()=> 'runtime-token'},
+    async (_url,request)=>{
+      sentBody=request.body;
+      return {ok:true,status:200,body:{choices:[]}};
+    },
+  );
+  const tools=[{
+    type:'function' as const,
+    function:{name:'nostromo_estado',description:'Lee el estado',parameters:{type:'object',properties:{},additionalProperties:false}},
+  }];
+  const messages=[
+    {role:'user' as const,content:'Consulta el estado.'},
+    {role:'assistant' as const,content:null,tool_calls:[{id:'call-1',type:'function' as const,function:{name:'nostromo_estado',arguments:'{}'}}]},
+    {role:'tool' as const,tool_call_id:'call-1',name:'nostromo_estado',content:'estado disponible'},
+  ];
+  const response=await client.createChatCompletion('INVESTIGAR',messages,true,{tools,toolChoice:'auto'});
+  const payload=JSON.parse(sentBody);
+  assert.equal(response.status,200);
+  assert.deepEqual(payload.tools,tools);
+  assert.equal(payload.tool_choice,'auto');
+  assert.deepEqual(payload.messages,messages);
+  assert.equal(payload.model,'dynamic/nostromo-investigar');
+});
+
 test('route admission fails closed for missing, future and stale LIVE timestamps', () => {
   const cases = [
     [undefined,'ROUTE_READBACK_TIMESTAMP_REQUIRED'],
@@ -152,4 +209,13 @@ test('route admission fails closed for missing, future and stale LIVE timestamps
     assert.ok(decision.reasons.includes(reason),reason);
   }
   assert.equal(admitProviderRoute(route(),{profile:'NORMAL',nowMs:now}).admitted,true);
+});
+
+test('HUD freshness never claims a live readback from config, invalid or future timestamps', () => {
+  assert.equal(projectProviderStatus(route({evidence:'CONFIG_ONLY'}),now).freshness,'UNKNOWN');
+  assert.equal(projectProviderStatus(route({observedAtMs:undefined}),now).freshness,'UNKNOWN');
+  assert.equal(projectProviderStatus(route({observedAtMs:Number.NaN}),now).freshness,'UNKNOWN');
+  assert.equal(projectProviderStatus(route({observedAtMs:now+1}),now).freshness,'UNKNOWN');
+  assert.equal(projectProviderStatus(route({observedAtMs:now-300_001}),now).freshness,'STALE');
+  assert.equal(projectProviderStatus(route(),now).freshness,'FRESH');
 });

@@ -1,0 +1,68 @@
+{
+  "schema": "nostromo.e3.live-agent-deferred-selection-reconcile.v1",
+  "captured_at_utc": "2026-11-19T05:39:28Z",
+  "source": {
+    "repository": "elkakas314/libre_chat_vx",
+    "branch": "integration/nostromo-canon-20261118-r1",
+    "head": "5c64f87d6e4dbdaa2ebdc5c0ef4b37ca6b548e43",
+    "source_or_runtime_changed": false
+  },
+  "persisted_agent_readback": {
+    "collection": "LibreChat.agents",
+    "query_key": "id",
+    "id": "agent_9ex2a9buul2cwzyo",
+    "name": "NOSTROMO",
+    "provider": "Ollama",
+    "model": "qwen3:4b-instruct-2507-q4_K_M",
+    "updated_at": "2026-11-18T04:58:28.531Z",
+    "max_context_tokens": 6144,
+    "selected_tool_count": 11,
+    "tool_options_count": 9,
+    "deferred_tool_count": 9,
+    "direct_tool_count": 2,
+    "direct_tools": [
+      "nostromo_estado_mcp_nostromo-local",
+      "nostromo_directorio_listar_mcp_nostromo-local"
+    ],
+    "deferred_tools": [
+      "nostromo_terminal_preparar_mcp_nostromo-local",
+      "nostromo_archivo_leer_mcp_nostromo-local",
+      "nostromo_git_inspeccionar_mcp_nostromo-local",
+      "nostromo_metricas_mcp_nostromo-local",
+      "nostromo_tarea_iniciar_mcp_nostromo-local",
+      "nostromo_tarea_estado_mcp_nostromo-local",
+      "nostromo_tarea_cancelar_mcp_nostromo-local",
+      "nostromo_auditoria_r0_mcp_nostromo-local",
+      "nostromo_herramientas_mcp_nostromo-local"
+    ],
+    "catalog_preserved": true
+  },
+  "evidence_reconciliation": {
+    "earlier_20261118_receipt": "20261118-agent-context-runtime-readback.json reported 11 tool options and 11 deferred in its earlier agent snapshot; the more specific live host receipt in CURRENT.json reported 11 selected and 9 deferred.",
+    "20261119_preflight_receipt_correction": "e3-live-agent-context-preflight-20261119.json incorrectly recorded that defer metadata was absent; that readback omitted the persisted tool_options field. Direct MongoDB read shows 9 deferred and 2 direct, consistent with the more specific 2026-11-18 live host receipt.",
+    "prior_receipts_preserved": true
+  },
+  "runtime_contract": {
+    "agents_config_schema_default_includes_deferred_tools": true,
+    "agent_context_filters_deferred_undiscovered_definitions": true,
+    "existing_runtime_filter_patch_reapplied": false,
+    "tool_search_or_deferred_mcp_dispatch_in_test": "NOT_OBSERVED"
+  },
+  "real_agent_test": {
+    "conversation_id": "a6e3c7a3-fd26-5887-91a1-7918815df90d",
+    "ui_context": "5406_of_5800_tokens_93pct",
+    "elapsed_before_manual_stop_seconds": 52,
+    "mcp_dispatch_observed": false,
+    "mongo_assistant_state": "unfinished_true_error_false_empty_text",
+    "resource_readback_reused_from_preflight_receipt": true
+  },
+  "conclusion": {
+    "deferred_selection_configuration": "PRESENT_IN_MONGODB; 9 deferred, 2 direct, all 11 catalog entries retained",
+    "reason_for_no_dispatch": "UNPROVEN; absence of defer_loading is not the cause established by evidence",
+    "effective_discovery_and_tools_sent": "UNVERIFIED",
+    "status": "PARTIAL_NOT_PASS",
+    "no_agent_change": true,
+    "no_service_restart": true
+  },
+  "next_action": "Use the existing safe telemetry/readback path to determine active tool definitions and tool_search discovery for this provider; then run one resource-bounded direct nostromo_estado canary before a separate deferred nostromo_metricas discovery test. Do not alter agent config, broaden context, or repeat the stopped 52-second turn."
+}

@@ -1,0 +1,139 @@
+{
+  "schema": "nostromo.e3.live-chat-r0.v1",
+  "captured_at_utc": "2026-11-19T05:07:45Z",
+  "scope": "Read-only LibreChat inference, MCP, MongoDB persistence, reconnect, and Lenovo resource sample",
+  "source": {
+    "repository": "elkakas314/libre_chat_vx",
+    "branch": "integration/nostromo-canon-20261118-r1",
+    "head": "5c64f87d6e4dbdaa2ebdc5c0ef4b37ca6b548e43",
+    "worktree_clean_before_receipt": true,
+    "nostromo_metricas_contract": {
+      "configured_mcp_script": "/home/elkakas314/libre_chat_vx-clean/deployment/nostromo-mcp/server.mjs",
+      "evidence_level": "CODE_CONTRACT_NOT_LIVE_TOOL_SCHEMA_READBACK",
+      "input_schema": "cwd: non-empty string, max 512 characters",
+      "existing_stdio_test_uses": "cwd",
+      "runtime_source_note": "Existing handoff records that the active copy differs from repository SOURCE; no copy or service was changed."
+    }
+  },
+  "live_runtime": {
+    "backend_unit": "vx-backend.service",
+    "backend_state": "active",
+    "backend_pid": 5074,
+    "backend_restarts": 0,
+    "endpoint": "ollama",
+    "model": "qwen2.5:3b",
+    "ollama_ps_processor": "100% GPU",
+    "ollama_ps_context": 6144,
+    "gpu": "NVIDIA GeForce 840M",
+    "vram_used_mib": 2295
+  },
+  "conversation": {
+    "id": "a50df11a-67fd-5250-af96-4ff4bba9afe3",
+    "real_ui_inference": {
+      "user_prompt_id": "b82cef02-114b-4024-9bbb-7e2b811340da",
+      "assistant_message_id": "7bdfbfda-4764-4e03-902d-89886620a345",
+      "result": "PRUEBA_LOCAL_OK",
+      "visible_in_librechat": true,
+      "endpoint": "ollama",
+      "model": "qwen2.5:3b",
+      "elapsed_seconds_approx": 30
+    },
+    "mcp_round": {
+      "selected_server": "nostromo-local",
+      "manojos3_selected": false,
+      "calls": [
+        { "tool": "nostromo_estado", "result": "SUCCESS", "tool_seconds": 0.5 },
+        { "tool": "nostromo_metricas", "result": "SCHEMA_VALIDATION_FAILED", "error": "input failed schema validation; declared arguments required" },
+        { "tool": "nostromo_estado", "result": "SUCCESS", "tool_seconds": 0.1 }
+      ],
+      "assistant_reply_visible": true,
+      "assistant_row_unfinished_after_manual_stop": true,
+      "agentclient_binding_verified": false
+    },
+    "reconnect_and_continuation": {
+      "reopened_same_chat_in_new_browser_tab": true,
+      "previous_user_and_assistant_turns_recovered": true,
+      "explicit_cwd_followup_elapsed_seconds_before_stop": 56,
+      "followup_tool_dispatched": false,
+      "test_stopped_to_bound_cpu_load": true,
+      "latest_assistant_row_unfinished": true,
+      "error_field": false
+    }
+  },
+  "mongodb_readback": {
+    "direct_local_read_only_query": true,
+    "database": "LibreChat",
+    "collections_observed": ["librechatCredentialMetadata", "messages", "chatprojects"],
+    "message_collection": "messages",
+    "conversation_id": "a50df11a-67fd-5250-af96-4ff4bba9afe3",
+    "message_documents": 6,
+    "user_documents": 3,
+    "assistant_documents": 3,
+    "test_prompt_and_mcp_reference_present": true,
+    "latest_assistant_unfinished": true,
+    "message_text_or_credentials_emitted": false
+  },
+  "resource_samples": {
+    "before": {
+      "at_local": "2026-11-19T05:58:36+01:00",
+      "mem_available_kb": 10012956,
+      "swap_free_kb": 128764,
+      "cpu_psi_some_avg10": 9.26,
+      "memory_psi_some_avg10": 0,
+      "gpu_temp_c": 66,
+      "gpu_vram_used_mib": 2295,
+      "gpu_utilization_pct": 0
+    },
+    "during_mcp_generation": {
+      "at_local": "2026-11-19T05:59:23+01:00",
+      "mem_available_kb": 9915120,
+      "swap_free_kb": 129020,
+      "cpu_psi_some_avg10": 20.09,
+      "memory_psi_some_avg10": 0,
+      "gpu_temp_c": 72,
+      "gpu_vram_used_mib": 2295,
+      "gpu_utilization_pct": 100
+    },
+    "during_slow_followup": {
+      "at_local": "2026-11-19T06:06:22+01:00",
+      "mem_available_kb": 8816584,
+      "swap_free_kb": 125692,
+      "cpu_psi_some_avg10": 50.66,
+      "memory_psi_some_avg10": 0,
+      "gpu_temp_c": 73,
+      "gpu_vram_used_mib": 2295,
+      "gpu_utilization_pct": 100
+    },
+    "after_stop": {
+      "at_local": "2026-11-19T06:07:45+01:00",
+      "mem_available_kb": 9176264,
+      "swap_free_kb": 137468,
+      "cpu_psi_some_avg10": 45.58,
+      "cpu_psi_full_avg10": 0,
+      "memory_psi_some_avg10": 0.26,
+      "memory_psi_full_avg10": 0.09,
+      "gpu_temp_c": 81,
+      "gpu_vram_used_mib": 2295,
+      "gpu_utilization_pct": 0,
+      "ollama_model_still_resident": true,
+      "backend_restarts": 0
+    },
+    "work_active_process_interval_3s": [
+      { "comm": "codex", "pid": 6403, "cpu_one_core_pct": 40.7, "rss_mib": 346 },
+      { "comm": "ChatGPT", "pid": 5810, "cpu_one_core_pct": 27.7, "rss_mib": 176 },
+      { "comm": "ChatGPT", "pid": 6506, "cpu_one_core_pct": 16.0, "rss_mib": 766 },
+      { "comm": "ChatGPT", "pid": 5746, "cpu_one_core_pct": 9.3, "rss_mib": 485 },
+      { "comm": "gnome-keyring-d", "pid": 430966, "cpu_one_core_pct": 7.7, "rss_mib": 60 }
+    ]
+  },
+  "result": "PARTIAL_NOT_PASS",
+  "material_changes": false,
+  "services_restarted": false,
+  "not_pass_reasons": [
+    "The metrics MCP call failed schema validation.",
+    "An explicit-cwd retry did not dispatch a tool within 56 seconds and was stopped.",
+    "MongoDB retains unfinished assistant rows for the manually stopped turns.",
+    "AgentClient/SIWC integration and a fully successful multi-tool turn remain unverified."
+  ],
+  "next_action": "Inspect effective NOSTROMO agent and live MCP tool schemas, then choose a low-resource real test that exercises the declared cwd contract without changing persistent agent configuration."
+}

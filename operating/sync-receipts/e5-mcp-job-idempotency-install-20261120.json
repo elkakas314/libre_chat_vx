@@ -1,0 +1,52 @@
+{
+  "schema": "nostromo.e5.mcp-job-idempotency-install.v1",
+  "captured_at_utc": "2026-11-20T17:21:55.426193+00:00",
+  "source_commit": "a16f7f3ac46a22ab8175c4a9d4acedcd531129a4",
+  "change": "Optional persistent idempotency claim on existing async task; bound to canonical request hash; unrecognized or incomplete reservation never replayed; no authorization granted.",
+  "tests": {
+    "source_async_and_stdio": "21/21 PASS in isolated staging with existing SDK",
+    "installed_merge_candidate": "1/1 PASS, actual MCP protocol restart/retry in temporary state",
+    "installed_files_isolated_readback": "1/1 PASS with production executable files and temporary state",
+    "risk_authority": "mocked unit test verifies R2 still needs independent authorization",
+    "no_llm": true
+  },
+  "host_control": {
+    "backups": [
+      {
+        "path": "/home/elkakas314/librechat/nostromo/backups/e5-idempotency-async-d85b819-preimage.mjs",
+        "sha256": "d85b81950a2865c36f6b427c678dd1e986a9fae5b70ee11b8cdfb4a0f036982a"
+      },
+      {
+        "path": "/home/elkakas314/librechat/nostromo/backups/e5-idempotency-server-1a25218-preimage.mjs",
+        "sha256": "1a2521893fb8760207ff54eb4e01906e49532d21df24be7a360f0c9454b6d697"
+      }
+    ],
+    "installed": [
+      {
+        "path": "/home/elkakas314/libre_chat_vx-clean/deployment/nostromo-mcp/async-jobs.mjs",
+        "sha256": "cc203aca0fcf9b8a1b8462ae7727538df4696fbb8b783c61b7ffd5e43fcb7635"
+      },
+      {
+        "path": "/home/elkakas314/libre_chat_vx-clean/deployment/nostromo-mcp/server.mjs",
+        "sha256": "124400d4905bb715adb198b62b4970cc9d7d34f1d109f3b3a13571e6aa4852c4"
+      }
+    ],
+    "server_merge": "exact preimage guarded, preserves installed directory integration",
+    "restart": "vx-backend.service via HOST_CONTROL; MainPID 1118520; NRestarts 0; HTTP 200; MCP PID 1118700",
+    "context_patch_sha256": "bdc458e5a06ae6cc52bb57139f59d2a543b69b6455954365bbc5a2d95249fdb2"
+  },
+  "limitations": [
+    "Claims retained after job expiration; capacity and lifecycle need management without permitting unsafe replay.",
+    "Idempotency key must be generated and bound by an authenticated host; MCP field alone is not an agreement or authorization.",
+    "No authenticated objective dispatch, live product job invocation, final readback verifier or conversation E2E was run.",
+    "Compiled context patch remains vulnerable to rebuild until a durable hook is verified."
+  ],
+  "status": "INSTALLED_MCP_PROCESS_RESTARTED_ISOLATED_TEST_ONLY; PRODUCT_E2E_OPEN",
+  "authenticated_ui_readback": {
+    "surface": "LibreChat agent builder, nostromo-local tool configuration",
+    "connection": "Connected",
+    "tool": "nostromo_tarea_iniciar",
+    "description": "New optional idempotency key and private persistence description visible",
+    "scope": "Tool advertisement only; no authenticated task was submitted"
+  }
+}

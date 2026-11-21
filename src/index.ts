@@ -65,6 +65,7 @@ export * from './llm/structuredOutput';
 export * from './llm/providerStatus';
 
 export * from './intent/intentInterpreter';
+export * from './intent/nostromoDecisionBridge';
 export * from './presentation/presentationPlanner';
 export * from './research/researchPolicy';
 export * from './events/agentEvents';
@@ -72,6 +73,10 @@ export * from './tentacle/companion';
 
 export * from './librechat/nativeSurfaces';
 export * from './librechat/nativeSurfaceBinding';
+export * from './librechat/nativeInferenceRouteAdapter';
+export * from './llm/siwcOpenAiFetch';
+export * from './llm/siwcConnectionService';
+export * from './llm/siwcConnectionApi';
 export * from './librechat/panelArbiter';
 export * from './librechat/approvalBridge';
 export * from './librechat/resumableBoundary';
@@ -83,6 +88,7 @@ export * from './mobile/offlineDraft';
 export * from './mobile/pushRefresh';
 export * from './mobile/resumeSource';
 export * from './mobile/remoteAccess';
+export * from './mobile/phoneModule';
 
 export { emptyCockpitState } from './runtime/cockpitState';
 export type { CockpitState, TargetRuntimeState } from './runtime/cockpitState';
@@ -105,6 +111,9 @@ export * from './operating/reconcile';
 export * from './operating/bootstrap';
 
 export { resolveFocus, participantsForFocus } from './cockpit/currentFocus';
+export * from './cockpit/conversationActivity';
+export * from './cockpit/mcpConnectionReadback';
+export * from './cockpit/nativeAgentSelector';
 export type {
   CurrentFocus as CockpitCurrentFocus,
   FocusResolution,

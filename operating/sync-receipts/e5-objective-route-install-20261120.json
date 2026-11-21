@@ -1,0 +1,29 @@
+{
+  "schema": "nostromo.e5.objective-route-install.v1",
+  "captured_at_utc": "2026-11-20T20:43:57.151380+00:00",
+  "source_commit": "c50d82319f04f52881e20fc67782ece053e54792",
+  "artifact_manifest_commit": "393613e",
+  "runtime": "/home/elkakas314/librechat/nostromo/runtime/e5-objective",
+  "reproducibility": "manifest.json pins source, generator and artifact hashes; TypeScript recompile matched staged artifacts byte-for-byte",
+  "preimage": {
+    "path": "/home/elkakas314/librechat/nostromo/backups/e5-objective-api-index-7ace779-preimage.js",
+    "sha256": "7ace779867986d2c7313cca7930486d352093a8fd2537ef919f2996dca24da57"
+  },
+  "installed_index_sha256": "9561e5107f75b883973db1cb6307dc0a966c0b1463a86113ab8013bd5907d580",
+  "host_control": "persistent runtime files and index installed with verified hashes and one backend restart",
+  "readback": {
+    "backend": "active MainPID 1240966 NRestarts 0",
+    "http_home": 200,
+    "unauthenticated_objective_get": 401,
+    "mcp_process": "1241101",
+    "runtime_files": "4 hashes matched manifest; route and agreement exports loaded"
+  },
+  "scope": "Authenticated preview/confirm/current route only; no tool dispatch or grant",
+  "limitations": [
+    "Direct browser navigation has no bearer credential and returned no auth token; authenticated native UI flow has not been tested.",
+    "No UI was installed, no user plan was created or confirmed.",
+    "No owner-authorized dispatch, persistent receipt, or full product E2E.",
+    "Private-field share/list tests are targeted, not an exhaustive proof of all routes."
+  ],
+  "status": "INSTALLED_UNAUTHENTICATED_DENIAL_VERIFIED_AUTHENTICATED_E2E_OPEN"
+}

@@ -1,0 +1,105 @@
+{
+  "schema": "nostromo.e3.live-agent-single-r0-canary.v1",
+  "captured_at_utc": "2026-11-19T05:47:16Z",
+  "source": {
+    "repository": "elkakas314/libre_chat_vx",
+    "branch": "integration/nostromo-canon-20261118-r1",
+    "head": "5c64f87d6e4dbdaa2ebdc5c0ef4b37ca6b548e43",
+    "source_or_service_changed": false
+  },
+  "canary": {
+    "interface": "LibreChat real user session",
+    "endpoint": "agents",
+    "agent_id": "agent_9ex2a9buul2cwzyo",
+    "conversation_id": "28750dc9-f94d-5fc6-8ca3-07f305808e5d",
+    "requested_action": "one nostromo_estado R0 read",
+    "agent_model_persisted": "qwen3:4b-instruct-2507-q4_K_M",
+    "selected_tools_in_mongodb": 11,
+    "deferred_tools_in_mongodb": 9,
+    "direct_tools_in_ui": 2,
+    "first_context_reading_after_submit": "30 of 6100 tokens (0%)",
+    "context_reading_while_running": "5400 of 5800 tokens (92%)",
+    "ui_elapsed_at_manual_stop_seconds": 48,
+    "tool_dispatch": "NONE_OBSERVED",
+    "final_response": "NONE"
+  },
+  "mongodb_readback": {
+    "user_message": {
+      "sender": "User",
+      "endpoint": "agents",
+      "token_count": 54,
+      "unfinished": false,
+      "error": false
+    },
+    "assistant_message": {
+      "sender": "NOSTROMO",
+      "endpoint": "agents",
+      "text_length": 0,
+      "unfinished": true,
+      "error": false,
+      "tool_call_count": 0
+    }
+  },
+  "resource_readback": {
+    "before": {
+      "at_utc": "2026-11-19T05:45:28Z",
+      "mem_available_kb": 10485808,
+      "swap_free_kb": 40,
+      "cpu_psi_some_avg10": 13.25,
+      "cpu_psi_full_avg10": 0,
+      "memory_psi_some_avg10": 0,
+      "memory_psi_full_avg10": 0,
+      "ollama_ps": "empty",
+      "gpu_temperature_c": 65,
+      "gpu_utilization_pct": 0,
+      "vram_used_mib": 5
+    },
+    "during": {
+      "at_utc": "2026-11-19T05:46:09Z",
+      "mem_available_kb": 10100788,
+      "swap_free_kb": 60,
+      "cpu_psi_some_avg10": 21.2,
+      "cpu_psi_full_avg10": 0,
+      "memory_psi_some_avg10": 1.82,
+      "memory_psi_full_avg10": 1.21,
+      "ollama_model": "qwen2.5:3b",
+      "ollama_context": 6144,
+      "ollama_processor": "100% GPU",
+      "gpu_temperature_c": 71,
+      "gpu_utilization_pct": 95,
+      "vram_used_mib": 2295
+    },
+    "after_stop": {
+      "at_utc": "2026-11-19T05:47:16Z",
+      "mem_available_kb": 9968712,
+      "swap_free_kb": 260,
+      "cpu_psi_some_avg10": 13.85,
+      "cpu_psi_full_avg10": 0,
+      "memory_psi_some_avg10": 0,
+      "memory_psi_full_avg10": 0,
+      "ollama_model": "qwen3:4b-instruct-2507-q4_K_M",
+      "ollama_processor": "14% CPU / 86% GPU",
+      "ollama_context": 6144,
+      "model_state": "loaded_idle_keepalive_4_minutes",
+      "gpu_temperature_c": 77,
+      "gpu_utilization_pct": 0,
+      "vram_used_mib": 3050
+    },
+    "interpretation": "Available RAM stayed near 10 GiB; swap remained almost completely occupied. Memory PSI rose during generation and returned to zero in the post-stop 10-second window. GPU utilization returned to zero, while Qwen3 remained resident in VRAM. This single short sample cannot establish a memory leak or long-term stability."
+  },
+  "latency_observation": {
+    "configured_title_convo": true,
+    "configured_title_model": "qwen2.5:3b",
+    "first_ollama_runner_seen_during_pending_agent_turn": "qwen2.5:3b",
+    "later_ollama_runner_after_stop": "qwen3:4b-instruct-2507-q4_K_M",
+    "possible_title_inference_contention": "CORRELATED_BUT_NOT_PROVEN"
+  },
+  "conclusion": {
+    "status": "PARTIAL_STOPPED_NO_MCP_PASS",
+    "observed": "The new agent chat consumed 92% of the displayed context budget and produced no direct R0 call; the saved assistant turn remains unfinished.",
+    "cause": "Exact source of context growth and model latency remains unproven; title-model contention is only a hypothesis.",
+    "safety_action": "Stopped only the chat generation at high GPU and memory pressure; no agent edit, Mongo mutation, or service restart.",
+    "agentclient_siwc": "NOT_VERIFIED"
+  },
+  "next_action": "Do not repeat another inference while host pressure is elevated. On the next bounded attempt, capture existing structural preflight data for instruction/schema/native-tool counts and confirm which Ollama model serves the AgentClient request; avoid adding temporary payload logging."
+}

@@ -116,11 +116,11 @@ Custom source:
 
 Canonical active catalog (10): `config/skills.current.json` is the source of names/roles, not this historical list. The 10 active names are `nostromo-core`, `nostromo-visualization`, `nostromo-research`, `nostromo-event-triage`, `nostromo-evidence-first`, `nostromo-resource-navigation`, `manojos3-nostromo`, `vx13-nostromo`, `cross-target-read` and `nostromo-extension-review`.
 
-Two legacy folders remain on disk: `nostromo-intent-translation` and `nostromo-tool-budget`. They are **not** part of the active SOURCE catalog; no LIVE sync is yet verified. All Skills authority=false.
+Two legacy folders remain on disk: `nostromo-intent-translation` and `nostromo-tool-budget`. Two optional agent procedures also exist: `nostromo-autonomo` and `nostromo-extension-creator`. Inventory = 14, active canonical catalog = 10. Neither optional Skill is included in stage 1 or 2 mirrors. They are **not** part of the active SOURCE catalog; no LIVE sync is yet verified. All Skills authority=false.
 
 ### Two-stage GitHub Skill Sync source canary
 
-See `deployment/skill-sync/README.md` and two example YAML fragments. Stage 1 scans the full `skills` folder (12 physical roots), stage 2 selects exactly ten canonical root paths with `skillDiscoveryDepth: 0` after an authenticated LIVE canary and rollback-readback. Do not delete legacy files or deploy the second stage automatically. Source proof != LIVE sync.
+See `deployment/skill-sync/README.md` and two example YAML fragments. Stage 1 inventories 14 physical Skills but mirrors only 12 explicit canonical+legacy roots (2 optional agent procedures excluded), stage 2 selects exactly ten canonical root paths with `skillDiscoveryDepth: 0` after an authenticated LIVE canary and rollback-readback. Do not delete legacy files or deploy the second stage automatically. Source proof != LIVE sync.
 
 ## Download/import sources
 

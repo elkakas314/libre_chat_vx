@@ -55,3 +55,43 @@ test('model candidate admission rejects absent, future and stale observation tim
   }
   assert.equal(planModelPool('NORMAL',[candidate('fresh')],{nowMs:now}).active.length,1);
 });
+
+test('registry rejects a declared profile without its actual required capabilities', () => {
+  const plan=planModelPool('INVESTIGAR',[
+    candidate('no-tools',{profiles:['INVESTIGAR'],capabilities:['TEXT','STRUCTURED_OUTPUT']}),
+    candidate('good',{profiles:['INVESTIGAR'],capabilities:['TEXT','STRUCTURED_OUTPUT','TOOLS']}),
+  ],{nowMs:now});
+  assert.deepEqual(plan.active.map(x=>x.candidateId),['good']);
+  assert.ok(plan.rejected[0].reasons.includes('CAPABILITY_TOOLS_MISSING'));
+});
+
+test('registry rejects a local model that cannot fit the current preflight context', () => {
+  const plan=planModelPool('NORMAL',[
+    candidate('local-6144',{contextWindowTokens:6144}),
+    candidate('remote-32768',{contextWindowTokens:32768}),
+  ],{nowMs:now,estimatedInputTokens:8966});
+  assert.deepEqual(plan.active.map(x=>x.candidateId),['remote-32768']);
+  assert.ok(plan.rejected[0].reasons.includes('CONTEXT_FIT_FAILED'));
+});
+
+test('long-context capability requires 128K supported tokens, not merely a name', () => {
+  const plan=planModelPool('CONTEXTO_LARGO',[
+    candidate('short',{profiles:['CONTEXTO_LARGO'],capabilities:['TEXT','LONG_CONTEXT'],contextWindowTokens:8192}),
+    candidate('long',{profiles:['CONTEXTO_LARGO'],capabilities:['TEXT','LONG_CONTEXT'],contextWindowTokens:131072}),
+  ],{nowMs:now});
+  assert.deepEqual(plan.active.map(x=>x.candidateId),['long']);
+  assert.ok(plan.rejected[0].reasons.includes('CONTEXT_FIT_FAILED'));
+});
+
+test('invalid preflight estimates and snapshot clock do not admit models', () => {
+  for (const options of [
+    {nowMs:now,estimatedInputTokens:-1},
+    {nowMs:now,estimatedInputTokens:Number.NaN},
+    {nowMs:Number.NaN},
+    {nowMs:now,maxFreshnessMs:-1},
+  ]) {
+    const plan=planModelPool('NORMAL',[candidate('local')],options);
+    assert.equal(plan.active.length,0);
+    assert.equal(plan.rejected.length,1);
+  }
+});

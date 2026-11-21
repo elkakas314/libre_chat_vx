@@ -1,0 +1,29 @@
+{
+  "schema": "libre-chat-vx.source-browser-visual.v1",
+  "scope": "SOURCE_FIXTURE_ONLY",
+  "live_verified": false,
+  "live_gate_closed": false,
+  "source_sha": "7acbfb14375af1ac87e0fcf72bdfaa75c52a7541",
+  "artifact_dir": "visual-evidence/run-WDXnoE",
+  "observed_at_utc": "2026-11-19T00:25:45.591Z",
+  "results": [
+    {
+      "scenario": "desktop",
+      "status": "PASS",
+      "screenshot": "desktop.png",
+      "widths": {
+        "viewport": 1280,
+        "document": 1280
+      }
+    },
+    {
+      "scenario": "mobile",
+      "status": "PASS",
+      "screenshot": "mobile.png",
+      "widths": {
+        "viewport": 390,
+        "document": 390
+      }
+    }
+  ]
+}

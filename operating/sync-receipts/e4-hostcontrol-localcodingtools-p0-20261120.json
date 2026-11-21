@@ -1,0 +1,68 @@
+{
+  "schema": "nostromo.e4.host-control-p0-install.v1",
+  "lot_id": "E4-P0-LOCALCODING-20261120",
+  "captured_at_local": "2026-11-20T13:21:18+01:00",
+  "repository": "elkakas314/libre_chat_vx",
+  "source_commit": "0a52843124815ab994ac833945ea600755de1013",
+  "branch": "integration/nostromo-canon-20261118-r1",
+  "production_upstream": "LibreChat-AI/LibreChat@f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
+  "host": "elkakas314-Lenovo-Z50-70",
+  "package": "@librechat/agents@4.0.1",
+  "authority": {
+    "plane": "HOST_CONTROL_INDEPENDENT",
+    "effective_mode": "PREEXISTING_OPERATOR_MODE",
+    "policy_changed": false,
+    "local_grant_created": false,
+    "risk": "R2",
+    "mcp_service": "MANOJOS3 HOST_CONTROL 0.1.0",
+    "operations": [
+      "host_fs_mkdir",
+      "host_fs_copy × 5",
+      "host_service_restart × 1"
+    ],
+    "audit_readback": "AUTHORIZED_OPERATOR_MODE and EXIT:0"
+  },
+  "install": {
+    "hook": "/home/elkakas314/librechat/nostromo/tools/deferred-instance-filter.mjs",
+    "hook_before_sha256": "df61585464616452899fe3f41601334f69a5b8e07d29b4bdafd1bad7dbae6f5c",
+    "hook_after_sha256": "d4cecf1014eb726571e9c22432c50c609c63356bedb090a28f66ec1a10bcea42",
+    "agent_context": "ALREADY_PATCHED_NO_WRITE",
+    "local_coding_tools": {
+      "source": {
+        "before_sha256": "5ca57de638f53ff49a38e26dba03df0423d17d064fa6da58358a3db75b9dd22d",
+        "after_sha256": "466c14d8a69f6f5086f10b06159218df183f7495b1c8b5b25a78b6fa0092181f"
+      },
+      "cjs": {
+        "before_sha256": "465f36c8b62b3c2fb54f57b5a214c4d1a67b501de90aea3b96a838ba23d28e89",
+        "after_sha256": "72fb678d4dd2cdd41136aa99267cd9f4b8d92d238811fea710d8b920e77be9ef"
+      },
+      "esm": {
+        "before_sha256": "13cd14651e94f6108b06ef98d2115850c3cb75fb47be806f1cb04b650deeb453",
+        "after_sha256": "832b687b6fdce8f14da1a3f75fa6c3818481f7e6885452c2190b0e79c6be896c"
+      }
+    },
+    "backup_dir": "/home/elkakas314/librechat/nostromo/backups/p0-localcodingtools-20261120-0a528431",
+    "backups_count_verified": 4
+  },
+  "checks": {
+    "source_worktree_clean_before": true,
+    "patch_dry_run": "3 ALREADY_PATCHED + 3 PATCH_AVAILABLE",
+    "source_patch_tests": "3/3 PASS",
+    "postrestart_hashes": "4/4 MATCH",
+    "backend_service": "active/running",
+    "backend_pid_before": 5074,
+    "backend_pid_after": 996869,
+    "mcp_pid_after": 996940,
+    "health_http": 200,
+    "installed_mcp_isolated_tests": "16/16 PASS",
+    "mongodb_agentclient_e2e": "NOT_TESTED"
+  },
+  "boundaries": {
+    "authenticated_browser": "UNAVAILABLE_ORIGIN_CONTEXT",
+    "cdp_9222_9223": "NO_LISTENER",
+    "siwc_oauth": "NOT_VERIFIED",
+    "end_to_end_agent_tool_context": "NOT_VERIFIED",
+    "final_release": "NOT_VERIFIED"
+  },
+  "next_action": "Canario autenticado LibreChat: medir contexto tras filtro, verificar tool_search, nostromo_estado + nostromo_metricas({cwd:'/home/elkakas314/librechat/upstream'}), persistencia Mongo y reconexión; después cabina/SIWC. No fusionar PR #54 todavía."
+}

@@ -1,0 +1,184 @@
+{
+  "schema": "nostromo.e3.resource-siwc-gpu.r0",
+  "recorded_at_utc": "2026-11-19T02:23:22Z",
+  "repository": "elkakas314/libre_chat_vx",
+  "branch": "integration/nostromo-canon-20261118-r1",
+  "tested_source_head": "31eb56360e8b86951d9de5b336871a7237d41146",
+  "published_to_origin_at_recording": false,
+  "cpu": {
+    "work_state": "WORK_ACTIVE; no authentic quiet/idle interval available",
+    "window": {
+      "start_utc": "2026-11-19T02:09:22Z",
+      "end_utc": "2026-11-19T02:09:30Z",
+      "duration_seconds": 8.43,
+      "total_busy_percent": 17.9,
+      "cpu_busy_percent": [17.5, 17.6, 18.0, 18.7],
+      "mem_available_kb": [9351764, 9373112],
+      "swap_free_kb": [1870076, 1870076],
+      "cpu_psi_some_avg10_percent": [4.66, 5.46],
+      "cpu_psi_full_avg10_percent": [0.0, 0.0],
+      "memory_psi_some_full_avg10_percent": 0.0
+    },
+    "process_window": {
+      "start_utc": "2026-11-19T02:10:20Z",
+      "end_utc": "2026-11-19T02:10:26Z",
+      "duration_seconds": 6.12,
+      "system_busy_percent": 24.4,
+      "chrome_14915": {
+        "class": "Snap Chromium renderer; interactive Plasma cgroup",
+        "parent_pid": 5302,
+        "cpu_one_core_percent": 3.6,
+        "rss_mib": [707.7, 695.7],
+        "pss_mib": [579.8, 567.8],
+        "threads": 16,
+        "context_switch_delta": {"voluntary": 174, "involuntary": 43},
+        "read_write_bytes_delta": [0, 0],
+        "classification": "UNKNOWN_PRESERVE_INTERACTIVE_RENDERER"
+      },
+      "chrome_5572": {
+        "class": "Snap Chromium renderer; interactive Plasma cgroup",
+        "parent_pid": 5302,
+        "cpu_one_core_percent": 0.0,
+        "rss_mib": [272.5, 271.5],
+        "pss_mib": [147.6, 146.5],
+        "threads": 14,
+        "context_switch_delta": {"voluntary": 1, "involuntary": 0},
+        "read_write_bytes_delta": [0, 0],
+        "classification": "UNKNOWN_PRESERVE_INTERACTIVE_RENDERER"
+      },
+      "chatgpt_renderer_6506": {
+        "cpu_one_core_percent": 11.11,
+        "rss_mib": [817.5, 810.4],
+        "pss_mib": [692.5, 686.1],
+        "threads": 17,
+        "context_switch_delta": {"voluntary": 280, "involuntary": 162},
+        "classification": "EXPECTED_ACTIVE_WORK_UI"
+      },
+      "chatgpt_gpu_process_5810": {
+        "cpu_one_core_percent": 13.4,
+        "rss_mib": [186.5, 186.3],
+        "pss_mib": [76.6, 76.4],
+        "threads": 17,
+        "context_switch_delta": {"voluntary": 2688, "involuntary": 156},
+        "classification": "EXPECTED_ACTIVE_WORK_UI"
+      },
+      "codex_6403": {
+        "cpu_one_core_percent": 6.54,
+        "rss_mib": [352.7, 350.3],
+        "pss_mib": [296.9, 294.5],
+        "threads": 108,
+        "classification": "EXPECTED_ACTIVE_WORK_EXECUTOR"
+      },
+      "librechat_backend_5074": {"cpu_one_core_percent": 0.0, "rss_pss_mib": [37.6, 12.6]},
+      "nostromo_mcp_5197": {"cpu_one_core_percent": 0.0, "rss_pss_mib": [54.5, 29.5]},
+      "ollama_1320": {"cpu_one_core_percent": 0.0, "rss_pss_mib": [35.9, 32.7]},
+      "mongodb_2424": {"cpu_one_core_percent": 0.49, "rss_pss_mib": [149.4, 149.4]}
+    },
+    "browser_debugging": "No remote-debugging flags or 9222/9223/9333 listener found; no page contents read",
+    "process_scope": "Chrome PID 14915 previously peaked near 98% of one core and PID 5572 near 49%; current interval is low. This Work-active sample does not prove all idle CPU has the same cause.",
+    "other_consumers": {
+      "manojos3_litellm": "active; external boundary; untouched",
+      "docker_mongo_meilisearch_tailscale_cloudflared": "active; preserved",
+      "packagekit_snapd": "active, no restart loop observed",
+      "baloo_akonadi": "no matching process observed",
+      "zombies": "none observed",
+      "user_timers": "none matching",
+      "system_timers": "apt-daily, apt-daily-upgrade, plocate-updatedb, weekly fstrim; snap repair has no next run"
+    }
+  },
+  "local_ci": {
+    "receipt": "operating/sync-receipts/local-ci-31eb56360e8b.json",
+    "log": "operating/sync-receipts/local-ci-31eb56360e8b.log",
+    "exact_head": "31eb56360e8b86951d9de5b336871a7237d41146",
+    "result": "PASS",
+    "main_tests": "274/274",
+    "siwc_artifact": "1/1",
+    "preflight_mocks": "4/4",
+    "local_mcp": "48/48",
+    "visual_smoke": "PASS",
+    "duration_seconds": 47,
+    "execution_policy": "one CPU (CPU3), nice 15, ionice idle; existing dependencies reused via temporary symlink and then unlinked",
+    "resource_samples": 24,
+    "cpu_busy_interval_percent_range": [12.6, 77.2],
+    "cpu_psi_some_avg10_peak_percent": 39.81,
+    "cpu_psi_full_avg10_peak_percent": 0.0,
+    "min_mem_available_kb": 8857496,
+    "swap_free_kb_stable": 1830140,
+    "memory_psi_some_full_avg10_peak_percent": 0.0,
+    "restart_count": 0,
+    "host_runtime_modified": false,
+    "github_actions": false
+  },
+  "gpu": {
+    "device": "NVIDIA GeForce 840M",
+    "pci_id": "10de:1341",
+    "compute_capability": "5.0",
+    "driver": "580.178.04",
+    "vram_total_mib": 4096,
+    "ollama_version": "0.40.16",
+    "ollama_service": "active; NRestarts=0",
+    "configured_global_context_tokens": 6144,
+    "test_request_context_tokens": 2048,
+    "model": "qwen2.5:3b",
+    "model_available_size": "1.9 GB",
+    "test": {
+      "prompt": "Responde únicamente con OK.",
+      "response": "OK",
+      "done": true,
+      "prompt_tokens": 37,
+      "generated_tokens": 2,
+      "load_duration_ms": 6518,
+      "total_duration_ms": 9357,
+      "processor_readback": "100% GPU",
+      "runner": "llamacpp",
+      "peak_vram_mib": 2128,
+      "gpu_utilization_peak_percent": 100,
+      "gpu_temperature_c": [57, 62],
+      "cpu_busy_peak_percent": 54.4,
+      "mem_available_kb": {"before": 9354248, "during_min": 8706268, "after": 9234816},
+      "swap_free_kb": 1870076,
+      "request_keep_alive": 0,
+      "post_test_model_loaded": false
+    },
+    "idle_readback": {"vram_used_mib": 5, "gpu_utilization_percent": 0, "gpu_temperature_c": 59},
+    "power_draw": "N/A from nvidia-smi; hardware did not expose energy readings",
+    "cpu_only_comparison": "DEFERRED; a CPU-only model run during an active Work session could saturate this 4-core Lenovo",
+    "persistent_service_change": "NONE; no model remains loaded"
+  },
+  "ollama_policy": {
+    "systemd_context_environment": "OLLAMA_CONTEXT_LENGTH=6144",
+    "keep_alive_environment": "unset; request-scoped keep_alive=0 verified unload",
+    "max_loaded_models_environment": "unset",
+    "num_parallel_environment": "unset; installed Ollama default is 1",
+    "change_required_for_global_2048_or_keep_alive_policy": "HOST_CONTROL R2 write plus ollama.service restart; no R2 grant is present"
+  },
+  "siwc": {
+    "pr59_head_reviewed": "36a0dc8b43fc89b7a747dd353dcf2928b8882bb8",
+    "pr59_source_commit": "faef16fef1958ede651bdd33245faff8f2aee018",
+    "integrated_paths": [
+      "src/llm/siwcResponsesClient.ts",
+      "tests/siwc-provider-errors-r0.test.ts"
+    ],
+    "change": "Typed HTTP/SSE status, safe provider code, request ID and failure shape; streamed body is actually bounded and canceled after 32,768 bytes.",
+    "focused_tests": "21/21 PASS",
+    "fail_closed_route": "A valid account with NO_ADMITTED_ROUTE throws SIWC_NATIVE_ROUTE_UNAVAILABLE before AgentClient binding; no fallback path exists in that resolver.",
+    "route_input_gap": "nostromoReadNativeInferenceRouteInput is declared and consumed by bootstrap/tests, but no production setter was found in SOURCE. The authenticated live route input cannot be fabricated.",
+    "live_status": "SOURCE_AND_CI_VERIFIED_NOT_DEPLOYED; owner OAuth and live route readback are not proven",
+    "fallback": "429 and incomplete SSE propagate typed errors; no automatic provider retry was added."
+  },
+  "host_authority": {
+    "host": "elkakas314-Lenovo-Z50-70",
+    "kernel_authority": false,
+    "grant_directory_entries": ["restart-canary.lock", "test-grant-0001.lock"],
+    "r2_deploy_or_restart_grant": false,
+    "service_changes": "NONE",
+    "services_restart_count": 0
+  },
+  "official_sources": [
+    "https://developer.nvidia.com/cuda/gpus/legacy",
+    "https://github.com/ollama/ollama/blob/main/docs/gpu.mdx",
+    "https://github.com/ollama/ollama/blob/main/docs/faq.mdx",
+    "https://github.com/ollama/ollama/blob/main/envconfig/config.go",
+    "https://github.com/ggml-org/llama.cpp/blob/master/ggml/src/ggml-cuda/CMakeLists.txt"
+  ]
+}

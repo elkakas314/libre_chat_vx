@@ -1,0 +1,120 @@
+{
+  "schema": "nostromo.e3.live-context-snapshot-tool-schema-breakdown.v1",
+  "captured_at_utc": "2026-11-19T06:28:24Z",
+  "scope": "One real LibreChat agent request for one R0 MCP read; structural live context only",
+  "source": {
+    "repository": "elkakas314/libre_chat_vx",
+    "branch": "integration/nostromo-canon-20261118-r1",
+    "head": "5c64f87d6e4dbdaa2ebdc5c0ef4b37ca6b548e43",
+    "production_cwd": "/home/elkakas314/librechat/upstream",
+    "production_upstream_head": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
+    "agent_sdk": "@librechat/agents 4.0.1",
+    "source_or_runtime_changed": false
+  },
+  "live_context_snapshot": {
+    "conversation_id": "28750dc9-f94d-5fc6-8ca3-07f305808e5d",
+    "agent_id": "agent_9ex2a9buul2cwzyo",
+    "model": "qwen3:4b-instruct-2507-q4_K_M",
+    "request_intent": "one nostromo_estado R0 call",
+    "captured_from": "read-only inspection of the in-memory context snapshot rendered by LibreChat; no prompt or tool result content read",
+    "context_budget": 5837,
+    "max_context_tokens": 6144,
+    "effective_instruction_tokens": 5307,
+    "instruction_tokens": 5307,
+    "system_message_tokens": 2749,
+    "dynamic_instruction_tokens": 0,
+    "tool_schema_tokens": 2558,
+    "summary_tokens": 0,
+    "tool_count_effective": 7,
+    "message_count": 3,
+    "message_tokens": 135,
+    "available_for_messages": 530,
+    "remaining_context_tokens": 395,
+    "per_tool_schema_tokens": {
+      "create_file": 560,
+      "edit_file": 585,
+      "nostromo_directorio_listar_mcp_nostromo-local": 162,
+      "nostromo_estado_mcp_nostromo-local": 72,
+      "read_file": 423,
+      "skill": 441,
+      "tool_search": 315
+    },
+    "reconciliation": {
+      "active_mcp_schema_tokens": 234,
+      "active_mcp_tools": 2,
+      "active_system_file_and_search_tool_tokens": 1883,
+      "active_skill_tool_schema_tokens": 441,
+      "schema_token_sum": 2558,
+      "instruction_plus_message_tokens": 5442,
+      "meter_group_readback": "Messages 135; System prompt 2.7k; System tools 1.9k; MCP tools 234; Skills 441; Free space 395",
+      "deferred_mcp_catalog": "MongoDB readback has 11 selected, 9 deferred and 2 direct; the nine deferred MCP schemas were not in this seven-tool snapshot."
+    }
+  },
+  "live_test": {
+    "user_message_token_count": 43,
+    "elapsed_before_manual_stop_seconds": 51,
+    "tool_calls_dispatched": 0,
+    "final_text_visible": false,
+    "mongo_conversation_document_count": 6,
+    "latest_assistant": {
+      "text_length": 0,
+      "unfinished": true,
+      "error": false,
+      "tool_call_count": 0,
+      "metadata_keys": []
+    },
+    "status": "PARTIAL_STOPPED_NO_DISPATCH"
+  },
+  "resource_samples": {
+    "before": {
+      "at_utc": "2026-11-19T06:21:36Z",
+      "memory_available_kb": 10868748,
+      "swap_free_kb": 144,
+      "cpu_psi_some_avg10": 7.07,
+      "memory_psi_some_avg10": 0,
+      "ollama_ps": "empty",
+      "gpu_temperature_c": 59,
+      "gpu_utilization_pct": 0,
+      "vram_used_mib": 5
+    },
+    "during": {
+      "at_utc": "2026-11-19T06:22:31Z",
+      "memory_available_kb": 10107764,
+      "swap_free_kb": 144,
+      "cpu_psi_some_avg10": 28.01,
+      "cpu_psi_full_avg10": 0,
+      "memory_psi_some_avg10": 0,
+      "ollama_model": "qwen3:4b-instruct-2507-q4_K_M",
+      "ollama_processor": "14% CPU / 86% GPU",
+      "ollama_context": 6144,
+      "llama_server_cpu_pct": 100,
+      "llama_server_rss_kb": 3009844,
+      "gpu_temperature_c": 76,
+      "gpu_utilization_pct": 100,
+      "vram_used_mib": 3050
+    },
+    "after_stop": {
+      "at_utc": "2026-11-19T06:23:30Z",
+      "memory_available_kb": 10243248,
+      "swap_free_kb": 152,
+      "cpu_psi_some_avg10": 10.78,
+      "cpu_psi_full_avg10": 0,
+      "memory_psi_some_avg10": 0,
+      "memory_psi_full_avg10": 0,
+      "model_state": "loaded_idle_keepalive",
+      "gpu_temperature_c": 77,
+      "gpu_utilization_pct": 0,
+      "vram_used_mib": 3050,
+      "llama_server_cpu_pct_in_two_one_second_samples": 0,
+      "system_idle_pct_in_samples": "20.7-42.7"
+    }
+  },
+  "conclusion": {
+    "verified": "The contextual MCP deferral is effective: only two direct MCP definitions (234 tokens) reached the model, while all nine deferred MCP definitions stayed out of the snapshot.",
+    "new_cause_evidence": "Five non-MCP definitions (create_file, edit_file, read_file, skill, tool_search) still contribute 2324 schema tokens on a read-only status request; together with 2749 system-message tokens, they leave only 395 free tokens for the selected turn.",
+    "not_yet_proven": "Which native tools can be safely deferred by the existing registry contract, and whether the system prompt can be shortened without losing required behavior.",
+    "safety": "Stopped only this generation at 51 seconds because CPU/GPU load stayed high with no MCP dispatch. RAM available remained above 10 GB; swap was already full and memory PSI remained zero. No sustained memory leak is established.",
+    "product_pass": false
+  },
+  "next_action": "Inspect the existing native-tool registry and deferred-selection contract; preserve the full catalog but bind only intent-relevant native tools. Do not alter the saved agent or rerun inference until the minimal source change and resource-bounded verification are ready."
+}

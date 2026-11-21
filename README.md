@@ -2,7 +2,13 @@
 
 Repositorio independiente para construir la capa LibreChat de VX13/MANOJOS3/ORÁCULO sin mezclar sus repos, kernels ni autoridades.
 
-## Estado
+## Estado operativo — actualización 18/11/2026 (PR #54)
+
+**Contrato vigente de Work y ejecución:** [NOSTROMO_WORK_OBJECTIVE_CANON_20261118.md](docs/NOSTROMO_WORK_OBJECTIVE_CANON_20261118.md) y [WORK_NOSTROMO_FINAL_EXECUTION_20261118.md](docs/WORK_NOSTROMO_FINAL_EXECUTION_20261118.md). SOURCE en rama `integration/nostromo-canon-20261118-r1`, PR #54 DRAFT. `main` se mantiene sin promover hasta QA + reconciliación HOST.
+
+El runtime en Lenovo y un canario Mongo/MCP tienen evidencia histórica en `CURRENT.json`, pero la instalación integral **no está verificada**. Los apartados de estado de 2026-10 que aparecen más abajo se conservan para trazabilidad, **no son el estado LIVE ni ordenan diferir NOSTROMO a MANOJOS3**. El dueño del host para LibreChat es el Work local cuando realmente tenga terminal autorizada; MANOJOS3 se mantiene externo.
+
+## Estado histórico / SOURCE original (no usar como CURRENT)
 
 `SOURCE_CORE_COMPLETE / GITHUB_FIRST_QA_IN_PROGRESS`
 
@@ -49,3 +55,8 @@ tests/       scaffolding de pruebas
 `READBACK/LIVE > SOURCE > CURRENT > HANDOFF > BLUEPRINT > DOCUMENTACIÓN > MEMORIA > INFERENCIA`
 
 No declarar PASS material sin target exacto + readback + verifier + receipt.
+
+
+## Corte de integración NOSTROMO — 18/11/2026
+
+La rama de revisión `integration/nostromo-canon-20261118-r1` incorpora `main` y Director/E2 mediante [PR #53](https://github.com/elkakas314/libre_chat_vx/pull/53); `main` no se modificó. Leer [canon de integración y forense](docs/NOSTROMO_INTEGRATION_CANON_20261118.md) y el [delta canónico Drive](https://docs.google.com/document/d/1oOiFTIrMD5Lnd05frGZ3HuZf3LgZHBEnAdhkoZvOwFA/edit). Los SOURCE y QA previos no sustituyen la prueba LIVE del Lenovo ni la recuperación del delta MCP local. `NOSTROMO_FULLY_FUNCTIONAL=NOT_VERIFIED`.

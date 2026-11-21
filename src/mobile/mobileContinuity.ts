@@ -7,6 +7,8 @@ export type MobileLibreChatState =
 export interface MobileSignals {
   networkReachable?: boolean;
   backendReachable: boolean;
+  /** Required positive proof of a valid LibreChat session before interactivity. */
+  authenticated?: boolean;
   snapshotAvailable?: boolean;
   snapshotFresh: boolean;
 }
@@ -19,7 +21,8 @@ export function mobileLibreChatState(s: MobileSignals): MobileLibreChatState {
     return snapshotAvailable ? 'OFFLINE_READONLY' : 'UNAVAILABLE';
   }
 
-  if (!s.backendReachable) return 'UNAVAILABLE';
+  // Backend TCP/reachability does not prove authentication. Fail closed.
+  if (!s.backendReachable || s.authenticated !== true) return 'UNAVAILABLE';
   if (!s.snapshotFresh) return 'STALE_READONLY';
   return 'INTERACTIVE';
 }

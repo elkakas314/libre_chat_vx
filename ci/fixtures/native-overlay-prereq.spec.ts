@@ -70,8 +70,16 @@ for (const viewport of [
       if (flag) {
         await launcher.click();
         await expect(context).toBeVisible();
-        await expect(context.getByRole('heading',{name:'Habla. Encarga. Comprueba.'})).toBeVisible();
-        await expect(context.getByText('SOURCE · SIN ACTIVAR')).toBeVisible();
+        await expect(context.getByRole('heading',{name:'Estado de la conversación'})).toBeVisible();
+        await expect(context.getByText(/Esta es una vista; no cambia el agente/)).toBeVisible();
+        if (viewport.label === 'desktop') {
+          const nativeSelector=page.getByTestId('model-selector-button');
+          await context.getByRole('button',{name:'Elegir agente en LibreChat'}).click();
+          await expect(nativeSelector).toHaveAttribute('aria-expanded','true');
+          await nativeSelector.click();
+          await expect(nativeSelector).toHaveAttribute('aria-expanded','false');
+        }
+        await expect(context.getByText('CHAT→MCP NO VERIFICADO')).toHaveCount(0);
         await expect(context.getByTestId('nostromo-autonomo-details')).toHaveCount(0);
         await context.getByRole('button',{name:'Ver modo autónomo NOSTROMO'}).click();
         await expect(context.getByTestId('nostromo-autonomo-details')).toBeVisible();
@@ -84,8 +92,11 @@ for (const viewport of [
         await expect(hub).toBeVisible();
         await expect(hub.getByText('Centro de capacidades')).toBeVisible();
         await expect(hub.locator('[data-hub-item="nostromo-mcp"]')).toBeVisible();
+        await hub.locator('[data-hub-item="nostromo-mcp"] > details > summary').click();
         await expect(hub.locator('[data-hub-item="nostromo-terminal"]')).toBeVisible();
-        await expect(hub.getByText('MCP no instalado', {exact:false})).toBeVisible();
+        await expect(hub.locator('[data-hub-item="nostromo-git"]')).toBeVisible();
+        await expect(hub.locator('[data-hub-item="nostromo-files"]')).toBeVisible();
+        await expect(hub.getByText('MCP sin vínculo LIVE verificado', {exact:false})).toBeVisible();
         await expect(hub.getByRole('button',{name:/ejecutar/i})).toHaveCount(0);
         await context.getByRole('button',{name:'Ocultar Tentáculo Hub'}).click();
         await expect(context.getByTestId('nostromo-tentaculo-hub')).toHaveCount(0);
@@ -97,17 +108,19 @@ for (const viewport of [
         await expect(context.getByTestId('tentaculo-focus')).toHaveCount(0);
         await modes.getByRole('button',{name:'VX13'}).click();
         await expect(modes.getByRole('button',{name:'VX13'})).toHaveAttribute('aria-pressed','true');
-        await expect(context.getByRole('heading',{name:'Habla. Encarga. Comprueba.'})).toHaveCount(0);
+        // Encabezado y telemetría de chat son globales; no desaparecen al enfocar VX13.
+        await expect(context.getByRole('heading',{name:'Estado de la conversación'})).toBeVisible();
+        await expect(context.getByTestId('vx-live-activity')).toBeVisible();
         await expect(context.getByTestId('nostromo-tentaculo-hub')).toHaveCount(0);
-        await expect(context.getByTestId('tentaculo-focus').getByText('Sin conectar')).toBeVisible();
+        await expect(context.getByTestId('tentaculo-focus').getByText('Enlace sin verificar')).toBeVisible();
         await modes.getByRole('button',{name:'ORÁCULO'}).click();
         await expect(context.getByTestId('tentaculo-focus').getByRole('heading',{name:'ORÁCULO'})).toBeVisible();
         await modes.getByRole('button',{name:'MANOJOS'}).click();
         await expect(context.getByTestId('tentaculo-focus').getByRole('heading',{name:'MANOJOS'})).toBeVisible();
-        await context.getByRole('button',{name:'Volver al chat'}).click();
+        await context.getByRole('button',{name:'Volver al contexto'}).click();
         await expect(context.getByTestId('tentaculo-focus')).toHaveCount(0);
         await expect(modes.getByRole('button',{name:'NOSTROMO Autónomo'})).toHaveAttribute('aria-pressed','true');
-        await expect(context.getByRole('heading',{name:'Habla. Encarga. Comprueba.'})).toBeVisible();
+        await expect(context.getByRole('heading',{name:'Estado de la conversación'})).toBeVisible();
         await snap('context-open');
         await context.getByRole('button', { name:'Ver detalles técnicos' }).click();
         await expect(context.getByText('Observaciones LIVE: no verificadas.')).toBeVisible();

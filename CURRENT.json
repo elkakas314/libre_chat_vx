@@ -1,6 +1,266 @@
 {
+  "e5_authenticated_status_20261120": {
+    "status": "R0_STATUS_VERIFIED_GENERAL_AUTONOMY_PENDING",
+    "agent": "agent_9ex2a9buul2cwzyo",
+    "configured_model": "qwen3:4b-instruct-2507-q4_K_M",
+    "authenticated_receipt": "nostromo-receipt:57e7bac937fcc3b937a74995f8bc696c31d6984618e7546888fe3fe5ce62a1c7",
+    "recovered_after_backend_restart": true,
+    "receipts": [
+      "operating/sync-receipts/e5-authenticated-status-cockpit-20261120.json",
+      "operating/sync-receipts/e5-activity-live-reconciliation-20261120.json"
+    ],
+    "final_verified": false
+  },
+  "e4_p0_patch_install_20261120": {
+    "status": "E4_P0_HOST_PATCH_INSTALLED_VERIFIED_E2E_PENDING",
+    "source_head": "0a52843124815ab994ac833945ea600755de1013",
+    "host": "elkakas314-Lenovo-Z50-70",
+    "backend_pid": 996869,
+    "mcp_pid": 996940,
+    "installed_hook_sha256": "d4cecf1014eb726571e9c22432c50c609c63356bedb090a28f66ec1a10bcea42",
+    "backups": "/home/elkakas314/librechat/nostromo/backups/p0-localcodingtools-20261120-0a528431",
+    "authority": "EXISTING_HOST_CONTROL_OPERATOR_MODE_R2_NO_GRANT_CREATED",
+    "tests": "3/3 PATCH_SOURCE; 16/16 INSTALLED_MCP_ISOLATED; HEALTH_HTTP_200",
+    "unverified": [
+      "AGENTCLIENT_TOOL_DISPATCH",
+      "MONGO_RECONNECT_POST_PATCH",
+      "SIWC",
+      "COCKPIT_LIVE"
+    ],
+    "receipt": "operating/sync-receipts/e4-hostcontrol-localcodingtools-p0-20261120.json"
+  },
   "schema": "libre-chat-vx.current.v2",
-  "status": "SOURCE_MAIN_PR25_FOUR_MODES_TENTACULO_HUB_LOCAL_MCP_LIVE_GATED",
+  "status": "E3_PUBLISHED_SOURCE_HOST_R2_PENDING_WORK_ACTIVE_CPU_SAMPLE_RECORDED_REAL_IDLE_UNVERIFIED",
+  "latest_native_tool_deferral_candidate": {
+    "receipt": "operating/sync-receipts/e3-local-tool-contextual-deferral-candidate-20261119.json",
+    "captured_at_utc": "2026-11-19T06:40:58Z",
+    "source_base_head": "5c64f87d6e4dbdaa2ebdc5c0ef4b37ca6b548e43",
+    "candidate_files": [
+      "deployment/librechat-agents/deferred-instance-filter.mjs",
+      "deployment/librechat-agents/deferred-instance-filter.test.mjs",
+      "deployment/librechat-agents/README.md"
+    ],
+    "focused_test": "3/3 PASS",
+    "installed_package_dry_run": "@librechat/agents@4.0.1; AgentContext already patched; local coding tool source/CJS/ESM exact patches available",
+    "runtime_changed": false,
+    "backend_restarted": false,
+    "live_mcp_acceptance": false,
+    "status": "SOURCE_CANDIDATE_TESTED_NOT_DEPLOYED"
+  },
+  "latest_native_tool_deferral_publication": {
+    "receipt": "operating/sync-receipts/e3-local-tool-deferral-publication-readback-20261119.json",
+    "source_commit": "6f726257ea743d5d3b114a598021641332e98816",
+    "branch_remote_readback": "MATCH",
+    "pr54_head_readback": "MATCH_DRAFT_OPEN",
+    "host_deployment": "WAITING_FOR_EXACT_HOST_CONTROL_R2",
+    "status": "SOURCE_PUBLISHED_RUNTIME_UNCHANGED"
+  },
+  "latest_kubuntu_resource_sample": {
+    "receipt": "operating/sync-receipts/e3-kubuntu-work-active-quiet-resource-diagnostic-20261119.json",
+    "captured_at_utc": "2026-11-19T20:33:19Z",
+    "state": "WORK_ACTIVE_QUIET; NOT_REAL_IDLE",
+    "cpu_busy_system_pct": "20.1-27.8 across initial 8s windows",
+    "cpu_psi_some_avg10_pct": "7.52-24.31; full=0",
+    "memory_psi_some_avg10_pct": "0.00-0.29; full=0",
+    "memory_available_kib": "8797056-9994428",
+    "swap_free_kib": "0-584; last measured swap-in/out=0 pages in 8s",
+    "gpu": "GeForce 840M; 0% utilization; 5 MiB VRAM",
+    "main_attributed_processes": [
+      "snap Chromium renderer PID 14915",
+      "ChatGPT PID 6506",
+      "Codex PID 6403"
+    ],
+    "nostromo_runtime": "backend MainThread 0.1% one-core CPU; MongoDB 1.0%; PSS stable in timed 15s sample",
+    "memory_leak": "NOT_ESTABLISHED",
+    "status": "PARTIAL_WORK_ACTIVE_ONLY"
+  },
+  "latest_context_snapshot": {
+    "receipt": "operating/sync-receipts/e3-live-context-snapshot-tool-schema-breakdown-20261119.json",
+    "captured_at_utc": "2026-11-19T06:28:24Z",
+    "context_budget": 5837,
+    "max_context_tokens": 6144,
+    "system_message_tokens": 2749,
+    "effective_tool_schemas": 7,
+    "tool_schema_tokens": 2558,
+    "direct_mcp_tokens": 234,
+    "system_file_search_and_skill_schemas_tokens": 2324,
+    "message_tokens": 135,
+    "remaining_context_tokens": 395,
+    "mcp_dispatch": "none",
+    "assistant_response": "empty; unfinished=true; error=false",
+    "status": "PARTIAL_NOT_PASS"
+  },
+  "latest_live_agent_readback": {
+    "receipt": "operating/sync-receipts/e3-context-observability-runtime-r0-20261119.json",
+    "captured_at_utc": "2026-11-19T06:17:17Z",
+    "conversation_id": "28750dc9-f94d-5fc6-8ca3-07f305808e5d",
+    "context_before": "54/6100 estimated from message history",
+    "context_during_no_tools_control": "5399/5800 (92%)",
+    "followup_user_message_persisted": true,
+    "assistant_response": "empty; unfinished=true; error=false",
+    "tool_dispatch": "none",
+    "backend_user_service": "active; /home/elkakas314/librechat/upstream; @librechat/agents 4.0.1",
+    "context_breakdown": "available in live ON_CONTEXT_USAGE event path; not persisted for this stopped run",
+    "status": "PARTIAL_NOT_PASS"
+  },
+  "p0_live_readback": {
+    "verified_at_utc": "2026-11-18T07:02:56Z",
+    "exact_head_ci": {
+      "head": "dd23d26bf5a6bb2ba9eb7e95856b35d756d1baa3",
+      "run_id": 44249053747,
+      "conclusion": "SUCCESS",
+      "jobs": 6,
+      "verified_at_utc": "2026-11-18T06:51:11Z"
+    },
+    "production_upstream_head": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
+    "official_pr_14118_active_runtime": true,
+    "backend_service": "ACTIVE_AFTER_GOVERNED_HOST_CONTROL_RESTART",
+    "deferred_tools_patch": {
+      "source_commit": "cdd03135f4f749181ae5e277e3bd138b53436cb5",
+      "runtime_script_matches_source": true,
+      "package": "@librechat/agents@4.0.1",
+      "startup_hook": "ExecStartPre",
+      "cjs_sha256": "baf1ed2ad430c6a4df3def5eb479cf61c9916e5817cf985ad175848993ecd23a",
+      "preimages_and_rollback": "PRESERVED"
+    },
+    "conversation": {
+      "conversation_id": "2da11982-20a5-5b32-a18c-0dd00413cba8",
+      "user_message_id": "4e19024f-1eb6-4991-94ca-8190fb06da01",
+      "assistant_message_id": "0321cb30-4c83-47d9-ba00-5fa7b73da4fd",
+      "mcp_actions": 2,
+      "completed": true,
+      "mongo_unfinished": false,
+      "mongo_error": false,
+      "recovered_after_reload": true,
+      "ollama_model": "qwen3:4b-instruct-2507-q4_K_M",
+      "ollama_context_length": 6144,
+      "elapsed_seconds_approx": 300,
+      "bounded_ollama_probe": {
+        "endpoint": "/api/chat",
+        "num_ctx": 6144,
+        "num_predict": 2,
+        "done": true,
+        "done_reason": "length",
+        "prompt_eval_count": 12,
+        "prompt_eval_ms": 2455,
+        "eval_count": 2,
+        "eval_ms": 262,
+        "load_ms": 6686,
+        "total_ms": 9406,
+        "limitation": "Direct bounded Ollama probe; not a LibreChat conversation or provider-error retry"
+      },
+      "openai_compat_route_probe": {
+        "endpoint": "/v1/chat/completions",
+        "http_status": 200,
+        "wall_ms": 8577,
+        "prompt_tokens": 12,
+        "completion_tokens": 2,
+        "total_tokens": 14,
+        "finish_reason": "length",
+        "limitation": "Direct two-token provider request; not a multi-thousand-token LibreChat turn or provider-error retry"
+      }
+    },
+    "orphaned_unfinished_readback": {
+      "verified_at_utc": "2026-11-18T07:18:53Z",
+      "count": 3,
+      "state": "unfinished=true,error=false",
+      "parent_user_messages_complete": true,
+      "predate_current_backend_start": true,
+      "backend_started_local": "2026-11-18T07:31:15+01:00",
+      "error_messages": 0,
+      "generation_jobs_collection_present": false,
+      "interpretation": "Three prior unfinished rows were observed: one is correlated to a manually stopped Qwen3 generation (issue #37 comment 6970191036), and two remain uncorrelated. A new same-chat retry was manually stopped after 120 seconds in this turn; its Mongo row state has not been read back. None of these observations proves the reported Ollama provider error. No Mongo mutation was performed.",
+      "manual_mongo_mutation": false,
+      "classification": "THREE_PRE_RESTART_UNFINISHED_ROWS; ONE CORRELATED TO A MANUALLY STOPPED GENERATION; TWO UNCORRELATED",
+      "known_manual_stop_count": 2,
+      "uncorrelated_count": 2
+    },
+    "host_resource_readback": {
+      "ram_total_mb": 15885,
+      "ram_available_mb": 9460,
+      "swap_total_mb": 2047,
+      "swap_used_mb": 2047,
+      "ollama_context_length": 6144,
+      "ollama_vram_bytes": 3049091235
+    },
+    "remaining_blockers": [
+      "Specific Ollama provider failure remains uncorrelated and unreproduced",
+      "Same-chat retry after preflight error was accepted but produced no visible text in 120s; CPU-heavy latency remains",
+      "Normal response completion and recovery after a real provider error are unverified",
+      "Swap remains saturated (64 kB free during post-stop readback)",
+      "Mongo readback for the newly stopped assistant turn is missing"
+    ],
+    "overall": "PARTIAL_PASS_NOT_FINAL",
+    "latest_runtime_readback": {
+      "verified_at_utc": "2026-11-18T07:50:13Z",
+      "backend_service": "ACTIVE",
+      "backend_api_pid": 383247,
+      "backend_cwd": "/home/elkakas314/librechat/upstream",
+      "production_upstream_head": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
+      "agents_package_version": "4.0.1",
+      "deferred_patch_reapplied_by": "ExecStartPre",
+      "ollama_api_ps": "qwen3:4b-instruct-2507-q4_K_M loaded during same-chat retry; remained loaded but idle after cancellation",
+      "ollama_context_length": 6144,
+      "ollama_model_bytes": 3983320021,
+      "ollama_vram_bytes": 3049091235,
+      "ram_available_mb": 8155,
+      "swap_total_mb": 2047,
+      "swap_free_kb": 64,
+      "llama_server": {
+        "pid": 411176,
+        "state_after_stop": "S",
+        "cpu_seconds": 143.84,
+        "rss_mb": 1268,
+        "threads": 14
+      },
+      "active_hostcontrol_grant_for_install_or_restart": "not observed; no install/restart performed"
+    },
+    "same_chat_retry_20261118": {
+      "conversation_id": "37c3579f-0371-5694-b713-bfe68830ae16",
+      "user_message_id": "dbb90235-85d3-4f17-ab07-99e6cc27ed9f",
+      "assistant_message_id": "dbb90235-85d3-4f17-ab07-99e6cc27ed9f_",
+      "request_accepted": true,
+      "ui_context_tokens": 5468,
+      "ui_context_window_approx": 5800,
+      "ui_context_percent": 94,
+      "ollama_context_length": 6144,
+      "visible_text_produced": false,
+      "stopped_manually_after_seconds": 120,
+      "provider_error_visible": false,
+      "assistant_row_mongo_state": "NOT_READ_BACK",
+      "after_stop_runner_idle": true,
+      "swap_free_after_stop_kb": 64,
+      "conclusion": "Same-chat follow-up accepted and dispatched, but no answer within 120s; this is not a reproduced provider error and does not pass completion/recovery.",
+      "user_requested_tools": 0,
+      "outbound_tool_definitions_count": "NOT_READ_BACK"
+    },
+    "post_stop_reload_readback_20261118": {
+      "verified_at_utc": "2026-11-18T07:56:39Z",
+      "conversation_id": "37c3579f-0371-5694-b713-bfe68830ae16",
+      "user_message_id": "dbb90235-85d3-4f17-ab07-99e6cc27ed9f",
+      "assistant_message_id_after_reload": "bb81170a-77a2-490e-b5bb-939be356ffb9",
+      "user_follow_up_visible": true,
+      "assistant_row_visible": true,
+      "assistant_text_empty": true,
+      "regenerate_control_visible": true,
+      "composer_available": true,
+      "parent_rejection_visible": false,
+      "mongo_direct_readback": false,
+      "interpretation": "The app reloaded the stopped follow-up and assistant row. This proves UI recovery/persistence through the app but not direct Mongo state or a completed answer."
+    },
+    "agent_builder_readback_20261118": {
+      "verified_at_utc": "2026-11-18T07:56:39Z",
+      "agent": "NOSTROMO",
+      "model": "qwen3:4b-instruct-2507-q4_K_M",
+      "instruction_text_is_concise": true,
+      "selected_tool_sources": [
+        "Artefactos",
+        "nostromo-local MCP"
+      ],
+      "skills": "Off; 0 available",
+      "scope_note": "The UI showed two selected tool sources, not two individual MCP tools; no tool removal or catalog reduction was performed."
+    }
+  },
   "repository": "elkakas314/libre_chat_vx",
   "branch": "main",
   "source_evidence_cutoff_head": "8a341487f5694997744e8012c36056d705ca5138",
@@ -439,5 +699,2792 @@
     "renamed": false,
     "local_installation": "NO_VERIFICADO",
     "material_verified": false
+  },
+  "integration_review_20261118": {
+    "evidence_class": "SOURCE_REMOTE_AND_EXTERNAL_HOST_REPORT_SEPARATE",
+    "workflow": "REVIEW_BRANCH_NOT_MAIN",
+    "canonical_branch": "integration/nostromo-canon-20261118-r1",
+    "base_main_sha": "8e642eb1238f9b35f18a070d6a754fede4b432fb",
+    "director_merged_sha": "f3de4a3e873ae09a2b48a6509c7278ab764c2e81",
+    "integration_merge_sha": "394f77e7582e3e0fe40658252ef85e21e5005a96",
+    "pr": 53,
+    "evidence": "docs/NOSTROMO_INTEGRATION_CANON_20261118.md",
+    "drive_delta": "https://docs.google.com/document/d/1oOiFTIrMD5Lnd05frGZ3HuZf3LgZHBEnAdhkoZvOwFA/edit",
+    "director_tree_identical_to_integration_at_merge": true,
+    "exact_head_ci": "PENDING_REVALIDATION_AFTER_INTEGRATION",
+    "local_unique_changes": "NOT_YET_IMPORTED_FROM_ACTIVE_MCP",
+    "material_host_evidence": "WORK_REPORTED_NOT_VERIFIED_IN_THIS_GIT_SNAPSHOT",
+    "state": "SOURCE_REVIEW_INTEGRATED_HOST_FULL_CLOSEOUT_INCOMPLETE",
+    "do_not_touch": [
+      "main",
+      "host_runtime",
+      "external_MANOJOS3",
+      "external_VX13",
+      "external_ORACULO"
+    ],
+    "note": "Historical top-level SOURCE/LIVE fields below retain their prior evidence cutoff; they are not 2026-11-18 runtime readbacks."
+  },
+  "live_host_receipt_20261118": {
+    "evidence_class": "HOST_LIVE_READBACK_AND_CONVERSATION_RESULT",
+    "pr": 54,
+    "head": "16a184348b8ad78eb1bd627b24fb1ef22fcc199d",
+    "ci": "NO_PR_TRIGGERED_RUNS_RETURNED_FOR_CURRENT_HEAD; PRIOR_RUN_RECEIPT_REMAINS_IN_PROGRESS",
+    "agent": {
+      "id": "agent_9ex2a9buul2cwzyo",
+      "provider": "Ollama",
+      "model": "qwen3:4b-instruct-2507-q4_K_M",
+      "maxContextTokens": 6144,
+      "catalog_selected": 11,
+      "deferred_schemas": 9,
+      "legacy_or_other_authority_tools_selected": 0
+    },
+    "backend": {
+      "service": "vx-backend.service",
+      "state": "ACTIVE_AFTER_ONE_RESTART",
+      "compatibility_patch": "APPLIED_AND_READ_BACK_IN_AGENTS_4.0.1_SOURCE_CJS_ESM",
+      "health": "HTTP_200",
+      "main_pid": 324302,
+      "runtime_head": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
+      "official_pr_14118_fix": "PRESENT_IN_ACTIVE_SOURCE",
+      "service_exec_start_pre": "DEFERRED_FILTER_APPLY_AND_READBACK",
+      "runtime_api_module": "/home/elkakas314/librechat/upstream/packages/api/dist/index.cjs",
+      "compiled_pr_14118_markers": [
+        "beforeErrorPublication",
+        "persistencePending"
+      ]
+    },
+    "ollama": {
+      "context_length": 6144,
+      "state": "ACTIVE_AFTER_ONE_RESTART",
+      "health": "API_VERSION_0.40.16",
+      "model": "qwen3:4b-instruct-2507-q4_K_M",
+      "runner": "llamacpp",
+      "size_vram_bytes": 3049091235,
+      "live_model_loaded_during_tool_test": true
+    },
+    "conversation_test": {
+      "first_attempt": "PREFLIGHT_REJECTED_13_TOOLS_8454_INSTRUCTION_TOKENS",
+      "second_conversation_id": "7aa3da6f-8e7e-5c04-9b44-b054daee4eeb",
+      "context_used": 5381,
+      "result": "STOPPED_AFTER_4_MINUTES_WITHOUT_RESPONSE_OR_MCP_CALL",
+      "mongo_user_message_persisted": true,
+      "mongo_assistant_text_length": 0,
+      "mcp_pass": false
+    },
+    "resource_readback": {
+      "MemAvailable_kb": 8725860,
+      "SwapFree_kb": 6272,
+      "llama_server_cpu_percent": 98.5,
+      "llama_server_rss_kb": 1297340,
+      "load_average_1m": 6.76
+    },
+    "cleanup": {
+      "target": "/home/elkakas314/.npm/_cacache",
+      "classification": "REGENERABLE_NPM_CACHE_NO_ACTIVE_NPM_MUTATION",
+      "allocated_before": 2893242368,
+      "allocated_after": 0,
+      "filesystem": "/dev/sda2",
+      "used_before": 184000573440,
+      "used_after": 181107552256,
+      "available_before": 748820238336,
+      "available_after": 751713259520,
+      "bytes_reclaimed": 2893021184,
+      "deletions": 1,
+      "backend_http": 200,
+      "ollama_http": 200
+    },
+    "post_inference_resources": {
+      "MemAvailable_kb": 9603588,
+      "SwapFree_kb": 6156,
+      "llama_server_in_top5": false
+    },
+    "overall": "LIVE_MCP_AND_PRIOR_SAME_CHAT_RECOVERY_VERIFIED; PREFLIGHT_ERROR_RETRY_ACCEPTED_BUT_SLOW; AUTHENTIC_OLLAMA_ERROR_PATH_PENDING; PRODUCT_INCOMPLETE",
+    "patch": {
+      "package": "@librechat/agents",
+      "version": "4.0.1",
+      "source_commit": "cdd03135f4f749181ae5e277e3bd138b53436cb5",
+      "startup_hook": "ACTIVE_AND_IDEMPOTENT",
+      "script_sha256": "df61585464616452899fe3f41601334f69a5b8e07d29b4bdafd1bad7dbae6f5c",
+      "preimage_ts_sha256": "2955bf1b2365856b47e24be5f1f58c2f7d2f5b18097d1f83e3cb5839763ebf21",
+      "installed_cjs_sha256": "baf1ed2ad430c6a4df3def5eb479cf61c9916e5817cf985ad175848993ecd23a",
+      "installed_esm_sha256": "2da375f4534cbff1e34101c48dfed93ef504f617911a8a0e335f0e8ef0e1c969",
+      "source_matches_installed_script": true
+    },
+    "conversation_test_latest": {
+      "conversation_id": "36dc49fd-bfe9-585b-8d08-79adb2ca1e43",
+      "chat_reloaded": true,
+      "recovery_after_manual_stop": "FOLLOW_UP_ACCEPTED_AND_COMPLETED",
+      "assistant_tool_message_id": "2978ce6a-f05e-45ba-b2ab-b54c5ad45002",
+      "mcp_tool": "nostromo_estado_mcp_nostromo-local",
+      "mcp_tool_duration_seconds": 0.1,
+      "visible_result": true,
+      "mongo_rows": 6,
+      "mongo_error_rows": 0,
+      "manual_stop_row": {
+        "message_id": "36a712ce-7473-45e5-ae4c-9975195e6b9d",
+        "text_length": 0,
+        "error": false,
+        "unfinished": true
+      },
+      "follow_up_row": {
+        "message_id": "3c23fe24-0b39-4bc1-a922-ed6ff87d1306",
+        "text_length": 2,
+        "error": false,
+        "unfinished": false
+      },
+      "tool_reply_row": {
+        "message_id": "2978ce6a-f05e-45ba-b2ab-b54c5ad45002",
+        "content_types": [
+          "tool_call",
+          "text"
+        ],
+        "tool_names": [
+          "nostromo_estado_mcp_nostromo-local"
+        ],
+        "error": false,
+        "unfinished": false
+      },
+      "user_text_not_recorded": true
+    },
+    "resource_readback_latest": {
+      "llama_server_cpu_percent": 99.9,
+      "llama_server_rss_kb": 1297792,
+      "MemAvailable_gib": 8.1,
+      "SwapFree_kib": 17,
+      "model_context_length": 6144,
+      "test_duration_before_manual_stop_seconds": 120
+    },
+    "error_path": {
+      "reported_ollama_exception_reproduced": false,
+      "official_error_turn_persistence_fix_in_live_source": true,
+      "manual_stop_is_not_generation_error": true,
+      "exact_reported_failure_conversation_id_available": false,
+      "status": "PENDING_AUTHENTIC_ERROR_PATH_TEST",
+      "recent_mongo_error_true_rows": 0,
+      "source_unit_tests": {
+        "controller_resumeMetadata": "3 passed; covers initialization error durability, persisted-error follow-up, and failures before assistant save",
+        "generation_job_manager_startup": "2 passed; terminal error publication waits for persistence and reconciliation on persistence failure",
+        "verified_at_utc": "2026-11-18T05:45:57Z",
+        "scope": "SOURCE_UNIT_ONLY_NOT_LIVE_PROVIDER_ERROR"
+      },
+      "live_preflight_retry": "FOLLOW_UP_ACCEPTED; NO_PARENT_NOT_READY; GENERATION_TOO_SLOW_AND_MANUALLY_STOPPED"
+    },
+    "conversation_test_preflight_retry": {
+      "conversation_id": "37c3579f-0371-5694-b713-bfe68830ae16",
+      "original_failure_type": "LibreChat_preflight_context_overflow",
+      "original_assistant_message_id": "d3b4e646-a39c-4c63-8897-2010a11097cd",
+      "original_error_segment_persisted": true,
+      "follow_up_message_id": "7182863d-f11d-497c-90e2-8f04f0a77fd8",
+      "follow_up_accepted_by_backend": true,
+      "assistant_retry_id": "6521d993-617b-43e2-9778-bce70f043f31",
+      "retry_result": "MANUALLY_STOPPED_AFTER_2_MINUTES_WITHOUT_VISIBLE_TEXT",
+      "retry_assistant_error": false,
+      "retry_assistant_unfinished": true,
+      "chat_reloaded_and_rows_restored": true,
+      "this_is_not_an_ollama_provider_error": true
+    }
+  },
+  "e3_conversation_architecture_readback_20261118": {
+    "evidence_class": "HOST_R0_CONFIG_SOURCE_AND_RESOURCE_READBACK",
+    "verified_at_utc": "2026-11-18T13:41:32Z",
+    "pr_head_before_update": "f0993a695678a02c5042b2aa7d2ff79a65586552",
+    "runtime_upstream_head": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
+    "agent_route": {
+      "configured_endpoint": "Ollama",
+      "remote_free_provider": "NOT_CONFIGURED_OR_VERIFIED",
+      "decision_bridge": "SOURCE_PURE_NOT_BOUND_TO_NATIVE_AGENT_REQUEST",
+      "cloudflare_gateway": "SOURCE_ONLY_NOT_CONFIGURED_IN_RUNTIME_YAML",
+      "siwc": "DISABLED; SOURCE_CLIENT_TEXT_ONLY_NO_TOOLCALLS",
+      "openrouter_mcp": "UNAVAILABLE_IN_CURRENT_WORK_TOOL_INVENTORY"
+    },
+    "memory_and_context": {
+      "native_memory": "DISABLED; runtime YAML has no memory block",
+      "summarization": "ENABLED_BY_PINNED_DEFAULT; falls back to agent provider/model",
+      "modelSpecs": "ABSENT_FROM_RUNTIME_YAML",
+      "no_new_inference_or_compaction": true
+    },
+    "management": {
+      "agent_management_oidc_m2m": "ABSENT_FROM_RUNTIME_YAML",
+      "host_control_kernel_authority": false,
+      "persistent_r2_grant": "NOT_OBSERVED; grants directory had lock files only"
+    },
+    "resources": {
+      "service": "vx-backend.service",
+      "service_state": "active",
+      "main_pid": 503674,
+      "mem_available_kb": 9671564,
+      "mem_total_kb": 16267088,
+      "swap_free_kb": 60,
+      "swap_total_kb": 2097148,
+      "memory_psi_some_avg10_percent": 0,
+      "memory_psi_full_avg10_percent": 0,
+      "gpu_utilization_percent": 0,
+      "vram_used_mib": 5,
+      "vram_total_mib": 4096,
+      "gpu_temperature_c": 41,
+      "ollama_loaded_model": false,
+      "vmstat_swap_in_kb_per_s": 0,
+      "vmstat_swap_out_kb_per_s": 0,
+      "vmstat_cpu_idle_percent": 97
+    },
+    "result": "LIVE_REMOTE_ROUTING_AND_MEMORY_NOT_VERIFIED; PRODUCT_INCOMPLETE"
+  },
+  "e3_node24_runtime_readback_20261118": {
+    "evidence_class": "HOST_R0_PROCESS_MAPS_SYSTEMD_AND_GITHUB_READBACK",
+    "verified_at_utc": "2026-11-18T13:45:23Z",
+    "source_review_head_at_observation": "d51025c50303efe40b185303bff8aba4a85f3569",
+    "production_upstream_head": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
+    "service": {
+      "unit": "vx-backend.service",
+      "state": "active",
+      "main_pid": 503674,
+      "systemd_path": "/home/elkakas314/.config/systemd/user/vx-backend.service",
+      "node_path_from_maps": "/home/elkakas314/.nvm/versions/node/v24.21.0/bin/node",
+      "node_version": "24.21.0",
+      "restart_needed_for_node24": false
+    },
+    "mcp": {
+      "pid": 503777,
+      "cmdline_path": "/home/elkakas314/libre_chat_vx-clean/deployment/nostromo-mcp/server.mjs",
+      "in_backend_cgroup": true
+    },
+    "host_control": {
+      "kernel_authority": false,
+      "grants_directory_entries": [
+        "restart-canary.lock",
+        "test-grant-0001.lock"
+      ],
+      "persistent_r2_grant": "NOT_OBSERVED"
+    },
+    "pr": {
+      "number": 54,
+      "state": "OPEN_DRAFT",
+      "merged": false
+    },
+    "workflow_runs_associated_by_connector": [],
+    "result": "NODE24_AND_MCP_RUNTIME_PATH_VERIFIED; HOST_WRITE_GRANT_NOT_OBSERVED; PRODUCT_INCOMPLETE"
+  },
+  "e3_siwc_fetch_test_compatibility_20261118": {
+    "evidence_class": "SOURCE_LOCAL_TEST_AND_GITHUB_READBACK",
+    "verified_at_utc": "2026-11-18T14:02:49Z",
+    "source_commit": "36c6986b0ae4fabcae821230689686e68fbbf054",
+    "source_file": "tests/siwc-responses-client.test.ts",
+    "change": "test fetch stubs use an unknown intermediary cast to accept the extended global fetch type without changing runtime behavior",
+    "typescript_version": "5.9.3",
+    "compilation": "tsc -p tsconfig.json PASS in isolated clone using preinstalled upstream node_modules; no dependency installation",
+    "focused_tests": {
+      "files": [
+        "inference-gateway.test.ts",
+        "nostromo-decision-bridge.test.ts",
+        "siwc-responses-client.test.ts"
+      ],
+      "passed": 19,
+      "failed": 0
+    },
+    "ci": {
+      "connector_pr_workflow_runs": []
+    },
+    "pr_state": "OPEN_DRAFT",
+    "live_router_status": "NOT_CONNECTED_OR_VERIFIED",
+    "product_status": "INCOMPLETE",
+    "readback_status": "CURRENT_ENTRY_READ_FROM_GITHUB_AFTER_TESTS"
+  },
+  "e3_resource_and_hybrid_route_readback_20261118": {
+    "evidence_class": "HOST_R0_EFFECTIVE_CONFIG_RESOURCE_READBACK_PLUS_SOURCE_TEST",
+    "verified_at_utc": "2026-11-18 14:14:00 UTC",
+    "source_head_before_receipt": "17d6b9b3b0b998efb3e9f8df3d291e04f530a413",
+    "mcp_metrics_source": {
+      "files": [
+        "deployment/nostromo-mcp/inspect.mjs",
+        "deployment/nostromo-mcp/tests/inspect.test.mjs"
+      ],
+      "commits": [
+        "c1a240d78445de5d0221f979bdd6719b1d607d72",
+        "17d6b9b3b0b998efb3e9f8df3d291e04f530a413"
+      ],
+      "focused_test": "8/8 PASS; Node 24.21.0",
+      "runtime_deployed": false
+    },
+    "ci": {
+      "workflow_runs": []
+    },
+    "live_route": {
+      "backend": "vx-backend.service active; PID 503674",
+      "runtime_node": "24.21.0",
+      "mcp": "PID 503777; existing live tree retained",
+      "effective_yaml": {
+        "provider": "Ollama",
+        "title_model": "qwen2.5:3b",
+        "nostromo_local_mcp": true,
+        "remote_router": "not configured",
+        "memory_block": "absent",
+        "summarization_block": "absent",
+        "modelSpecs": "absent"
+      },
+      "agent_builder_and_mongo": "not read in this lot; no R0 database query tool; no host exec grant used"
+    },
+    "inference": {
+      "ollama_api_ps": "models=[]",
+      "test_inference": "not run; no long Qwen3 canary"
+    },
+    "resources": {
+      "mem_total_kb": 16267088,
+      "mem_available_kb": 9573064,
+      "mem_available_delta_since_13_41_utc_kb": -98500,
+      "swap_total_kb": 2097148,
+      "swap_free_kb": 6836,
+      "memory_psi_some_avg10_percent": 0,
+      "memory_psi_full_avg10_percent": 0,
+      "cpu_psi_some_avg10_percent": 0.92,
+      "loadavg_1m": 0.07,
+      "process_pss_kb": {
+        "backend_node": 27877,
+        "nostromo_mcp": 31287,
+        "ollama_daemon": 21978
+      },
+      "ollama_daemon_swap_kb": 2100,
+      "runner": "not present in /api/ps; GPU utilization/VRAM not read this snapshot"
+    },
+    "interpretation": "No current evidence of active memory pressure or a sustained leak; one prior/current pair shows about 96 MiB lower MemAvailable, with high file cache. Swap remains almost full, but no interval delta for swap-in/out was measured. This is a snapshot comparison, not a leak test.",
+    "host_change": "none; no install, restart, Mongo mutation, or model inference",
+    "source_product_status": "hybrid router and native persistent memory remain unbound/unverified; product incomplete"
+  },
+  "e3_cloudflare_gateway_tool_contract_20261118": {
+    "evidence_class": "SOURCE_FOCUSED_TEST_AND_GITHUB_READBACK",
+    "verified_at_utc": "2026-11-18 14:20:30 UTC",
+    "source_head": "931020fe5d0fcbce3518805e825b7b2a1ec1843c",
+    "source_commit": "f4334d1c574dc5417f893e1ece7b5eec817b0e76",
+    "test_commit": "931020fe5d0fcbce3518805e825b7b2a1ec1843c",
+    "changed_files": [
+      "src/llm/cloudflareAiGateway.ts",
+      "tests/inference-gateway.test.ts"
+    ],
+    "change": "Cloudflare gateway client now preserves optional OpenAI-compatible function schemas, tool_choice, assistant tool_calls, and tool-result messages across a request.",
+    "test": {
+      "typescript": "5.9.3 focused compile PASS",
+      "node": "24.21.0",
+      "suite": "tests/inference-gateway.test.ts",
+      "passed": 12,
+      "failed": 0,
+      "scope": "SOURCE transport contract with stub HTTP; no provider/network inference"
+    },
+    "readback": {
+      "exact_pr_head": "931020fe5d0fcbce3518805e825b7b2a1ec1843c",
+      "draft": true,
+      "merged": false,
+      "source_blob": "0c01f984a33fcd5819519a703196eeb03bd22d4a",
+      "test_blob": "c3ea89b8c16a1f64badff5baf631a9dd93f43c28",
+      "ci_workflow_runs": []
+    },
+    "live": {
+      "cloudflare_gateway": "not configured or live-verified",
+      "native_agent_binding": "not implemented/verified",
+      "mcp_tool_call": "not exercised"
+    },
+    "post_test_resources": {
+      "mem_available_kb": 9555448,
+      "mem_total_kb": 16267088,
+      "swap_free_kb": 6932,
+      "swap_total_kb": 2097148,
+      "memory_psi_some_avg10_percent": 0,
+      "cpu_psi_some_avg10_percent": 0.89,
+      "loadavg_1m": 0.22,
+      "process_pss_kb": {
+        "backend_node": 27885,
+        "nostromo_mcp": 31287,
+        "ollama_daemon": 21914
+      },
+      "ollama_api_ps": "models=[]",
+      "gpu": "not measured"
+    },
+    "interpretation": "The short SOURCE test left no sign of active memory pressure; MemAvailable changed by about 17 MiB from the prior sample and swap free increased about 96 kB. No inference was run. Swap remains near full; no leak is established.",
+    "host_mutations": false,
+    "product_status": "INCOMPLETE"
+  },
+  "e3_live_agent_builder_r0_20261118": {
+    "evidence_class": "AUTHENTICATED_LIBRECHAT_AGENT_BUILDER_UI_READBACK_PLUS_HOST_CONTROL_R0",
+    "verified_at_utc": "2026-11-18 14:26:41 UTC",
+    "agent": {
+      "id": "agent_9ex2a9buul2cwzyo",
+      "name": "NOSTROMO",
+      "description": "Agente R0 nostromo",
+      "provider": "Ollama",
+      "model": "qwen3:4b-instruct-2507-q4_K_M",
+      "configuration_loaded_in_builder": true
+    },
+    "tools": {
+      "selected_sources": [
+        "Artefactos",
+        "nostromo-local"
+      ],
+      "mcp_tool_count": 11,
+      "selected_mcp_tools": 11,
+      "direct_tools": [
+        "nostromo_estado",
+        "nostromo_directorio_listar"
+      ],
+      "deferred_tools": [
+        "nostromo_terminal_preparar",
+        "nostromo_archivo_leer",
+        "nostromo_git_inspeccionar",
+        "nostromo_metricas",
+        "nostromo_tarea_iniciar",
+        "nostromo_tarea_estado",
+        "nostromo_tarea_cancelar",
+        "nostromo_auditoria_r0",
+        "nostromo_herramientas"
+      ],
+      "skills": "OFF; 0 available"
+    },
+    "advanced": {
+      "subagents_enabled": false,
+      "handoffs": 0,
+      "chain_displayed": "NOSTROMO",
+      "context_window": "not exposed in the read-only Builder view"
+    },
+    "readback_limits": {
+      "direct_expanded_agent_api": "GET /api/agents/agent_9ex2a9buul2cwzyo/expanded returned HTTP 401-style JSON No auth token",
+      "mongo_direct_read": "not performed",
+      "credentials": "not read or copied"
+    },
+    "host_control": {
+      "kernel_authority": false,
+      "grant_directory_entries": [
+        "restart-canary.lock",
+        "test-grant-0001.lock"
+      ],
+      "persistent_r2_grant": "not present"
+    },
+    "mutations": {
+      "agent_saved": false,
+      "host_write": false,
+      "service_restart": false,
+      "conversation_or_mcp_test": false
+    },
+    "interpretation": "The Builder confirms full MCP catalog selection with 2 direct and 9 deferred; Tools 2 in the summary means two selected sources, not two MCP functions. This is authenticated UI state, not a direct Mongo read or proof of a tool call.",
+    "next_action": "Use a supported authenticated R0 agent/database readback channel or have the host owner expose one; then validate the already configured tool selection with a bounded conversation only after a low-cost provider route is verified."
+  },
+  "e3_cabin_activity_truth_20261118": {
+    "evidence_class": "HOST_LIVE_UI_READBACK_SOURCE_TEST_AND_RESOURCE_R0",
+    "verified_at_utc": "2026-11-18 14:34:28 UTC",
+    "live_ui": {
+      "agent_id": "agent_9ex2a9buul2cwzyo",
+      "chat": "new chat, 0 messages, 0 tool calls, idle",
+      "cabin": "opened successfully inside LibreChat",
+      "observed_source_runtime_copy": "The local dirty upstream overlay claimed Qwen2.5 3B and first chat pending; this conflicts with authenticated Builder readback showing Qwen3 4B and with prior MCP conversation receipts.",
+      "agent_model": "Ollama qwen3:4b-instruct-2507-q4_K_M"
+    },
+    "unique_runtime_work": {
+      "path": "/home/elkakas314/librechat/upstream/client/src/components/VX/VXCockpitBridge.tsx",
+      "status": "dirty local file preserved; do not overwrite without reconciliation",
+      "candidate_source_contains_phone_module": true,
+      "runtime_file_contains_phone_module": false,
+      "differences": "Runtime file carries distinct activity/status copy, including stale Qwen2.5 3B and first-chat-pending claims; the PR candidate contains PhoneModule integration not present in this runtime file. The files were not merged or deployed."
+    },
+    "source_fix": {
+      "file": "overlay/upstream/VXCockpitBridge.tsx",
+      "commit": "0cd0cf19cb8e4f033614fcfbe70a029162ad7ff1",
+      "blob": "b6553941bc089b910e75296077e93dbcccaa2084",
+      "change": "Cabin badge now describes tool calls in currently loaded chat; copy explicitly says the card does not prove MCP health or material tool effects. Removes a global unverified label."
+    },
+    "tests": {
+      "tentaculo_hud": {
+        "passed": 11,
+        "failed": 0,
+        "node": "24.21.0"
+      },
+      "native_visual_gate": {
+        "passed": 3,
+        "failed": 0,
+        "node": "24.21.0"
+      },
+      "git_diff_check": "PASS",
+      "dependencies_installed": false
+    },
+    "exact_head_ci": {
+      "head": "0cd0cf19cb8e4f033614fcfbe70a029162ad7ff1",
+      "workflow_runs": []
+    },
+    "resources_after_source_test": {
+      "mem_total_kb": 16267088,
+      "mem_available_kb": 9368196,
+      "swap_total_kb": 2097148,
+      "swap_free_kb": 8,
+      "memory_psi_some_avg10_percent": 0,
+      "memory_psi_full_avg10_percent": 0,
+      "cpu_psi_some_avg10_percent": 2.37,
+      "loadavg_1m": 0.81,
+      "pswpin_pages_since_14_14_utc": 41,
+      "pswpout_pages_since_14_14_utc": 1749,
+      "known_process_pss_kb": {
+        "backend_node": 27905,
+        "nostromo_mcp": 31339,
+        "ollama_daemon": 21870
+      },
+      "known_chrome_swap_kb": [
+        27052,
+        51756,
+        65148
+      ],
+      "ollama_api_ps": "models=[]",
+      "gpu": "not measured"
+    },
+    "interpretation": "Available RAM remains about 8.93 GiB and memory PSI is zero. Swap is effectively full; the 19-minute vmstat delta is about 164 kB in and 6.84 MiB out, not a high sustained rate. Main backend/MCP/Ollama PSS is stable and small; several Chrome processes currently have swapped pages. This does not prove a leak.",
+    "host_changes": false,
+    "agent_settings_saved": false,
+    "live_overlay_deployed": false,
+    "product_status": "INCOMPLETE"
+  },
+  "e3_routing_memory_resource_20261118": {
+    "evidence_class": "HOST_LIVE_READBACK_SOURCE_STATUS_RESOURCE_R0",
+    "verified_at_utc": "2026-11-18T14:39:18Z",
+    "source_branch_head": "f0b83d31ddbfdb147f5094f3ed52e815e91cdace",
+    "pr_54": {
+      "state": "OPEN_DRAFT_UNMERGED",
+      "head": "f0b83d31ddbfdb147f5094f3ed52e815e91cdace",
+      "combined_statuses": []
+    },
+    "runtime": {
+      "backend_service": "vx-backend.service ACTIVE",
+      "backend_pid": 503674,
+      "api_pid": 503699,
+      "mcp_pid": 503777,
+      "upstream": "/home/elkakas314/librechat/upstream",
+      "mcp_source": "/home/elkakas314/libre_chat_vx-clean/deployment/nostromo-mcp/server.mjs",
+      "effective_yaml_sha256": "8ff54c6e4ea8fb1efae786ee8e90c140fb9a65b7ba14fc747585ddcede4be0b9"
+    },
+    "routing_and_memory": {
+      "agent_builder_model_previous_authenticated_readback": "qwen3:4b-instruct-2507-q4_K_M",
+      "yaml_endpoint": "Ollama local only",
+      "title_model": "qwen2.5:3b",
+      "remote_router_or_siwc_configured": false,
+      "native_memory_or_summarization_configured": false,
+      "source_router_binding_to_native_agent": "NOT_FOUND_IN_BRANCH_SOURCE",
+      "free_remote_provider_live_verified": false,
+      "ollama_api_ps": "models=[]",
+      "ollama_effective_context_during_inference": "NOT_MEASURED_NO_INFERENCE"
+    },
+    "resources": {
+      "mem_available_kb_before_after": [
+        9346528,
+        9320796
+      ],
+      "swap_free_kb": 60,
+      "memory_psi_some_full_avg10_percent": 0,
+      "cpu_psi_some_avg10_percent": 2.08,
+      "cpu_psi_full_avg10_percent": 0,
+      "loadavg": [
+        0.96,
+        1,
+        0.82
+      ],
+      "vmstat_sample_swap_in_pages": 0,
+      "vmstat_sample_swap_out_pages": 96,
+      "gpu": "GeForce 840M, 0%, 5/4096 MiB",
+      "interpretation": "Swap remains nearly full; no recent memory PSI full pressure or sufficient evidence of a leak. No inference was launched."
+    },
+    "receipt_links": {
+      "issue_37_router_receipt_comment_id": 6981776917,
+      "issue_37_phone_provenance_corrected_comment_id": 6981658685,
+      "drive_document_id": "1oOiFTIrMD5Lnd05frGZ3HuZf3LgZHBEnAdhkoZvOwFA",
+      "drive_revision_id": "AHj4eMTD0T5tkTkQffdKdWdezf3xrGp4_xFmfrQb2knPjUD3_JEi-bNVHhZPf5BLdilUyxoAHr7aCWlusLxdZEU9eRCeenU4xLR2G4n9KkY"
+    },
+    "local_worktree": {
+      "dirty_checkout_preserved": "/tmp/nostromo-e3-20261118",
+      "dirty_checkout_head": "d51025c50303efe40b185303bff8aba4a85f3569",
+      "dirty_checkout_behind_remote_by_commits": 4,
+      "clean_remote_worktree": "/tmp/nostromo-e3-remote-f0b83d31"
+    },
+    "host_mutation": false,
+    "inference_or_mcp_canary": false,
+    "product_status": "INCOMPLETE_NOT_PASS"
+  },
+  "e3_cabin_source_merge_20261118": {
+    "evidence_class": "SOURCE_CHANGE_TESTED_HOST_PRESERVED",
+    "verified_at_utc": "2026-11-18T15:00:56Z",
+    "source_commit": "0c991b778b6ab986d825f2a5393f37541ae1bbe7",
+    "changes": {
+      "bridge_copy": "Replaced stale/generic connection claims with loaded-conversation activity copy; status says recorded calls do not verify the MCP execution.",
+      "css": "Three-way merged candidate styles with the runtime CSS readback; retains candidate mobile/layout rules and the runtime's unique activity-card styles.",
+      "phone": "Candidate PhoneModule remains a SOURCE-only view; no default device observation is fabricated."
+    },
+    "test": {
+      "suite": "scripts/tests/nostromo-m4-visual-source-contract.test.mjs + scripts/tests/reconcile-native-visual.test.mjs",
+      "passed": 10,
+      "failed": 0,
+      "git_diff_check": "PASS",
+      "three_way_css_output_matches_source": true
+    },
+    "host_visual_preview": {
+      "status": "LOCAL_UNIQUE_WORK_PRESERVED",
+      "bridge_preimage_sha256": "cd4e6bc2016af8aced547a800805712fe00558259ce960221a8b441242ddfb2b",
+      "bridge_candidate_sha256": "25c08769d970c6cfa541580da1f90f0dbf4ccf8ae7f23453581c652be7f44d65",
+      "css_preimage_sha256": "9a647efc4238e51221fe1681cd6351f3d0c7ca1e3e87b112adaac0b941028ea2",
+      "css_candidate_sha256": "30f51dba5a145e015eaf14d04e966aa08d0eb66ed31699017edf00f1513bb8a1",
+      "unique_runtime_state_files_preserved": [
+        "state.ts",
+        "state.spec.ts"
+      ],
+      "deployment_or_restart": false
+    },
+    "github_readback": {
+      "pr": 54,
+      "head": "0c991b778b6ab986d825f2a5393f37541ae1bbe7",
+      "state": "OPEN_DRAFT_UNMERGED",
+      "combined_statuses": [],
+      "workflow_runs": []
+    },
+    "next": "Reconcile the dirty runtime bridge by an explicit reviewed three-way merge; do not apply/restart without the exact local grant."
+  },
+  "e3_interim_r0_resource_and_route_readback_20261118": {
+    "evidence_class": "HOST_R0_RESOURCE_AND_SERVICE_READBACK_PLUS_SOURCE_STATUS",
+    "verified_at_utc": "2026-11-18T15:10:54Z",
+    "related_issue_comment": 6979493485,
+    "host": {
+      "identity": "elkakas314-Lenovo-Z50-70",
+      "cpu_psi_some_avg10_percent": 0.79,
+      "cpu_psi_full_avg10_percent": 0,
+      "load_average_1_5_15_min": [
+        0.35,
+        0.29,
+        0.43
+      ],
+      "mem_total_kb": 16267088,
+      "mem_available_kb": 9677464,
+      "memory_psi_some_avg10_percent": 0,
+      "memory_psi_full_avg10_percent": 0,
+      "swap_total_kb": 2097148,
+      "swap_free_kb": 2820
+    },
+    "runtime": {
+      "backend_service": "vx-backend.service",
+      "backend_state": "active",
+      "backend_main_pid": 503674,
+      "ollama_loaded_models": [],
+      "gpu_model": "NVIDIA GeForce 840M",
+      "gpu_bus": "0000:03:00.0",
+      "gpu_utilization_and_vram": "NOT_MEASURED_IN_THIS_SAMPLE"
+    },
+    "architecture": {
+      "decision_and_inference_router": "SOURCE_ONLY_NOT_BOUND_TO_NATIVE_AGENT_REQUEST",
+      "effective_remote_zero_cost_provider": "NOT_CONFIGURED_OR_VERIFIED",
+      "siwc": "NO_AUTHORIZED_LIVE_SESSION_EVIDENCE",
+      "local_qwen_inference": "SUSPENDED; NO_MODEL_LOADED"
+    },
+    "actions": {
+      "host_files_or_service_changed": false,
+      "inference_or_context_compaction_run": false,
+      "conversation_or_mcp_pass_claimed": false
+    },
+    "result": "NO_CURRENT_MEMORY_PRESSURE; SWAP_REMAINS_NEARLY_FULL; ROUTER_AND_REMOTE_CONVERSATION_NOT_LIVE_VERIFIED",
+    "next": "Use only an already authorized and verified zero-cost route or wait for official user OAuth consent; then perform one resource-bounded native conversation canary and read back MongoDB/backend. Do not increase local context or run long Qwen3 turns."
+  },
+  "e3_node24_and_deferred_filter_runtime_readback_20261118": {
+    "evidence_class": "HOST_R0_PROCESS_SERVICE_AND_INSTALLED_SDK_READBACK",
+    "verified_at_utc": "2026-11-18T15:21:10Z",
+    "head_before_receipt": "9a9b397429e492a0224da25007608b4f494615a8",
+    "service": {
+      "unit": "vx-backend.service",
+      "state": "active",
+      "main_pid": 503674,
+      "loaded_unit_path": "/home/elkakas314/.config/systemd/user/vx-backend.service",
+      "loaded_unit_sha256": "8a6be723fa6114f44da17f47bf2f9985685add3d98b2dc65a2b5e30b0d7996fe",
+      "node_binary_from_process_maps": "/home/elkakas314/.nvm/versions/node/v24.21.0/bin/node",
+      "exec_start_pre": "deferred-instance-filter.mjs --apply --package-root .../node_modules/@librechat/agents",
+      "host_control_r2_grant": "NOT_PRESENT"
+    },
+    "agents_sdk": {
+      "name": "@librechat/agents",
+      "version": "4.0.1",
+      "installed_filter_script_sha256": "df61585464616452899fe3f41601334f69a5b8e07d29b4bdafd1bad7dbae6f5c",
+      "patched_target_files": {
+        "src/agents/AgentContext.ts": "485efdf8f400451e00f19daf41d396ce28cbff63ca00e73a7764edfe204b6e9b",
+        "dist/cjs/agents/AgentContext.cjs": "baf1ed2ad430c6a4df3def5eb479cf61c9916e5817cf985ad175848993ecd23a",
+        "dist/esm/agents/AgentContext.mjs": "2da375f4534cbff1e34101c48dfed93ef504f617911a8a0e335f0e8ef0e1c969"
+      },
+      "patched_pattern_readback": "PASS; old pattern absent in all three files"
+    },
+    "ollama": {
+      "api_ps_models": []
+    },
+    "mutation": {
+      "backup_created": false,
+      "file_changed": false,
+      "service_restarted": false
+    },
+    "result": "NODE24_AND_DEFERRED_FILTER_INSTALLED_READBACK_VERIFIED; NO_CONVERSATION_OR_MCP_E2E_PASS",
+    "next": "Do one bounded real-agent hello/MCP canary through an authenticated UI when interaction is available and host load remains safe; verify final response, Mongo persistence and reload. Keep PR #54 DRAFT."
+  },
+  "e3_live_short_hello_canary_resource_readback_20261118": {
+    "evidence_class": "LIVE_AUTHENTICATED_AGENT_UI_CANARY_AND_HOST_RESOURCE_READBACK",
+    "verified_at_utc": "2026-11-18T15:33:51Z",
+    "head_before_receipt": "dd5194dd11ecb618ac2e55db68696592a4a16937",
+    "canary": {
+      "agent_surface": "LibreChat Agent R0 / My Agents",
+      "model_from_ollama_readback": "qwen3:4b-instruct-2507-q4_K_M",
+      "ollama_runtime": {
+        "runner": "llamacpp",
+        "context_length": 6144,
+        "size_vram_bytes": 3049091235
+      },
+      "turns": {
+        "user_messages": 2,
+        "assistant_rows": 2,
+        "assistant_nonempty_responses": 0,
+        "mcp_calls": 0
+      },
+      "context_ui_tokens": {
+        "first_turn_used": 5347,
+        "first_turn_available_budget": 5800,
+        "second_turn_used": 5380,
+        "second_turn_available_budget": 5800,
+        "after_reload_before_next_turn": 37
+      },
+      "outcome": {
+        "first_turn": "no final text after 22s; stopped",
+        "second_turn_same_chat": "accepted; no final text after 35s; stopped",
+        "reload": "same conversation and both user/assistant row pairs reappeared; assistant rows empty",
+        "direct_mongodb_field_readback": "NOT_PERFORMED"
+      }
+    },
+    "resource_samples": {
+      "before_first": {
+        "mem_available_kb": 9393928,
+        "swap_free_kb": 7388,
+        "cpu_psi_some_avg10_percent": 3.98,
+        "memory_psi_full_avg10_percent": 0,
+        "loadavg_1m": 1.13,
+        "ollama_models": []
+      },
+      "first_during": {
+        "mem_available_kb": 8949268,
+        "swap_free_kb": 16,
+        "cpu_psi_some_avg10_percent": 16.53,
+        "memory_psi_full_avg10_percent": 0.65,
+        "loadavg_1m": 2.97
+      },
+      "after_first_stop": {
+        "mem_available_kb": 8136516,
+        "swap_free_kb": 44,
+        "cpu_psi_some_avg10_percent": 3.38,
+        "memory_psi_full_avg10_percent": 0.03,
+        "loadavg_1m": 2.67
+      },
+      "second_during_peak": {
+        "mem_available_kb": 8075952,
+        "swap_free_kb": 92,
+        "cpu_psi_some_avg10_percent": 18.68,
+        "memory_psi_full_avg10_percent": 0,
+        "loadavg_1m": 4.44
+      },
+      "after_second_stop": {
+        "mem_available_kb": 8189056,
+        "swap_free_kb": 96,
+        "cpu_psi_some_avg10_percent": 3.21,
+        "memory_psi_full_avg10_percent": 0,
+        "loadavg_1m": 3.57,
+        "ollama_model_still_loaded_vram_bytes": 3049091235
+      },
+      "after_natural_unload": {
+        "mem_available_kb": 9542608,
+        "swap_free_kb": 104,
+        "cpu_psi_some_avg10_percent": 1.59,
+        "memory_psi_full_avg10_percent": 0,
+        "loadavg_1m": 1.15,
+        "ollama_models": []
+      }
+    },
+    "interpretation": {
+      "verified": "two short user turns were accepted in one persisted chat; both generated assistant rows remained empty after reload; Ollama unloaded itself and MemAvailable recovered by 1.35GB after expiry",
+      "not_proven": "direct Mongo row fields; exact role/token breakdown of the backend-to-Ollama payload; whether fixed 5.3k UI context is instructions, tools, or both",
+      "safety": "both test turns stopped when response did not arrive and CPU pressure rose; no more inference run"
+    },
+    "result": "LIVE_CHAT_RECOVERY_AND_CONTEXT_ACCEPTANCE_PARTIAL; CONVERSATION_RESPONSE_FAIL; MCP_NOT_EXERCISED; NO_PASS",
+    "next": "Inspect a sanitized request/preflight breakdown by role and source; reduce only demonstrated fixed instruction/tool overhead while preserving catalog and guardrails. Do not repeat inference until the payload/config correction is evidenced. Mongo direct readback remains pending."
+  },
+  "e3_architecture_live_resource_readback_20261118": {
+    "evidence_class": "HOST_R0_LIVE_CONFIG_AND_RESOURCE_READBACK",
+    "verified_at_utc": "2026-11-18T15:45:03Z",
+    "related_issue_comment": 6979493485,
+    "runtime": {
+      "backend": "vx-backend.service active; PID 503674; production CWD /home/elkakas314/librechat/upstream",
+      "effective_yaml": "version 1.3.17; only custom endpoint is local Ollama; three existing local models retained; modelSpecs and explicit memory/summarize blocks absent",
+      "loaded_ollama_models": [],
+      "gpu": "NVIDIA GeForce 840M; 0% utilization; 5/4096 MiB VRAM; 52 C"
+    },
+    "architecture": {
+      "decision_and_inference_router": "SOURCE_ONLY; not bound to native agent request",
+      "remote_zero_cost_provider": "not configured or live verified",
+      "SIWC": "no authorized live session evidence",
+      "librechat_summarization": "source readback says enabled by default unless explicitly disabled; derives provider/model from agent, so this does not create a remote route",
+      "librechat_persistent_memory": "disabled because the effective config lacks the memory block"
+    },
+    "resources": {
+      "mem_available_kb": 9534204,
+      "swap_free_kb": 436,
+      "cpu_psi_some_avg10_percent": 3.88,
+      "memory_psi_some_avg10_percent": 0,
+      "memory_psi_full_avg10_percent": 0,
+      "vmstat_one_second_sample": {
+        "swap_in_pages": 0,
+        "swap_out_pages": 0,
+        "user_percent": 58,
+        "system_percent": 4,
+        "idle_percent": 38,
+        "io_wait_percent": 1
+      }
+    },
+    "actions": {
+      "runtime_changed": false,
+      "restart_or_inference_run": false,
+      "conversation_or_mcp_pass_claimed": false
+    },
+    "result": "LOCAL_QWEN_IDLE_AND_GPU_IDLE; RAM_PRESSURE_NOT_OBSERVED; SWAP_NEAR_FULL; HYBRID_REMOTE_ROUTE_AND_PERSISTENT_MEMORY_NOT_LIVE",
+    "next": "Bind the existing decision/inference route into the native agent request path in reproducible source, then use only an already authorized zero-cost provider or official user OAuth consent for a bounded live conversation test."
+  },
+  "e3_native_inference_route_adapter_20261118": {
+    "evidence_class": "SOURCE_IMPLEMENTATION_AND_TARGETED_TESTS",
+    "verified_at_utc": "2026-11-18T15:59:36Z",
+    "component": "src/librechat/nativeInferenceRouteAdapter.ts",
+    "behavior": [
+      "reuses interpretIntent, bridgeIntentToDecision, NostromoInferenceGateway and chooseHybridLane",
+      "requires a fresh LIVE_READBACK, VERIFIED_ZERO_COST, healthy, quota-available route with capability and context fit",
+      "reserves measured completion tokens before route admission",
+      "maps an admitted route to a native endpoint/model only after admission",
+      "keeps explicit local use limited to simple chat and prevents local selection for tool turns",
+      "returns a non-authoritative handoff candidate only after the existing matching host handoff contract"
+    ],
+    "tests": {
+      "targeted_typescript_check": "PASS",
+      "package_export_typescript_check": "PASS",
+      "native_inference_route_adapter_cases": "6/6 PASS",
+      "git_diff_check": "PASS"
+    },
+    "status": "SOURCE_ADAPTER_IMPLEMENTED; NATIVE_AGENT_CALLSITE_AND_LIVE_PROVIDER_BINDING_PENDING",
+    "limitations": [
+      "no LibreChat native service calls this adapter yet",
+      "no fresh free remote provider or authorized SIWC session is configured",
+      "tests use synthetic route fixtures and do not prove LIVE or HOST behavior"
+    ],
+    "runtime_or_agent_changed": false,
+    "next": "Wire the adapter into the native AgentClient turn initialization using authenticated intent/handoff state, measured context and current provider readbacks; do not silently fall back to the saved local model when no route is admitted."
+  },
+  "e3_native_phone_cabin_binding_20261118": {
+    "evidence_class": "SOURCE_CHANGE_TARGETED_TESTS_HOST_READBACK_NO_DEPLOY",
+    "verified_at_utc": "2026-11-18T16:23:20Z",
+    "source_base_head": "251f9e1506ba6ae7ad89bea2e87feff1342e11df",
+    "pr_before_change": {
+      "number": 54,
+      "state": "OPEN",
+      "draft": true,
+      "merged": false,
+      "head": "251f9e1506ba6ae7ad89bea2e87feff1342e11df"
+    },
+    "changes": [
+      "Visual candidate starts from the exact active Lenovo bridge bytes, preserving its local copy/activity differences; stale Qwen2.5 and first-chat-pending claims replaced with loaded-chat evidence.",
+      "Cabin exposes the phone module and passes the current LibreChat conversation ID into its fallback snapshot without claiming device authentication.",
+      "Phone snapshots without device evidence retain the conversation reference while remaining SOURCE_ONLY, unavailable, unauthenticated, and no-replay."
+    ],
+    "tests": {
+      "phone_module": "6/6 PASS",
+      "native_visual_reconciliation": "4/4 PASS",
+      "targeted_typescript_compile": "PASS using installed upstream TypeScript; no package installation",
+      "git_diff_check": "PASS"
+    },
+    "post_test_resources": {
+      "MemAvailable_kb": 9260060,
+      "SwapFree_kb": 5888,
+      "cpu_psi_some_avg10_percent": 6.81,
+      "cpu_psi_some_avg60_percent": 6.74,
+      "memory_psi_some_avg10_percent": 0,
+      "memory_psi_full_avg10_percent": 0,
+      "vmstat_one_second": {
+        "swap_in_pages": 28,
+        "swap_out_pages": 0,
+        "user_percent": 58,
+        "system_percent": 12,
+        "idle_percent": 30,
+        "io_wait_percent": 1
+      },
+      "gpu": "NVIDIA GeForce 840M; 0%; 5/4096 MiB; 55 C",
+      "ollama_loaded_models": 0
+    },
+    "runtime": {
+      "visual_files_changed": false,
+      "backend_restarted": false,
+      "phone_device_authenticated": false,
+      "phone_live_handoff_verified": false,
+      "llm_router_native_binding": "STILL_PENDING",
+      "inference_run": false
+    },
+    "result": "PHONE_UI_SOURCE_CONNECTED_TO_LOADED_CHAT; DEVICE_AND_RUNTIME_CONNECTIONS_UNVERIFIED",
+    "next": "Keep PR DRAFT; resolve native agent router/provider binding separately. Deploy the visual candidate only through its exact-baseline governed path; authenticate a real phone before claiming mobile connection."
+  },
+  "e3_hybrid_host_readback_20261118": {
+    "evidence_class": "HOST_CONTROL_R0_READBACK_NO_RUNTIME_CHANGE",
+    "verified_at_utc": "2026-11-18T16:32:41Z",
+    "host": "elkakas314-Lenovo-Z50-70",
+    "backend": {
+      "service": "vx-backend.service",
+      "state": "active/running",
+      "working_directory": "/home/elkakas314/librechat/upstream",
+      "exec_start_pre": "/home/elkakas314/librechat/nostromo/tools/deferred-instance-filter.mjs --apply",
+      "config_file_candidate": {
+        "path": "/home/elkakas314/librechat/upstream/librechat.yaml",
+        "sha256": "8ff54c6e4ea8fb1efae786ee8e90c140fb9a65b7ba14fc747585ddcede4be0b9",
+        "contents_read_without_secrets": true,
+        "contains_only_local_ollama_endpoint": true,
+        "memory_block_present": false,
+        "summarization_block_present": false
+      },
+      "effective_yaml_resolution": "UNVERIFIED; service also loads .env and its config-path override presence was not inspected to avoid exposing secrets"
+    },
+    "ollama": {
+      "service": "active/running",
+      "api_ps_status": 200,
+      "loaded_models": 0
+    },
+    "resources": {
+      "MemAvailable_kb": 9275724,
+      "Cached_kb": 7674172,
+      "SwapFree_kb": 6020,
+      "SwapTotal_kb": 2097148,
+      "cpu_psi_some_avg10_percent": 6.2,
+      "cpu_psi_some_avg60_percent": 6.24,
+      "memory_psi_some_avg10_percent": 0,
+      "memory_psi_full_avg10_percent": 0
+    },
+    "route_and_memory": {
+      "router_source_exists": true,
+      "native_agent_callsite": "NOT_BOUND",
+      "verified_zero_cost_remote_route": "NONE_IN_READ_BACK_YAML",
+      "siwc": "CONSENT_AND_LIVE_SESSION_NOT_VERIFIED",
+      "persisted_agent_document_readback": "NOT_AVAILABLE_THROUGH_R0_READ_TOOLS"
+    },
+    "actions": {
+      "runtime_changed": false,
+      "service_restarted": false,
+      "inference_run": false,
+      "secrets_read": false
+    },
+    "result": "NO_CURRENT_OLLAMA_MODEL_LOAD_OR_MEMORY_PRESSURE_OBSERVED; SWAP_NEARLY_FULL; REMOTE_ROUTING_AND_PERSISTENT_MEMORY_NOT_LIVE_VERIFIED",
+    "next": "Obtain a secret-safe presence-only readback of the effective config override and persisted agent route, then bind the existing semantic and inference routers to the native turn using a genuinely live zero-cost route or consented SIWC session."
+  },
+  "e3_siwc_streaming_source_20261118": {
+    "evidence_class": "SOURCE_CHANGE_AND_TARGETED_STUB_TESTS",
+    "verified_at_utc": "2026-11-18T16:52:45Z",
+    "branch": "integration/nostromo-canon-20261118-r1",
+    "head": "75777387b00b7cc17d56bbd92bf2ed7264efe7e5",
+    "pr": {
+      "number": 54,
+      "state": "OPEN",
+      "draft": true,
+      "merged": false
+    },
+    "change": [
+      "SiwcResponsesClient forwards output_text deltas incrementally to a native stream adapter.",
+      "AbortSignal is passed to the Responses fetch request.",
+      "The stream remains unsuccessful until response.completed; truncated stream remains fail-closed."
+    ],
+    "tests": {
+      "targeted_typescript_compile": "PASS using installed upstream TypeScript; no dependencies installed",
+      "siwc_responses_client_tests": "2/2 PASS using a local Responses SSE stub",
+      "git_diff_check": "PASS"
+    },
+    "runtime": {
+      "oauth_account": "NOT_READ_BACK",
+      "consent": "NOT_VERIFIED",
+      "librechat_agentclient_binding": "NOT_CONNECTED",
+      "live_chat": false,
+      "runtime_changed": false
+    },
+    "ci": {
+      "source_sha": "75777387b00b7cc17d56bbd92bf2ed7264efe7e5",
+      "status": "IN_PROGRESS"
+    },
+    "result": "SOURCE_STREAMING_PRIMITIVE_VERIFIED; SIWC_PROVIDER_TO_AGENTCLIENT_BINDING_AND_OFFICIAL_USER_CONSENT_PENDING",
+    "activation_path": "Finish the server-side AgentClient/provider binding and authenticated host-user SIWC connection; then present the official Continue with ChatGPT consent flow in LibreChat."
+  },
+  "e3_siwc_route_admission_and_ci_fix_20261118": {
+    "evidence_class": "SOURCE_CHANGE_TARGETED_TESTS_AND_EXACT_SHA_CI_READBACK",
+    "verified_at_utc": "2026-11-18T17:03:25Z",
+    "branch": "integration/nostromo-canon-20261118-r1",
+    "base_head": "ce8b0e678a5711cbb6bc41c3c5b4ec40700ca745",
+    "changes": [
+      "Existing inference gateway now distinguishes ZERO_COST from SUBSCRIPTION_SHARED plan usage; the latter requires explicit planUsageConsent and never claims zero cost.",
+      "Added SIWC model-route projection from authorized account, visible account catalog, and explicit live model/context/capability readbacks; no capability or context is inferred from a model slug.",
+      "Updated the mock-only CI visual fixture to current honest context-panel labels after the exact-SHA canary failed on obsolete headings and MCP claims."
+    ],
+    "tests": {
+      "siwc_provider_route_and_native_router_tests": "12/12 PASS; TypeScript compiled with the installed upstream compiler",
+      "native_visual_source_contract": "8/8 PASS",
+      "git_diff_check": "PASS"
+    },
+    "ci_readback": {
+      "source_sha": "ce8b0e678a5711cbb6bc41c3c5b4ec40700ca745",
+      "source_check": "IN_PROGRESS_AT_LAST_READBACK",
+      "native_runtime_canary": "FAIL",
+      "failure": "Mock visual fixture expected obsolete heading/text that no longer exist in the current source bridge.",
+      "correction": "ci/fixtures/native-overlay-prereq.spec.ts now asserts current heading, loaded-chat copy, and absence of the obsolete MCP claim."
+    },
+    "runtime": {
+      "agentclient_binding": "NOT_CONNECTED",
+      "chatgpt_consent": "NOT_VERIFIED",
+      "live_conversation": false,
+      "runtime_changed": false
+    },
+    "result": "SIWC_PLAN_ROUTE_ADMISSION_SOURCE_READY; AGENTCLIENT_PROVIDER_BINDING_AND_LIVE_ACTIVATION_PENDING",
+    "next": "Bind the server-side SIWC transport and route readbacks into the pinned AgentClient turn, then offer official consent; rerun exact-SHA CI and host E2E before runtime deployment."
+  },
+  "e3_siwc_agentclient_binding_source_20261118": {
+    "evidence_class": "SOURCE_CHANGE_TARGETED_TESTS",
+    "branch": "integration/nostromo-canon-20261118-r1",
+    "source_sha": "f7fa095445de8f4f11b68238181698de202b8b27",
+    "base_head": "753aa5167117be2579d23be9013c83c6a49d73a8",
+    "changes": [
+      "Added a server-only SIWC fetch wrapper bound to the authenticated LibreChat user ID; it resolves that user's account per request, enforces explicit plan consent and account-visible model selection, forces the official Responses endpoint, store:false and streaming, and injects bearer authorization only at transport time.",
+      "Added an ephemeral AgentClient run-agent clone adapter that preserves NOSTROMO identity, instructions, tools and permissions while leaving the saved agent untouched.",
+      "Added a CI integration canary using the installed @librechat/agents OpenAI model path with a stub Responses stream; it verifies incremental text, account scoping, endpoint, bearer injection, and the persisted agent remains unchanged.",
+      "Exported the binding adapter from the VX package."
+    ],
+    "tests": {
+      "SIWC_transport_and_binding_stub_tests": "3/3 PASS",
+      "installed_LibreChat_Agents_SDK_stream_canary": "1/1 PASS with synthetic OAuth account and stub provider; not LIVE",
+      "project_typescript_no_emit": "PASS",
+      "git_diff_check": "PASS"
+    },
+    "runtime": {
+      "AgentClient_native_callsite": "NOT_YET_CONNECTED",
+      "OAuth_consent": "NOT_VERIFIED",
+      "credential_readback": false,
+      "runtime_changed": false,
+      "live_chat": false
+    },
+    "result": "SIWC_SERVER_TRANSPORT_AND_EPHEMERAL_AGENTCLIENT_BINDING_SOURCE_TESTED; HOST_CALLSITE_AND_AUTHENTICATED_OAUTH_ACTIVATION_PENDING",
+    "next": "Connect this adapter at the pinned upstream AgentClient run construction boundary and add the authenticated LibreChat SIWC consent/session route; then present Continue with ChatGPT and validate a real streamed, persisted conversation."
+  },
+  "e3_siwc_agentclient_callsite_source_20261118": {
+    "evidence_class": "PINNED_AGENTCLIENT_PATCH_SOURCE_AND_STUB_TESTS",
+    "branch": "integration/nostromo-canon-20261118-r1",
+    "source_sha": "5097a985fd678d309adffc672613b0101919cfbb",
+    "base_head": "7f212151363c68155f1664166575e1da114de44a",
+    "upstream": "LibreChat-AI/LibreChat@f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
+    "changes": [
+      "Added a version- and source-hash-guarded patch at the native AgentClient runAgents construction boundary. It resolves only through server app.locals.nostromoSiwc and passes the authenticated LibreChat user, agent, conversation, and messages to the resolver.",
+      "The resolver composes the existing route decision with a per-user authorized SIWC account and account-visible model, then binds the Responses fetch only to an ephemeral clone for that run. No resolver means no behavior change; saved agent configuration is not mutated.",
+      "Added exact-preimage backup, idempotent staging and verified rollback functions. The CI staging command is restricted to a disposable pinned-upstream checkout."
+    ],
+    "tests": {
+      "SIWC_resolver_transport_binding_tests": "4/4 PASS",
+      "installed_Agents_SDK_stream_stub": "1/1 PASS",
+      "pinned_AgentClient_patch_and_rollback_tests": "2/2 PASS",
+      "project_typescript_no_emit": "PASS",
+      "workflow_yaml_parse": "PASS",
+      "git_diff_check": "PASS"
+    },
+    "runtime": {
+      "Lenovo_runtime_changed": false,
+      "pinned_AgentClient_patch_mounted": false,
+      "app_locals_SIWC_resolver_registered": false,
+      "OAuth_consent": "NOT_VERIFIED",
+      "live_conversation": false
+    },
+    "ci": {
+      "source_sha": "5097a985fd678d309adffc672613b0101919cfbb",
+      "status": "PENDING_AFTER_PUSH"
+    },
+    "result": "AGENTCLIENT_RUN_BOUNDARY_PATCH_AND_USER_SCOPED_SIWC_RESOLVER_SOURCE_TESTED; RUNTIME_AND_OAUTH_ACTIVATION_PENDING",
+    "next": "Run the patch only in ephemeral CI and compile the pinned API; then wire the authenticated SIWC account lifecycle and register the per-user resolver in server app locals before offering official consent."
+  },
+  "e3_siwc_agentclient_registration_source_20261118": {
+    "branch": "integration/nostromo-canon-20261118-r1",
+    "head": "05bc44b5544de5257323a590484577b21289e0c7",
+    "changes": [
+      "Export SiwcConnectionService and add registerAgentClient/registerSiwcAgentClientResolver for explicit, per-user resolver registration in LibreChat app.locals.",
+      "Reject a duplicate app.locals.nostromoSiwc registration; the disposer removes only the resolver it installed.",
+      "Extend the exact pinned-upstream SDK canary through app.locals registration, authenticated-user account resolution, Responses streaming, and owned unregister."
+    ],
+    "tests": {
+      "typescript_build": "PASS",
+      "siwc_connection_and_fetch_tests": "6/6 PASS",
+      "installed_agents_sdk_registered_resolver_canary": "1/1 PASS with synthetic transport; not LIVE",
+      "git_diff_check": "PASS"
+    },
+    "exact_head_ci": {
+      "run_id": 44388806391,
+      "head": "05bc44b5544de5257323a590484577b21289e0c7",
+      "build_test": "SUCCESS",
+      "canary_self_test": "SUCCESS",
+      "chromium_source_visual": "SUCCESS",
+      "native_switchboard": "IN_PROGRESS",
+      "pinned_upstream_native_mount": "IN_PROGRESS",
+      "ios_switchboard": "QUEUED"
+    },
+    "runtime": {
+      "backend": "ACTIVE; production upstream f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
+      "app_locals_resolver_registered": false,
+      "oauth_consent": "NOT_VERIFIED",
+      "live_siwc_chat": false,
+      "host_runtime_changed": false
+    },
+    "host_r0": {
+      "verified_at_utc": "2026-11-18T20:14:00Z",
+      "boot_id": "20599a28-a113-48cb-b174-b93dc1d1be43",
+      "kernel_authority": false,
+      "memory_available_kb": 9930720,
+      "swap_used_kb": 768,
+      "cpu_loadavg_1_5_15m": "0.70 0.67 1.01",
+      "cpu_psi_some_avg10_pct": 2.73,
+      "memory_psi_avg10_pct": 0,
+      "reboot_required_marker": "ABSENT_OR_UNREADABLE",
+      "reboot_performed": false
+    },
+    "receipt_issue_37": "https://github.com/elkakas314/libre_chat_vx/issues/37#issuecomment-6990332390",
+    "host_receipt_issue_37": "https://github.com/elkakas314/libre_chat_vx/issues/37#issuecomment-6990413061",
+    "next": "Complete server bootstrap and authenticated SIWC account/consent routes with a locally provisioned protected vault and trusted provider context; only then run owner consent and a real streamed/persisted chat."
+  },
+  "e3_siwc_refresh_recovery_source_20261118": {
+    "evidence_class": "SOURCE_CHANGE_TARGETED_TESTS_AND_GITHUB_READBACK",
+    "verified_at_utc": "2026-11-18T21:31:49Z",
+    "branch": "integration/nostromo-canon-20261118-r1",
+    "source_sha": "79f86edcc6abb57547b4c338aaf3ab851e4d84b2",
+    "changes": [
+      "Refresh responses are staged encrypted in the per-user vault before network JWKS verification; pending credentials cannot authorize inference.",
+      "Rotated credentials promote only after ID-token signature, issuer, audience, subject and freshness checks; failed JWKS verification resumes from pending state without reusing a consumed refresh token.",
+      "Concurrent refresh calls are serialized in-process and scopes are preserved when omitted by the provider."
+    ],
+    "tests": {
+      "project_typescript_no_emit": "PASS",
+      "siwc_agentclient_router_targeted_tests": "18/18 PASS",
+      "pinned_agentclient_route_bootstrap_fixtures": "PASS",
+      "git_diff_check": "PASS"
+    },
+    "exact_head_ci": {
+      "run_id": 44402560742,
+      "head": "7a9b1d52b0f6a595659be11d1105f95850b1dea3",
+      "conclusion": "FAILURE_BLOCKED_BEFORE_JOB_START",
+      "affected_runs": [
+        44402560742,
+        44402560884
+      ],
+      "reason": "GitHub Actions annotation: recent account payments failed or spending limit needs increase; no jobs/steps started.",
+      "source_commit_under_test": "79f86edcc6abb57547b4c338aaf3ab851e4d84b2"
+    },
+    "pull_request": {
+      "number": 54,
+      "state": "OPEN",
+      "draft": true,
+      "head": "7a9b1d52b0f6a595659be11d1105f95850b1dea3"
+    },
+    "host_readback": {
+      "verified_at_utc": "2026-11-18T21:31:49Z",
+      "plane": "HOST_CONTROL",
+      "kernel_authority": false,
+      "backend": "vx-backend.service ACTIVE",
+      "reboot_required_marker": "NOT_RECHECKED_THIS_TURN"
+    },
+    "runtime": {
+      "agentclient_patch": "SOURCE_GUARDED_NOT_ACTIVE_IN_PRODUCTION",
+      "native_route_readback": "MISSING_AUTHENTICATED_HOST_CALLBACK",
+      "oauth_consent": "NOT_VERIFIED",
+      "live_chat": false,
+      "live_mcp": false
+    },
+    "result": "SIWC_REFRESH_ROTATION_SOURCE_TESTED; EXACT_HEAD_CI_BLOCKED_BY_GITHUB_ACCOUNT_BILLING; HOST_ACTIVATION_PENDING",
+    "next": "Implement the authenticated native route-readback callback using verified effective provider/model context and quota evidence; do not infer capabilities/context from model names or the /v1/models catalogue. Reboot remains blocked by absent HOST_CONTROL kernel authority."
+  },
+  "e3_host_inventory_delta_20261118": {
+    "evidence_class": "REUSED_HOST_R0_RECEIPTS_PLUS_BOUNDED_LIVE_READBACK",
+    "verified_at_utc": "2026-11-18T21:33:00Z",
+    "source_receipt": "/home/elkakas314/librechat/nostromo/receipts/20261118-root-sizes-readback.json",
+    "live_readback": {
+      "backend_service": "vx-backend.service ACTIVE",
+      "docker_service": "docker.service ACTIVE",
+      "data_node_path": "present",
+      "meili_data_path": "present",
+      "active_runtime_git": "uncommitted tracked and untracked overlay/source changes; preserved",
+      "third_upstream_git": "deleted package-lock.json; no change made",
+      "current_mcp_source": "existing receipt identifies active process; no new source change"
+    },
+    "cleanup": {
+      "directories_deleted": 0,
+      "bytes_recovered": 0,
+      "redundancy_proven": 0
+    },
+    "reboot": {
+      "kernel_authority": false,
+      "reboot_required_marker": "UNREADABLE_VIA_R0",
+      "performed": false
+    },
+    "limitations": [
+      "Sizes reused from same-day R0 receipt rather than rerun.",
+      "Host-exec size/process probes require exact local authorization unavailable in current HOST_CONTROL readback.",
+      "No root was moved, modified, or deleted."
+    ],
+    "next": "Resolve the authenticated SIWC native-route readback gap, then continue source-vs-host differential reconciliation under an exact R0/R2-capable host grant. Do not reboot until recovery and authority are verified.",
+    "tracked_paths": [
+      {
+        "path": "/home/elkakas314/librechat/upstream",
+        "size": "2.9G nested / 3.2G root",
+        "status": "KEEP_ACTIVE; fresh service active; dirty overlay preserved"
+      },
+      {
+        "path": "/home/elkakas314/librechat/vx",
+        "status": "ABSENT"
+      },
+      {
+        "path": "/home/elkakas314/librechat/nostromo",
+        "size": "285M",
+        "status": "KEEP_DATA; tools/backups/worktrees/receipts/runtime"
+      },
+      {
+        "path": "/home/elkakas314/libre_chat_vx-clean",
+        "size": "29M",
+        "status": "KEEP_ACTIVE_SOURCE; active MCP per receipt"
+      },
+      {
+        "path": "/home/elkakas314/LibreChat",
+        "size": "657M",
+        "status": "ACTIVE_DEPENDENCY; Mongo/Meili/RAG data preserved"
+      },
+      {
+        "path": "/home/elkakas314/upstream",
+        "size": "567M",
+        "status": "UNKNOWN_PRESERVE; fresh status still has deleted package-lock.json"
+      },
+      {
+        "path": "/home/elkakas314/bin",
+        "size": "332K",
+        "status": "PRESERVE_SHARED_EXECUTABLES"
+      },
+      {
+        "path": "/home/elkakas314/vx-audit",
+        "size": "244K",
+        "status": "UNKNOWN_PRESERVE"
+      },
+      {
+        "path": "/home/elkakas314/vx-backup",
+        "size": "6.2M",
+        "status": "PRESERVE_BACKUP"
+      },
+      {
+        "path": "/home/elkakas314/nostromo-workspace-backup.gngRsx",
+        "size": "4.2M",
+        "status": "PRESERVE_BACKUP"
+      },
+      {
+        "path": "/home/elkakas314/servicios-ia",
+        "size": "8.4M",
+        "status": "UNKNOWN_PRESERVE; OpenClaw data retained"
+      },
+      {
+        "path": "/home/elkakas314/openclaw-b-paquete",
+        "size": "80K",
+        "status": "PRESERVE_RECOVERY_STATE"
+      },
+      {
+        "path": "/home/elkakas314/MANOJOS",
+        "size": "141M",
+        "status": "EXCLUDED_OTHER_PROJECT"
+      },
+      {
+        "path": "/home/elkakas314/manojos_3",
+        "size": "50G",
+        "status": "EXCLUDED_ACTIVE_AUXILIARY_PROJECT"
+      }
+    ],
+    "size_receipt_documented_root_count": 12
+  },
+  "e3_siwc_turn_intent_routing_20261118": {
+    "branch": "integration/nostromo-canon-20261118-r1",
+    "source_head": "9436b3cfd348f68b5e017c523c2066c76b37d396",
+    "change": "Renamed the route adapter input from toolCallingRequired to turnNeedsToolExecution. Selected/available Agent tools no longer imply that an ordinary user turn requires research/tools; explicit tool turns still require provider tool capability and completion reserve.",
+    "tests": {
+      "focused_typescript_no_emit": "PASS (focused route adapter test and imported source graph)",
+      "native_inference_adapter": "8/8 PASS (fresh focused compile under /tmp)",
+      "siwc_provider_routes_connection_and_agentclient": "19/19 PASS (existing compiled focused suites)",
+      "git_diff_check": "PASS"
+    },
+    "exact_head_ci": {
+      "run_id": 44405100374,
+      "head": "9436b3cfd348f68b5e017c523c2066c76b37d396",
+      "build_test": "NOT_STARTED; GitHub account billing/spending-limit gate",
+      "canary_self_test": "NOT_STARTED; GitHub account billing/spending-limit gate",
+      "native_switchboard_android_ios": "NOT_STARTED; GitHub account billing/spending-limit gate",
+      "chromium_and_pinned_upstream": "SKIPPED"
+    },
+    "runtime": {
+      "Lenovo_changed": false,
+      "AgentClient_SIWC_binding_live": false,
+      "OAuth_consent": "NOT_VERIFIED",
+      "live_conversation": "NOT_VERIFIED"
+    },
+    "remaining_blocker": "The installed authenticated AgentClient host has no nostromoReadNativeInferenceRouteInput callback supplying fresh model capabilities, context, health, quota, and privacy readbacks. SIWC route selection cannot safely be live-enabled from SOURCE or a model catalog alone.",
+    "next": "Wire the authenticated host readback into the guarded AgentClient binding, then use the existing consent UI; do not activate until real provider evidence and owner consent are available."
+  },
+  "e3_live_siwc_package_delta_20261118": {
+    "evidence_class": "BOUNDED_HOST_R0_READBACK",
+    "readback_date": "2026-11-18",
+    "branch_head_before_receipt": "2f85f35d727dde503cbaae7fc5e7beae4a393efe",
+    "backend": {
+      "unit": "vx-backend.service",
+      "state": "active/running",
+      "main_pid": 5074
+    },
+    "host_control": {
+      "host": "elkakas314-Lenovo-Z50-70",
+      "kernel_authority": false,
+      "material_grant_status": "NOT_READABLE_IN_AVAILABLE_R0_SURFACE; no exact grant_id was supplied to any mutation tool. kernel_authority=false is a separate fact and does not prove absence of a path-specific R2 grant."
+    },
+    "runtime_upstream": {
+      "path": "/home/elkakas314/librechat/upstream",
+      "agentclient_initialize_sha256": "104e4c945a5e008e5ca476c033ed3115260c3c1e15aafa86eb04a9bcc2387522",
+      "agentclient_patch_marker": "ABSENT",
+      "server_index_sha256": "7ace779867986d2c7313cca7930486d352093a8fd2537ef919f2996dca24da57",
+      "routes_index_sha256": "b003cefcb1c7f00b711e3febc45ce493f9282aa56c33dee3f43d9be1a1f6effa",
+      "server_index_siwc_bootstrap_markers": "ABSENT",
+      "working_tree": "DIRTY_WITH_EXISTING_VX_OVERLAY_AND_UNTRACKED_PACKAGE; PRESERVE"
+    },
+    "runtime_vx_package": {
+      "path": "/home/elkakas314/librechat/upstream/packages/librechat-vx",
+      "workspace_reconcile_preview": "BLOCKED_UI_OUT_OF_SYNC_VXCockpitBridge; broad workspace apply not safe",
+      "source_modules_absent": [
+        "siwcProviderRoutes.ts",
+        "siwcOpenAiFetch.ts",
+        "siwcConnectionService.ts",
+        "nativeInferenceRouteAdapter.ts"
+      ],
+      "dist_modules_absent": [
+        "siwcProviderRoutes.js",
+        "siwcOpenAiFetch.js",
+        "siwcConnectionService.js",
+        "nativeInferenceRouteAdapter.js"
+      ],
+      "source_files_matching_canonical": [
+        "chatgptAuthorized.ts",
+        "siwcLoopback.ts"
+      ],
+      "source_files_differing_from_canonical": [
+        "src/index.ts",
+        "siwcIdentity.ts",
+        "siwcSession.ts",
+        "siwcProtectedVault.ts",
+        "siwcResponsesClient.ts",
+        "inferenceGateway.ts"
+      ]
+    },
+    "change": "No host files/services changed. Exact host hashes show the deployed AgentClient base is eligible for the existing guarded patch, but the package it would require is stale/incomplete and its bootstrap has no route-readback source.",
+    "next": "Prepare exact per-file backup/CAS package sync and route-readback source. Query/obtain a target-specific HOST_CONTROL R2 grant through its legitimate local mechanism before any host writes or service restart; do not infer that grant state from kernel_authority.",
+    "targeted_build_candidate": {
+      "path": "/tmp/nostromo-siwc-candidate-bbf55b5",
+      "built_from": "current canonical branch SIWC/router source",
+      "typescript": "focused compile with declarations; PASS",
+      "tests": "22/22 PASS across native route adapter, SIWC service, OpenAI fetch, provider routes, Responses client and connection API",
+      "no_host_apply": true
+    },
+    "additional_runtime_drift": {
+      "nostromoHybrid": "runtime chooses LOCAL_VOICE for preferLocalVoice without preserving research/vision/long-context precedence; canonical source has those guards",
+      "source_or_dist_missing": [
+        "intent/nostromoDecisionBridge",
+        "librechat/nativeInferenceRouteAdapter",
+        "llm/siwcConnectionApi",
+        "llm/siwcConnectionService",
+        "llm/siwcOpenAiFetch",
+        "llm/siwcProviderRoutes"
+      ],
+      "source_and_dist_stale": [
+        "llm/inferenceGateway",
+        "llm/nostromoHybrid",
+        "llm/siwcIdentity",
+        "llm/siwcProtectedVault",
+        "llm/siwcResponsesClient",
+        "llm/siwcSession"
+      ],
+      "matching_dependencies": [
+        "intent/intentInterpreter",
+        "cockpit/systemTarget",
+        "llm/chatgptAuthorized",
+        "llm/siwcLoopback"
+      ]
+    },
+    "resource_readback_after_focused_candidate_tests": {
+      "observed_at_utc": "2026-11-18T22:06:22Z",
+      "scope": "single post-test readback; no before/during sample was captured",
+      "cpu_loadavg_1_5_15m": [
+        0.876,
+        0.718,
+        0.745
+      ],
+      "cpu_psi_some_avg10_pct": 3.49,
+      "cpu_psi_full_avg10_pct": 0,
+      "memory_total_kb": 16267092,
+      "memory_available_kb": 9782764,
+      "memory_psi_some_avg10_pct": 0,
+      "memory_psi_full_avg10_pct": 0,
+      "swap_total_kb": 2097148,
+      "swap_used_kb": 768,
+      "gpu": "NVIDIA GeForce 840M, 4096 MiB total, 5 MiB used, 0% utilization",
+      "ollama_ps": "no model loaded",
+      "backend_process_readback": "service active; node worker RSS about 338 MiB",
+      "interpretation": "No current CPU or memory pressure indicated. No inference model was loaded. Readback does not prove before/during test trend."
+    },
+    "reboot_preparation_readback": {
+      "observed_at_utc": "2026-11-18",
+      "boot_id": "20599a28-a113-48cb-b174-b93dc1d1be43",
+      "kernel": "6.8.0-149-generic",
+      "var_run_reboot_required_marker": "ABSENT",
+      "reboot_performed": false,
+      "decision": "No reboot-required marker at readback; do not reboot merely to apply unspecified updates. HOST_CONTROL target-specific restart/reboot authority remains separate and was not exercised."
+    }
+  },
+  "e3_siwc_hub_consent_mount_test_20261118": {
+    "change": "Added a regression test that renders the native Tentaculo Hub and checks the official SIWC consent control is present while OAuth remains explicitly unverified.",
+    "test": {
+      "typescript_compile": "PASS",
+      "focused_siwc_test_files": 7,
+      "tests_passed": 28,
+      "tests_failed": 0,
+      "result": "PASS",
+      "output": "/tmp/nostromo-siwc-tests.log"
+    },
+    "readback": {
+      "worktree": "/tmp/nostromo-e3-si-681cb6af",
+      "candidate": "/tmp/nostromo-siwc-candidate-bbf55b5",
+      "host_files_or_services_changed": false
+    },
+    "verification_limits": [
+      "This validates source rendering and focused SIWC tests only.",
+      "The active Lenovo Hub/package remains stale; live OAuth consent and SIWC route are not deployed.",
+      "No target-specific HOST_CONTROL R2 grant was supplied or used."
+    ],
+    "next": "Obtain the exact HOST_CONTROL R2 grants for the scoped package/backend files and one vx-backend.service restart, then deploy with per-file preimages/CAS and execute LIVE consent, OAuth, route readback, and chat verification."
+  },
+  "e3_siwc_route_input_and_ci_readback_20261118": {
+    "observed_at_utc": "2026-11-18T22:19:43Z",
+    "source_alignment": {
+      "script": "scripts/nostromo-gh-work-preflight-r0.sh",
+      "repository": "elkakas314/libre_chat_vx",
+      "branch": "integration/nostromo-canon-20261118-r1",
+      "account": "elkakas314",
+      "private": true,
+      "push_permission": true,
+      "local_head": "432bdb08b5ce42bf066c26be4c35c15f3312b065",
+      "remote_head": "432bdb08b5ce42bf066c26be4c35c15f3312b065",
+      "tracked_changes": 0,
+      "untracked_files": 0,
+      "diff_check": "PASS"
+    },
+    "ci_exact_head": {
+      "head": "432bdb08b5ce42bf066c26be4c35c15f3312b065",
+      "workflow": "source-check",
+      "run_id": 44410477649,
+      "conclusion": "FAILURE_BEFORE_JOB_STEPS",
+      "jobs_with_steps_executed": 0,
+      "native_and_source_jobs": "failed in under two seconds with zero steps; dependent jobs skipped",
+      "classification": "NO_CI_TEST_EXECUTION; previous exact-head receipt documents GitHub billing/spending-limit startup rejection. This run has no job log/annotation to independently restate that cause."
+    },
+    "native_e2e_failure_readback": {
+      "older_source_run_id": 44380437969,
+      "failure": "Desktop and mobile Playwright checks timed out waiting for the obsolete button label 'Volver a NOSTROMO'.",
+      "current_source": "ci/fixtures/native-overlay-prereq.spec.ts uses the actual accessible label 'Volver al contexto', matching src/ui/TentaculoHud.tsx; fix is already present in source commit 681cb6a. No rerun result is available for the current HEAD."
+    },
+    "siwc_route_contract": {
+      "source_readback": "deployment/librechat-agents/nostromo-siwc-bootstrap.cjs requires app.locals.nostromoReadNativeInferenceRouteInput; active pinned backend lacks this callback.",
+      "official_models_endpoint": "GET /v1/models returns model slug/display_name for visible account models; the response is not a source of model capabilities, context window, or current quota readback.",
+      "official_plan_usage": "Subscription allowance is shared and usage-limit errors may arrive during streaming; stop on the returned error and do not silently fail over.",
+      "implementation_decision": "Do not infer capabilities or quota from model names, visibility, or OAuth consent. Keep the route fail-closed until authenticated route evidence and a consented account are available."
+    },
+    "host_and_product": {
+      "host_mutated": false,
+      "backend_restarted": false,
+      "oauth_consent_or_live_chat": false,
+      "pr_54": "OPEN_DRAFT_UNMERGED",
+      "main_head": "8e642eb1238f9b35f18a070d6d754fede4b432fb"
+    },
+    "next": "Obtain a consented SIWC account and a real authenticated route-readback source (context, tool need, native model binding, privacy, and current provider admission). Then test SOURCE/native CI on the same current SHA and deploy only with the target-scoped HOST_CONTROL R2 grants."
+  },
+  "e3_native_hud_label_guard_20261118": {
+    "change": "Added a regression test that compares the server-rendered TentaculoHud return button accessible label with the exact locator used by the native desktop/mobile Playwright fixture.",
+    "test": {
+      "typescript_compile": "PASS",
+      "focused_suite": "tests/tentaculo-hud.test.ts",
+      "passed": 12,
+      "failed": 0,
+      "result": "PASS",
+      "output": "/tmp/nostromo-hud-test.log"
+    },
+    "readback": {
+      "fixture_label": "Volver al contexto",
+      "component_label": "Volver al contexto",
+      "runtime_modified": false,
+      "host_modified": false
+    },
+    "limits": [
+      "The test guards SOURCE consistency only; it is not a browser/host visual pass.",
+      "Current exact-head GitHub Actions could not start job steps, so the new test has not run in CI."
+    ],
+    "next": "Run exact-head source and native visual CI when GitHub starts jobs; keep HUD LIVE and mobile gates open until real runtime/mobile evidence is available."
+  },
+  "e3_hud_test_resource_sample_20261118": {
+    "host": "elkakas314-Lenovo-Z50-70",
+    "service_readback": {
+      "unit": "vx-backend.service",
+      "state": "active/running",
+      "main_pid": 5074
+    },
+    "test": {
+      "name": "tentaculo-hud.test.js",
+      "pid": 168442,
+      "result": "12/12 PASS",
+      "elapsed_seconds": 0.165,
+      "runner_rss_peak_kb_observed": 48164,
+      "model_inference": false
+    },
+    "resource_samples": {
+      "before_utc": "2026-11-18T22:29:55Z",
+      "during_utc": "2026-11-18T22:29:56Z",
+      "after_utc": "2026-11-18T22:29:56Z",
+      "memory_total_kb": 16267092,
+      "mem_available_kb": {
+        "before": 9830908,
+        "during_min": 9807520,
+        "after": 9793532
+      },
+      "swap_total_kb": 2097148,
+      "swap_free_kb": 2096380,
+      "cpu_loadavg_1_5_15m": [
+        1.1,
+        1.15,
+        1.02
+      ],
+      "cpu_psi_some_avg10_pct": 2.55,
+      "cpu_psi_full_avg10_pct": 0,
+      "memory_psi_some_avg10_pct": 0,
+      "memory_psi_full_avg10_pct": 0,
+      "gpu": "NVIDIA GeForce 840M, 4096 MiB total, 5 MiB used, 0% utilization",
+      "ollama_ps": "no model loaded"
+    },
+    "interpretation": "No memory pressure, swap churn, or GPU activity observed during this sub-second source test. MemAvailable moved about 36 MiB across the brief sample; one measurement cannot establish a leak or trend. No backend files or service state changed."
+  },
+  "e3_live_backend_http_readback_20261118": {
+    "observed_at_utc": "2026-11-18T22:31:52Z",
+    "host_control": {
+      "plane": "HOST_CONTROL",
+      "host": "elkakas314-Lenovo-Z50-70",
+      "kernel_authority": false
+    },
+    "service": {
+      "unit": "vx-backend.service",
+      "scope": "user",
+      "active_state": "active",
+      "sub_state": "running",
+      "main_pid": 5074,
+      "exec_main_status": 0
+    },
+    "listener": {
+      "address": "127.0.0.1:3080",
+      "process": "MainThread",
+      "pid": 5098
+    },
+    "http": [
+      {
+        "url": "http://127.0.0.1:3080/health",
+        "status": 200,
+        "body": "OK"
+      },
+      {
+        "url": "http://127.0.0.1:3080/",
+        "status": 200,
+        "body_prefix": "LibreChat application HTML"
+      }
+    ],
+    "change": "Read-only R0 checks; no host files, services, databases, or configuration changed.",
+    "limits": [
+      "This verifies the current local backend/frontend HTTP health only; it does not verify the SIWC patch, authenticated conversation, MCP execution, Mongo persistence, or mobile access.",
+      "kernel_authority=false is not evidence about path-scoped HOST_CONTROL R2 grants."
+    ]
+  },
+  "e3_reboot_preflight_r0_20261118": {
+    "observed_at_utc": "2026-11-18T22:38:45Z",
+    "host": "elkakas314-Lenovo-Z50-70",
+    "plane": "HOST_CONTROL",
+    "checks": {
+      "run_directory_reboot_required_marker": "NOT_PRESENT_IN_BOUNDED_DIRECTORY_READBACK",
+      "kernel_authority": false,
+      "installed_updates_pending_reboot": "NOT_CHECKED",
+      "reboot_grant": "NOT_EXPOSED_BY_R0_STATUS"
+    },
+    "decision": "DO_NOT_REBOOT",
+    "reason": "R0 did not establish pending-update state or exact reboot authorization; arbitrary host command requires a real local grant.",
+    "change": "Read-only host status and bounded /run directory listing. No reboot, package operation, host write, or service change."
+  },
+  "e3_siwc_disconnect_source_20261118": {
+    "source_commit": "88fad10d4cb00a142fcc33ecbe1b969ec771ab29",
+    "branch": "integration/nostromo-canon-20261118-r1",
+    "remote_head_matches": true,
+    "change": [
+      "Added authenticated + CSRF-protected POST /api/nostromo/siwc/disconnect.",
+      "Disconnect cancels pending consent, CAS-removes only the authenticated user's encrypted vault record, and reads back absence.",
+      "Added a connected-session UI control; it explicitly states local credentials are deleted while OpenAI-side authorization revocation is handled in the account."
+    ],
+    "verification": {
+      "typescript_5_9_3_build": "PASS",
+      "focused_siwc_tests": "14/14 PASS",
+      "git_diff_check": "PASS",
+      "coverage": [
+        "authenticated identity comes from the LibreChat session, not request body",
+        "CSRF middleware is required for disconnect",
+        "vault deletion rejects stale CAS versions",
+        "service readback confirms the owner record is absent",
+        "disconnecting another user leaves the bound account intact"
+      ]
+    },
+    "resources": {
+      "sample_window_utc": "2026-11-18T22:46:42Z/2026-11-18T22:47:42Z",
+      "mem_available_kb_min": 9391404,
+      "mem_available_kb_after": 9680264,
+      "swap_free_kb": 2096380,
+      "memory_psi_full_avg10": 0,
+      "build_test_peak_rss_kb": 409520,
+      "cpu_psi_some_avg10_before_after": "6.41% / 19.36%",
+      "interpretation": "Available memory recovered after the brief build; swap remained unchanged and memory PSI full was zero. CPU PSI rose during/after the compile window; no inference or production service work ran."
+    },
+    "runtime_status": "SOURCE_ONLY; no OAuth consent, production write, service restart, or live account revocation was performed."
+  },
+  "e3_siwc_sse_tool_namespace_source_20261118": {
+    "observed_at_utc": "2026-11-18T22:56:43Z",
+    "branch": "integration/nostromo-canon-20261118-r1",
+    "source_head_before_change": "ae5ca93b6b695ace14116f4dce0774468958a1fd",
+    "change": "Added a focused SIWC Responses SSE test for a local nostromo_estado function schema: the outbound request uses the nostromo namespace and streamed call names are restored for LibreChat's local tool dispatcher.",
+    "verification": {
+      "typescript_5_9_3_compile_to_temporary_directory": "PASS",
+      "siwc_focused_tests": "12/12 PASS",
+      "git_diff_check": "PASS",
+      "account_or_live_provider_used": false
+    },
+    "resources": {
+      "mem_available_kb_before": 9010416,
+      "mem_available_kb_after": 8543052,
+      "swap_free_kb_before_after": 2096380,
+      "memory_psi_some_avg10_before_after": "0.00% / 0.00%",
+      "memory_psi_full_avg10_before_after": "0.00% / 0.00%",
+      "interpretation": "Available RAM fell about 456 MiB during the short compile/test, swap was unchanged, and memory PSI remained zero; this is not evidence of pressure or a leak."
+    },
+    "limits": [
+      "SOURCE-only fixture; it does not establish an authenticated SIWC account, provider capability/context/quota readback, real AgentClient conversation, local MCP execution, Mongo persistence, or LIVE status.",
+      "The backend still lacks app.locals.nostromoReadNativeInferenceRouteInput; route selection remains fail-closed until a trusted request-scoped host readback is wired."
+    ],
+    "runtime_status": "SOURCE_ONLY; no production files, services, account, or host state changed."
+  },
+  "e3_host_siwc_runtime_delta_r0_20261118": {
+    "observed_at_utc": "2026-11-18T23:02:26Z",
+    "plane": "HOST_CONTROL_R0",
+    "host": "elkakas314-Lenovo-Z50-70",
+    "service": {
+      "unit": "vx-backend.service",
+      "state": "active/running",
+      "working_directory": "/home/elkakas314/librechat/upstream",
+      "entrypoint": "npm run backend",
+      "exec_start_pre": "deferred-instance-filter.mjs applies the guarded @librechat/agents package patch"
+    },
+    "installed_runtime": {
+      "agentclient_initialize_source_contains_siwc_binding": false,
+      "agentclient_initialize_source_contains_native_route_input_callback": false,
+      "librechat_vx_dist_contains": [
+        "siwcProtectedVault.js",
+        "siwcResponsesClient.js",
+        "chatgptAuthorized.js",
+        "siwcIdentity.js",
+        "siwcLoopback.js",
+        "siwcSession.js"
+      ],
+      "librechat_vx_dist_missing": [
+        "siwcConnectionService.js",
+        "siwcConnectionApi.js",
+        "siwcOpenAiFetch.js",
+        "siwcProviderRoutes.js"
+      ]
+    },
+    "other_host_readback": {
+      "libre_chat_vx_clean_exists": true,
+      "libre_chat_vx_clean_root_entries": [
+        "deployment"
+      ],
+      "libre_chat_vx_clean_is_git_repository": false,
+      "nostromo_reports_directory_has_named_20261118_receipts": false
+    },
+    "decision": "SIWC cannot be enabled in this productive runtime: both the guarded AgentClient binding and required compiled SIWC service modules are absent. Do not patch/restart until a governed candidate and exact HOST_CONTROL grant are available.",
+    "scope": "Read-only bounded R0 checks; no host files, services, databases, or processes changed."
+  },
+  "e3_canonical_inventory_documentary_20261119": {
+    "observed_at_local": "2026-11-19",
+    "branch_head_before_receipt_commit": "9ad6ec9e1466fcc26648a7078c4b9c0d84435c7d",
+    "artifacts": [
+      "docs/NOSTROMO_CANONICAL_INVENTORY_CURRENT.json",
+      "docs/NOSTROMO_DRIVE_IDEA_CROSSWALK_CURRENT.json"
+    ],
+    "catalogs_kept_separate": {
+      "drive_capabilities": 119,
+      "drive_idea_lc_rows": 112,
+      "github_requirement_ids": 120,
+      "source_feature_rows": 39,
+      "end_to_end_journey_stages": 16
+    },
+    "verification": {
+      "all_drive_capability_ids_unique": true,
+      "all_github_ids_LC_R001_to_LC_R120_present": true,
+      "all_112_drive_idea_ids_mapped_to_at_least_one_drive_capability": true,
+      "source_feature_row_index_is_not_original_id": true,
+      "json_parse_and_inventory_shape_checks": "PASS",
+      "git_diff_check": "PASS"
+    },
+    "limitations": [
+      "The Drive capability workbook is historical (modified 2026-10-07); its SOURCE statuses are not current runtime truth.",
+      "SPEC.json and TOPOLOGY.json have an 2026-10-08 source cut and refer to an older Git HEAD; used for design/authority rules only.",
+      "Drive docs 00/10/20/30/40 and CURRENT were read as context; their older release states do not override the current E3 branch or HOST_CONTROL readbacks.",
+      "Owner hints and acceptance links remain unassigned or documentary where source matrices do not explicitly provide a mapping; no LIVE status is inferred."
+    ],
+    "runtime_status": "DOCUMENTARY_CANONICAL_INVENTORY; no host mutations or LIVE claims."
+  },
+  "e3_local_ci_and_source_baseline_20261119": {
+    "observed_at_local": "2026-11-19",
+    "source_head": "7ed1863246f6942c570eca68e5569740b8c2250c",
+    "branch": "integration/nostromo-canon-20261118-r1",
+    "pr54": "DRAFT",
+    "pr58": {
+      "head": "74f3da64095ec39b5b820bceeb0e5901943f6c33",
+      "state": "OPEN_DRAFT_NOT_MERGED",
+      "integrated_changes": [
+        "public repository visibility accepted when permissions.push=true",
+        "unknown visibility rejected",
+        "public visibility emits secret-history review warning",
+        "offline 4-case preflight test"
+      ],
+      "external_report_copied": false,
+      "reason": "kept the existing CURRENT/HANDOFF as the single continuity source"
+    },
+    "local_ci": {
+      "runner": "ci/nostromo-local-ci.sh",
+      "runner_commit": "7ed1863246f6942c570eca68e5569740b8c2250c",
+      "lock": "flock on the existing checkout Git dir",
+      "exact_sha": "7ed1863246f6942c570eca68e5569740b8c2250c",
+      "result": "PASS",
+      "exit_code": 0,
+      "scope": [
+        "npm test: TypeScript build + 268 tests",
+        "SIWC npm artifact inclusion: 1/1",
+        "public/private R0 preflight: 4/4",
+        "nostromo check tests: 3",
+        "workspace tests: 7",
+        "local audit tests: 1",
+        "NOSTROMO MCP package/stdio suite: 48/48"
+      ],
+      "receipt": "operating/sync-receipts/local-ci-7ed1863246f6.json",
+      "sanitized_log": "operating/sync-receipts/local-ci-7ed1863246f6.log",
+      "log_sha256": "5ea24c795f43b5cf99ae5e9ea8ad179f42966f69786fa11a64ecfad34d08dd52",
+      "failed_attempt": {
+        "sha": "646bcebf78b0267cc5108a976e5f5b3d03749849",
+        "result": "FAIL",
+        "exit_code": 127,
+        "cause": "workspace had no local tsc; npm clean removed ignored generated dist before the command failed",
+        "recovery": "rerun reused existing TypeScript 5.9.3/dependencies from upstream node_modules through a temporary worktree symlink; successful build recreated dist; symlink removed",
+        "receipt": "operating/sync-receipts/local-ci-646bcebf78b0.json",
+        "sanitized_log_sha256": "50440c1cc9aaf076436907bfe70e8977b5625f2ab740cca4b6a647bc71c8a733"
+      },
+      "resources": {
+        "samples": 15,
+        "minimum_mem_available_kb": 9206144,
+        "minimum_swap_free_kb": 1992444,
+        "maximum_cpu_psi_some_avg10_percent": 23.32,
+        "maximum_cpu_psi_full_avg10_percent": 0.0,
+        "maximum_memory_psi_some_avg10_percent": 0.0,
+        "maximum_memory_psi_full_avg10_percent": 0.0,
+        "node_max_cpu_percent": 286.0,
+        "node_max_rss_kb": 398356,
+        "interpretation": "short build/test load; available memory remained >9 GB and memory PSI stayed zero; no sustained leak inferred"
+      },
+      "host_runtime_modified": false,
+      "github_actions": false,
+      "package_candidate": {
+        "path": "/tmp/nostromo-librechat-vx-0.1.0-7ed1863.tgz",
+        "source_sha": "7ed1863246f6942c570eca68e5569740b8c2250c",
+        "sha256": "1b3302444159a1ef87a429831c74435e8658d8e8b8936b1cc82e2c3d3464a52d",
+        "size_bytes": 213020,
+        "unpacked_bytes": 867569,
+        "entry_count": 452,
+        "essential_missing_live_modules_included": [
+          "siwcConnectionApi.js",
+          "siwcConnectionService.js",
+          "siwcOpenAiFetch.js",
+          "siwcProviderRoutes.js"
+        ],
+        "verified_archive_listing": true,
+        "installed": false,
+        "deployment_blocker": "trusted native route-input callback, owner OAuth consent and exact HOST_CONTROL grants remain open"
+      }
+    },
+    "github_actions_on_prior_sha": {
+      "sha": "2a9b878ca7984e246cab14ee49151f4d5f706f34",
+      "runs": [
+        {
+          "id": 44420952360,
+          "name": "source-check",
+          "result": "CANCELLED"
+        },
+        {
+          "id": 44420952083,
+          "name": "nostromo-native-runtime-ci-canary",
+          "result": "CANCELLED"
+        }
+      ],
+      "reason": "owner requested local CI instead of GitHub Actions; subsequent commits use skip-ci"
+    },
+    "source_baseline": [
+      {
+        "component": "LibreChat native interface and persistence",
+        "source": [
+          "pinned upstream f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
+          "native AgentClient initialize.js"
+        ],
+        "contract": "use the single authenticated native LibreChat conversation and Mongo persistence",
+        "tests": "upstream native browser/live integration not run by local CI",
+        "receipt": "CURRENT.json:e3_host_siwc_runtime_delta_r0_20261118",
+        "material_state": "backend active per host receipt; no authenticated SIWC turn or current Mongo recovery claim"
+      },
+      {
+        "component": "NOSTROMO cockpit, HUD, Hub and system selector",
+        "source": [
+          "src/ui/NostromoCockpit.tsx",
+          "src/ui/TentaculoHud.tsx",
+          "src/ui/TentaculoHub.tsx",
+          "src/ui/ControlDeckView.tsx"
+        ],
+        "contract": "native embedded UI surfaces; no second chat or executor",
+        "tests": "included in 268 SOURCE tests on local CI SHA",
+        "receipt": "operating/sync-receipts/local-ci-7ed1863246f6.json",
+        "material_state": "SOURCE_TESTED; LIVE event wiring not verified"
+      },
+      {
+        "component": "AgentClient SIWC binding",
+        "source": [
+          "deployment/librechat-agents/agentclient-siwc-binding.mjs",
+          "src/llm/siwcOpenAiFetch.ts"
+        ],
+        "contract": "per-authenticated-user ephemeral AgentClient binding before initializeAgent",
+        "tests": "prior focused AgentClient canary 5/5; SIWC SOURCE suite in 268 tests",
+        "receipt": "CURRENT.json:e3_siwc_agentclient_binding_source_20261118",
+        "material_state": "SOURCE_TESTED; productive binding absent"
+      },
+      {
+        "component": "Inference and semantic routing",
+        "source": [
+          "src/llm/inferenceGateway.ts",
+          "src/librechat/nativeInferenceRouteAdapter.ts",
+          "src/intent/intentInterpreter.ts",
+          "src/intent/nostromoDecisionBridge.ts"
+        ],
+        "contract": "one provider router and separate semantic decision; only evidence-backed admission",
+        "tests": "included in 268 SOURCE tests on local CI SHA",
+        "receipt": "operating/sync-receipts/local-ci-7ed1863246f6.json",
+        "material_state": "SOURCE_TESTED; SIWC route reader unavailable and no LIVE routing claim"
+      },
+      {
+        "component": "NOSTROMO MCP",
+        "source": [
+          "deployment/nostromo-mcp/server.mjs",
+          "deployment/nostromo-mcp/tools.mjs"
+        ],
+        "contract": "single existing MCP catalog with scoped, typed tools",
+        "tests": "48/48 package and stdio tests",
+        "receipt": "operating/sync-receipts/local-ci-7ed1863246f6.json",
+        "material_state": "SOURCE_TESTED; active Lenovo MCP consumer not verified"
+      },
+      {
+        "component": "SIWC OAuth, vault and Responses transport",
+        "source": [
+          "src/llm/siwcConnectionApi.ts",
+          "src/llm/siwcConnectionService.ts",
+          "src/llm/siwcProtectedVault.ts",
+          "src/llm/siwcResponsesClient.ts",
+          "src/llm/siwcSession.ts",
+          "src/llm/siwcIdentity.ts",
+          "src/llm/siwcProviderRoutes.ts"
+        ],
+        "contract": "OAuth user isolation, Responses store=false/stream=true, terminal events and local functions",
+        "tests": "included in 268 SOURCE tests; artifact modules included 1/1",
+        "receipt": "operating/sync-receipts/local-ci-7ed1863246f6.json",
+        "material_state": "SOURCE_TESTED; no owner consent, no installed package, no SIWC LIVE"
+      },
+      {
+        "component": "Conversation context, memory and recovery",
+        "source": [
+          "LibreChat native history/Mongo flow",
+          "src/llm/nativeInferenceRouteAdapter.ts"
+        ],
+        "contract": "preserve original conversation history and recover after reconnect",
+        "tests": "local unit suite only; no Mongo-backed recovery run in this batch",
+        "receipt": "CURRENT.json:p0_live_readback (historical host-reported receipt)",
+        "material_state": "NOT_REVERIFIED_LIVE"
+      }
+    ],
+    "next_gates": [
+      "finish request-scoped trusted route input without inventing context/quota/health/privacy",
+      "obtain owner OAuth consent through official flow",
+      "obtain exact HOST_CONTROL grants for package/bootstrap/AgentClient files and backend restart",
+      "run the actual authorized LibreChat SIWC+MCP+Mongo recovery canary",
+      "continue physical inventory and cleanup independently after evidence and grants"
+    ],
+    "live_status": "NOT_VERIFIED; no host mutation, OAuth consent, backend restart, MCP conversation, Mongo recovery, HUD event or mobile test was performed in this batch"
+  },
+  "e3_public_preflight_secret_gate_20261119": {
+    "readback_at_utc": "2026-11-19T00:00:21Z",
+    "branch_head": "fd1e413d2c95c75d4a6ad68d0a5d9b124d143e1a",
+    "branch_state": "clean; local equals origin",
+    "preflight": {
+      "repository": "elkakas314/libre_chat_vx",
+      "visibility": "PUBLIC",
+      "push_permission": true,
+      "diff_check": "PASS",
+      "source_alignment": "SAME_HEAD",
+      "deployment_claim": "NONE"
+    },
+    "pr54": {
+      "state": "OPEN_DRAFT_NOT_MERGED",
+      "head": "fd1e413d2c95c75d4a6ad68d0a5d9b124d143e1a"
+    },
+    "pr58": {
+      "state": "OPEN_DRAFT_NOT_MERGED",
+      "head": "74f3da64095ec39b5b820bceeb0e5901943f6c33",
+      "mergeable": false,
+      "integrated_delta": "public repository preflight fix and four offline cases already present once"
+    },
+    "inventory_validation": {
+      "mode": "READ_ONLY_NO_REGENERATION",
+      "schemas": "PASS",
+      "drive_capabilities": 119,
+      "github_requirements": 120,
+      "source_features": 39,
+      "idea_lc_crosswalk": 112,
+      "duplicate_identifiers": 0,
+      "dangling_cross_references": 0
+    },
+    "secret_review": {
+      "github_alerts": 0,
+      "detect_secrets_current_tracked_findings": 282,
+      "finding_classes": {
+        "hex_entropy": 247,
+        "base64_entropy": 27,
+        "keyword": 8
+      },
+      "findings_verified": false,
+      "checkout_shallow": true,
+      "available_commits": 37,
+      "full_history_review": "NOT_CLEARED",
+      "secret_values_emitted": false
+    },
+    "host_control_r0": {
+      "host": "elkakas314-Lenovo-Z50-70",
+      "kernel_authority": false,
+      "grants_directory": "only lock files; no R2 deploy/restart grant"
+    },
+    "siwc": {
+      "state": "SOURCE_ONLY_NOT_LIVE",
+      "candidate_sha256": "1b3302444159a1ef87a429831c74435e8658d8e8b8936b1cc82e2c3d3464a52d",
+      "installed": false,
+      "request_scoped_route_evidence": "MISSING",
+      "owner_oauth_consent": "MISSING"
+    },
+    "receipts": {
+      "issue37_comment": 6995135133,
+      "pr54_comment": 6995274163,
+      "drive_handoff_revision": "AHj4eMR2_qj1FziBtptQoi5GT6KhS3h-0M97CKFEBxVhu7PIDN2zKfw-FobB0ou7ncxcMLaZnhbpKoiWfzwkPytLN9w9V9mn4M3wLN4V3Qk"
+    },
+    "live_status": "NO_DEPLOYMENT_NO_RESTART_NO_LIVE_SIWC_OR_MCP_CLAIM"
+  },
+  "e3_post_scan_host_resource_r0_20261119_0006": {
+    "observed_at_utc": "2026-11-19T00:06:08Z",
+    "host": "elkakas314-Lenovo-Z50-70",
+    "source": "HOST_CONTROL R0 bounded reads of /proc/meminfo, /proc/pressure/{memory,cpu}, /proc/loadavg",
+    "memory_kb": {
+      "MemTotal": 16267092,
+      "MemAvailable": 9513344,
+      "SwapTotal": 2097148,
+      "SwapFree": 1992700
+    },
+    "pressure": {
+      "memory_some_avg10": 0.0,
+      "memory_full_avg10": 0.0,
+      "cpu_some_avg10": 5.73,
+      "cpu_some_avg60": 5.32,
+      "cpu_some_avg300": 7.23,
+      "cpu_full_avg10": 0.0
+    },
+    "load_average_1_5_15m": [
+      1.13,
+      1.9,
+      2.41
+    ],
+    "process_level_readback": "UNAVAILABLE_IN_THIS_SAMPLE: host_process_list limit 1500 returned tool error; earlier bounded result contained no matching application processes in returned page",
+    "gpu_vram": "NOT_READ_IN_THIS_SAMPLE",
+    "interpretation": "No memory PSI pressure; MemAvailable about 9.07 GiB and swap free about 1.90 GiB. CPU PSI indicates some contention but cannot attribute it to a process. Single sample does not establish a leak.",
+    "sha256": {
+      "meminfo": "75b87f9a67ee1787af05cd7f78707cba90b9f32fca7467b845017812af54587b",
+      "memory_psi": "ba5f4b5b6e63d390d33fca711cca1d345712d6c921b444cd8b104cf2adb1eeea",
+      "cpu_psi": "04f20e519f9e08d611f39ef0fe2e27b4a9e9753da1c778fa0d71468f3983e524",
+      "loadavg": "313acc3a6174f0c1a005921b3160de459f33ea2da49f463aef5b418f56521c73"
+    },
+    "source_head_before_receipt": "a800b15a1d1ef2ab72d2d6bc438fad381d91c4f5",
+    "no_inference_or_host_mutation": true
+  },
+  "e3_github_secret_scan_scope_readback_20261119": {
+    "observed_at_utc": "2026-11-19T00:09:54Z",
+    "repository": "elkakas314/libre_chat_vx",
+    "preflight_head": "9536e7b469cdc6e36cc1ad77c3d7d6a33fb4ee3e",
+    "repo_visibility": "PUBLIC",
+    "secret_scanning": "ENABLED",
+    "push_protection": "ENABLED",
+    "github_alerts": {
+      "open": 0,
+      "resolved": 0
+    },
+    "official_scope": "GitHub Secret Scanning scans entire Git history on all branches for known credential patterns",
+    "official_source": "https://docs.github.com/en/code-security/concepts/secret-security/secret-scanning",
+    "scan_history_api": "UNAVAILABLE: HTTP 404 says Advanced Security disabled; did not imply scan disabled because repo-level status is enabled",
+    "local_scanner": {
+      "tool": "detect-secrets 1.5.0",
+      "scope": "current tracked tree only; checkout shallow at 37 commits",
+      "findings": 282,
+      "unverified": true,
+      "types": {
+        "hex_entropy": 247,
+        "base64_entropy": 27,
+        "keyword": 8
+      },
+      "values_emitted": false
+    },
+    "conclusion": "ZERO_GITHUB_ALERTS_FOR_ENABLED_SECRET_SCANNING; LOCAL_ENTROPY_CANDIDATES_UNVERIFIED; not a proof that no unrecognized secret exists",
+    "no_secret_values_read_into_receipts": true
+  },
+  "e3_resource_stability_20s_r0_20261119_0013": {
+    "window_utc": [
+      "2026-11-19T00:13:13Z",
+      "2026-11-19T00:13:23Z",
+      "2026-11-19T00:13:33Z"
+    ],
+    "host": "elkakas314-Lenovo-Z50-70",
+    "method": "local read-only /proc, ps RSS, nvidia-smi; no prompts, builds, inference or service changes",
+    "memory_kb": {
+      "MemAvailable": [
+        9531684,
+        9559036,
+        9553104
+      ],
+      "SwapFree": [
+        1992700,
+        1992700,
+        1992700
+      ]
+    },
+    "memory_psi_avg10": {
+      "some": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "full": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "cpu_psi_avg10": {
+      "some": [
+        9.4,
+        5.94,
+        6.14
+      ],
+      "full": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "rss_kb_by_pid": {
+      "5098_backend_node": [
+        308744,
+        308744,
+        308748
+      ],
+      "2424_mongod": [
+        191812,
+        191812,
+        191812
+      ],
+      "1309_litellm": [
+        255560,
+        255560,
+        255560
+      ],
+      "6403_codex": [
+        362024,
+        361492,
+        361848
+      ],
+      "6506_chatgpt": [
+        750580,
+        751148,
+        750940
+      ],
+      "14915_chrome": [
+        842416,
+        842480,
+        843636
+      ]
+    },
+    "gpu": {
+      "name": "NVIDIA GeForce 840M",
+      "vram_total_mib": 4096,
+      "vram_used_mib": [
+        5,
+        5,
+        5
+      ],
+      "utilization_percent": [
+        0,
+        0,
+        0
+      ]
+    },
+    "conclusion": "Stable RSS for backend/Mongo/LiteLLM over 20 seconds; available RAM rose slightly then remained near baseline; swap unchanged; memory PSI zero; CPU PSI some stayed below 10% and decreased; no saturation or leak demonstrated.",
+    "source_head_before_receipt": "66aa3cf3032d9d953c6e2e9ac59f8ca4759d1b77"
+  },
+  "e3_local_ci_visual_source_20261119": {
+    "observed_at_utc": "2026-11-19T00:29:12Z",
+    "branch": "integration/nostromo-canon-20261118-r1",
+    "source_head_tested": "7acbfb14375af1ac87e0fcf72bdfaa75c52a7541",
+    "pr54": "DRAFT_OPEN_NOT_MERGED",
+    "pr58": {
+      "head": "74f3da64095ec39b5b820bceeb0e5901943f6c33",
+      "state": "OPEN_DRAFT_NOT_MERGED",
+      "r0_preflight_fix": "already present in tested branch; four offline scenarios pass; no patch duplicated"
+    },
+    "local_ci": {
+      "result": "PASS",
+      "exit_code": 0,
+      "github_actions": false,
+      "host_runtime_modified": false,
+      "scope": "exact-SHA TypeScript/tests + package/preflight/workspace/audit/visual reconciliation + Playwright SOURCE desktop/mobile + MCP stdio/package",
+      "receipt": "operating/sync-receipts/local-ci-7acbfb14375a.json",
+      "sanitized_log_sha256": "336c0a9db67ceef2968e5c7cf34c4c43fa19ae621e6855f161c8bec8d4d05315"
+    },
+    "visual_source": {
+      "receipt": "operating/sync-receipts/visual-source-7acbfb14375a.json",
+      "sha256": "480e76b0df14536606ab48330a1186cd920349fe74f8bdc00c102549022be737",
+      "desktop": "PASS 1280x900",
+      "mobile": "PASS 390x844",
+      "page_errors": 0,
+      "live_claim": false
+    },
+    "resource_samples": {
+      "count": 18,
+      "mem_available_kb_min_max": [
+        9111800,
+        9497208
+      ],
+      "swap_free_kb_min_max": [
+        1992700,
+        1992700
+      ],
+      "cpu_psi_some_avg10_peak_pct": 26.46,
+      "memory_psi_some_full_avg10_pct": [
+        0.0,
+        0.0
+      ],
+      "interpretation": "No memory pressure observed in short CI sample; CPU pressure rose during test load; not leak evidence."
+    },
+    "pr58_review": "The public repository preflight permission/visibility correction is already represented in branch source and exercised; separate PR report is not copied, PR remains draft.",
+    "next": "Continue SIWC route-input provider analysis and independent source gates; deployment remains blocked by HOST_CONTROL grant and authenticated provider readbacks/owner consent.",
+    "drive_handoff": {
+      "document_id": "1lrhx64J3hW7iW_qeGOw_fJw67rp_M-2EY_65Go2tMPY",
+      "revision_id": "AHj4eMR5PbJeYxCGu9Pp_O0pgZpcaG9WEKgTh6Oo3uZTmc0LTHeuq-ZA7CWB7c93_H3-UlL4zEK-MubUNYfmKveVRh9v1hn1OkXQvU9qRuI",
+      "readback": "receipt appended and SHA/content read back"
+    },
+    "source_baseline_freeze": {
+      "source_head": "7acbfb14375af1ac87e0fcf72bdfaa75c52a7541",
+      "baseline": "SOURCE_ONLY; no LIVE certification",
+      "components": [
+        {
+          "component": "NOSTROMO cockpit, HUD, Hub and system selector",
+          "files": [
+            {
+              "path": "src/ui/NostromoCockpit.tsx",
+              "git_blob_sha": "51e4654d8ff5ebae2042a208477045a9d278d2b3"
+            },
+            {
+              "path": "src/ui/TentaculoHud.tsx",
+              "git_blob_sha": "22e991eee0aa6942133c865194f7f8ba27bd4955"
+            },
+            {
+              "path": "src/ui/TentaculoHub.tsx",
+              "git_blob_sha": "c648e9e3f29867f12178f225aa63c6f65a02274f"
+            },
+            {
+              "path": "src/ui/ControlDeckView.tsx",
+              "git_blob_sha": "8173369fc4c4e60285b9b72fb956e2a361836391"
+            }
+          ],
+          "contract": "native embedded UI; no second executor",
+          "tests_and_receipt": "npm test: 268 PASS; source browser desktop/mobile 2/2",
+          "material_state": "SOURCE_TESTED; LIVE event wiring not verified"
+        },
+        {
+          "component": "Native AgentClient + SIWC lifecycle",
+          "files": [
+            {
+              "path": "deployment/librechat-agents/agentclient-siwc-binding.mjs",
+              "git_blob_sha": "5e01ab02af632846c965015277dccb73b21ac7fb"
+            },
+            {
+              "path": "deployment/librechat-agents/nostromo-siwc-bootstrap.cjs",
+              "git_blob_sha": "75b12004aaf24cc6ed354d16c8a54711835253bd"
+            },
+            {
+              "path": "src/llm/siwcOpenAiFetch.ts",
+              "git_blob_sha": "95b3f15686fb8904a2c4acd29569faf75bdd701e"
+            },
+            {
+              "path": "src/llm/siwcResponsesClient.ts",
+              "git_blob_sha": "15f520aca85fe33fa4723223d4eced204e5b39f4"
+            },
+            {
+              "path": "src/llm/siwcSession.ts",
+              "git_blob_sha": "c761edebc39df596803a1063bf272049923b8e1b"
+            },
+            {
+              "path": "src/llm/siwcIdentity.ts",
+              "git_blob_sha": "b2033964d3107fc2c9c8bbd5a6a711694ebe96d6"
+            },
+            {
+              "path": "src/llm/siwcConnectionService.ts",
+              "git_blob_sha": "6ffc3e256078250e0280f752532d1f269362ef1e"
+            },
+            {
+              "path": "src/llm/siwcConnectionApi.ts",
+              "git_blob_sha": "c0ae151513e79b129e50bd2c8c7d69d4dc0e5dba"
+            },
+            {
+              "path": "src/llm/siwcProviderRoutes.ts",
+              "git_blob_sha": "fea307e35e25d251a2454e8e31e3efc2d3d172cc"
+            },
+            {
+              "path": "src/llm/siwcProtectedVault.ts",
+              "git_blob_sha": "5c5837686820ff1e55ce60498e151f761a8e225e"
+            }
+          ],
+          "contract": "per-user OAuth-bound ephemeral Responses binding; secrets stay in protected vault",
+          "tests_and_receipt": "npm test: 268 PASS; SIWC artifact inclusion 1/1; prior focused SDK canaries documented in CURRENT",
+          "material_state": "SOURCE_TESTED; missing trusted native route-input provider, consent and productive install"
+        },
+        {
+          "component": "Intent and inference router",
+          "files": [
+            {
+              "path": "src/librechat/nativeInferenceRouteAdapter.ts",
+              "git_blob_sha": "aa5950284ef56248c07c9a4f28d7d676a341b4b5"
+            },
+            {
+              "path": "src/llm/inferenceGateway.ts",
+              "git_blob_sha": "2043c285ab2a01f0795c3bf473bf1ff333bb0843"
+            },
+            {
+              "path": "src/intent/intentInterpreter.ts",
+              "git_blob_sha": "6f6d1db6124bdedf0b3a4f46dd495b69f0e31b20"
+            },
+            {
+              "path": "src/intent/nostromoDecisionBridge.ts",
+              "git_blob_sha": "5880c6fa2048d7db1b07ea1993b67923b414d01d"
+            }
+          ],
+          "contract": "single semantic and provider router; route admission requires fresh evidence",
+          "tests_and_receipt": "npm test: 268 PASS; existing focused adapter cases documented in CURRENT",
+          "material_state": "SOURCE_TESTED; not called LIVE from productive AgentClient"
+        },
+        {
+          "component": "NOSTROMO MCP",
+          "files": [
+            {
+              "path": "deployment/nostromo-mcp/server.mjs",
+              "git_blob_sha": "bc571a1a15afba193b689db394effd61fb9816fb"
+            },
+            {
+              "path": "deployment/nostromo-mcp/tools.mjs",
+              "git_blob_sha": "21ac03a3a686127104e67559d6f98f4d0d02b600"
+            }
+          ],
+          "contract": "existing scoped typed MCP tool catalog",
+          "tests_and_receipt": "local MCP package/stdio suite 48/48 PASS",
+          "material_state": "SOURCE_TESTED; active Lenovo consumer not reverified in this batch"
+        },
+        {
+          "component": "Phone and reconnect UI state",
+          "files": [
+            {
+              "path": "src/mobile/phoneModule.ts",
+              "git_blob_sha": "15d8a9338415109cf2b11cc350cee00fa8065833"
+            },
+            {
+              "path": "src/mobile/mobileRecovery.ts",
+              "git_blob_sha": "ea1db96e70da509706eb5f2d07a5544be7e9b545"
+            },
+            {
+              "path": "src/mobile/offlineDraft.ts",
+              "git_blob_sha": "f360aa120f4743493c4eda1cddfdc748dc15c160"
+            }
+          ],
+          "contract": "phone state/recovery shares native LibreChat conversation; no separate store",
+          "tests_and_receipt": "npm test: 268 PASS; browser proof is visual fixture only",
+          "material_state": "SOURCE_TESTED; real-device/mobile LIVE not verified"
+        },
+        {
+          "component": "Manual CI + source visual harness",
+          "files": [
+            {
+              "path": "ci/nostromo-local-ci.sh",
+              "git_blob_sha": "d4bb91730aa60b564c1f79835b6d1fddae03e3f6"
+            },
+            {
+              "path": "tests/visual/visual-smoke.cjs",
+              "git_blob_sha": "978091c5e6ba7e1ff48aaf86a6d526b21d56144d"
+            }
+          ],
+          "contract": "manual exact-SHA locked runner; uses installed dependencies; no daemon/Actions",
+          "tests_and_receipt": "runner exact code SHA 7acbfb1 PASS; Playwright SOURCE desktop/mobile 2/2",
+          "material_state": "SOURCE_VERIFIED; does not certify host deployment"
+        }
+      ]
+    },
+    "branch_head_at_source_receipt_sync": "2642bd4a268ad0890e411e1d891ca3600940bb89"
+  },
+  "e3_host_mcp_r0_readback_20261119": {
+    "observed_at_utc": "2026-11-19T00:45:13Z",
+    "evidence_class": "HOST_CONTROL_R0_SERVICE_AND_PROCESS_READBACK_PLUS_LOCAL_STDIO_TESTS",
+    "source_branch_head": "2642bd4a268ad0890e411e1d891ca3600940bb89",
+    "source_code_head_tested": "7acbfb14375af1ac87e0fcf72bdfaa75c52a7541",
+    "backend": {
+      "unit": "vx-backend.service",
+      "scope": "user",
+      "state": "active/running",
+      "main_pid": 5074,
+      "exec_main_status": 0,
+      "health_http": 200,
+      "health_body": "OK"
+    },
+    "mcp": {
+      "configured_name": "nostromo-local",
+      "type": "stdio",
+      "effective_yaml": "/home/elkakas314/librechat/upstream/librechat.yaml",
+      "effective_yaml_sha256": "8ff54c6e4ea8fb1efae786ee8e90c140fb9a65b7ba14fc747585ddcede4be0b9",
+      "wrapper": "/home/elkakas314/bin/nostromo-mcp-wrapper.sh",
+      "wrapper_sha256": "0577117efcf22a042c40f4f1a9c6184dcd5cbb13c7e9278b8d13ab4c4f9298c4",
+      "wrapper_behavior": "sources protected config without reading it in this audit; loads toolset file; execs exact server path below",
+      "active_process_matches": 1,
+      "process_list_returned": 333,
+      "pid": 5197,
+      "cmdline": "node /home/elkakas314/libre_chat_vx-clean/deployment/nostromo-mcp/server.mjs",
+      "cwd": "/home/elkakas314/librechat/upstream",
+      "node": "v24.21.0",
+      "rss_kb": 55772,
+      "runtime_source_git_worktree": false,
+      "runtime_files": {
+        "server.mjs": {
+          "runtime_sha256": "1a2521893fb8760207ff54eb4e01906e49532d21df24be7a360f0c9454b6d697",
+          "source_sha256": "da875e260948cbb916ab1a447298281877e3865303fae05b052dc18d434025d3"
+        },
+        "inspect.mjs": {
+          "runtime_sha256": "81f4622ef074d3b7da78defd12eaf77997d4353311613cc5f57e32df87f76a8a",
+          "source_sha256": "b7f1ee4348bc801d93fd82ed5f80d42b58a38584bc11e4a594e3788d36b3446a"
+        },
+        "tools.mjs": {
+          "runtime_sha256": "993aeca549c6aafa221b5ba1815062cd69f1027033df29cf4180863a77adb957",
+          "source_sha256": "c78bf9060a70492544c74b22a05c1d22404b2471dde34d950b99a114ace57e07"
+        },
+        "async-jobs.mjs": "IDENTICAL_TO_SOURCE",
+        "audit.mjs": "IDENTICAL_TO_SOURCE",
+        "policy.mjs": "IDENTICAL_TO_SOURCE",
+        "package-lock.json": "IDENTICAL_TO_SOURCE"
+      },
+      "source_only_paths": [
+        "directory.mjs",
+        "tests/audit.test.mjs",
+        "tests/directory.test.mjs",
+        "tests/e2-stdio-config-contract.test.mjs",
+        "tests/e2-stdio-handshake-canary.test.mjs"
+      ],
+      "interpretation": "The active tree has a listing implementation inside inspect.mjs; tested SOURCE moved that implementation into directory.mjs and adds stronger focused tests. No runtime overwrite or cleanup was performed."
+    },
+    "focused_active_tree_source_tests": {
+      "directory_listing": "1/1 PASS",
+      "stdio_R0_allowlisted_file_directory_metrics": "1/1 PASS",
+      "MCP_handshake_and_fail_closed_default": "1/1 PASS",
+      "scope": "isolated stdio child using same runtime-tree source; not a browser/agent conversation"
+    },
+    "resources": {
+      "active_mcp_rss_before_during_after_kb": [
+        55772,
+        55772,
+        55772
+      ],
+      "mem_available_kb_samples": [
+        9291016,
+        9208052,
+        9241828
+      ],
+      "swap_free_kb_samples": [
+        1992700,
+        1992700,
+        1992700
+      ],
+      "memory_psi_some_full_avg10_pct": [
+        0.0,
+        0.0
+      ],
+      "cpu_psi_some_avg10_pct_before_peak": [
+        5.07,
+        6.33
+      ],
+      "interpretation": "Short focused tests showed no memory PSI or swap churn; not a long-duration leak assessment."
+    },
+    "privacy": "Protected .env and process environment were not read; no token values recorded.",
+    "product_status": "SERVICE_AND_MCP_PROCESS_VERIFIED; AUTHENTICATED_CHAT_MCP_E2E_NOT_VERIFIED",
+    "ui_blocker": "CUA reported no authenticated LibreChat tab/app; Playwright browser backend reports Chrome missing. No installation or browser login attempted.",
+    "actions_taken": "Read-only host/config/source inspection and isolated temporary-directory tests only; no host file/service changes or restarts.",
+    "next": "Use an authenticated LibreChat browser session to call nostromo_estado and nostromo_directorio_listar in one saved conversation; then verify MongoDB readback/reconnect. Preserve the runtime/source divergence until authorized reversible sync.",
+    "drive_handoff": {
+      "document_id": "1lrhx64J3hW7iW_qeGOw_fJw67rp_M-2EY_65Go2tMPY",
+      "revision_id": "AHj4eMQdzOj5-5-M-PmhJOb4wj-gzLwEE68iUmjVNisklc4O9JiO-qUKhelWY2uA1ddZxFc2Qm2OZHBE4iCiNCYVwb-_WWw8FyX3SBPgb40",
+      "readback": "host, mobile, resource and SIWC resolver-correction receipts inserted and read back; prior incorrect note corrected"
+    },
+    "siwc_package_candidate_revalidation": {
+      "artifact": "/tmp/nostromo-librechat-vx-0.1.0-7ed1863.tgz",
+      "sha256": "1b3302444159a1ef87a429831c74435e8658d8e8b8936b1cc82e2c3d3464a52d",
+      "source_code_head": "7ed1863246f6942c570eca68e5569740b8c2250c",
+      "compatibility_readback": "git diff 7ed1863..7acbfb1 contains only CURRENT/HANDOFF, local CI/visual harness, prior receipts and visual smoke; no package runtime source files changed",
+      "contents": [
+        "siwcConnectionApi.js",
+        "siwcConnectionService.js",
+        "siwcOpenAiFetch.js",
+        "siwcProviderRoutes.js"
+      ],
+      "installed": false,
+      "permission_gate": "HOST_CONTROL R2 still required"
+    },
+    "e3_mobile_listener_r0_readback_20261119": {
+      "receipt": "operating/sync-receipts/mobile-listener-r0-20261119.json",
+      "branch_head_with_receipt": "a4e5cf5",
+      "tailscale_serve": "NOT_CONFIGURED",
+      "backend_listener": "127.0.0.1:3080",
+      "cloudflared_service": "ACTIVE",
+      "caddy_service": "FAILED",
+      "nginx_service": "NOT_FOUND",
+      "tailnet_443_listener": "PRESENT_OWNER_AND_NOSTROMO_ROUTE_UNVERIFIED",
+      "cpu_pressure": "ELEVATED_SHORT_SAMPLE_PSI_SOME_AVG10_24_81_PCT",
+      "memory_pressure": "NONE_SHORT_SAMPLE_8_7_GB_AVAILABLE_SWAP_102_MB_USED",
+      "nostromo_process_load": "LOW_AT_READBACK",
+      "mobile_access": "NOT_VERIFIED",
+      "issue_37_comment": "6996380851"
+    },
+    "e3_siwc_agentclient_wiring_r0_20261119": {
+      "receipt": "operating/sync-receipts/siwc-agentclient-wiring-r0-20261119.json",
+      "superseded_by": "operating/sync-receipts/siwc-resolver-contract-r0-20261119.json",
+      "source_correction_commit": "4a35c05",
+      "source_change_base_head": "9c59d36e146f7b3a26c6f131d42d73e855fb4b54",
+      "source_change_commit": "1d9491a",
+      "change": "Historical incorrect change; superseded by resolver-contract correction. Actual contract: nostromoSiwc is resolver, nostromoSiwcConnectionService is the lifecycle service.",
+      "focused_tests": "13/13 PASS; see superseding receipt",
+      "runtime_installed": false,
+      "live_siwc": "NOT_VERIFIED",
+      "issue_37_comment": "6996655134; corrected and read back",
+      "next": "See the superseding resolver-contract receipt; continue authenticated route-input implementation and exact-candidate local CI after low-power verification."
+    },
+    "e3_host_cpu_interval_readback_r0_20261119": {
+      "receipt": "operating/sync-receipts/siwc-resolver-contract-r0-20261119.json",
+      "peak_interval": "2026-11-19T01:37:42Z/01:37:52Z",
+      "peak_process": "Snap Chromium PID 14915; 98% of one CPU over 10s, main thread 90% in 5s followup",
+      "classification": "DESCONOCIDO_PRESERVAR_INTERACTIVE_BROWSER; specific tab unknown",
+      "followup_interval": "2026-11-19T01:43:51Z/01:43:56Z",
+      "cpu_busy_pct": 19.9,
+      "memory_available_kb": "8326520-9342220",
+      "memory_psi": "NONE",
+      "intervention": "NONE"
+    }
+  },
+  "e3_resource_siwc_gpu_r0_20261119": {
+    "receipt": "operating/sync-receipts/e3-resource-siwc-gpu-r0-20261119.json",
+    "tested_source_head": "31eb56360e8b86951d9de5b336871a7237d41146",
+    "publication_at_receipt_time": "NOT_YET_PUBLISHED",
+    "origin_readback": {
+      "verified_at_utc": "2026-11-19T02:33:23Z",
+      "branch_head": "1200a61219dc894f69dada6c7c10b03622a6637d",
+      "pr54_state": "OPEN_DRAFT_UNMERGED",
+      "pr54_comment_id": 6997877162,
+      "pr59_state": "CLOSED_UNMERGED_SUPERSEDED",
+      "pr59_comment_id": 6997877485,
+      "issue37_comment_id": 6997890938
+    },
+    "drive_readback": {
+      "document_id": "1lrhx64J3hW7iW_qeGOw_fJw67rp_M-2EY_65Go2tMPY",
+      "revision_id": "AHj4eMSHIkGlO9NOCeQRvynbfsKg9wivPeAJqcn59kD9zTmpy7Ng5LWOcSRT7qNPXAsqLUMAWdumN5-dt8Q7XJInpeUT3Zy_hEH8jNMPon8",
+      "status": "APPENDED_AND_READ_BACK"
+    },
+    "source_ci": {
+      "result": "PASS",
+      "main_tests": "274/274",
+      "mcp_tests": "48/48",
+      "siwc_focused": "21/21",
+      "artifact": "1/1",
+      "preflight_mocks": "4/4",
+      "visual_smoke": "PASS",
+      "duration_seconds": 47
+    },
+    "siwc": {
+      "pr59_change_integrated_in_source": true,
+      "body_read_limit_bytes": 32768,
+      "live_route_input": "NO_PRODUCTION_SETTER_FOUND_FAIL_CLOSED",
+      "runtime_install": "NOT_DONE",
+      "hostcontrol_r2_grant": "ABSENT"
+    },
+    "cpu_memory": {
+      "sample_state": "WORK_ACTIVE",
+      "available_ram_min_kb": 8706268,
+      "swap_free_kb_stable": 1870076,
+      "memory_psi": "NONE",
+      "current_chrome_renderer_cpu_one_core_pct": [
+        3.6,
+        0.0
+      ],
+      "chatgpt_renderer_cpu_one_core_pct": 11.11,
+      "codex_executor_cpu_one_core_pct": 6.54,
+      "backend_mcp_ollama_near_idle_during_process_window": true,
+      "long_term_leak_verdict": "NOT_ESTABLISHED"
+    },
+    "gpu": {
+      "physical_device": "NVIDIA GeForce 840M",
+      "driver": "580.178.04",
+      "compute_capability": "5.0",
+      "vram_total_mib": 4096,
+      "ollama_model": "qwen2.5:3b",
+      "ollama_processor": "100% GPU",
+      "peak_vram_mib": 2128,
+      "bounded_probe": "OK",
+      "model_unloaded_after_probe": true
+    },
+    "host_changes": {
+      "ollama_service_configuration": "NONE",
+      "service_restarts": 0,
+      "hostcontrol_material_write": "NONE"
+    },
+    "remaining_blocker": "Authenticated SIWC native-route input has no production source setter; R2 grant absent; no LIVE SIWC or conversational MCP validation."
+  },
+  "e3_work_e3_resource_siwc_update_20261119": {
+    "receipt": "operating/sync-receipts/e3-work-e3-resource-siwc-r0-20261119.json",
+    "source_code_head": "6e7c9aadf20201736ed121c1a5b8c0a3247aa0ef",
+    "tested_code_head": "6e7c9aadf20201736ed121c1a5b8c0a3247aa0ef",
+    "siwc_change": "OAuth token/refresh/JWKS response bodies are bounded by bytes and canceled before overflow; 12 focused SIWC tests pass.",
+    "local_ci": "PASS exact SHA; 275 main tests, package artifact 1/1, preflight 4/4, workspace 7/7, local audit 1/1, visual source smoke PASS, MCP 48/48.",
+    "resource_policy": "Local CI serializes with flock and yields using nice 15, ionice idle, CPU affinity 3; no persistent service limits.",
+    "cpu": {
+      "state": "WORK_ACTIVE; no authentic IDLE sample",
+      "chrome_renderer_pids_14915_5572": "alive; 0% one-core CPU across the 8-second follow-up",
+      "codex_executor_pid_6403": "31.2% one-core CPU in the active window",
+      "chatgpt_renderer_pid_6506": "16.5% one-core CPU in the active window",
+      "chatgpt_gpu_pid_5810": "15.2% one-core CPU in the active window",
+      "backend_mcp_mongo_ollama": "near idle",
+      "gnome_keyring_pid_3079": "12.3% then 4.0% one-core in adjacent windows; UNKNOWN_PRESERVE; no sustained growth established"
+    },
+    "memory": {
+      "CI_mem_available_min_kb": 9389872,
+      "CI_swap_free_stable_kb": 604668,
+      "CI_memory_psi_avg10_peak": 0.0,
+      "after_CI_mem_available_kb": 9819572,
+      "after_CI_swap_free_kb": 604668,
+      "after_CI_memory_psi_avg10": 0.0,
+      "conclusion": "No current memory pressure or swap churn; this is not a long-term leak verdict."
+    },
+    "gpu": "Prior physical GeForce 840M/Ollama receipt reused; no repeated benchmark.",
+    "host_authority": "Current HOST_CONTROL R0 has kernel_authority=false and only lock files; no R2/R3 grant.",
+    "live_status": "NO_SIWC_INSTALL_OR_CONSENTED_CHAT; no LIVE MCP/Mongo/reconnect claim.",
+    "publication": {
+      "remote_head_verified_at_publication": "6ce19a2471c203a9418042dcbc021eca94bd49c4",
+      "pr54_comment_id": 6999444830,
+      "issue37_comment_id": 6999456649,
+      "drive_handoff_revision": "AHj4eMR1ZRSxi9-mt58SVNXB9UVIrSWA1W2deITCDbHej7QfAZ0cX9IPeW7K8iox-hEaT9oCgf7Jplpsyq8mxM05VElGJR6L5lWr8Omvtzo",
+      "drive_current_revision": "AHj4eMQLUQZzc7pE5c5CuIy1rbmMnhhrLNqukGRzS4-GGy0vaIbUBSg_5NSLB5-F3KMHeAksj_dzyfHQIhHg4OzBrYiI13vWo5Fgn9-j6sA"
+    }
+  },
+  "e3_work_e3_cpu_siwc_preflight_20261119": {
+    "receipt": "operating/sync-receipts/e3-work-e3-cpu-siwc-preflight-20261119.json",
+    "base_head": "6ce19a2471c203a9418042dcbc021eca94bd49c4",
+    "change": "SIWC bounded HTTP response reader now rejects oversized Content-Length and cancels before reading; 10 focused provider/stream tests pass.",
+    "cpu": "Chrome renderer 14915 reached 24% of one core during an active Work sample and returned to 0% in the post-test window; Codex/ChatGPT processes account for other active CPU. No CDP/tab attribution and no authentic idle sample.",
+    "memory": "Build peak Node RSS 409840 kB; MemAvailable recovered above 10 GB; post-test swap counters and memory PSI were zero. gnome-keyring-daemon remains UNKNOWN_PRESERVE at PSS 545144 kB; no sustained leak established.",
+    "service_readback": "Backend, Ollama, cloudflared and Tailscale active without restarts. Caddy failed once with NRestarts=0; left untouched. Baloo inactive; no project timer or zombie observed.",
+    "pr59": "Closed unmerged; its head regresses the streaming response-size bound. No PR code applied.",
+    "live_status": "SOURCE_TESTS_PASS; no LIVE OAuth/MCP/Mongo/reconnect claim."
+  },
+  "e3_live_chat_reconnect_mcp_r0_20261119": {
+    "receipt": "operating/sync-receipts/e3-live-chat-reconnect-mcp-r0-20261119.json",
+    "captured_at_utc": "2026-11-19T05:07:45Z",
+    "active_source_head": "5c64f87d6e4dbdaa2ebdc5c0ef4b37ca6b548e43",
+    "conversation_id": "a50df11a-67fd-5250-af96-4ff4bba9afe3",
+    "model": "qwen2.5:3b",
+    "local_inference": "PASS_VISIBLE",
+    "mcp": "PARTIAL_estado_success_metricas_schema_failure",
+    "mongo_messages": 6,
+    "reconnect": "PASS_same_chat_loaded_after_new_tab",
+    "latest_manual_stop": "assistant_unfinished_true",
+    "resources": "during_gpu_100pct_73C_cpu_psi_some_50.66_mem_available_8.4GiB; after_gpu_idle_81C_mem_available_8.75GiB",
+    "agentclient_siwc_binding": "NOT_VERIFIED",
+    "material_verified": false,
+    "next": "Resolve MCP schema/latency using effective live tool contract; do not change agent config or claim completion."
+  },
+  "e3_live_agent_context_preflight_20261119": {
+    "receipt": "operating/sync-receipts/e3-live-agent-context-preflight-20261119.json",
+    "captured_at_utc": "2026-11-19T05:25:03Z",
+    "agent_id": "agent_9ex2a9buul2cwzyo",
+    "model": "qwen3:4b-instruct-2507-q4_K_M",
+    "max_context_tokens": 6144,
+    "tools_in_persisted_agent": 11,
+    "tool_defer_metadata_in_agent_document": "PRIOR_READBACK_WAS_INCOMPLETE; DIRECT_MONGO_READ_CONFIRMS_9_DEFERRED_AND_2_DIRECT",
+    "conversation_id": "a6e3c7a3-fd26-5887-91a1-7918815df90d",
+    "ui_context_at_start": "5406_of_5800_tokens_93pct",
+    "mcp_dispatch": "NONE_OBSERVED_WITHIN_52_SECONDS",
+    "mongo_assistant_state": "unfinished_true_error_false_empty_text",
+    "stop_reason": "manual_stop_after_context_near_limit_and_high_gpu_load",
+    "memory_available_kb_after_stop": 10254348,
+    "swap_free_kb_after_stop": 34740,
+    "gpu_temperature_c_during": 81,
+    "gpu_vram_mib_during": 3050,
+    "dynamic_tool_selection": "CONFIGURED_9_DEFERRED_2_DIRECT; EFFECTIVE_DISCOVERY_OPEN",
+    "superseded_by": "operating/sync-receipts/e3-live-agent-deferred-selection-reconcile-20261119.json"
+  },
+  "e3_live_agent_deferred_selection_reconcile_20261119": {
+    "receipt": "operating/sync-receipts/e3-live-agent-deferred-selection-reconcile-20261119.json",
+    "captured_at_utc": "2026-11-19T05:39:28Z",
+    "agent_id": "agent_9ex2a9buul2cwzyo",
+    "selected_tools": 11,
+    "deferred_tools": 9,
+    "direct_tools": [
+      "nostromo_estado_mcp_nostromo-local",
+      "nostromo_directorio_listar_mcp_nostromo-local"
+    ],
+    "catalog_preserved": true,
+    "prior_no_defer_metadata_claim": "CORRECTED; direct MongoDB read includes tool_options",
+    "effective_discovery_and_dispatch": "UNVERIFIED",
+    "status": "PARTIAL_NOT_PASS"
+  },
+  "e3_live_agent_single_r0_canary_20261119": {
+    "receipt": "operating/sync-receipts/e3-live-agent-single-r0-canary-20261119.json",
+    "captured_at_utc": "2026-11-19T05:47:16Z",
+    "agent_id": "agent_9ex2a9buul2cwzyo",
+    "conversation_id": "28750dc9-f94d-5fc6-8ca3-07f305808e5d",
+    "agent_model_persisted": "qwen3:4b-instruct-2507-q4_K_M",
+    "context_peak": "5400_of_5800_tokens_92pct",
+    "mcp_dispatch": "NONE_OBSERVED",
+    "assistant_mongo_state": "unfinished_true_error_false_empty_toolcalls",
+    "stopped_for_pressure": true,
+    "post_stop_gpu_utilization_pct": 0,
+    "material_status": "PARTIAL_NOT_PASS"
+  },
+  "codex_cockpit_agent_mongo_20261119": {
+    "receipt": "operating/sync-receipts/codex-cockpit-agent-mongo-r0-20261119.json",
+    "scope": "MONGO_AND_HOST_R0_PLUS_SOURCE_CHANGE_NOT_INSTALLED",
+    "agent_model": "qwen3:4b-instruct-2507-q4_K_M",
+    "selected_tools": 11,
+    "historical_ollama_mcp_calls": 3,
+    "historical_stored_outputs": 3,
+    "mcp_connection_source": "AUTHENTICATED_NATIVE_STATUS_QUERY_SOURCE_ONLY_NOT_INSTALLED",
+    "selector": "VIEW_ONLY_WITH_NATIVE_SELECTOR_LAUNCHER_SOURCE_NOT_INSTALLED",
+    "live_verified": false
+  },
+  "codex_duplicate_route_admission_20261119": {
+    "scope": "SOURCE_ONLY_NOT_INSTALLED",
+    "base_remote_head": "271562256be6b76e85166cc7ce7917db04713981",
+    "finding": "Duplicate route IDs could transfer an admitted decision to a faster billable candidate.",
+    "change": "Reject duplicate route IDs across profiles and associate each route with its own admission.",
+    "validation": "Regression reproduced before fix; TypeScript build and 23 focused gateway, native adapter and SIWC provider route tests passed locally.",
+    "live_verified": false
+  },
+  "e3_publication_readback_20261119": {
+    "receipt": "operating/sync-receipts/e3-publication-readback-20261119.json",
+    "captured_at_utc": "2026-11-19T05:58:26Z",
+    "github_issue37_comment": "POSTED_AND_READ_BACK",
+    "github_pr54_comment": "POSTED_READBACK_NOT_FETCHED",
+    "drive_current_revision": "AHj4eMQy6BZAXYXVAxeYDcLaw4ps5MrpBXDcqgnliqrigyhZZ4QgqikFocMXSB0okev0cRIxEH3-YQir3Rz64RaVGveLf0llqL7FUzLTDRY",
+    "drive_handoff_revision": "AHj4eMQsmPELlHklqbnYlPrfMELXHnhDx90gMqeAq5BsVPGm1KCMDnehw4lPJRY9YuR76cHZrs_gjSjc26CGY_6t3DNam7l3H7NSUdzhuXs",
+    "drive_readback": "BOTH_MARKERS_PRESENT"
+  },
+  "e4_post_install_context_canary_20261120": {
+    "receipt": "operating/sync-receipts/e4-post-install-context-canary-20261120.json",
+    "status": "PARTIAL_NOT_PASS",
+    "context": "5360/5837",
+    "mcp_dispatch": "NONE_OBSERVED",
+    "next": "Diagnose native API tool registration and effective binding without inference."
+  },
+  "e4_native_file_deferral_live_canary_20261120": {
+    "receipt": "operating/sync-receipts/e4-native-file-deferral-live-canary-20261120.json",
+    "context": "3818/5837 vs 5360/5837 previously",
+    "status": "CONTEXT_REDUCED; AGENT_MCP_NOT_VERIFIED",
+    "runtime_rebuild_persistence": "UNVERIFIED"
+  },
+  "e5_objective_preflight_fixture_20261120": {
+    "receipt": "operating/sync-receipts/e5-objective-preflight-installed-mcp-fixture-20261120.json",
+    "status": "SOURCE_AND_ISOLATED_FIXTURE_ONLY_NOT_LIVE",
+    "next": "Wire authenticated host agreement and owner-authorized existing MCP dispatch."
+  },
+  "e5_mcp_idempotency_install_20261120": {
+    "receipt": "operating/sync-receipts/e5-mcp-job-idempotency-install-20261120.json",
+    "status": "INSTALLED_RESTARTED; ISOLATED_MCP_RETRY_TEST_PASS; PRODUCT_E2E_OPEN",
+    "next": "Bind authenticated objective and host-derived key to existing MCP task entry, then verify product readback."
+  },
+  "e5_objective_agreement_mongo_fixture_20261120": {
+    "receipt": "operating/sync-receipts/e5-objective-agreement-mongo-fixture-20261120.json",
+    "status": "SOURCE_AND_REAL_DB_DISPOSABLE_FIXTURE_ONLY_NOT_AUTHENTICATED_PRODUCT",
+    "next": "Harden server-owned field and wire authenticated native route plus owner authority."
+  },
+  "e5_private_agreement_field_install_20261120": {
+    "receipt": "operating/sync-receipts/e5-private-agreement-field-install-20261120.json",
+    "status": "INSTALLED_SCOPED_GUARDS_VERIFIED; AUTHENTICATED_OBJECTIVE_E2E_OPEN",
+    "next": "Audit remaining conversation export/aggregate surfaces and connect authenticated preview/confirmation and owner authorization."
+  },
+  "e5_private_field_native_surfaces_20261120": {
+    "receipt": "operating/sync-receipts/e5-private-field-native-surfaces-20261120.json",
+    "status": "TARGETED_INSTALLED_DATA_SURFACES_PASS",
+    "next": "Deploy authenticated objective route using reproducible artifact and verify without implying tool authority."
+  },
+  "e5_objective_route_install_20261120": {
+    "receipt": "operating/sync-receipts/e5-objective-route-install-20261120.json",
+    "status": "INSTALLED_UNAUTHENTICATED_DENIAL_VERIFIED; AUTHENTICATED_E2E_OPEN",
+    "next": "Connect native UI and owner-authorized dispatch; verify actual session agreement without reading credentials."
+  },
+  "e5_native_metrics_installed_20261121": {
+    "status": "SECOND_AUTHENTICATED_R0_ROUTE_INSTALLED_FRONTEND_BACKEND_READBACK_PASS_REAL_USER_E2E_PENDING",
+    "head_base": "0cfac94f2a4f7a27f3352c83a1824e5d89224389",
+    "receipt": "operating/sync-receipts/e5-native-metrics-installed-20261121.json",
+    "backend_http": 200,
+    "unauthenticated_route_http": 401,
+    "frontend_chunk_http": 200,
+    "tests": "36_SOURCE_PASS_10_INTEGRATION_PASS_1_SKIP",
+    "real_user_authenticated_metrics": false,
+    "general_autonomy": false,
+    "final_verified": false
+  },
+  "e5_full_npm_suite_20261121": {
+    "status": "FULL_TEST_SUITE_PASS_CURRENT_HEAD_LIVE_METRICS_INSTALLED_GENERAL_AUTONOMY_PENDING",
+    "base_head": "37cb94a06ad6a530c8c08d54dd006361b5d3e79c",
+    "test": "npm test",
+    "exit_code": 0,
+    "typescript_tests": "324/324_PASS",
+    "receipt": "operating/sync-receipts/e5-global-npm-suite-live-20261121.json",
+    "final_verified": false
   }
 }

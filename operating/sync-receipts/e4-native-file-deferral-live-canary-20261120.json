@@ -1,0 +1,47 @@
+{
+  "schema": "nostromo.e4.native-file-deferral-live-canary.v1",
+  "captured_at_utc": "2026-11-20T15:50:09.490356+00:00",
+  "source_commit": "84849c8971bdc54e1d81c6d5cd055e45c497bcc1",
+  "preimage": {
+    "path": "/home/elkakas314/librechat/nostromo/backups/e4-native-file-deferral-261fb74-preimage.cjs",
+    "sha256": "261fb74fe9831e208097642d50d1a675a74c6c80accfca9f2332baef028c695f"
+  },
+  "installed": {
+    "path": "/home/elkakas314/librechat/upstream/packages/api/dist/index.cjs",
+    "sha256": "bdc458e5a06ae6cc52bb57139f59d2a543b69b6455954365bbc5a2d95249fdb2",
+    "method": "HOST_CONTROL fs_copy with verified preimage and existing effective authorization",
+    "backend_restart": "HOST_CONTROL vx-backend.service; active MainPID 1057128",
+    "rebuild_persistence": "NOT_PROVEN; rebuilt bundle can replace this installed change"
+  },
+  "tests": {
+    "focused": "4/4 PASS, including real installed API registrars, SDK binding, local tool search, mock OpenAI-compatible payload and synthetic counter; no real inference",
+    "upstream_initialize": "1 focused test PASS",
+    "syntax": "candidate node --check PASS"
+  },
+  "canary": {
+    "conversation_id": "4db31229-e97c-555c-9cb2-74f337ffe992",
+    "agent_id": "agent_9ex2a9buul2cwzyo",
+    "endpoint": "agents",
+    "context_before": "5360/5837 (previous request)",
+    "context_after": "3818/5837 (this request)",
+    "system_tools_before_approx": 1900,
+    "system_tools_after": 335,
+    "mcp_tools": 234,
+    "skills": 441,
+    "free_space_approx": 2000,
+    "mcp_calls": 0,
+    "status": "STOPPED_AFTER_43_SECONDS_RESOURCE_PRESSURE",
+    "mongo_assistant": "unfinished=true, error=false, empty content",
+    "during_resources": {
+      "gpu_utilization_pct": 100,
+      "gpu_temperature_c": 69,
+      "gpu_vram_mib": 3052,
+      "swap_free_mib": 0,
+      "memory_psi_some_avg10": 5.43,
+      "cpu_psi_some_avg10": 48.65
+    },
+    "post_stop_gpu_utilization_pct": 0
+  },
+  "status": "CONTEXT_OVERHEAD_REDUCED_LIVE; AGENT_MCP_END_TO_END_NOT_VERIFIED",
+  "next": "Diagnose latency/resource pressure without repeating inference; verify actual request binding and startup/build persistence. No claim of completed MCP conversation."
+}

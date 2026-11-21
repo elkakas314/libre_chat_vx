@@ -1,0 +1,10 @@
+{
+  "head": "7ed1863246f6942c570eca68e5569740b8c2250c",
+  "startedAt": "2026-11-18T23:37:19Z",
+  "result": "PASS",
+  "exitCode": 0,
+  "log": "operating/sync-receipts/local-ci-7ed1863246f6.log",
+  "scope": ["npm test", "MCP stdio/package suite"],
+  "hostRuntimeModified": false,
+  "githubActions": false
+}

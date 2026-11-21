@@ -1,0 +1,85 @@
+{
+  "schema": "nostromo.e3.local-tool-contextual-deferral-source-candidate.v1",
+  "captured_at_utc": "2026-11-19T06:40:58Z",
+  "scope": "Source-only candidate for contextual binding of LibreChat local coding tools; no live installation or inference",
+  "source": {
+    "repository": "elkakas314/libre_chat_vx",
+    "branch": "integration/nostromo-canon-20261118-r1",
+    "base_head": "5c64f87d6e4dbdaa2ebdc5c0ef4b37ca6b548e43",
+    "changed_files": [
+      "deployment/librechat-agents/deferred-instance-filter.mjs",
+      "deployment/librechat-agents/deferred-instance-filter.test.mjs",
+      "deployment/librechat-agents/README.md"
+    ],
+    "sha256": {
+      "deployment/librechat-agents/deferred-instance-filter.mjs": "d4cecf1014eb726571e9c22432c50c609c63356bedb090a28f66ec1a10bcea42",
+      "deployment/librechat-agents/deferred-instance-filter.test.mjs": "56e4e8cc265aa49826eb558f81cfd75ed16b4b3572b776be97dc7de29b44815d",
+      "deployment/librechat-agents/README.md": "e850025a8e2f0e16736c5aabf66f0229f783a8d2aaeb4ac709da3bd2edecafe5"
+    }
+  },
+  "change": {
+    "behavior": "Mark the SDK local coding tool definitions defer_loading=true while retaining the full registry and existing allowed_callers; the existing tool_search indexes deferred definitions, and the already-patched AgentContext filter excludes undiscovered schemas from model binding.",
+    "live_snapshot_schema_tokens_affected": {
+      "create_file": 560,
+      "edit_file": 585,
+      "read_file": 423,
+      "sum": 1568,
+      "status": "EXPECTED_ONLY_NOT_MEASURED_AFTER_PATCH"
+    },
+    "tool_search_and_mcp_catalog_preserved": true
+  },
+  "test": {
+    "command": "node --test deployment/librechat-agents/deferred-instance-filter.test.mjs",
+    "result": "PASS",
+    "passed": 3,
+    "failed": 0,
+    "covers": [
+      "exact source/CJS/ESM patch application",
+      "idempotence",
+      "package-version fail-closed behavior",
+      "target-context drift fail-closed behavior"
+    ]
+  },
+  "installed_package_readback": {
+    "package": "@librechat/agents@4.0.1",
+    "path": "/home/elkakas314/librechat/upstream/node_modules/@librechat/agents",
+    "mode": "READ_ONLY_DRY_RUN",
+    "AgentContext": "3 targets already patched",
+    "LocalCodingTools": "3 exact patches available (source, CJS, ESM)",
+    "package_modified": false
+  },
+  "resource_samples": {
+    "before_test": {
+      "at_utc": "2026-11-19T06:38:30Z",
+      "memory_available_bytes": 11169103872,
+      "swap_free_bytes": 344064,
+      "cpu_psi_some_avg10": 4.81,
+      "memory_psi_some_avg10": 0
+    },
+    "during_test": {
+      "node_rss_kib_sample": 28460,
+      "node_cpu_pct_sample": 0,
+      "cpu_psi_some_avg10": 4.81,
+      "memory_psi_some_avg10": 0
+    },
+    "after_test": {
+      "at_utc": "2026-11-19T06:40:58Z",
+      "memory_available_bytes": 11154513920,
+      "swap_free_bytes": 348160,
+      "cpu_psi_some_avg10": 4.07,
+      "memory_psi_some_avg10": 0
+    },
+    "gpu": "Not sampled; this focused source test ran no inference or GPU workload."
+  },
+  "verify": {
+    "git_diff_check": "PASS",
+    "live_mcp_dispatch": false,
+    "live_conversation_acceptance": false,
+    "backend_restarted": false,
+    "host_modified": false,
+    "product_pass": false
+  },
+  "blocker": "The candidate is not installed. Applying it to the live @librechat/agents package and restarting vx-backend.service remains gated by the real HOST_CONTROL material grant; no other-plane authorization is substituted.",
+  "next_action": "Check the live HOST_CONTROL operation grant and exact service hook; if authorized, preserve preimages, apply only these three LocalCodingTools targets through the existing governed mechanism, then perform a bounded real-context readback before any inference canary. Otherwise retain the tested candidate and continue independent source work.",
+  "status": "SOURCE_CANDIDATE_TESTED_NOT_DEPLOYED"
+}

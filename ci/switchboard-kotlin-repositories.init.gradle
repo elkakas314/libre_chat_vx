@@ -1,0 +1,12 @@
+// CI-only repository fallback for the included build-logic build. Its settings
+// omit pluginManagement repositories, so Kotlin DSL transitive artifacts can
+// otherwise be resolved only through the Gradle Plugin Portal.
+gradle.settingsEvaluated { settings ->
+    if (settings.rootProject.name == 'build-logic') {
+        settings.pluginManagement.repositories {
+            mavenCentral()
+            gradlePluginPortal()
+        }
+        println('NOSTROMO_CI_BUILD_LOGIC_REPOSITORIES: Maven Central + Gradle Plugin Portal')
+    }
+}

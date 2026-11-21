@@ -1,0 +1,17 @@
+{
+  "schema": "nostromo.e5.objective-runtime-manifest.v1",
+  "source_commit": "c50d82319f04f52881e20fc67782ece053e54792",
+  "upstream_commit": "f10b1d91f1eee3a2c82d5247bf620351486b7c1b",
+  "generator": "deployment/librechat-agents/stage-native-objective-agreement.mjs",
+  "generator_sha256": "d7d533d683e2ccfc3fd34e508d9e8c9d9027598749c158f5cadb59888016358e",
+  "build": "TypeScript compilation at source commit; stage with generator against pinned upstream, compare hashes before promotion",
+  "upstream_index_preimage_sha256": "7ace779867986d2c7313cca7930486d352093a8fd2537ef919f2996dca24da57",
+  "upstream_index_candidate_sha256": "9561e5107f75b883973db1cb6307dc0a966c0b1463a86113ab8013bd5907d580",
+  "runtime_files": {
+    "objective-agreement-api.cjs": "9521bc5876c66d321848ada720db9d7ca619bc44766b4a3405542c72f8899705",
+    "src/librechat/nativeObjectiveAgreement.js": "834789b22e61a8a1d5e40607e34dde44e2a1591f933ede44ece48487e362f7e8",
+    "src/contracts/objectiveHandoff.js": "cfd297870a0dd79c5fa1abcc2131f11433e2eff804f9ace11b23b39231001ac7",
+    "contracts/nostromo-objective-handoff.schema.json": "9640084ff82c53fd71b14132c3ec18973a09c23836f7f6a0e43fdf4769751385"
+  },
+  "scope": "Authenticated agreement preview/confirmation only; no dispatch or execution authority."
+}

@@ -18,6 +18,8 @@ export type ProviderCapability =
 export type ProviderHealth = 'READY' | 'DEGRADED' | 'UNAVAILABLE' | 'UNKNOWN';
 export type ProviderQuotaState = 'AVAILABLE' | 'THROTTLED' | 'EXHAUSTED' | 'UNKNOWN';
 export type ZeroCostState = 'VERIFIED_ZERO_COST' | 'UNKNOWN' | 'BILLABLE';
+/** Separates provider billing from a user-consented shared ChatGPT plan allowance. */
+export type RouteBillingClass = 'ZERO_COST' | 'SUBSCRIPTION_SHARED' | 'METERED' | 'UNKNOWN';
 export type RouteLocality = 'LOCAL' | 'REMOTE';
 export type RouteEvidence = 'LIVE_READBACK' | 'CONFIG_ONLY';
 
@@ -81,6 +83,9 @@ export interface ProviderRoute {
   health: ProviderHealth;
   quotaState: ProviderQuotaState;
   zeroCost: ZeroCostState;
+  billingClass?: RouteBillingClass;
+  /** Required when a route consumes the authenticated user's shared ChatGPT plan quota. */
+  planUsageConsent?: 'AUTHORIZED' | 'MISSING' | 'REVOKED';
   contextWindowTokens?: number;
   privacyAllowed: boolean;
   paidFallbackAllowed: boolean;
@@ -113,7 +118,17 @@ export function admitProviderRoute(
   if (route.profile !== request.profile) reasons.push('PROFILE_MISMATCH');
   if (route.health !== 'READY') reasons.push('HEALTH_'+route.health);
   if (route.quotaState !== 'AVAILABLE') reasons.push('QUOTA_'+route.quotaState);
-  if (route.zeroCost !== 'VERIFIED_ZERO_COST') reasons.push('ZERO_COST_'+route.zeroCost);
+  const billingClass = route.billingClass ??
+    (route.zeroCost === 'VERIFIED_ZERO_COST' ? 'ZERO_COST' :
+      route.zeroCost === 'BILLABLE' ? 'METERED' : 'UNKNOWN');
+  if (billingClass === 'ZERO_COST' && route.zeroCost !== 'VERIFIED_ZERO_COST') {
+    reasons.push('ZERO_COST_'+route.zeroCost);
+  } else if (billingClass === 'SUBSCRIPTION_SHARED') {
+    if (route.planUsageConsent !== 'AUTHORIZED') reasons.push('PLAN_USAGE_CONSENT_REQUIRED');
+    if (route.zeroCost === 'BILLABLE') reasons.push('METERED_BILLING_REJECTED');
+  } else if (billingClass !== 'ZERO_COST') {
+    reasons.push(billingClass === 'METERED' ? 'METERED_BILLING_REJECTED' : 'BILLING_CLASS_UNKNOWN');
+  }
   if (route.paidFallbackAllowed) reasons.push('PAID_FALLBACK_FORBIDDEN');
   if (!route.privacyAllowed) reasons.push('PRIVACY_POLICY_REJECTED');
   if (route.evidence !== 'LIVE_READBACK') reasons.push('LIVE_READBACK_REQUIRED');
@@ -156,11 +171,18 @@ export interface ProviderRouteResolver {
 export class StrictZeroCostRouteResolver implements ProviderRouteResolver {
   resolve(request: ProviderAdmissionRequest, routes: readonly ProviderRoute[]): ProviderResolution {
     const candidates=routes.filter((route)=>route.profile===request.profile);
-    const admissions=candidates.map((route)=>admitProviderRoute(route,request));
-    const allowed=candidates
-      .filter((route)=>admissions.find((a)=>a.routeId===route.id)?.admitted)
-      .sort((a,b)=>(a.latencyMs ?? Number.MAX_SAFE_INTEGER)-(b.latencyMs ?? Number.MAX_SAFE_INTEGER));
-    return { profile:request.profile, selected:allowed[0], admissions };
+    const counts=new Map<string,number>();
+    for (const route of routes) counts.set(route.id,(counts.get(route.id) ?? 0)+1);
+    const evaluated=candidates.map((route)=>{
+      const admission=admitProviderRoute(route,request);
+      return {route,admission:counts.get(route.id)! > 1
+        ? {...admission,admitted:false,reasons:[...admission.reasons,'DUPLICATE_ROUTE_ID']}
+        : admission};
+    });
+    const allowed=evaluated.filter(({admission})=>admission.admitted)
+      .sort((a,b)=>(a.route.latencyMs ?? Number.MAX_SAFE_INTEGER)-(b.route.latencyMs ?? Number.MAX_SAFE_INTEGER));
+    return { profile:request.profile, selected:allowed[0]?.route,
+      admissions:evaluated.map(({admission})=>admission) };
   }
 }
 

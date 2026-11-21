@@ -1,0 +1,61 @@
+{
+  "observed_at_utc": "2026-11-19T01:00:22Z",
+  "evidence_class": "HOST_CONTROL_R0_MOBILE_LISTENER_READBACK",
+  "source_branch_head": "71c6c5ace5f1598d1cc970930a3b7a056cb78279",
+  "tailscale": {
+    "backend_state": "Running",
+    "self_online": true,
+    "serve_config_present": false,
+    "serve_ports": []
+  },
+  "service_readback_at_utc": "2026-11-19T01:04:28Z",
+  "source_branch_head_at_service_readback": "0e4e486",
+  "related_services": {
+    "tailscaled.service": "active/running, PID 1080",
+    "cloudflared.service": "active/running, PID 1908",
+    "caddy.service": "failed, ExecMainStatus 1",
+    "nginx.service": "not-found"
+  },
+  "resource_readback_around_2026-11-19T01:08Z": {
+    "total_memory_kb": 16267092,
+    "available_memory_kb": 8727100,
+    "swap_used_kb": 104448,
+    "swap_free_kb": 1992700,
+    "cpu_psi_some_avg10_pct": 24.81,
+    "cpu_psi_some_avg60_pct": 21.17,
+    "cpu_idle_pct_vmstat_samples": [75, 31, 29],
+    "cpu_run_queue_samples": [8, 15, 1],
+    "memory_psi_some_full_pct": [0, 0],
+    "service_processes": {
+      "librechat_backend_pid_5098": {"rss_kb": 309064, "ps_cpu_pct": 0.2},
+      "nostromo_mcp_pid_5197": {"rss_kb": 55772, "ps_cpu_pct": 0.0},
+      "ollama_pid_1320": {"rss_kb": 36236, "ps_cpu_pct": 0.0}
+    },
+    "interpretation": "Short readback shows CPU contention and no memory pressure. No test was running; measured service-process usage was low. This does not establish the cause of system CPU pressure or a memory leak."
+  },
+  "listeners": [
+    {
+      "address": "127.0.0.1:3080",
+      "protocol": "tcp",
+      "state": "LISTEN",
+      "process": "node api/server/index.js",
+      "pid": 5098,
+      "cwd": "/home/elkakas314/librechat/upstream"
+    },
+    {
+      "address": "100.74.177.84%tailscale0:443",
+      "protocol": "tcp",
+      "state": "LISTEN",
+      "process_attribution": "UNAVAILABLE_IN_R0_READBACK"
+    },
+    {
+      "address": "[fd7a:115c:a1e0::2c01:b1f2]%tailscale0:443",
+      "protocol": "tcp",
+      "state": "LISTEN",
+      "process_attribution": "UNAVAILABLE_IN_R0_READBACK"
+    }
+  ],
+  "interpretation": "Tailscale Serve is not configured. A TCP listener exists on tailnet IPv4/IPv6 port 443, but its owner and NOSTROMO routing were not verified. No claim of mobile access is made.",
+  "actions_taken": "Filtered HOST_CONTROL R0 listener/process/service readbacks and a short local resource sample; caddy journal readback was unavailable; no network, service, or file changes or process signals.",
+  "next": "Identify the owner and route for tailnet port 443 using an authorized bounded readback; then test the NOSTROMO mobile endpoint from a real tailnet client."
+}

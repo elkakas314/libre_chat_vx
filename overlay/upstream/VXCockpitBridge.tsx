@@ -6,28 +6,67 @@ import {
   TentaculoHub,
   projectTentaculoHud,
   nostromoHubSourceSnapshot,
+  PhoneModuleView,
+  createPhoneModuleSnapshot,
+  summarizeVxConversation,
+  selectedAgentReadback,
+  projectMcpConnectionReadback,
+  openNativeAgentSelector,
 } from '@librechat/vx';
-import type { HudSystem } from '@librechat/vx';
+import type { HudSystem, PhoneModuleSnapshot, VxConversationActivityInput } from '@librechat/vx';
+import { useGetAgentByIdQuery, useMCPConnectionStatusQuery } from '~/data-provider';
 import './VXCockpit.css';
+import NostromoObjectiveStatus from './NostromoObjectiveStatus';
 
 export interface VXCockpitBridgeProps {
   onClose?: () => void;
+  activity: VxConversationActivityInput;
+  /** Authenticated device readback from the native host; never inferred in the browser. */
+  phone?: PhoneModuleSnapshot;
 }
 
 /** One requested contextual view inside LibreChat's own panel. No target authority. */
-export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
+export default function VXCockpitBridge({ onClose, activity: activityInput, phone }: VXCockpitBridgeProps) {
   const [showTechnical, setShowTechnical] = useState(false);
   const [showAutonomous, setShowAutonomous] = useState(false);
   const [showHub, setShowHub] = useState(false);
+  const [showPhone, setShowPhone] = useState(false);
+  const [selectorUnavailable, setSelectorUnavailable] = useState(false);
+  const [readbackNow, setReadbackNow] = useState(() => Date.now());
   const [activeMode, setActiveMode] = useState<'AUTONOMO'|HudSystem>('AUTONOMO');
   const activeSystem:HudSystem|null = activeMode==='AUTONOMO'?null:activeMode;
   const returnButtonRef = useRef<HTMLButtonElement>(null);
+  const activity = summarizeVxConversation(activityInput);
+  // LibreChat's VIEW-scoped query returns safe agent metadata for the
+  // authenticated user. A configured model is not proof of an inference run.
+  const agentQuery = useGetAgentByIdQuery(
+    activity.endpoint === 'agents' ? activity.agentId : null,
+  );
+  const mcpQuery = useMCPConnectionStatusQuery({enabled:showHub});
+  useEffect(() => {
+    const now=Date.now();
+    setReadbackNow(now);
+    const timers=[agentQuery.dataUpdatedAt,mcpQuery.dataUpdatedAt]
+      .filter(value=>value>0 && value<=now && now-value<=300_000)
+      .map(value=>window.setTimeout(()=>setReadbackNow(Date.now()),value+300_001-now));
+    return () => timers.forEach(timer=>window.clearTimeout(timer));
+  }, [agentQuery.dataUpdatedAt,mcpQuery.dataUpdatedAt]);
+  const selectedAgent = selectedAgentReadback({endpoint:activity.endpoint,agentId:activity.agentId,
+    fetching:agentQuery.isFetching,error:agentQuery.isError,data:agentQuery.data,
+    receivedAtMs:agentQuery.dataUpdatedAt,nowMs:readbackNow});
+  const mcpConnections = projectMcpConnectionReadback({data:mcpQuery.data,
+    fetching:mcpQuery.isFetching,error:mcpQuery.isError,receivedAtMs:mcpQuery.dataUpdatedAt,nowMs:readbackNow});
+  const storedToolOutputs = activity.storedOutputCount;
 
   useEffect(() => { returnButtonRef.current?.focus(); }, []);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose?.();
+      if (event.key !== 'Escape' || event.defaultPrevented) return;
+      const target=event.target;
+      if (target instanceof Element && target.closest('[role="menu"], [role="dialog"]')) return;
+      if (document.querySelector('[data-testid="model-selector-button"][aria-expanded="true"]')) return;
+      onClose?.();
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
@@ -49,14 +88,42 @@ export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
       <div className="vx-context-body">
         <div className="vx-context-intro-block">
           <span className="vx-context-mark" aria-hidden="true">◇</span>
-          <p className="vx-context-overline">CONEXIONES BAJO CONTROL</p>
-          <h3>Todo conectado, cuando esté listo.</h3>
+          <p className="vx-context-overline">ACTIVIDAD LEÍDA DESDE LIBRECHAT</p>
+          <h3>Estado de la conversación</h3>
           <p className="vx-context-intro">
-            Consulta tus sistemas desde la conversación. Aquí sólo aparecen datos confirmados.
+            La cabina muestra el contexto de chat cargado y separa las llamadas registradas de sus resultados guardados.
           </p>
         </div>
 
-        <nav aria-label="Modos de NOSTROMO" className="vx-mode-switcher" data-testid="nostromo-mode-switcher">
+        <section className="vx-live-activity" aria-label="Actividad de LibreChat" data-testid="vx-live-activity">
+          <div className="vx-live-activity-grid">
+            <div><span>Conversación</span><strong>{activity.conversationId ? 'Cargada' : 'Chat nuevo'}</strong></div>
+            <div><span>Agente</span><strong>{activity.endpoint === 'agents' && activity.agentId ? activity.agentId : 'No seleccionado'}</strong></div>
+            <div><span>Nombre del agente</span><strong>{selectedAgent?.name ?? 'NO VERIFICADO'}</strong></div>
+            <div><span>Generación</span><strong>{activity.isSubmitting ? 'En ejecución' : 'En espera'}</strong></div>
+            <div><span>Mensajes cargados</span><strong>{activity.messageCount}</strong></div>
+            <div><span>Llamadas de herramienta</span><strong>{activity.toolCallCount}</strong></div>
+            <div><span>Modelo de conversación</span><strong>{activity.model ?? 'No disponible en esta vista'}</strong></div>
+            <div><span>Modelo configurado del agente</span><strong>{selectedAgent?.model ?? 'NO VERIFICADO'}</strong></div>
+            <div><span>Lectura del agente</span><strong>{selectedAgent ?
+              <time dateTime={new Date(selectedAgent.receivedAtMs).toISOString()}>{new Date(selectedAgent.receivedAtMs).toLocaleString()}</time>
+              : 'NO VERIFICADO'}</strong></div>
+          </div>
+          {activity.toolCalls.length > 0 ? (
+            <ul className="vx-live-tool-list" aria-label="Últimas llamadas registradas">
+              {activity.toolCalls.map((call, index) => (
+                <li key={`${call.name}-${index}`}>
+                  <code>{call.name}</code>
+                  <span>{call.hasStoredOutput ? 'Salida guardada' : 'Sin salida guardada en el mensaje'}</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="vx-live-activity-empty">No hay llamadas de herramienta en los mensajes cargados de esta conversación.</p>
+          )}
+        </section>
+
+        <nav aria-label="Vistas de NOSTROMO" className="vx-mode-switcher" data-testid="nostromo-mode-switcher">
           {([
             ['AUTONOMO','NOSTROMO Autónomo'],
             ['MANOJOS','MANOJOS'],
@@ -68,19 +135,34 @@ export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
         </nav>
         <p className="vx-mode-boundary" role="note">
           {activeMode==='AUTONOMO'
-            ? 'Modo local independiente: agente y MCP propio de terminal.'
-            : 'Sistema externo: conserva su propio MCP y permisos. No recibe la terminal local automáticamente.'}
+            ? 'Esta es una vista; no cambia el agente. Usa el selector nativo de LibreChat para elegirlo. El MCP y sus efectos se verifican en sus recibos de origen.'
+            : 'Esta es una vista; no cambia el agente. El sistema externo conserva su propio MCP y permisos.'}
         </p>
+        {activeMode==='AUTONOMO' ? <div>
+          <button type="button" onClick={() => {
+            const selectors=document.querySelectorAll<HTMLButtonElement>('[data-testid="model-selector-button"]');
+            const selector=selectors.length===1 && selectors[0] instanceof HTMLButtonElement ? selectors[0] : null;
+            setSelectorUnavailable(!openNativeAgentSelector(selector));
+          }}>Elegir agente en LibreChat</button>
+          {selectorUnavailable ? <p role="status">Selector nativo no disponible en esta vista.</p> : null}
+        </div> : null}
+        {activeMode==='AUTONOMO' ? <NostromoObjectiveStatus conversationId={activity.conversationId} /> : null}
         {activeMode==='AUTONOMO' ? (
         <section className="vx-autonomy-card" aria-labelledby="vx-autonomy-heading">
           <div className="vx-autonomy-topline">
             <span className="vx-autonomy-label"><span className="vx-autonomy-beacon" aria-hidden="true"/> NOSTROMO · AUTÓNOMO</span>
-            <span className="vx-autonomy-stage">SOURCE · SIN ACTIVAR</span>
+            <span className="vx-autonomy-stage">
+              {storedToolOutputs > 0
+                ? `${activity.toolCallCount} LLAMADAS · ${storedToolOutputs} SALIDAS GUARDADAS`
+                : activity.toolCallCount > 0
+                  ? `${activity.toolCallCount} LLAMADAS · SALIDAS NO CONFIRMADAS`
+                  : 'SIN LLAMADAS EN MENSAJES CARGADOS'}
+            </span>
           </div>
           <div className="vx-autonomy-main">
             <div>
-              <h3 id="vx-autonomy-heading">Habla. Encarga. Comprueba.</h3>
-              <p>Tu agente de terminal en el Lenovo: una conversación, un MCP local, resultados verificables.</p>
+              <h3 id="vx-autonomy-heading">Conversación y ejecución con evidencia de origen.</h3>
+              <p>Este panel resume el chat cargado. Las llamadas registradas y sus salidas no prueban por sí solas que el efecto material se haya verificado.</p>
             </div>
             <div className="vx-autonomy-terminal-glyph" aria-hidden="true">&gt;_</div>
           </div>
@@ -103,14 +185,14 @@ export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
                 <span>Terminal</span><span aria-hidden="true">→</span>
                 <span>Evidencia</span>
               </div>
-              <p><strong>ChatGPT:</strong> pendiente de autorización OAuth; puede sustituirse por LLM gratuito o local verificado.</p>
-              <p><strong>Terminal:</strong> SOURCE preparado, sin instalación LIVE acreditada. Comandos R0 limitados, R2 sólo con permiso local de un uso.</p>
+              <p><strong>ChatGPT:</strong> estado de conexión NO VERIFICADO; requiere lectura autenticada.</p>
+              <p><strong>Terminal:</strong> la vista no consulta el servicio MCP. Una llamada y su salida se verifican en la conversación y en el receipt del MCP. Las decisiones R2 requieren autorización local exacta.</p>
               <div className="vx-mode-tools" data-testid="nostromo-tools-source">
                 <strong>Único MCP · catálogo SOURCE</strong>
                 <ul>
-                  <li>Estado y lista de herramientas instalables</li>
-                  <li>Preparar comando y comprobar sus límites</li>
-                  <li>Ejecutar terminal con stdout, stderr y código de salida</li>
+                  <li>Leer estado, herramientas, métricas y repositorios</li>
+                  <li>Preparar comandos y revisar su riesgo antes de ejecutarlos</li>
+                  <li>Iniciar, consultar y cancelar tareas locales persistentes</li>
                 </ul>
                 <p>El administrador elige las herramientas del MCP. El chat no se concede privilegios.</p>
               </div>
@@ -121,9 +203,20 @@ export default function VXCockpitBridge({ onClose }: VXCockpitBridgeProps) {
                 {showHub ? 'Ocultar Tentáculo Hub' : 'Explorar Tentáculo Hub'}
                 <span aria-hidden="true">{showHub ? '−' : '↗'}</span>
               </button>
+              <button type="button" className="vx-autonomy-hub-toggle"
+                aria-expanded={showPhone} aria-controls="vx-nostromo-phone"
+                onClick={() => setShowPhone((value) => !value)}>
+                {showPhone ? 'Ocultar módulo de teléfono' : 'Abrir módulo de teléfono'}
+                <span aria-hidden="true">{showPhone ? '−' : '↗'}</span>
+              </button>
+              {showPhone ? (
+                <div id="vx-nostromo-phone">
+                  <PhoneModuleView snapshot={phone ?? createPhoneModuleSnapshot(undefined, [], activity.conversationId)} />
+                </div>
+              ) : null}
               {showHub ? (
                 <div id="vx-nostromo-hub">
-                  <TentaculoHub snapshot={nostromoHubSourceSnapshot()} />
+                  <TentaculoHub snapshot={nostromoHubSourceSnapshot()} mcpConnections={mcpConnections} />
                 </div>
               ) : null}
             </div>

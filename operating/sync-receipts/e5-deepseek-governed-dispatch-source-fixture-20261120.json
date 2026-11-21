@@ -1,0 +1,49 @@
+{
+  "schema": "nostromo.e5.deferred-governed-dispatch.source.v1",
+  "captured_at": "2026-11-20T20:29:36.637326+00:00",
+  "source_base_head": "77c3ce98c1852d4c63da7921f6e3645666db2005",
+  "provenance": "DeepSeek source proposals pasted by owner, compared and corrected; two substantially equivalent versions",
+  "paths": [
+    "src/cockpit/governedMcpDispatch.ts",
+    "src/librechat/nativeGovernedExecution.ts",
+    "tests/governed-mcp-dispatch.test.ts",
+    "scripts/tests/e5-installed-governed-mcp-fixture.test.mjs"
+  ],
+  "corrections": [
+    "TypeScript fixture literal types and ledger discriminated union",
+    "do not freeze timestamp before asynchronous capability read",
+    "readback R0 uses validated args; distinct readback tool requires host callback",
+    "UNKNOWN_OUTCOME ledger state preserved when readback absent or acceptance inconclusive",
+    "fingerprint includes objective agreement plan target owner and args",
+    "R0 readback distinguished from a second dispatch"
+  ],
+  "tests": {
+    "npm_run_build": "PASS",
+    "mock_dispatch": {
+      "passed": 19,
+      "total": 19,
+      "evidence": "/tmp/nostromo-e5-final-tests.log"
+    },
+    "installed_mcp_fixture": {
+      "passed": 1,
+      "total": 1,
+      "mcp_calls": 2,
+      "llm_calls": 0,
+      "authenticated_agreement": false,
+      "test_binary": "installed executable in new isolated stdio process",
+      "evidence": "/tmp/nostromo-e5-final-mcp.log"
+    }
+  },
+  "host_prod_changed": false,
+  "production_route_installed": false,
+  "state": "SOURCE_VERIFIED_MCP_FIXTURE_VERIFIED_AUTHENTICATED_E2E_NOT_VERIFIED",
+  "blockers": [
+    "native HTTP mount only staged, not installed",
+    "real user and tenant agreement binding not connected",
+    "ledger interface must map to existing MCP durable idempotency store atomically",
+    "MCP production transport and acceptance predicates require runtime owner binding",
+    "SIWC and cockpit frontend still pending"
+  ],
+  "next_action": "Bind authenticated native agreement to governed tool dispatcher and existing durable MCP jobs; preserve policy and idempotency; then do R0 authenticated end-to-end and UI readback.",
+  "final_verified": false
+}

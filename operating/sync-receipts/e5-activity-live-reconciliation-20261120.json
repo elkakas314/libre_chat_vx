@@ -1,0 +1,10 @@
+{
+ "status":"INSTALLED_AND_BROWSER_VERIFIED_SCOPED",
+ "mongodb_scope":{"agent_conversations":20,"messages":66,"tool_call_parts":3,"direct_form":3,"stored_outputs":3},
+ "installed_fix":{"source_sha256":"be58fcdf22743802678ab3e6ccc5d3b2caa5e5feab342643f075f37c63a6f119","compiled_sha256":"25f145fd70d5e1372c617cc3f1887ed9927987946d00c25dcc1be54c0b0db7fc","preimages":["e5-activity-d0d578-preimage.ts","e5-activity-2374a4-preimage.js"]},
+ "frontend":{"index_sha256":"fcbc0a4a89679c133dfe3b7a8041278b852c0a4380334bc9dc0ea4336e4a61c7","served_index":"assets/index.BWuHgJVx.js","preimage":"e5-status-client-dist-6aca2f2c-preimage"},
+ "browser_readback":{"conversation":"2da11982-20a5-5b32-a18c-0dd00413cba8","tool_names":["nostromo_estado_mcp_nostromo-local","nostromo_directorio_listar_mcp_nostromo-local"],"both_outputs":"STORED_NOT_EFFECT_VERIFIED"},
+ "backend":{"active":true,"main_pid":1328150,"automatic_restarts":0,"startup_context_hook_exit":0,"startup_hook_sha256":"d4cecf1014eb726571e9c22432c50c609c63356bedb090a28f66ec1a10bcea42"},
+ "siwc":{"http":404,"classification":"SOURCE_NOT_MOUNTED; consent and admitted route unverified"},
+ "limits":["historical sample excludes other agents and MCP receipt stores","status-only execution is not general autonomous execution","full overlay reconciliation and external telemetry remain pending"],"final_verified":false
+}

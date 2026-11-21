@@ -6,6 +6,51 @@ export interface SiwcTextReply {
   text:string;model:string;completed:true;
   provenance:'CHATGPT_OAUTH_PLAN';materialAuthority:false;
 }
+
+export interface SiwcProviderFailureInfo {
+  readonly httpStatus?:number;
+  /** Sanitized machine-readable provider error code, never untrusted diagnostic text. */
+  readonly providerCode?:string;
+  readonly requestId?:string;
+  readonly responseShape?:'error'|'detail'|'unknown';
+  readonly terminalEvent?:'response.failed'|'response.incomplete';
+}
+
+/** Error details are server-only. Never include OAuth tokens, prompts, or raw provider bodies. */
+export class SiwcProviderFailure extends Error {
+  readonly httpStatus?:number;
+  readonly providerCode?:string;
+  readonly requestId?:string;
+  readonly responseShape?:'error'|'detail'|'unknown';
+  readonly terminalEvent?:'response.failed'|'response.incomplete';
+  constructor(message:string,info:SiwcProviderFailureInfo) {
+    super(message);
+    this.name='SiwcProviderFailure';
+    this.httpStatus=info.httpStatus;
+    this.providerCode=info.providerCode;
+    this.requestId=info.requestId;
+    this.responseShape=info.responseShape;
+    this.terminalEvent=info.terminalEvent;
+  }
+}
+function asObject(value:unknown):Record<string,unknown>|null {
+  return value!==null&&typeof value==='object'&&!Array.isArray(value)
+    ?value as Record<string,unknown>:null;
+}
+function providerCode(value:unknown):string|undefined {
+  const code=asObject(asObject(value)?.error)?.code;
+  return typeof code==='string'&&/^[a-z][a-z0-9_]{0,119}$/.test(code)
+    ?code:undefined;
+}
+function safeRequestId(response:Response):string|undefined {
+  const value=response.headers.get('x-request-id');
+  return value&&/^[a-zA-Z0-9_:.\-]{1,128}$/.test(value)?value:undefined;
+}
+function errorShape(value:unknown):'error'|'detail'|'unknown' {
+  const obj=asObject(value);
+  return obj&&Object.hasOwn(obj,'error')?'error'
+    :obj&&Object.hasOwn(obj,'detail')?'detail':'unknown';
+}
 function permission(record:SiwcAccountCredentials,nowMs:number):SiwcGrantReadback {
   return {identity:record.identity,scopes:record.scopes,nowMs,
     tokenExpiresAtMs:record.tokenExpiresAtMs,
@@ -13,9 +58,36 @@ function permission(record:SiwcAccountCredentials,nowMs:number):SiwcGrantReadbac
     expectedClientId:record.clientId};
 }
 async function bodyLimited(response:Response,max:number):Promise<string> {
-  const raw=await response.text();
-  if(raw.length>max)throw Error('SIWC_RESPONSE_TOO_LARGE');
-  return raw;
+  const declaredLength=response.headers.get('content-length');
+  if(declaredLength&&/^\d+$/.test(declaredLength)&&Number(declaredLength)>max) {
+    await response.body?.cancel().catch(()=>undefined);
+    throw Error('SIWC_RESPONSE_TOO_LARGE');
+  }
+  const reader=response.body?.getReader();
+  if(!reader)return '';
+  const chunks:Uint8Array[]=[];
+  let total=0;
+  try {
+    while(true) {
+      const {done,value}=await reader.read();
+      if(done)break;
+      if(value.byteLength>max-total) {
+        await reader.cancel().catch(()=>undefined);
+        throw Error('SIWC_RESPONSE_TOO_LARGE');
+      }
+      chunks.push(value);
+      total+=value.byteLength;
+    }
+  } finally {
+    reader.releaseLock();
+  }
+  const bounded=new Uint8Array(total);
+  let offset=0;
+  for(const chunk of chunks) {
+    bounded.set(chunk,offset);
+    offset+=chunk.byteLength;
+  }
+  return new TextDecoder().decode(bounded);
 }
 /** Server-only user-consented OAuth bearer; never use ChatGPT web cookies or API keys. */
 export class SiwcResponsesClient {
@@ -40,6 +112,9 @@ export class SiwcResponsesClient {
   async textResponse(record:SiwcAccountCredentials,args:{
     model:string;catalog:readonly {slug:string;label:string}[];
     messages:readonly SiwcMessage[];
+    signal?:AbortSignal;
+    /** Forward each provider delta to the native AgentClient stream adapter. */
+    onTextDelta?:(delta:string)=>void;
   }):Promise<SiwcTextReply>{
     const bearer=this.assert(record);
     const body=siwcResponseBody({model:args.model,liveCatalog:args.catalog,messages:args.messages,grant:permission(record,this.now())});
@@ -47,8 +122,17 @@ export class SiwcResponsesClient {
       method:'POST',headers:{
         Authorization:'Bearer '+bearer,
         'Content-Type':'application/json','Accept':'text/event-stream',
-      },body:JSON.stringify(body),redirect:'error',cache:'no-store'});
-    if(!reply.ok)throw Error('SIWC_RESPONSES_HTTP_'+reply.status);
+      },body:JSON.stringify(body),redirect:'error',cache:'no-store',
+      ...(args.signal===undefined?{}:{signal:args.signal})});
+    if(!reply.ok) {
+      let parsed:unknown;
+      try{parsed=JSON.parse(await bodyLimited(reply,32768)) as unknown;}
+      catch{parsed=undefined;}
+      throw new SiwcProviderFailure('SIWC_RESPONSES_HTTP_'+reply.status,{
+        httpStatus:reply.status,providerCode:providerCode(parsed),
+        responseShape:errorShape(parsed),requestId:safeRequestId(reply),
+      });
+    }
     if(!reply.body)throw Error('SIWC_STREAM_REQUIRED');
     const reader=reply.body.getReader();
     const decoder=new TextDecoder();
@@ -65,11 +149,16 @@ export class SiwcResponsesClient {
       events++;
       if(events>20000)throw Error('SIWC_STREAM_EVENT_LIMIT');
       if(event.type==='response.failed'||event.type==='response.incomplete')
-        throw Error('SIWC_RESPONSE_NOT_COMPLETED');
+        throw new SiwcProviderFailure('SIWC_RESPONSE_NOT_COMPLETED',{
+          providerCode:providerCode(event.response),
+          requestId:safeRequestId(reply),
+          terminalEvent:event.type,
+        });
       if(event.type==='response.output_text.delta'){
         if(typeof event.delta!=='string')throw Error('SIWC_STREAM_DELTA_INVALID');
         message+=event.delta;
         if(message.length>1_000_000)throw Error('SIWC_STREAM_OUTPUT_LIMIT');
+        args.onTextDelta?.(event.delta);
       }
       if(event.type==='response.completed')completed=true;
     };

@@ -6,17 +6,23 @@
 import {McpServer} from '@modelcontextprotocol/sdk/server/mcp.js';
 import {StdioServerTransport} from '@modelcontextprotocol/sdk/server/stdio.js';
 import {z} from 'zod';
+import {homedir} from 'node:os';
+import path from 'node:path';
 import {normalizeRequest,preview,consumeApproval,executeLocal} from './policy.mjs';
 import {selectedTools,describeTools} from './tools.mjs';
 import {readScopedText,readHostMetrics,readGitSnapshot} from './inspect.mjs';
+import {listScopedDirectory} from './directory.mjs';
 import {createAsyncJobs} from './async-jobs.mjs';
+import {auditoriaR0} from './audit.mjs';
 
 const enabled=process.env.NOSTROMO_MCP_ENABLED==='1';
 const allowedRoots=(process.env.NOSTROMO_ALLOWED_ROOTS||'').split(':').filter(Boolean);
 const approvalDir=process.env.NOSTROMO_APPROVAL_DIR||'';
 const settings={enabled,roots:allowedRoots};
 const server=new McpServer({name:'nostromo-autonomo',version:'0.3.0'});
-const jobs=createAsyncJobs();
+const taskStateDir=approvalDir?path.join(approvalDir,'jobs'):
+  path.join(homedir(),'.local','state','nostromo','jobs');
+const jobs=createAsyncJobs({stateDir:taskStateDir});
 /** Preserve Node's default signal-exit behavior. At process exit abort local
  * children synchronously (SIGKILL cannot be intercepted; outcome may be unknown).
  */
@@ -33,11 +39,11 @@ const inputSchema={
   max_output:z.number().int().min(256).max(16384).default(8192)
 };
 if(activeTools.has('nostromo_estado')) server.registerTool('nostromo_estado',{
-  description:'Estado del MCP local (configured no implica installed ni live de ChatGPT).',
+  description:'R0 read-only, structured status of this running NOSTROMO MCP. Call this when the user explicitly asks for nostromo_estado or asks whether this MCP is configured, enabled, live, or has persistent task state. Reports only this MCP process; it does not verify LibreChat, the selected model, other MCP servers, or host services.',
   inputSchema:{}
 },async()=>result({
   kind:'nostromo.autonomous.local-mcp.v1',mode:'TERMINAL',
-  enabled,rootsConfigured:allowedRoots.length,approvalConfigured:!!approvalDir,
+  enabled,rootsConfigured:allowedRoots.length,approvalConfigured:!!approvalDir,taskPersistence:jobs.storageStatus(),
   principal:'CURRENT_OS_USER',hostExecutionAuthority:false,
   chatgptBinding:'SEPARATE_OAUTH_NOT_VERIFIED',mcpLive:true,
   linkedProjects:'FUTURE_DISABLED'
@@ -80,6 +86,16 @@ if(activeTools.has('nostromo_archivo_leer'))server.registerTool('nostromo_archiv
     return result(data,data.status!=='READ_OK');
   }catch(e){return result({status:'DENIED',reason:String(e?.message||'FILE_READ_FAILED')},true);}
 });
+if(activeTools.has('nostromo_directorio_listar'))server.registerTool('nostromo_directorio_listar',{
+  description:'R0: lista hasta 50 nombres inmediatos no sensibles dentro de raíces permitidas. Omite symlinks, no recorre subdirectorios ni lee contenido.',
+  inputSchema:{directory:z.string().min(1).max(1024),
+    maxEntries:z.number().int().min(1).max(50).default(50)}
+},async args=>{
+  try{
+    const data=await listScopedDirectory(args,settings);
+    return result(data,data.status!=='READ_OK');
+  }catch(e){return result({status:'DENIED',reason:String(e?.message||'DIRECTORY_LIST_FAILED')},true);}
+});
 if(activeTools.has('nostromo_git_inspeccionar'))server.registerTool('nostromo_git_inspeccionar',{
   description:'R0: obtener HEAD, rama, cambios y diff --stat de Git bajo raíces permitidas.',
   inputSchema:{cwd:z.string().min(1).max(512)}
@@ -99,29 +115,33 @@ if(activeTools.has('nostromo_metricas'))server.registerTool('nostromo_metricas',
   }catch(e){return result({status:'DENIED',reason:String(e?.message||'METRICS_FAILED')},true);}
 });
 if(activeTools.has('nostromo_tarea_iniciar'))server.registerTool('nostromo_tarea_iniciar',{
-  description:'Inicia hasta una tarea CLI a la vez. R0 permitido; R2 exige aprobación física hash-bound. Responde inmediatamente con jobId; NO persiste tras reinicio MCP.',
-  inputSchema
+  description:'Inicia una tarea CLI a la vez. R0 permitido; R2 exige aprobación física hash-bound. Una clave de idempotencia opcional evita repetir una petición y exige persistencia privada. Tras reinicio un RUNNING pasa a UNKNOWN_OUTCOME sin reintento.',
+  inputSchema:{...inputSchema,idempotency_key:z.string().regex(/^[a-f0-9]{64}$/).optional()}
 },async args=>{
   try{
     const state=await jobs.start(args,{settings,approvalDir});
-    return result(state,state.status!=='RUNNING');
+    return result(state,state.status!=='RUNNING' && !(state.deduplicated && state.status==='EXIT_0'));
   }catch(e){return result({status:'DENIED',reason:String(e?.message||'ASYNC_START_FAILED'),started:false},true);}
 });
 if(activeTools.has('nostromo_tarea_estado'))server.registerTool('nostromo_tarea_estado',{
-  description:'Lee estado y resultado final de tarea asíncrona de esta sesión MCP; no implica verificación material.',
+  description:'Lee estado/resultados persistidos por jobId; UNKNOWN_OUTCOME nunca se reintenta automáticamente.',
   inputSchema:{jobId:z.string().uuid()}
 },async ({jobId})=>{
   const state=jobs.status(jobId);
   return result(state,state.status==='NOT_FOUND');
 });
 if(activeTools.has('nostromo_tarea_cancelar'))server.registerTool('nostromo_tarea_cancelar',{
-  description:'Solicita terminar grupo de procesos de una tarea; un resultado material puede quedar desconocido.',
+  description:'Solicita terminar el grupo de procesos; el resultado material puede quedar UNKNOWN_OUTCOME hasta readback independiente.',
   inputSchema:{jobId:z.string().uuid()}
 },async ({jobId})=>{
   const state=jobs.cancel(jobId);
   return result(state,state.status==='NOT_FOUND');
 });
 
+if(activeTools.has('nostromo_auditoria_r0')) server.registerTool('nostromo_auditoria_r0',{
+  description:'R0: auditoría determinista única — backend, puertos, ollama, git, host, systemd, mcp. Read-only, no modifica nada.',
+  inputSchema:{}
+},async()=>result(await auditoriaR0(settings)));
 server.registerTool('nostromo_herramientas',{
  description:'Catálogo de herramientas del único MCP NOSTROMO; sólo administrable desde configuración local confiable.',
  inputSchema:{}
