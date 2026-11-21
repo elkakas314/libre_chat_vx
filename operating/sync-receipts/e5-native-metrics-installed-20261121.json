@@ -1,0 +1,57 @@
+{
+  "schema": "nostromo.e5.native-metrics-installed.v1",
+  "captured_at_utc": "2026-11-21T00:44:57.302509+00:00",
+  "base_head": "0cfac94f2a4f7a27f3352c83a1824e5d89224389",
+  "host": "elkakas314-Lenovo-Z50-70",
+  "runtime": {
+    "backend": "ACTIVE",
+    "backend_http": 200,
+    "native_metrics_unauthenticated_post_http": 401,
+    "native_metrics_route_mounted": true,
+    "frontend_bundle_served_http": 200,
+    "frontend_cockpit_chunk": "VXCockpitBridge.5glpWN6M.js",
+    "index_sha256": "388cd8998f51ecbab10d379084a4d62259205f95d2bc8e13a2c8bf06113547b0",
+    "frontend_index_sha256": "daf1de6fcb4447aee4cd8fa7859d8bccb31bace695ad0964c9716f95bf17bbf0",
+    "backend_mainpid": "1382400",
+    "old_runtime_kept": "/home/elkakas314/librechat/nostromo/runtime/e5-status",
+    "new_runtime": "/home/elkakas314/librechat/nostromo/runtime/e5-metrics-20261121-r1",
+    "backend_preimage": "/home/elkakas314/librechat/nostromo/preimages/api-server-index.b4d65b0ea59330680d929cdfae3bc14d4f0da8cea673e9a1579cb5c622f0dbf6.js",
+    "frontend_preimage": "/home/elkakas314/librechat/nostromo/preimages/e5-web-dist-20261121-r1"
+  },
+  "tests": {
+    "typescript_build": "PASS",
+    "governed_agreement": "36/36_PASS",
+    "integration": "10_PASS_1_SKIP_0_FAIL",
+    "native_metrics_real_mongo_installed_mcp_fixture": "PASS",
+    "native_claim_concurrency": "PASS",
+    "reconnect_no_replay": "PASS",
+    "fingerprint_receipt_binding": "PASS",
+    "mock_acl_denial": "PASS"
+  },
+  "security": {
+    "tool": "nostromo_metricas",
+    "fixed_args": {
+      "cwd": "/home/elkakas314"
+    },
+    "acl": "NATIVE_MCP_MANAGER_USER_AND_OPERATOR_SERVER_ATTESTATION",
+    "confirm": "NATIVE_AGREEMENT_REQUIRES_EXPLICIT_USER_CONFIRM",
+    "result_sanitized": "STATUS_AND_RECEIPT_REFERENCE_ONLY",
+    "side_effects": "R0_READ_ONLY",
+    "mcp_fixture_authenticated_real_user": false,
+    "real_browser_authenticated_metrics_readback": false
+  },
+  "installed": true,
+  "live_backend_verified": true,
+  "frontend_asset_served_verified": true,
+  "complete_e2e_authenticated_metrics": false,
+  "general_autonomy_verified": false,
+  "siwc_live": false,
+  "final_verified": false,
+  "remaining": [
+    "Authenticated browser metrics action and receipt verification",
+    "General-purpose governed task execution with user-specified arguments and host policy",
+    "Durable task claims for all effectful capabilities",
+    "SIWC live OAuth and consent",
+    "Global cabin/routing/skills integration and final release gates"
+  ]
+}

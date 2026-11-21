@@ -65,3 +65,11 @@ Gates de Work, sin empezar desde cero:
 **NO ACEPTADO como hecho verificado:** atribuir únicamente al modelo/GPU los 43 s; deducir que tool_search está roto; afirmar que todos los jobs ya viven en Mongo; que SIWC por sí mismo concede ejecución de herramientas; crear inmediatamente colección `capabilities`; que las cadenas de instrucciones del LLM son predicados de ejecución. El documento externo es investigación, NO SOURCE/INSTALLED/LIVE.
 
 **No se ordena desplegar esta arquitectura por existir este canon.** Sólo el Work con host, pruebas y grants efectivos puede promoverla.
+
+## Corte E5 2026-11-21: segunda herramienta R0 y registro persistente
+
+El contrato SOURCE `nostromo.objective.handoff.v1` y el adaptador `dispatchGovernedObjective` se reutilizan sin sustituirse. El registro `NativeObjectiveDispatchLedger` realiza un claim atómico en el campo privado MongoDB de la conversación y comprueba huella de objetivo, acuerdo, herramienta, argumentos y propietario antes de `VERIFIED`, que exige receipt persistido. El MCP original conserva su idempotencia independiente para `nostromo_tarea_iniciar`; este journal no es una nueva cola ni concede autoridad.
+
+La cabina incorpora `nostromo_metricas` en una vía R0 separada con `cwd=/home/elkakas314` fijo, previamente mostrado al usuario y vinculado al hash del plan. El host consulta catálogo MCP y ACL nativos y rechaza shadow servers, binarios inesperados y argumentos distintos. La ruta POST `/api/nostromo/objectives/:conversationId/execute-metrics` está montada y requiere sesión.
+
+**Evidencia material:** Vite nuevo servido (HTTP 200), backend reiniciado y activo (HTTP 200), ruta de métricas sin sesión devuelve 401, Mongo real y ejecutable MCP instalado en fixtures 2/2 READ_OK, readback y no repetición; cero inferencias LLM. El registro/recuperación está probado en SOURCE y fixture. **No se ha demostrado aún la pulsación autenticada en una sesión de usuario real para métricas**, ni la autonomía general; SIWC sigue frontera externa. `FINAL_VERIFIED=false`. Receipt `operating/sync-receipts/e5-native-metrics-installed-20261121.json`.

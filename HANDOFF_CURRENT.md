@@ -1,3 +1,11 @@
+## 2026-11-21 — E5 fixed R0 metrics installed in LibreChat VX (LIVE route, auth E2E pending)
+
+- Added **second native authenticated read-only capability** `nostromo_metricas` with fixed cwd `/home/elkakas314`, plan + args commitment, owner-bound Mongo `NativeObjectiveDispatchLedger`, live MCPManager tool check and receipt readback.
+- Backend installed: `/api/nostromo/objectives/:conversationId/execute-metrics`; `vx-backend.service` active, HTTP 200, unauthenticated POST HTTP 401, backend index SHA `388cd8998f51ecba...`. Existing status lane preserved.
+- Frontend rebuilt in isolated Vite output; served new VXCockpitBridge asset HTTP 200; old dist retained as reversible preimage. In a **new saved conversation**, choose `Consultar métricas R0`, review fixed cwd and explicitly confirm.
+- Evidence: TypeScript build PASS, 36/36 governed/agreement tests, 10 PASS / 1 SKIP integration, real Mongo+installed MCP isolated metrics fixture PASS, 2 MCP calls/0 model, idempotency/reconnect PASS. **Live-browser authenticated metrics execution NOT YET VERIFIED**: fixtures used synthetic ACL/user confirmation.
+- `operating/sync-receipts/e5-native-metrics-installed-20261121.json` documents exact hashes and preimages. Still pending general authenticated autonomous tasks, SIWC consent and full cabina/CI. `FINAL_VERIFIED=false`.
+
 ## 2026-11-21 — E5 real MCP metrics with durable Mongo claim (SOURCE / FIXTURE)
 
 - Extended claim completion to verify fingerprint of exact receipt tool, args, identity and agreement; mismatched same-plan receipt cannot close another operation.

@@ -5,7 +5,10 @@
     "configured_model": "qwen3:4b-instruct-2507-q4_K_M",
     "authenticated_receipt": "nostromo-receipt:57e7bac937fcc3b937a74995f8bc696c31d6984618e7546888fe3fe5ce62a1c7",
     "recovered_after_backend_restart": true,
-    "receipts": ["operating/sync-receipts/e5-authenticated-status-cockpit-20261120.json", "operating/sync-receipts/e5-activity-live-reconciliation-20261120.json"],
+    "receipts": [
+      "operating/sync-receipts/e5-authenticated-status-cockpit-20261120.json",
+      "operating/sync-receipts/e5-activity-live-reconciliation-20261120.json"
+    ],
     "final_verified": false
   },
   "e4_p0_patch_install_20261120": {
@@ -3173,47 +3176,47 @@
         "siwcProviderRoutes.js"
       ],
       "installed": false,
-    "permission_gate": "HOST_CONTROL R2 still required"
-  },
-  "e3_mobile_listener_r0_readback_20261119": {
-    "receipt": "operating/sync-receipts/mobile-listener-r0-20261119.json",
-    "branch_head_with_receipt": "a4e5cf5",
-    "tailscale_serve": "NOT_CONFIGURED",
-    "backend_listener": "127.0.0.1:3080",
-    "cloudflared_service": "ACTIVE",
-    "caddy_service": "FAILED",
-    "nginx_service": "NOT_FOUND",
-    "tailnet_443_listener": "PRESENT_OWNER_AND_NOSTROMO_ROUTE_UNVERIFIED",
-    "cpu_pressure": "ELEVATED_SHORT_SAMPLE_PSI_SOME_AVG10_24_81_PCT",
-    "memory_pressure": "NONE_SHORT_SAMPLE_8_7_GB_AVAILABLE_SWAP_102_MB_USED",
-    "nostromo_process_load": "LOW_AT_READBACK",
-    "mobile_access": "NOT_VERIFIED",
-    "issue_37_comment": "6996380851"
-  },
-  "e3_siwc_agentclient_wiring_r0_20261119": {
-    "receipt": "operating/sync-receipts/siwc-agentclient-wiring-r0-20261119.json",
-    "superseded_by": "operating/sync-receipts/siwc-resolver-contract-r0-20261119.json",
-    "source_correction_commit": "4a35c05",
-    "source_change_base_head": "9c59d36e146f7b3a26c6f131d42d73e855fb4b54",
-    "source_change_commit": "1d9491a",
-    "change": "Historical incorrect change; superseded by resolver-contract correction. Actual contract: nostromoSiwc is resolver, nostromoSiwcConnectionService is the lifecycle service.",
-    "focused_tests": "13/13 PASS; see superseding receipt",
-    "runtime_installed": false,
-    "live_siwc": "NOT_VERIFIED",
-    "issue_37_comment": "6996655134; corrected and read back",
-    "next": "See the superseding resolver-contract receipt; continue authenticated route-input implementation and exact-candidate local CI after low-power verification."
-  },
-  "e3_host_cpu_interval_readback_r0_20261119": {
-    "receipt": "operating/sync-receipts/siwc-resolver-contract-r0-20261119.json",
-    "peak_interval": "2026-11-19T01:37:42Z/01:37:52Z",
-    "peak_process": "Snap Chromium PID 14915; 98% of one CPU over 10s, main thread 90% in 5s followup",
-    "classification": "DESCONOCIDO_PRESERVAR_INTERACTIVE_BROWSER; specific tab unknown",
-    "followup_interval": "2026-11-19T01:43:51Z/01:43:56Z",
-    "cpu_busy_pct": 19.9,
-    "memory_available_kb": "8326520-9342220",
-    "memory_psi": "NONE",
-    "intervention": "NONE"
-  }
+      "permission_gate": "HOST_CONTROL R2 still required"
+    },
+    "e3_mobile_listener_r0_readback_20261119": {
+      "receipt": "operating/sync-receipts/mobile-listener-r0-20261119.json",
+      "branch_head_with_receipt": "a4e5cf5",
+      "tailscale_serve": "NOT_CONFIGURED",
+      "backend_listener": "127.0.0.1:3080",
+      "cloudflared_service": "ACTIVE",
+      "caddy_service": "FAILED",
+      "nginx_service": "NOT_FOUND",
+      "tailnet_443_listener": "PRESENT_OWNER_AND_NOSTROMO_ROUTE_UNVERIFIED",
+      "cpu_pressure": "ELEVATED_SHORT_SAMPLE_PSI_SOME_AVG10_24_81_PCT",
+      "memory_pressure": "NONE_SHORT_SAMPLE_8_7_GB_AVAILABLE_SWAP_102_MB_USED",
+      "nostromo_process_load": "LOW_AT_READBACK",
+      "mobile_access": "NOT_VERIFIED",
+      "issue_37_comment": "6996380851"
+    },
+    "e3_siwc_agentclient_wiring_r0_20261119": {
+      "receipt": "operating/sync-receipts/siwc-agentclient-wiring-r0-20261119.json",
+      "superseded_by": "operating/sync-receipts/siwc-resolver-contract-r0-20261119.json",
+      "source_correction_commit": "4a35c05",
+      "source_change_base_head": "9c59d36e146f7b3a26c6f131d42d73e855fb4b54",
+      "source_change_commit": "1d9491a",
+      "change": "Historical incorrect change; superseded by resolver-contract correction. Actual contract: nostromoSiwc is resolver, nostromoSiwcConnectionService is the lifecycle service.",
+      "focused_tests": "13/13 PASS; see superseding receipt",
+      "runtime_installed": false,
+      "live_siwc": "NOT_VERIFIED",
+      "issue_37_comment": "6996655134; corrected and read back",
+      "next": "See the superseding resolver-contract receipt; continue authenticated route-input implementation and exact-candidate local CI after low-power verification."
+    },
+    "e3_host_cpu_interval_readback_r0_20261119": {
+      "receipt": "operating/sync-receipts/siwc-resolver-contract-r0-20261119.json",
+      "peak_interval": "2026-11-19T01:37:42Z/01:37:52Z",
+      "peak_process": "Snap Chromium PID 14915; 98% of one CPU over 10s, main thread 90% in 5s followup",
+      "classification": "DESCONOCIDO_PRESERVAR_INTERACTIVE_BROWSER; specific tab unknown",
+      "followup_interval": "2026-11-19T01:43:51Z/01:43:56Z",
+      "cpu_busy_pct": 19.9,
+      "memory_available_kb": "8326520-9342220",
+      "memory_psi": "NONE",
+      "intervention": "NONE"
+    }
   },
   "e3_resource_siwc_gpu_r0_20261119": {
     "receipt": "operating/sync-receipts/e3-resource-siwc-gpu-r0-20261119.json",
@@ -3462,5 +3465,17 @@
     "receipt": "operating/sync-receipts/e5-objective-route-install-20261120.json",
     "status": "INSTALLED_UNAUTHENTICATED_DENIAL_VERIFIED; AUTHENTICATED_E2E_OPEN",
     "next": "Connect native UI and owner-authorized dispatch; verify actual session agreement without reading credentials."
+  },
+  "e5_native_metrics_installed_20261121": {
+    "status": "SECOND_AUTHENTICATED_R0_ROUTE_INSTALLED_FRONTEND_BACKEND_READBACK_PASS_REAL_USER_E2E_PENDING",
+    "head_base": "0cfac94f2a4f7a27f3352c83a1824e5d89224389",
+    "receipt": "operating/sync-receipts/e5-native-metrics-installed-20261121.json",
+    "backend_http": 200,
+    "unauthenticated_route_http": 401,
+    "frontend_chunk_http": 200,
+    "tests": "36_SOURCE_PASS_10_INTEGRATION_PASS_1_SKIP",
+    "real_user_authenticated_metrics": false,
+    "general_autonomy": false,
+    "final_verified": false
   }
 }
