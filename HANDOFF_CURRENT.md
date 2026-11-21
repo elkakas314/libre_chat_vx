@@ -1,3 +1,9 @@
+## 2026-11-21 — E5 Mongo durable pre-dispatch claim (SOURCE PASS; not product installed)
+
+- Existing Mongo conversation private field now supports owner/tenant-scoped `dispatchClaims` via `src/librechat/nativeObjectiveDispatchLedger.ts`, no new queue, MCP, kernel or DB. Atomic update permits only one claim per idempotency key and exact fingerprint; remote/other owner rejected; stale plan denied; ambiguous or unavailable storage fails closed. VERIFIED requires a matching stored receipt.
+- `npm run build` PASS; 36/36 existing governed/agreements tests PASS; **real MongoDB 1/1 integration PASS**, simultaneous claims 1/2, reconnect, isolation, receipt, conflict, stale plan and disposable fixture cleanup checked. Test: `scripts/tests/e5-dispatch-ledger-mongo.test.mjs`; receipt `operating/sync-receipts/e5-native-dispatch-ledger-mongo-20261121.json`.
+- SOURCE-only: **NOT INSTALLED** in LibreChat productive route; no service restarts. NEXT: bind host argument-visible confirmation + MCPManager actual owner ACL + ledger to a complete authenticated task, run readback and verify product. `FINAL_VERIFIED=false`.
+
 ## 2026-11-21 — E5: host-bound arguments proof SOURCE, general tasks pending
 
 - Added `createNativeAgreementArgumentBinding` to the EXISTING `nativeGovernedExecution.ts`: current host-scoped agreement + exact committed argument hash + LIVE capability + explicit host evidence of user-visible confirmation; checks agreement again after async callbacks. No model-issued permission.

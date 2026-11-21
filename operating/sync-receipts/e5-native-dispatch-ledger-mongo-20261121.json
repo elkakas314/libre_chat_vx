@@ -1,0 +1,33 @@
+{
+  "schema": "nostromo.e5.native-dispatch-ledger-mongo.v1",
+  "captured_at_utc": "2026-11-21T00:32:41.704568+00:00",
+  "base_head": "acdfcb289173f48a1b033db022e300c3a859e39a",
+  "scope": "E5 SOURCE, persistent MongoDB owner-scoped dispatch claim; no new database/queue/kernel/MCP",
+  "paths": [
+    "src/librechat/nativeObjectiveDispatchLedger.ts",
+    "scripts/tests/e5-dispatch-ledger-mongo.test.mjs"
+  ],
+  "tests": {
+    "npm_run_build": "PASS",
+    "governed_mcp_and_agreement": "36/36 PASS",
+    "mongodb_real_existing_local_database": "1/1 PASS",
+    "mongodb_cleanup": "DELETE_ONE_DISPOSABLE_FIXTURE_MATCHED",
+    "atomic_duplicate_claim": "ONE_OF_TWO",
+    "cross_owner_isolation": "PASS",
+    "conflicting_fingerprint": "PASS",
+    "reconnect_readback": "PASS",
+    "verified_requires_persisted_receipt": "PASS",
+    "stale_agreement_no_replay": "PASS"
+  },
+  "source_verified": true,
+  "host_runtime_modified": false,
+  "backend_restarted": false,
+  "authentic_product_e2e_verified": false,
+  "risk_notes": [
+    "This ledger is a host-owned pre-dispatch journal in existing Mongo conversation; the MCP async-jobs idempotency claim remains separate per-tool transport guarantee, never a second task queue.",
+    "Integration of host presentation proof, authorization and installed MCP transport is pending.",
+    "If a claim was created and its persisted execution is unknown, the code must never blindly re-dispatch."
+  ],
+  "next_action": "Bind ledger to existing authenticated LibreChat route after operator-authorized argument presentation proof and live MCPManager catalog checks. Then stage/rebuild/install governed and verify authenticated non-status tool E2E.",
+  "final_verified": false
+}
