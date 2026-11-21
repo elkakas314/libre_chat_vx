@@ -1,3 +1,9 @@
+## 2026-11-21 — CANONICAL LIVE ROOT ENFORCED
+
+- OWNER CANONICAL ROOT: `/home/elkakas314/librechat`; product/backend `upstream/`, active E5 runtime `nostromo/runtime/e5-metrics-20261121-r1/`, MCP physically **MOVED** to `nostromo/mcp/server.mjs` with its dependencies (not copied), launcher physically **MOVED** to `nostromo/bin/nostromo-mcp-wrapper.sh`. Legacy `/home/elkakas314/bin/nostromo-mcp-wrapper.sh` is a symbolic compatibility alias only. Do not create another product root.
+- `librechat.yaml` and host native MCP expectedCommand in `api/server/index.js` NOW reference canonical launcher; `vx-backend.service` active, HTTP 200, MCP process from canonical readback, unauthenticated metrics HTTP 401. Canonical MCP tests **33/33 PASS**. Current host inventory/rollback paths: `/home/elkakas314/librechat/nostromo/receipts/CANONICAL_RUNTIME_CURRENT.json`.
+- Source staging scripts reconciled to canonical launcher path; do not restore old external source path on rebuild. Existing historical backups, dirty other worktrees/repos and user projects preserved. SIWC HTTP 404, authenticated metrics E2E and general autonomy not verified, `FINAL_VERIFIED=false`.
+
 ## 2026-11-21 — Full repository npm test passed on Lenovo at metrics HEAD
 
 - At GitHub branch `37cb94a06ad6a530c8c08d54dd006361b5d3e79c`: complete `npm test` exit 0, main 324/324 TS tests PASS plus remaining scripted regression suites PASS, no failures. Backend still LIVE HTTP 200; frontend and index installed hashes unchanged. Evidence `operating/sync-receipts/e5-global-npm-suite-live-20261121.json`.

@@ -18,7 +18,7 @@ const inject=`    // NOSTROMO E5 fixed authenticated R0 metrics lane, no user-se
       serviceFor: objectiveServiceFor, collectionFor: () => mongoose.connection.db?.collection('conversations'),
       services: mcpServices, managerFor: getMCPManager, registryFor: getMCPServersRegistry,
       flowManagerFor: () => getFlowStateManager(getLogStores(CacheKeys.FLOWS)),
-      expectedCommand: '/home/elkakas314/bin/nostromo-mcp-wrapper.sh',
+      expectedCommand: '/home/elkakas314/librechat/nostromo/bin/nostromo-mcp-wrapper.sh',
       expectedCwd: '/home/elkakas314',
       createPort: createNativeMcpMetricsPort, ReceiptStore: NativeObjectiveReceiptStore,
       Ledger: NativeObjectiveDispatchLedger, executeNativeMetrics,

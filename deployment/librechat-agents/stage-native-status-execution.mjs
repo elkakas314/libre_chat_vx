@@ -20,7 +20,7 @@ const NEXT=`    const { createNativeStatusExecutor } = require(path.join(objecti
       serviceFor: objectiveServiceFor, collectionFor: () => mongoose.connection.db?.collection('conversations'),
       services: mcpServices, managerFor: getMCPManager, registryFor: getMCPServersRegistry,
       flowManagerFor: () => getFlowStateManager(getLogStores(CacheKeys.FLOWS)),
-      expectedCommand: '/home/elkakas314/bin/nostromo-mcp-wrapper.sh',
+      expectedCommand: '/home/elkakas314/librechat/nostromo/bin/nostromo-mcp-wrapper.sh',
       createPort: createNativeMcpStatusPort, ReceiptStore: NativeObjectiveReceiptStore, executeNativeStatus,
     });
     app.use('/api/nostromo/objectives', createObjectiveAgreementRouter({
