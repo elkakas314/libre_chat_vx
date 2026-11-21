@@ -1,3 +1,10 @@
+## 2026-11-21 — E5 real MCP metrics with durable Mongo claim (SOURCE / FIXTURE)
+
+- Extended claim completion to verify fingerprint of exact receipt tool, args, identity and agreement; mismatched same-plan receipt cannot close another operation.
+- New isolated installed-MCP fixture: `nostromo_metricas` via existing server + actual Mongo conversation claim and receipt, reconnection blocks replay. **2 MCP calls; 0 LLM calls**. Host ACL and user-visible argument presentation were **synthetic**. Existing backend untouched.
+- `npm run build` PASS; two Mongo integration fixtures 2/2 PASS; governed/agreement 36/36 PASS. Receipt `operating/sync-receipts/e5-mcp-metrics-mongo-dispatch-fixture-20261121.json`.
+- NEXT: mount authenticated native read-only metrics lane with exact visible parameters and persistent proof; connect full executor only with host policy + MCP claim. `FINAL_VERIFIED=false`.
+
 ## 2026-11-21 — E5 Mongo durable pre-dispatch claim (SOURCE PASS; not product installed)
 
 - Existing Mongo conversation private field now supports owner/tenant-scoped `dispatchClaims` via `src/librechat/nativeObjectiveDispatchLedger.ts`, no new queue, MCP, kernel or DB. Atomic update permits only one claim per idempotency key and exact fingerprint; remote/other owner rejected; stale plan denied; ambiguous or unavailable storage fails closed. VERIFIED requires a matching stored receipt.

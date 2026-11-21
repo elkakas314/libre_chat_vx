@@ -1,0 +1,29 @@
+{
+  "schema": "nostromo.e5.metrics-mongo-dispatch-fixture.v1",
+  "base_head": "625598bf53f20ce31629c4d1e74b5aa2ef25aa79",
+  "paths": [
+    "src/librechat/nativeObjectiveDispatchLedger.ts",
+    "scripts/tests/e5-dispatch-ledger-mongo.test.mjs",
+    "scripts/tests/e5-installed-tool-mongo-dispatch.test.mjs"
+  ],
+  "tests": {
+    "typescript_build": "PASS",
+    "existing_governed_agreement": "36/36 PASS",
+    "real_mongo_ledger": "1/1 PASS",
+    "real_mongo_installed_mcp_metrics": "1/1 PASS",
+    "mcp_calls": 2,
+    "llm_calls": 0,
+    "reconnect_no_replay": "PASS",
+    "receipt_fingerprint_mismatch_denied": "PASS",
+    "receipt_readback": "PASS",
+    "fixture_cleanup": "PASS"
+  },
+  "verification_scope": "SOURCE + isolated installed MCP stdio process + real Mongo; authenticated real-user session NOT exercised",
+  "synthetic_boundaries": [
+    "host user authority was simulated",
+    "argument presentation confirmation was simulated"
+  ],
+  "installed_product_changed": false,
+  "source_verified": true,
+  "final_verified": false
+}

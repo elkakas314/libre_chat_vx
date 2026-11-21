@@ -1,3 +1,4 @@
+import {createHash} from 'node:crypto';
 import type { ObjectiveHandoff } from '../contracts/objectiveHandoff';
 import type { IdempotencyLedger, LedgerEntry } from '../cockpit/governedMcpDispatch';
 import { NativeObjectiveAgreement, type AgreementScope } from './nativeObjectiveAgreement';
@@ -6,6 +7,24 @@ import { NativeObjectiveReceiptStore } from './nativeObjectiveReceipts';
 const HASH = /^[a-f0-9]{64}$/;
 const REF = /^nostromo-receipt:[a-f0-9]{64}$/;
 const MAX_CLAIMS = 64;
+function canonical(value:unknown):string {
+  if(value===null||value===undefined)return 'null';
+  if(Array.isArray(value))return '['+value.map(canonical).join(',')+']';
+  if(typeof value==='object') {
+    const obj=value as Record<string,unknown>;
+    return '{'+Object.keys(obj).sort().map(k=>JSON.stringify(k)+':'+canonical(obj[k])).join(',')+'}';
+  }
+  return JSON.stringify(value);
+}
+function fingerprintFor(receipt:import('../cockpit/governedMcpDispatch').ExecutionReceipt):string {
+  return createHash('sha256').update(canonical({
+    objective_ref:receipt.objective_ref,agreement_ref:receipt.agreement_ref,
+    plan_hash:receipt.plan_hash,plan_version:receipt.plan_version,
+    target_id:receipt.target_id,tool_id:receipt.tool_id,
+    principal:receipt.principal_ref,tenant:receipt.tenant_ref,
+    args_hash:receipt.args_hash,
+  })).digest('hex');
+}
 type Claim = LedgerEntry & {key:string};
 type Collection = {
   findOne(filter:Record<string,unknown>,options:{projection:Record<string,number>}):
@@ -130,6 +149,9 @@ export class NativeObjectiveDispatchLedger implements IdempotencyLedger {
     const state=await this.get(key);
     if(!state||state.fingerprint==='UNVERIFIED_STORAGE')
       throw Error('DISPATCH_CLAIM_UNAVAILABLE');
+    if(state.fingerprint!==fingerprintFor(receipt) ||
+       receipt.acceptance.length<1 || receipt.acceptance.some(a=>a.result!=='PASS'))
+      throw Error('RECEIPT_FINGERPRINT_OR_ACCEPTANCE_MISMATCH');
     try {
       const out=await this.collection.updateOne({...this.ownerFilter(),
         'nostromoObjectiveAgreement.dispatchClaims':{$elemMatch:{

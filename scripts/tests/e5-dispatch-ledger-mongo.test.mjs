@@ -40,7 +40,12 @@ test('E5 Mongo real: atomic dispatch claim survives reconnect, rejects conflicts
     const receipts=new NativeObjectiveReceiptStore(coll,agreements);
     const make=(who=scope)=>new NativeObjectiveDispatchLedger(coll,agreements,receipts,who,handoff);
     const journal=make(),reconnected=make(),other=make({...scope,userId:'other'});
-    const stamp=Date.now(),fingerprint=hash({owner:scope.userId,agreement:handoff.agreement_ref,args:{}});
+    const stamp=Date.now(),argsHash='1'.repeat(64);
+    const fingerprint=createHash('sha256').update(JSON.stringify(Object.fromEntries(
+      Object.entries({objective_ref:handoff.objective_ref,agreement_ref:handoff.agreement_ref,
+      plan_hash:handoff.plan_hash,plan_version:handoff.plan_version,target_id:handoff.target_id,
+      tool_id:'nostromo_estado',principal:scope.userId,tenant:scope.tenantId,args_hash:argsHash})
+        .sort(([a],[b])=>a.localeCompare(b))))).digest('hex');
     assert.equal(await journal.get(key),null);
     const claims=await Promise.all([journal.begin(key,fingerprint,stamp),reconnected.begin(key,fingerprint,stamp)]);
     assert.deepEqual(claims.slice().sort(),[false,true]);
@@ -59,6 +64,9 @@ test('E5 Mongo real: atomic dispatch claim survives reconnect, rejects conflicts
       args_hash:'1'.repeat(64),observation_hash:'2'.repeat(64),
       acceptance:[{criterion_id:'state',predicate_ref:'nostromo.mcp.live',result:'PASS'}],
       outcome:'VERIFIED',started_at_ms:stamp,finished_at_ms:stamp+4};
+    const invalid=await receipts.write(scope,{...receipt,args_hash:'f'.repeat(64)});
+    assert.ok(invalid?.receiptRef);
+    await assert.rejects(()=>journal.complete(key,'VERIFIED',stamp+4,invalid.receiptRef),/RECEIPT_FINGERPRINT_OR_ACCEPTANCE_MISMATCH/);
     const saved=await receipts.write(scope,receipt);assert.ok(saved?.receiptRef);
     await journal.complete(key,'VERIFIED',stamp+5,saved.receiptRef);
     assert.equal((await reconnected.get(key)).state,'VERIFIED');
